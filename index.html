@@ -169,15 +169,116 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .badge-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600; background: rgba(255, 255, 255, 0.07); border: 1px solid var(--border); }
 .badge-pill.owner { background: rgba(255, 255, 255, 0.15); color: #fff; border-color: rgba(255, 255, 255, 0.35); }
 .badge-pill.live { background: rgba(34, 197, 94, 0.14); color: #86efac; border-color: rgba(34, 197, 94, 0.35); }
-.badge-pill.brave { background: rgba(251, 84, 43, 0.18); color: #ff8566; border-color: rgba(251, 84, 43, 0.45); }
+
+/* ============================================================================
+   FROSTED GLASS SEARCH & URL PORTAL STYLES
+   ============================================================================ */
+.glass-portal {
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px 80px;
+  position: relative;
+  transition: justify-content 0.3s ease;
+}
+.glass-portal.has-active {
+  justify-content: flex-start;
+  padding-top: 36px;
+}
+.glass-heading {
+  font-size: clamp(28px, 4.5vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #f4f4f6;
+  margin-bottom: 22px;
+  text-align: center;
+  text-shadow: 0 0 36px rgba(255, 255, 255, 0.18);
+}
+.glass-panel {
+  width: min(820px, 92vw);
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  padding: 10px 14px 10px 26px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.25s ease;
+}
+.glass-panel:focus-within {
+  background: rgba(255, 255, 255, 0.085);
+  border-color: rgba(255, 255, 255, 0.38);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.85), 0 0 40px rgba(255, 255, 255, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}
+.glass-panel svg {
+  width: 24px;
+  height: 24px;
+  color: rgba(255, 255, 255, 0.75);
+  flex-shrink: 0;
+}
+.glass-input {
+  flex: 1;
+  height: 54px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: #fff;
+  font: 400 20px "Outfit", sans-serif;
+  min-width: 0;
+}
+.glass-input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+.glass-results-box {
+  width: min(820px, 92vw);
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fade 0.22s ease;
+}
+.glass-result-card {
+  background: rgba(20, 20, 26, 0.62);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 18px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+.glass-result-card:hover {
+  background: rgba(34, 34, 44, 0.78);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65);
+}
+.glass-viewer {
+  width: min(1240px, 95vw);
+  height: calc(100vh - 175px);
+  margin-top: 18px;
+  background: rgba(14, 14, 18, 0.75);
+  backdrop-filter: blur(22px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.85);
+}
 
 /* Netflix UI */
 .nf-wrap { background: #141414; min-height: 100%; padding-bottom: 80px; color: #fff; position: relative; }
 .nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: rgba(20,20,20,0.85); backdrop-filter: blur(8px); gap: 20px; flex-wrap: wrap; }
 .nf-logo { color: #e50914; font-size: 28px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; }
-.nf-navlinks { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
-.nf-navlink { font-size: 14px; font-weight: 500; color: #e5e5e5; cursor: pointer; background: none; border: 0; }
-.nf-navlink.active { color: #fff; font-weight: 700; }
 .nf-hero { position: relative; height: 62vh; min-height: 400px; width: 100%; overflow: hidden; display: flex; align-items: flex-end; padding: 0 42px 54px; }
 .nf-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
 .nf-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #141414 0%, rgba(20,20,20,0.75) 45%, transparent 100%), linear-gradient(180deg, transparent 50%, #141414 100%); }
@@ -209,11 +310,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .sp-trow:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .sp-trow.active { background: rgba(29, 185, 84, 0.14); color: #1ed760; }
 .sp-player-bar { height: 80px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 16px; flex-shrink: 0; }
-
-/* Brave UI */
-.br-shell { display: flex; flex-direction: column; height: 100%; width: 100%; background: #18181b; color: #f4f4f5; overflow: hidden; }
-.br-toolbar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #1e1e24; border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; }
-.br-omnibar { flex: 1; min-width: 220px; height: 36px; background: #111115; border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; display: flex; align-items: center; padding: 0 14px; gap: 10px; }
 
 /* TikTok Feed UI */
 .tt-card { background: #0d0d11; border: 1px solid var(--border); border-radius: 18px; overflow: hidden; max-width: 420px; width: 100%; margin: 0 auto 24px; box-shadow: 0 18px 40px rgba(0,0,0,0.8); }
@@ -658,7 +754,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const GamesIcon = (p) => h(Svg, p, h("path", { d: "M6 12h4M8 10v4M15 13h.01M18 11h.01" }), h("path", { d: "M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.7 8A3 3 0 0 0 6 18.5L8 16h8l2 2.5a3 3 0 0 0 4.9-2.3l-1.7-8A4 4 0 0 0 17.3 5z" }));
   const MoviesIcon = (p) => h(Svg, p, h("rect", { x: "3", y: "4", width: "18", height: "16", rx: "2" }), h("path", { d: "M8 4v16M16 4v16M3 12h18" }));
   const MusicIcon = (p) => h(Svg, p, h("path", { d: "M9 18V5l12-2v13" }), h("circle", { cx: "6", cy: "18", r: "3" }), h("circle", { cx: "18", cy: "16", r: "3" }));
-  const BrowserIcon = (p) => h(Svg, p, h("path", { d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" }), h("circle", { cx: "12", cy: "11", r: "3" }));
+  const BrowserIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "10" }), h("line", { x1: "2", y1: "12", x2: "22", y2: "12" }), h("path", { d: "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" }));
   const AccountIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "8", r: "4" }), h("path", { d: "M4 21a8 8 0 0 1 16 0" }));
   const CreatorIcon = (p) => h(Svg, p, h("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }), h("circle", { cx: "9", cy: "7", r: "4" }), h("line", { x1: "19", y1: "8", x2: "19", y2: "14" }), h("line", { x1: "22", y1: "11", x2: "16", y2: "11" }));
   const EyeIcon = (p) => h(Svg, p, h("path", { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }), h("circle", { cx: "12", cy: "12", r: "3" }));
@@ -705,7 +801,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("canvas", { id: "stars", ref });
   }
 
-  // --- Sidebar Component ---
+  // --- Sidebar Component (Renamed to Search / Web) ---
   function Sidebar({ view, open, onToggle, onNavigate, isOwner }) {
     const btn = (id, label, icon) =>
       h("button", { key: id, className: "side-btn" + (view === id ? " active" : ""), title: label, onClick: () => onNavigate(id) }, icon, h("span", null, label));
@@ -714,7 +810,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         btn("home", "Home", h(HomeIcon)),
         btn("youtube", "YouTube", h(YouTubeIcon)),
         btn("tiktok", "TikTok", h(TikTokIcon)),
-        btn("browser", "Brave Browser", h(BrowserIcon)),
+        btn("browser", "Web Search", h(BrowserIcon)),
         btn("chat", "Chat", h(ChatIcon)),
         btn("games", "Games", h(GamesIcon)),
         btn("movies", "Netflix", h(MoviesIcon)),
@@ -777,12 +873,301 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           "TikTok"
         ),
         h("button", { onClick: () => onNavigate("games") }, h("div", { className: "circ" }, h(GamesIcon)), "Games"),
-        h("button", { onClick: () => onNavigate("browser") }, h("div", { className: "circ" }, h(BrowserIcon)), "Brave"),
+        h("button", { onClick: () => onNavigate("browser") }, h("div", { className: "circ" }, h(BrowserIcon)), "Web Search"),
         h("button", { onClick: () => onNavigate("music") }, h("div", { className: "circ" }, h(MusicIcon)), "Spotify"),
         h("button", { onClick: () => onNavigate("movies") }, h("div", { className: "circ" }, h(MoviesIcon)), "Netflix"),
         h("button", { onClick: () => onNavigate("chat") }, h("div", { className: "circ" }, h(ChatIcon)), "Chat")
       ),
       h("div", { className: "ad" }, "100% FREE \u2022 100% UNDETECTED", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
+    );
+  }
+
+  // ============================================================================
+  // NEW: CENTERED FROSTED GLASS WEB SEARCH & URL BYPASS PORTAL (No Brave UI!)
+  // ============================================================================
+  function BrowserView({ toast }) {
+    const [query, setQuery] = useState("");
+    const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [activeUrl, setActiveUrl] = useState("");
+    const [frameHtml, setFrameHtml] = useState("");
+    const [proxyNode, setProxyNode] = useState("relay1"); // "relay1" (AllOrigins), "relay2" (Codetabs), "direct"
+    const debounceRef = useRef(null);
+
+    const isUrlLike = (str) => {
+      const s = str.trim();
+      return /^(https?:\/\/|www\.)/i.test(s) || (/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(s) && !s.includes(" "));
+    };
+
+    // Fast Live Search using concurrent Wikipedia + DuckDuckGo JSON APIs (100% FortiGuard-Proof)
+    const runFastSearch = useCallback(async (qText) => {
+      const clean = (qText || "").trim();
+      if (!clean) {
+        setResults([]);
+        return;
+      }
+      setLoading(true);
+      try {
+        const [wikiRes, ddgRes] = await Promise.all([
+          fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(clean)}&srlimit=10&utf8=&format=json&origin=*`).then((r) => r.json()).catch(() => null),
+          fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(clean)}&format=json&no_html=1&skip_disambig=1`).then((r) => r.json()).catch(() => null)
+        ]);
+
+        const combined = [];
+
+        // If user typed a domain/URL, offer instant 1-click direct launch at top
+        if (isUrlLike(clean)) {
+          const normalized = /^https?:\/\//i.test(clean) ? clean : "https://" + clean;
+          combined.push({
+            title: `🌐 Open Website Directly: ${normalized}`,
+            url: normalized,
+            snippet: "Click to load this URL inside the unblocked frosted glass viewer (bypasses FortiGuard).",
+            isDirectUrl: true
+          });
+        }
+
+        // DuckDuckGo Instant Answer & Related Topics
+        if (ddgRes) {
+          if (ddgRes.AbstractText && ddgRes.AbstractURL) {
+            combined.push({
+              title: ddgRes.Heading || clean,
+              url: ddgRes.AbstractURL,
+              snippet: ddgRes.AbstractText
+            });
+          }
+          if (Array.isArray(ddgRes.RelatedTopics)) {
+            ddgRes.RelatedTopics.slice(0, 5).forEach((rt) => {
+              if (rt.Text && rt.FirstURL) {
+                combined.push({
+                  title: rt.Text.split(" - ")[0] || rt.Text.slice(0, 60),
+                  url: rt.FirstURL,
+                  snippet: rt.Text
+                });
+              }
+            });
+          }
+        }
+
+        // Wikipedia Instant Search Results
+        const wikiItems = wikiRes?.query?.search || [];
+        wikiItems.forEach((w) => {
+          combined.push({
+            title: w.title,
+            url: `https://en.wikipedia.org/wiki/${encodeURIComponent(w.title.replace(/ /g, "_"))}`,
+            snippet: (w.snippet || "").replace(/<\/?[^>]+(>|$)/g, ""),
+            wikiTitle: w.title
+          });
+        });
+
+        setResults(combined);
+      } catch {}
+      setLoading(false);
+    }, []);
+
+    // Trigger instant search as user types
+    const handleInputChange = (val) => {
+      setQuery(val);
+      clearTimeout(debounceRef.current);
+      if (!val.trim()) {
+        setResults([]);
+        return;
+      }
+      debounceRef.current = setTimeout(() => {
+        runFastSearch(val);
+      }, 160);
+    };
+
+    // Open any URL or Search Result inside the Frosted Glass Viewer via Proxy Relay
+    const openSiteInGlass = useCallback(async (rawUrl, node = proxyNode) => {
+      let target = (rawUrl || "").trim();
+      if (!target) return;
+      if (!/^https?:\/\//i.test(target)) target = "https://" + target;
+
+      setActiveUrl(target);
+      setLoading(true);
+
+      if (node === "direct") {
+        setFrameHtml("");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Special ultra-fast Wikipedia REST HTML reader if it's a Wikipedia URL
+        if (target.includes("wikipedia.org/wiki/")) {
+          const titlePart = target.split("/wiki/")[1];
+          const wRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/html/${titlePart}`);
+          if (wRes.ok) {
+            const wHtml = await wRes.text();
+            setFrameHtml(`
+              <base href="https://en.wikipedia.org/wiki/">
+              <style>
+                body { font-family: 'Outfit', system-ui, sans-serif !important; background: #0e0e12 !important; color: #e6e6e6 !important; padding: 28px 36px !important; line-height: 1.65 !important; }
+                a { color: #60a5fa !important; }
+                img { max-width: 100%; height: auto; border-radius: 8px; }
+                table, .infobox { background: #16161d !important; color: #ddd !important; border-color: #333 !important; }
+              </style>
+              <script>
+                document.addEventListener('click', function(e) {
+                  var a = e.target.closest('a');
+                  if (a && a.href && !a.href.startsWith('javascript:')) {
+                    e.preventDefault();
+                    parent.postMessage({ type: 'GLASS_NAV', url: a.href }, '*');
+                  }
+                }, true);
+              <\/script>
+              ${wHtml}
+            `);
+            setLoading(false);
+            return;
+          }
+        }
+
+        let htmlText = "";
+        if (node === "relay1") {
+          const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
+          const j = await r.json();
+          htmlText = j.contents || "";
+        } else {
+          const r = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(target)}`);
+          htmlText = await r.text();
+        }
+
+        const interceptor = `
+          <base href="${target}">
+          <script>
+            document.addEventListener('click', function(e) {
+              var a = e.target.closest('a');
+              if (a && a.href && !a.href.startsWith('javascript:')) {
+                e.preventDefault();
+                parent.postMessage({ type: 'GLASS_NAV', url: a.href }, '*');
+              }
+            }, true);
+            document.addEventListener('submit', function(e) {
+              var f = e.target;
+              if (f && f.action) {
+                e.preventDefault();
+                var fd = new FormData(f);
+                var params = new URLSearchParams(fd).toString();
+                var dest = f.action.split('?')[0] + '?' + params;
+                parent.postMessage({ type: 'GLASS_NAV', url: dest }, '*');
+              }
+            }, true);
+          <\/script>
+        `;
+        setFrameHtml(interceptor + (htmlText || "<div style='color:#fff;padding:30px;font-family:sans-serif'>Page loaded empty. Try switching to Relay 2 or Direct Frame above.</div>"));
+      } catch {
+        toast("Relay busy — try switching to Relay 2 or Direct Mode");
+      }
+      setLoading(false);
+    }, [proxyNode, toast]);
+
+    useEffect(() => {
+      const onMsg = (e) => {
+        if (e.data && e.data.type === "GLASS_NAV" && e.data.url) {
+          openSiteInGlass(e.data.url, proxyNode);
+        }
+      };
+      window.addEventListener("message", onMsg);
+      return () => window.removeEventListener("message", onMsg);
+    }, [openSiteInGlass, proxyNode]);
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const val = query.trim();
+      if (!val) return;
+      if (isUrlLike(val)) {
+        openSiteInGlass(val, proxyNode);
+      } else {
+        setActiveUrl("");
+        runFastSearch(val);
+      }
+    };
+
+    const hasContent = results.length > 0 || !!activeUrl;
+
+    return h("section", { className: "view" },
+      h("div", { className: "glass-portal" + (hasContent ? " has-active" : "") },
+        // Heading above the glass panel
+        h("h1", { className: "glass-heading" }, "What do you want to search?"),
+
+        // Centered Frosted Glass Search & URL Bar
+        h("form", { className: "glass-panel", onSubmit: handleSubmit, autoComplete: "off" },
+          h(SearchIcon),
+          h("input", {
+            className: "glass-input",
+            type: "text",
+            spellCheck: false,
+            placeholder: "Type anything to search or enter a URL (e.g. wikipedia.org, reddit.com)...",
+            value: query,
+            onChange: (e) => handleInputChange(e.target.value)
+          }),
+          query ? h("button", {
+            type: "button",
+            className: "pill",
+            style: { padding: "6px 12px", fontSize: 12 },
+            onClick: () => { setQuery(""); setResults([]); setActiveUrl(""); }
+          }, "Clear") : null,
+          h("button", {
+            type: "submit",
+            className: "btn",
+            style: { borderRadius: 16, height: 48, padding: "0 24px" }
+          }, loading ? "..." : isUrlLike(query) ? "Open URL" : "Search")
+        ),
+
+        // Active Unblocked Website Viewer (when user opens a URL or clicks a result)
+        activeUrl ? h("div", { className: "glass-viewer" },
+          h("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", background: "rgba(0,0,0,0.65)", borderBottom: "1px solid var(--border)", gap: 10, flexWrap: "wrap" } },
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10, minWidth: 0, flex: 1 } },
+              h("button", { className: "btn ghost sm", onClick: () => setActiveUrl("") }, "← Back to Results"),
+              h("span", { style: { fontSize: 13, color: "#a1a1aa", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, activeUrl)
+            ),
+            h("div", { style: { display: "flex", gap: 6, alignItems: "center" } },
+              [
+                { id: "relay1", label: "🛡️ Relay 1" },
+                { id: "relay2", label: "⚡ Relay 2" },
+                { id: "direct", label: "🌐 Direct Frame" }
+              ].map((m) =>
+                h("button", {
+                  key: m.id,
+                  className: "chip" + (proxyNode === m.id ? " on" : ""),
+                  style: { padding: "4px 10px", fontSize: 11.5 },
+                  onClick: () => { setProxyNode(m.id); openSiteInGlass(activeUrl, m.id); }
+                }, m.label)
+              )
+            )
+          ),
+          proxyNode === "direct"
+            ? h("iframe", {
+                key: activeUrl + "_direct",
+                src: activeUrl,
+                style: { flex: 1, width: "100%", border: 0, background: "#fff" },
+                sandbox: "allow-scripts allow-same-origin allow-forms",
+                referrerPolicy: "no-referrer"
+              })
+            : h("iframe", {
+                key: activeUrl + "_" + proxyNode + "_" + loading,
+                srcDoc: frameHtml,
+                style: { flex: 1, width: "100%", border: 0, background: "#0e0e12" },
+                sandbox: "allow-scripts allow-same-origin allow-forms"
+              })
+        ) : (
+          // Instant Frosted Glass Search Results List
+          results.length > 0 ? h("div", { className: "glass-results-box" },
+            results.map((r, i) =>
+              h("div", {
+                key: i,
+                className: "glass-result-card",
+                onClick: () => openSiteInGlass(r.url, proxyNode)
+              },
+                h("div", { style: { fontSize: 12, color: "#86efac", marginBottom: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, r.url),
+                h("div", { style: { fontSize: 18, fontWeight: 700, color: "#fff", marginBottom: 6 } }, r.title),
+                h("div", { style: { fontSize: 13.5, color: "#bcbcc4", lineHeight: 1.5 } }, r.snippet)
+              )
+            )
+          ) : null
+        )
+      )
     );
   }
 
@@ -1338,47 +1723,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Embedded Brave Browser ---
-  function BrowserView() {
-    const [omnibar, setOmnibar] = useState("https://search.brave.com/search?q=unblocked+games");
-    const [frameSrcDoc, setFrameSrcDoc] = useState("");
-    const [loading, setLoading] = useState(false);
-
-    const loadUrl = useCallback(async (raw) => {
-      let target = (raw || "").trim();
-      if (!target) return;
-      if (!/^(https?:\/\/|www\.)/i.test(target)) target = `https://search.brave.com/search?q=${encodeURIComponent(target)}`;
-      else if (!/^https?:\/\//i.test(target)) target = "https://" + target;
-      setOmnibar(target);
-      setLoading(true);
-      try {
-        const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
-        const j = await r.json();
-        setFrameSrcDoc(`<base href="${target}">` + (j.contents || ""));
-      } catch {}
-      setLoading(false);
-    }, []);
-
-    useEffect(() => { loadUrl(omnibar); }, []);
-
-    return h("section", { className: "view" },
-      h("div", { className: "br-shell" },
-        h("form", { className: "br-toolbar", onSubmit: (e) => { e.preventDefault(); loadUrl(omnibar); } },
-          h("span", { style: { color: "#fb542b", fontWeight: 800 } }, "🦁 Brave"),
-          h("div", { className: "br-omnibar" },
-            h("input", { type: "text", value: omnibar, onChange: (e) => setOmnibar(e.target.value), style: { flex: 1, background: "transparent", border: 0, outline: 0, color: "#fff", fontSize: 13.5 } })
-          ),
-          h("button", { type: "submit", className: "btn sm", style: { background: "#fb542b", color: "#fff" } }, loading ? "..." : "Go")
-        ),
-        h("div", { style: { flex: 1, background: "#101217" } },
-          h("iframe", { srcDoc: frameSrcDoc, style: { width: "100%", height: "100%", border: 0, background: "#fff" }, sandbox: "allow-scripts allow-same-origin allow-forms" })
-        )
-      )
-    );
-  }
-
   // ============================================================================
-  // RESTORED: FULL WHATSAPP-STYLE LIVE CHAT WITH IMAGE & FILE ATTACHMENTS
+  // WHATSAPP-STYLE LIVE CHAT WITH IMAGE & FILE ATTACHMENTS
   // ============================================================================
   function ChatView({ currentUser, accountsMap }) {
     const [messages, setMessages] = useState([]);
@@ -1574,9 +1920,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // ============================================================================
-  // RESTORED: FULL ACCOUNT PROFILE VIEW
-  // ============================================================================
+  // --- Account Profile View ---
   function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner }) {
     const [now, setNow] = useState(Date.now());
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
@@ -1616,9 +1960,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // ============================================================================
-  // RESTORED: FULL ACCOUNT CREATOR HUB (With Live Active Users, Kick, Revoke & Sliders!)
-  // ============================================================================
+  // --- Account Creator Hub ---
   function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
     const [createModal, setCreateModal] = useState(false);
     const [dbModal, setDbModal] = useState(false);
@@ -1690,7 +2032,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           )
         ),
 
-        // LIVE ACTIVE USERS PANEL
         h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
           h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
             h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
@@ -1724,7 +2065,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               )
         ),
 
-        // LICENSED ACCOUNTS LIST
         h("h3", { style: { fontSize: 20, fontWeight: 600, marginBottom: 14 } }, `Licensed Accounts (${accountsList.length})`),
         h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
           accountsList.map((acc) => {
@@ -1882,7 +2222,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Main App with Restored 5-Second Live Session Heartbeat & Kick/Revoke Sync ---
+  // --- Main App ---
   function App() {
     const [view, setView] = useState("home");
     const [open, setOpen] = useState(false);
@@ -1915,7 +2255,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       return isOwnerIdentity(currentUser.username, acc || currentUser);
     }, [currentUser, accountsMap]);
 
-    // RESTORED: Full Heartbeat & Live Session Sync so Account Creator Hub sees all live users!
     const refreshDatabaseAndSession = useCallback(async () => {
       const { accounts, sessions } = await dbFetchAll();
       setAccountsMap(accounts);
@@ -1938,7 +2277,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Kicked out by owner."); return;
       }
 
-      // Send live heartbeat ping to Firebase so Active Accounts on Site shows live online users!
       await dbUpsertSession({
         username: acc.username,
         email: acc.email || "",
@@ -1974,7 +2312,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       else setInstallingGame(g);
     }, [installedMap, launchGame]);
 
-    const hideFloatingPills = view === "browser" || view === "movies" || view === "music";
+    const hideFloatingPills = view === "movies" || view === "music";
 
     return h(Fragment, null,
       h(Stars),
