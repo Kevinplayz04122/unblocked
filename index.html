@@ -154,12 +154,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .auth-sub { color: var(--muted); font-size: 13.5px; text-align: center; margin: 0 0 24px; }
 .auth-label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
 .auth-err { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; text-align: center; }
-.pop-panel { background: var(--panel); border: 1px solid rgba(255, 255, 255, 0.13); border-radius: 16px; padding: 18px 20px; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.7); position: relative; }
+.pop-panel { background: var(--panel); border: 1px solid rgba(255, 255, 255, 0.13); border-radius: 16px; padding: 18px 20px; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.7); transition: transform 0.22s ease, border-color 0.22s ease; position: relative; }
+.pop-panel:hover { border-color: rgba(255, 255, 255, 0.25); }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; display: inline-block; }
 .status-dot.off { background: #71717a; box-shadow: none; }
+.status-dot.exp { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
 .slider { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: #232329; border-radius: 999px; outline: none; cursor: pointer; }
 .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #e4e4e4; cursor: pointer; border: 2px solid #0b0b0d; }
+.slider:disabled { opacity: 0.35; cursor: not-allowed; }
 .eye-btn { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border); border-radius: 8px; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; color: #cfcfd4; cursor: pointer; }
+.eye-btn:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
+.eye-btn svg { width: 15px; height: 15px; }
 .mono-box { font-family: monospace; background: #070709; border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; font-size: 13px; color: #e4e4e4; display: inline-flex; align-items: center; gap: 8px; }
 .badge-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600; background: rgba(255, 255, 255, 0.07); border: 1px solid var(--border); }
 .badge-pill.owner { background: rgba(255, 255, 255, 0.15); color: #fff; border-color: rgba(255, 255, 255, 0.35); }
@@ -207,9 +212,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
 /* Brave UI */
 .br-shell { display: flex; flex-direction: column; height: 100%; width: 100%; background: #18181b; color: #f4f4f5; overflow: hidden; }
-.br-tabstrip { display: flex; align-items: flex-end; gap: 4px; padding: 8px 12px 0; background: #0c0c0e; overflow-x: auto; flex-shrink: 0; }
-.br-tab { display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border-radius: 10px 10px 0 0; background: #141418; color: #a1a1aa; font-size: 12.5px; cursor: pointer; }
-.br-tab.active { background: #1e1e24; color: #fff; }
 .br-toolbar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #1e1e24; border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; }
 .br-omnibar { flex: 1; min-width: 220px; height: 36px; background: #111115; border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; display: flex; align-items: center; padding: 0 14px; gap: 10px; }
 
@@ -626,12 +628,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return { src: activeUrl };
   }
 
-  async function findFastestServerIndex(game) {
-    if (!game.servers || game.servers.length <= 1) return 0;
-    if (game.servers[0].url === "roblox-direct-engine") return 0;
-    return 0;
-  }
-
   const FRAME_ALLOW = "fullscreen; autoplay; gamepad; clipboard-write; accelerometer; gyroscope; pointer-lock; microphone; keyboard-map";
 
   function openCloaked(source, s) {
@@ -650,7 +646,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   function cloakSite(s) { return openCloaked({ src: location.href.split("#")[0] }, s); }
 
   // ============================================================================
-  // ICONS (INCLUDING NEW YOUTUBE & TIKTOK ICONS)
+  // ICONS
   // ============================================================================
   function Svg({ children, sw = 1.8 }) {
     return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
@@ -671,6 +667,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const ChevronIcon = (p) => h(Svg, p, h("path", { d: "m9 18 6-6-6-6" }));
   const SearchIcon = (p) => h(Svg, p, h("circle", { cx: "11", cy: "11", r: "8" }), h("path", { d: "m21 21-4.3-4.3" }));
   const RefreshIcon = (p) => h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
+
+  function Modal({ children, onClose }) {
+    return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
+  }
 
   // --- Stars Background ---
   function Stars() {
@@ -705,7 +705,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("canvas", { id: "stars", ref });
   }
 
-  // --- Sidebar Component (Now includes YouTube & TikTok) ---
+  // --- Sidebar Component ---
   function Sidebar({ view, open, onToggle, onNavigate, isOwner }) {
     const btn = (id, label, icon) =>
       h("button", { key: id, className: "side-btn" + (view === id ? " active" : ""), title: label, onClick: () => onNavigate(id) }, icon, h("span", null, label));
@@ -730,7 +730,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Home Component (With YouTube & TikTok Icons right on the homepage!) ---
+  // --- Home Component ---
   const WORDS = ["Roblox", "Geometry Dash", "YouTube", "TikTok", "Play anything"];
   function useTypingPlaceholder(paused) {
     const [text, setText] = useState("Browse");
@@ -787,7 +787,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // NEW: FORTIGUARD-PROOF YOUTUBE HUB (Uses Piped / Invidious API + Classroom NoCookie Player)
+  // FORTIGUARD-PROOF YOUTUBE HUB
   // ============================================================================
   const YT_PRESETS = [
     { label: "🔥 Trending Gaming", q: "minecraft roblox geometry dash gameplay" },
@@ -804,11 +804,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     { id: "9bZkp7q19f0", title: "PSY - GANGNAM STYLE(강남스타일) M/V", author: "officialpsy", views: "5.1B views", thumb: "https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg" }
   ];
 
-  function YouTubeView({ toast }) {
+  function YouTubeView() {
     const [searchQ, setSearchQ] = useState("");
     const [videos, setVideos] = useState([]);
     const [activeVideo, setActiveVideo] = useState(null);
-    const [playerNode, setPlayerNode] = useState(0); // 0 = NoCookie Classroom Embed, 1 = Invidious Proxy, 2 = Piped Embed
+    const [playerNode, setPlayerNode] = useState(0);
     const [loading, setLoading] = useState(false);
 
     const searchYouTube = useCallback(async (queryText) => {
@@ -816,7 +816,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       if (!q) return;
       setLoading(true);
 
-      // Extract video ID if user pasted a direct YouTube link
       const ytMatch = q.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
       if (ytMatch) {
         const vidId = ytMatch[1];
@@ -827,7 +826,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         return;
       }
 
-      // Try multiple unblocked Piped / Invidious JSON APIs
       const apis = [
         `https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(q)}&filter=videos`,
         `https://api.piped.private.coffee/search?q=${encodeURIComponent(q)}&filter=videos`,
@@ -858,7 +856,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       }
 
       if (found.length === 0) {
-        // Fallback: Use iTunes music video / podcast lookup + AllOrigins YouTube scrape
         try {
           const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent("https://www.youtube.com/results?search_query=" + q)}`);
           const j = await r.json();
@@ -905,7 +902,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           h("span", { style: { fontSize: 13, color: "var(--muted)" } }, "Search any video or paste a YouTube link. Switch nodes if your school blocks standard embeds.")
         ),
 
-        // Active Video Player Box
         activeVideo ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
           h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 12, gap: 10 } },
             h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
@@ -938,7 +934,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           )
         ) : null,
 
-        // Search Bar
         h("form", {
           className: "toolbar",
           onSubmit: (e) => { e.preventDefault(); searchYouTube(searchQ); }
@@ -955,7 +950,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           h("button", { type: "submit", className: "btn", style: { background: "#ff0000", color: "#fff", height: 52 } }, loading ? "Searching..." : "Search YouTube")
         ),
 
-        // Preset Chips
         h("div", { className: "chips" },
           YT_PRESETS.map((p) =>
             h("button", {
@@ -966,7 +960,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           )
         ),
 
-        // Video Results Grid
         loading ? h("div", { className: "empty" }, "Fetching unblocked YouTube videos...") :
         h("div", { className: "grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 18 } },
           videos.map((v) =>
@@ -994,7 +987,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // NEW: FORTIGUARD-PROOF TIKTOK FEED (Uses TikWM API to stream raw MP4s without tiktok.com!)
+  // FORTIGUARD-PROOF TIKTOK FEED
   // ============================================================================
   const TT_TOPICS = ["gaming", "memes", "roblox", "anime", "phonk", "sports", "cars", "funny"];
 
@@ -1008,7 +1001,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const fetchTikToks = useCallback(async (qText) => {
       setLoading(true);
       try {
-        // TikWM public API returns direct CDN MP4 streams so tiktok.com is never contacted!
         const res = await fetch(`https://www.tikwm.com/api/feed/search?keywords=${encodeURIComponent(qText)}&count=18`);
         const data = await res.json();
         const videos = data?.data?.videos || [];
@@ -1033,7 +1025,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           h("span", { style: { fontSize: 13, color: "var(--muted)" } }, "Streams raw video files via API relay so FortiGuard never sees tiktok.com.")
         ),
 
-        // Search Bar
         h("form", {
           className: "toolbar",
           onSubmit: (e) => {
@@ -1053,7 +1044,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           h("button", { type: "submit", className: "btn", style: { background: "#ff0050", color: "#fff", height: 52 } }, "Search TikTok")
         ),
 
-        // Topic Chips
         h("div", { className: "chips" },
           TT_TOPICS.map((t) =>
             h("button", {
@@ -1064,7 +1054,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           )
         ),
 
-        // Vertical Scrolling TikTok Feed
         loading ? h("div", { className: "empty" }, "Loading unblocked TikTok feed...") :
         feed.length === 0 ? h("div", { className: "empty" }, "No TikTok videos found. Try searching another tag!") :
         h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 8 } },
@@ -1072,7 +1061,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             const vidId = item.video_id || item.id;
             const liked = !!likedIds[vidId];
             return h("div", { key: vidId, className: "tt-card" },
-              // Author Header
               h("div", { style: { display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: "1px solid var(--border)" } },
                 item.author?.avatar ? h("img", { src: item.author.avatar, style: { width: 38, height: 38, borderRadius: "50%", objectFit: "cover" }, referrerPolicy: "no-referrer" }) : null,
                 h("div", { style: { flex: 1, minWidth: 0 } },
@@ -1085,7 +1073,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                   onClick: () => setLikedIds((p) => ({ ...p, [vidId]: !p[vidId] }))
                 }, `♥ ${(item.digg_count || 0) + (liked ? 1 : 0)}`)
               ),
-              // Direct MP4 Video Player
               h("video", {
                 className: "tt-video",
                 src: item.play || item.wmplay,
@@ -1095,7 +1082,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 playsInline: true,
                 preload: "metadata"
               }),
-              // Caption Footer
               h("div", { style: { padding: "12px 16px", fontSize: 13.5, color: "#e4e4e7" } },
                 item.title || "TikTok Video"
               )
@@ -1195,7 +1181,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return `${Math.floor(totalSec / 60)}:${totalSec % 60 < 10 ? "0" : ""}${totalSec % 60}`;
   }
 
-  function MusicView({ toast }) {
+  function MusicView() {
     const [searchQ, setSearchQ] = useState("");
     const [activePlaylist, setActivePlaylist] = useState("hits");
     const [tracks, setTracks] = useState([]);
@@ -1391,17 +1377,107 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Live Chat View ---
+  // ============================================================================
+  // RESTORED: FULL WHATSAPP-STYLE LIVE CHAT WITH IMAGE & FILE ATTACHMENTS
+  // ============================================================================
   function ChatView({ currentUser, accountsMap }) {
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
+    const [attachment, setAttachment] = useState(null);
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
       const fetchChat = async () => {
         const base = getDbUrl();
-        if (!base) return;
+        if (!base) {
+          try {
+            const local = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+            setMessages(local);
+          } catch {}
+          return;
+        }
         try {
+          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
+              list.sort((a, b) => a.timestamp - b.timestamp);
+              setMessages(list);
+            } else {
+              setMessages([]);
+            }
+          }
+        } catch {}
+      };
+
+      fetchChat();
+      const interval = setInterval(fetchChat, 3500);
+      return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert("File size must be under 2MB for cloud sync.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (uploadEvent) => {
+        setAttachment({
+          name: file.name,
+          type: file.type,
+          data: uploadEvent.target.result
+        });
+      };
+      reader.readAsDataURL(file);
+    };
+
+    const sendMessage = async (e) => {
+      e.preventDefault();
+      const text = inputMessage.trim();
+      if (!text && !attachment) return;
+      if (!currentUser) return;
+
+      const acc = accountsMap[currentUser.username.toLowerCase()] || currentUser;
+      const isUserOwner = isOwnerIdentity(currentUser.username, acc);
+
+      const newMsg = {
+        sender: currentUser.username,
+        role: isUserOwner ? "owner" : "user",
+        text,
+        attachment: attachment || null,
+        timestamp: Date.now()
+      };
+
+      const base = getDbUrl();
+      if (base) {
+        try {
+          await fetch(`${base}/global_chat.json`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newMsg)
+          });
+        } catch {}
+      } else {
+        try {
+          const prev = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+          const next = [...prev, { id: "msg_" + Date.now(), ...newMsg }];
+          localStorage.setItem("ug_global_chat_v1", JSON.stringify(next));
+          setMessages(next);
+        } catch {}
+      }
+
+      setInputMessage("");
+      setAttachment(null);
+
+      setTimeout(async () => {
+        if (base) {
           const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
           if (res.ok) {
             const data = await res.json();
@@ -1411,41 +1487,65 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               setMessages(list);
             }
           }
-        } catch {}
-      };
-      fetchChat();
-      const t = setInterval(fetchChat, 4000);
-      return () => clearInterval(t);
-    }, []);
-
-    const sendMessage = async (e) => {
-      e.preventDefault();
-      const text = inputMessage.trim();
-      if (!text || !currentUser) return;
-      const acc = accountsMap[currentUser.username.toLowerCase()] || currentUser;
-      const newMsg = { sender: currentUser.username, role: isOwnerIdentity(currentUser.username, acc) ? "owner" : "user", text, timestamp: Date.now() };
-      const base = getDbUrl();
-      if (base) {
-        try { await fetch(`${base}/global_chat.json`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(newMsg) }); } catch {}
-      }
-      setInputMessage("");
+        }
+      }, 250);
     };
 
-    return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column", padding: 24 } },
-      h("h2", { style: { marginBottom: 12 } }, "Live School Chat"),
-      h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden" } },
-        h("div", { style: { flex: 1, padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 12 } },
-          messages.map((m) =>
-            h("div", { key: m.id || m.timestamp },
-              h("strong", { style: { fontSize: 12, color: "#aaa" } }, `${m.sender}: `),
-              h("span", { style: { fontSize: 14 } }, m.text)
-            )
+    return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
+      h("div", { style: { padding: "20px 24px 0", flexShrink: 0 } },
+        h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+          h("h2", { style: { margin: 0, fontSize: 26 } }, "Live School Chat"),
+          h("span", { className: "badge-pill live" }, "WHATSAPP LIVE SYNC")
+        )
+      ),
+      h("div", { style: { flex: 1, display: "flex", flexDirection: "column", padding: "16px 24px 24px", overflow: "hidden" } },
+        h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden", background: "#060608", height: "100%" } },
+          h("div", { style: { flex: 1, padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14 } },
+            messages.length === 0
+              ? h("div", { style: { margin: "auto", color: "var(--muted)", textAlign: "center" } }, "No messages yet. Send an image or message to start chatting! 🚀")
+              : messages.map((m) => {
+                  const isMe = (m.sender || "").toLowerCase() === (currentUser?.username || "").toLowerCase();
+                  const isOwnerMsg = m.role === "owner";
+                  return h("div", { key: m.id || m.timestamp, style: { display: "flex", flexDirection: "column", alignItems: isMe ? "flex-end" : "flex-start" } },
+                    h("div", { style: { display: "flex", alignItems: "center", gap: 6, marginBottom: 4 } },
+                      h("span", { style: { fontSize: 12, fontWeight: 600, color: "#aaa" } }, m.sender),
+                      isOwnerMsg
+                        ? h("span", { className: "badge-pill owner", style: { fontSize: 10, padding: "1px 6px" } }, "OWNER")
+                        : h("span", { className: "badge-pill", style: { fontSize: 10, padding: "1px 6px" } }, "LICENSED"),
+                      h("span", { style: { fontSize: 10, color: "#666" } }, new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+                    ),
+                    h("div", { style: { background: isMe ? "#16a34a" : "#18181b", color: "#fff", padding: "12px 16px", borderRadius: isMe ? "16px 16px 2px 16px" : "16px 16px 16px 2px", fontSize: 14, maxWidth: "75%", wordBreak: "break-word", border: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 8 } },
+                      m.text ? h("span", null, m.text) : null,
+                      m.attachment ? (
+                        m.attachment.type && m.attachment.type.startsWith("image/") ?
+                          h("img", { src: m.attachment.data, alt: m.attachment.name, style: { maxWidth: "100%", maxHeight: 280, borderRadius: 10, objectFit: "cover" } }) :
+                          h("a", { href: m.attachment.data, download: m.attachment.name, style: { color: "#bbf7d0", textDecoration: "underline", fontSize: "13px" } }, `📎 ${m.attachment.name}`)
+                      ) : null
+                    )
+                  );
+                }),
+            h("div", { ref: messagesEndRef })
           ),
-          h("div", { ref: messagesEndRef })
-        ),
-        h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 14, borderTop: "1px solid var(--border)" } },
-          h("input", { className: "field", value: inputMessage, onChange: (e) => setInputMessage(e.target.value), placeholder: "Type a message..." }),
-          h("button", { type: "submit", className: "btn" }, "Send")
+          attachment ? h("div", { style: { padding: "8px 16px", background: "#111116", borderTop: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" } },
+            h("span", { style: { fontSize: 13, color: "#86efac" } }, `Attached: ${attachment.name}`),
+            h("button", { type: "button", className: "btn danger sm", onClick: () => setAttachment(null) }, "Remove")
+          ) : null,
+          h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 16, background: "#0e0e11", borderTop: "1px solid var(--border)", alignItems: "center" } },
+            h("label", { className: "btn ghost", style: { display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 14px", height: 44, cursor: "pointer", margin: 0 } },
+              "📎 Attach / Image",
+              h("input", { type: "file", accept: "image/*,*/*", onChange: handleFileChange, style: { display: "none" } })
+            ),
+            h("input", {
+              className: "field",
+              type: "text",
+              placeholder: "Type a message or attach an image...",
+              spellCheck: false,
+              value: inputMessage,
+              onChange: (e) => setInputMessage(e.target.value),
+              style: { flex: 1, margin: 0 }
+            }),
+            h("button", { type: "submit", className: "btn", style: { padding: "0 28px", height: 44, background: "#22c55e", color: "#000" } }, "Send")
+          )
         )
       )
     );
@@ -1474,54 +1574,253 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
+  // ============================================================================
+  // RESTORED: FULL ACCOUNT PROFILE VIEW
+  // ============================================================================
   function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner }) {
+    const [now, setNow] = useState(Date.now());
+    useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
     const acc = currentUser ? accountsMap[currentUser.username.toLowerCase()] || currentUser : null;
+
     return h("section", { className: "view" },
       h("div", { className: "page", style: { maxWidth: 680 } },
         h("h2", null, "Account"),
+        h("p", { className: "sub" }, "Your active license & session details."),
         acc ? h("div", { className: "pop-panel" },
-          h("div", { className: "row" },
-            h("h3", null, acc.username),
+          h("div", { className: "row", style: { marginBottom: 16 } },
+            h("div", null,
+              h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+                h("h3", { style: { fontSize: 22, margin: 0 } }, acc.username),
+                isOwner ? h("span", { className: "badge-pill owner" }, "OWNER") : h("span", { className: "badge-pill live" }, "LICENSED USER")
+              ),
+              acc.email ? h("p", { style: { color: "var(--muted)", fontSize: 13, margin: "4px 0 0" } }, acc.email) : null
+            ),
             h("button", { className: "btn danger sm", onClick: onLogout }, "Log Out")
           ),
-          isOwner ? h("button", { className: "btn sm", style: { marginTop: 14 }, onClick: onOpenCreator }, "Open Account Creator Hub") : null
+          h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginTop: 14 } },
+            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
+              h("span", { className: "auth-label" }, "License Key"),
+              h("div", { className: "mono-box" }, acc.licenseKey || "UG-XXXX-XXXX")
+            ),
+            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
+              h("span", { className: "auth-label" }, "Remaining Time"),
+              h("div", { style: { fontSize: 16, fontWeight: 600, color: "#fff" } }, formatRemainingTime(acc, now))
+            )
+          ),
+          isOwner ? h("div", { style: { marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 } },
+            h("span", { style: { fontSize: 13, color: "var(--muted)" } }, "You have Owner privileges."),
+            h("button", { className: "btn sm", onClick: onOpenCreator }, "Open Account Creator Hub")
+          ) : null
         ) : null
       )
     );
   }
 
-  function AccountCreatorView({ accountsMap, onRefresh, toast }) {
-    const [u, setU] = useState("");
-    const [p, setP] = useState("");
-    const create = async (e) => {
+  // ============================================================================
+  // RESTORED: FULL ACCOUNT CREATOR HUB (With Live Active Users, Kick, Revoke & Sliders!)
+  // ============================================================================
+  function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
+    const [createModal, setCreateModal] = useState(false);
+    const [dbModal, setDbModal] = useState(false);
+    const [newUsername, setNewUsername] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [newEmail, setNewEmail] = useState("");
+    const [newHours, setNewHours] = useState(12);
+    const [newInfinite, setNewInfinite] = useState(false);
+    const [revealedPw, setRevealedPw] = useState({});
+    const [now, setNow] = useState(Date.now());
+    const [dbUrlInput, setDbUrlInput] = useState(getDbUrl());
+
+    useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
+    useEffect(() => {
+      const poll = setInterval(() => { onRefresh(); }, 6000);
+      return () => clearInterval(poll);
+    }, [onRefresh]);
+
+    const toggleReveal = (uname) => setRevealedPw((p) => ({ ...p, [uname]: !p[uname] }));
+
+    const handleCreateAccount = async (e) => {
       e.preventDefault();
-      if (!u.trim() || !p.trim()) return;
-      await dbSaveAccount({ username: u.trim(), password: p.trim(), licenseKey: genLicenseKey(), infinite: true, role: "user", createdAt: Date.now() });
-      setU(""); setP(""); await onRefresh(); toast("Account created!");
+      const u = newUsername.trim();
+      const p = newPassword.trim();
+      if (!u || !p) { toast("Please enter both a Username and Password"); return; }
+      const hrs = Math.max(1, Math.min(24, Number(newHours) || 1));
+      const acc = {
+        username: u, email: newEmail.trim() || "", password: p,
+        licenseKey: genLicenseKey(), infinite: !!newInfinite, durationHours: hrs,
+        expiresAt: newInfinite ? null : Date.now() + hrs * 3600 * 1000,
+        role: isOwnerIdentity(u, { email: newEmail.trim() }) ? "owner" : "user", createdAt: Date.now()
+      };
+      await dbSaveAccount(acc);
+      await onRefresh();
+      setNewUsername(""); setNewPassword(""); setNewEmail(""); setNewHours(12); setNewInfinite(false); setCreateModal(false);
+      toast(`Account "${u}" created!`);
     };
-    return h("section", { className: "view" },
-      h("div", { className: "page", style: { maxWidth: 900 } },
-        h("h2", null, "Account Creator Hub"),
-        h("form", { onSubmit: create, className: "pop-panel", style: { display: "flex", gap: 10, marginBottom: 20 } },
-          h("input", { className: "field", placeholder: "Username...", value: u, onChange: (e) => setU(e.target.value) }),
-          h("input", { className: "field", placeholder: "Password...", value: p, onChange: (e) => setP(e.target.value) }),
-          h("button", { type: "submit", className: "btn" }, "Create")
-        ),
-        Object.values(accountsMap || {}).map((acc) =>
-          h("div", { key: acc.username, className: "setting", style: { display: "flex", justifyContent: "space-between", alignItems: "center" } },
-            h("span", null, `${acc.username} (${acc.role})`),
-            h("button", { className: "btn danger sm", onClick: async () => { await dbDeleteAccount(acc.username); onRefresh(); } }, "Revoke")
+
+    const handleAdjustDuration = async (acc, hoursVal, infVal) => {
+      const hrs = Math.max(1, Math.min(24, Number(hoursVal) || 1));
+      const updated = { ...acc, durationHours: hrs, infinite: !!infVal, expiresAt: infVal ? null : Date.now() + hrs * 3600 * 1000 };
+      await dbSaveAccount(updated);
+      await onRefresh();
+    };
+
+    const handleRevokeAccount = async (username) => { await dbDeleteAccount(username); await onRefresh(); toast(`Revoked "${username}"`); };
+    const handleKickUser = async (sess) => {
+      await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
+      await onRefresh();
+      toast(`Kicked "${sess.username}"`);
+    };
+
+    const accountsList = Object.values(accountsMap || {}).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const activeSessions = Object.values(sessionsMap || {}).filter((s) => s && !s.kicked && accountsMap[s.username?.toLowerCase()] && now - (s.lastPing || 0) < 45000);
+
+    return h("section", { className: "view", id: "creator" },
+      h("div", { className: "page", style: { maxWidth: 1180 } },
+        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 24 } },
+          h("div", null,
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+              h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
+              h("span", { className: "badge-pill owner" }, "OWNER ONLY")
+            ),
+            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Manage accounts, licenses, and live online users.")
+          ),
+          h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
+            h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "\u2601\uFE0F Cloud DB Connected" : "\u2699\uFE0F Cloud DB Setup"),
+            h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create a New Account")
           )
+        ),
+
+        // LIVE ACTIVE USERS PANEL
+        h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
+          h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+              h("span", { className: "status-dot" }),
+              h("h3", { style: { margin: 0, fontSize: 18 } }, `Active Accounts on Site (${activeSessions.length} Live)`),
+              h("span", { className: "badge-pill live" }, "Live Heartbeat Active")
+            ),
+            h("button", { className: "pill", onClick: () => { onRefresh(); toast("Refreshed live users"); } }, "Refresh Now")
+          ),
+          activeSessions.length === 0
+            ? h("div", { style: { padding: "22px 0", textAlign: "center", color: "var(--muted)", fontSize: 13.5 } }, "No active users online right now.")
+            : h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))", gap: 14 } },
+                activeSessions.map((sess) => {
+                  const acc = accountsMap[sess.username.toLowerCase()];
+                  return h("div", { key: sess.username, className: "pop-panel", style: { background: "#0e0e12" } },
+                    h("div", { className: "row", style: { marginBottom: 10 } },
+                      h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+                        h("span", { className: "status-dot" }),
+                        h("strong", { style: { fontSize: 16 } }, sess.username),
+                        acc?.role === "owner" ? h("span", { className: "badge-pill owner" }, "OWNER") : null
+                      ),
+                      h("span", { style: { fontSize: 12, color: "var(--muted)" } }, `Tab: ${sess.currentView || "home"}`)
+                    ),
+                    h("div", { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 14 } }, "Remaining: ", h("strong", { style: { color: "#e4e4e4" } }, formatRemainingTime(acc, now))),
+                    h("div", { style: { display: "flex", gap: 8 } },
+                      h("button", { className: "btn warn sm", style: { flex: 1 }, onClick: () => handleKickUser(sess) }, "Kick Out"),
+                      h("button", { className: "btn danger sm", style: { flex: 1 }, onClick: () => handleRevokeAccount(sess.username) }, "Revoke")
+                    )
+                  );
+                })
+              )
+        ),
+
+        // LICENSED ACCOUNTS LIST
+        h("h3", { style: { fontSize: 20, fontWeight: 600, marginBottom: 14 } }, `Licensed Accounts (${accountsList.length})`),
+        h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
+          accountsList.map((acc) => {
+            const key = acc.username.toLowerCase();
+            const isShown = !!revealedPw[key];
+            const remText = formatRemainingTime(acc, now);
+            const isOnline = activeSessions.some((s) => s.username.toLowerCase() === key);
+            const sliderVal = acc.durationHours || 12;
+            return h("div", { key: acc.username, className: "pop-panel" },
+              h("div", { className: "row", style: { marginBottom: 14 } },
+                h("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
+                  h("span", { className: "status-dot" + (isOnline ? "" : " off") }),
+                  h("span", { style: { fontSize: 17, fontWeight: 600 } }, acc.username),
+                  acc.role === "owner" ? h("span", { className: "badge-pill owner" }, "OWNER") : null,
+                  isOnline ? h("span", { className: "badge-pill live" }, "ONLINE") : null
+                ),
+                h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke")
+              ),
+              h("div", { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, background: "#070709", padding: "12px 14px", borderRadius: 12, border: "1px solid var(--border)" } },
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Password"),
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: isShown ? "normal" : "0.18em" } }, isShown ? acc.password : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"),
+                    h("button", { className: "eye-btn", onClick: () => toggleReveal(key) }, isShown ? h(EyeOffIcon) : h(EyeIcon))
+                  )
+                ),
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "License"), h("span", { style: { fontSize: 12, fontFamily: "monospace", color: "#bcbcc4" } }, acc.licenseKey)),
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Remaining"), h("span", { style: { fontSize: 13, fontWeight: 600, color: "#86efac" } }, remText))
+              ),
+              h("div", { style: { borderTop: "1px solid var(--border)", paddingTop: 12 } },
+                h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Duration (1-24h)"), h("span", { style: { fontSize: 12.5, fontWeight: 600 } }, acc.infinite ? "Infinite \u221E" : `${sliderVal}h`)),
+                h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: !!acc.infinite, value: sliderVal, onChange: (e) => handleAdjustDuration(acc, Number(e.target.value), false) }),
+                h("div", { className: "row", style: { marginTop: 10 } },
+                  h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, cursor: "pointer" } },
+                    h("input", { type: "checkbox", checked: !!acc.infinite, onChange: (e) => handleAdjustDuration(acc, sliderVal, e.target.checked), style: { width: 16, height: 16, accentColor: "#e4e4e4" } }),
+                    "Infinite License"
+                  )
+                )
+              )
+            );
+          })
         )
-      )
+      ),
+      createModal ? h(Modal, { onClose: () => setCreateModal(false) },
+        h("h3", null, "Create account"),
+        h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
+          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Username"), h("input", { className: "field", placeholder: "Username...", value: newUsername, onChange: (e) => setNewUsername(e.target.value) })),
+          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Password"), h("input", { className: "field", type: "text", placeholder: "Password...", value: newPassword, onChange: (e) => setNewPassword(e.target.value) })),
+          h("div", { style: { marginBottom: 16 } }, h("label", { className: "auth-label" }, "Email (Optional)"), h("input", { className: "field", type: "email", placeholder: "email@example.com", value: newEmail, onChange: (e) => setNewEmail(e.target.value) })),
+          h("div", { className: "setting", style: { padding: 14, marginBottom: 18 } },
+            h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 13, fontWeight: 600 } }, "License Time"), h("span", { style: { fontSize: 13, fontWeight: 600 } }, newInfinite ? "Infinite" : `${newHours}h`)),
+            h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: newInfinite, value: newHours, onChange: (e) => setNewHours(Number(e.target.value)) }),
+            h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, cursor: "pointer", marginTop: 10 } },
+              h("input", { type: "checkbox", checked: newInfinite, onChange: (e) => setNewInfinite(e.target.checked), style: { width: 16, height: 16 } }),
+              "Infinite (Never expires)"
+            )
+          ),
+          h("div", { className: "actions" }, h("button", { type: "submit", className: "btn" }, "Create"), h("button", { type: "button", className: "btn ghost", onClick: () => setCreateModal(false) }, "Cancel"))
+        )
+      ) : null,
+      dbModal ? h(Modal, { onClose: () => setDbModal(false) },
+        h("h3", null, "Real-Time Cloud Database"),
+        h("p", null, "Paste your free Firebase Realtime Database URL below."),
+        h("input", { className: "field", placeholder: "https://your-app-default-rtdb.firebaseio.com", value: dbUrlInput, onChange: (e) => setDbUrlInput(e.target.value), style: { marginBottom: 16 } }),
+        h("div", { className: "actions" },
+          h("button", { className: "btn", onClick: async () => { setCustomDbUrl(dbUrlInput); await onRefresh(); setDbModal(false); toast("Connected!"); } }, "Save"),
+          h("button", { className: "btn ghost", onClick: () => setDbModal(false) }, "Close")
+        )
+      ) : null
     );
   }
 
+  function Toggle({ checked, onChange }) {
+    return h("label", { className: "toggle" }, h("input", { type: "checkbox", checked, onChange: (e) => onChange(e.target.checked) }), h("span"));
+  }
+
   function SettingsView({ settings, onSave, onCloakSite }) {
-    return h("section", { className: "view" },
-      h("div", { className: "page", style: { maxWidth: 680 } },
+    const [s, setS] = useState(settings);
+    const set = (k, v) => setS((p) => ({ ...p, [k]: v }));
+    return h("section", { className: "view", id: "settings" },
+      h("div", { className: "page", style: { maxWidth: 720 } },
         h("h2", null, "Settings"),
-        h("button", { className: "btn", onClick: onCloakSite }, "Open whole site in about:blank")
+        h("p", { className: "sub" }, "Customize your in-app installer & cloak settings."),
+        h("div", { className: "setting" },
+          h("div", { className: "row" },
+            h("div", null, h("h3", null, "Open games in external about:blank tab"), h("p", { style: { margin: 0 } }, "When off (default), games install and play directly inside this HTML portal.")),
+            h(Toggle, { checked: s.cloak, onChange: (v) => set("cloak", v) })
+          )
+        ),
+        h("div", { className: "setting" },
+          h("h3", null, "Cloaked tab title"),
+          h("input", { className: "field", placeholder: "about:blank", spellCheck: false, value: s.title, onChange: (e) => set("title", e.target.value) })
+        ),
+        h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
+          h("button", { className: "btn", onClick: () => onSave(s) }, "Save"),
+          h("button", { className: "btn ghost", onClick: onCloakSite }, "Open whole site in about:blank")
+        )
       )
     );
   }
@@ -1529,24 +1828,38 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   function LoginBox({ onLoginSuccess }) {
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
+    const [showPw, setShowPw] = useState(false);
     const [err, setErr] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+      setErr("");
       const idClean = identifier.trim();
       const pwClean = password.trim();
+      if (!idClean || !pwClean) { setErr("Please enter Username and Password."); return; }
+      setLoading(true);
       const { accounts } = await dbFetchAll();
       const lower = idClean.toLowerCase();
-      let matched = accounts[lower] || Object.values(accounts).find((a) => a.email && a.email.toLowerCase() === lower);
+      let matched = accounts[lower] || Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === lower);
 
       if (!matched && isOwnerIdentity(lower, null) && pwClean === AUTH_CONFIG.masterOwnerPassword) {
-        matched = { username: idClean, password: pwClean, licenseKey: "UG-OWNR-ROOT", infinite: true, role: "owner", createdAt: Date.now() };
+        matched = {
+          username: idClean.includes("@") ? (AUTH_CONFIG.ownerUsernames[0] || "kevin") : idClean,
+          email: idClean.includes("@") ? idClean : (AUTH_CONFIG.ownerEmails[0] || ""),
+          password: pwClean, licenseKey: "UG-OWNR-ROOT-0001", infinite: true, expiresAt: null, role: "owner", createdAt: Date.now()
+        };
         await dbSaveAccount(matched);
       }
-      if (!matched || matched.password !== pwClean) { setErr("Invalid login."); return; }
-      const sess = { username: matched.username, role: isOwnerIdentity(matched.username, matched) ? "owner" : "user", loginAt: Date.now(), lastPing: Date.now() };
+      if (!matched || matched.password !== pwClean) { setLoading(false); setErr("Invalid username or password."); return; }
+      const isOwn = isOwnerIdentity(matched.username, matched);
+      if (!isOwn && !matched.infinite && matched.expiresAt && Date.now() >= matched.expiresAt) {
+        setLoading(false); setErr("License has expired."); return;
+      }
+      const sess = { username: matched.username, email: matched.email || "", role: isOwn ? "owner" : "user", loginAt: Date.now(), lastPing: Date.now(), currentView: "home", kicked: false };
       await dbUpsertSession(sess);
       saveCurrentSession(sess);
+      setLoading(false);
       onLoginSuccess(sess);
     };
 
@@ -1555,16 +1868,21 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         h("h1", { className: "auth-logo" }, "unblockedgames"),
         h("p", { className: "auth-sub" }, "Sign in with your licensed account."),
         err ? h("div", { className: "auth-err" }, err) : null,
-        h("form", { onSubmit: handleSubmit },
-          h("input", { className: "field", style: { marginBottom: 12 }, placeholder: "Username or Email...", value: identifier, onChange: (e) => setIdentifier(e.target.value) }),
-          h("input", { className: "field", style: { marginBottom: 18 }, type: "password", placeholder: "Password...", value: password, onChange: (e) => setPassword(e.target.value) }),
-          h("button", { type: "submit", className: "btn", style: { width: "100%" } }, "Sign In")
+        h("form", { onSubmit: handleSubmit, autoComplete: "off" },
+          h("div", { style: { marginBottom: 14 } }, h("label", { className: "auth-label" }, "Username or Email"), h("input", { className: "field", placeholder: "Username...", value: identifier, onChange: (e) => setIdentifier(e.target.value) })),
+          h("div", { style: { marginBottom: 20 } }, h("label", { className: "auth-label" }, "Password"),
+            h("div", { style: { position: "relative", display: "flex", alignItems: "center" } },
+              h("input", { className: "field", type: showPw ? "text" : "password", placeholder: "Password...", value: password, onChange: (e) => setPassword(e.target.value), style: { paddingRight: 44 } }),
+              h("button", { type: "button", className: "eye-btn", onClick: () => setShowPw((v) => !v), style: { position: "absolute", right: 7, border: 0, background: "transparent" } }, showPw ? h(EyeOffIcon) : h(EyeIcon))
+            )
+          ),
+          h("button", { type: "submit", className: "btn", disabled: loading, style: { width: "100%" } }, loading ? "Verifying..." : "Sign In")
         )
       )
     );
   }
 
-  // --- Main App ---
+  // --- Main App with Restored 5-Second Live Session Heartbeat & Kick/Revoke Sync ---
   function App() {
     const [view, setView] = useState("home");
     const [open, setOpen] = useState(false);
@@ -1597,15 +1915,45 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       return isOwnerIdentity(currentUser.username, acc || currentUser);
     }, [currentUser, accountsMap]);
 
+    // RESTORED: Full Heartbeat & Live Session Sync so Account Creator Hub sees all live users!
     const refreshDatabaseAndSession = useCallback(async () => {
       const { accounts, sessions } = await dbFetchAll();
       setAccountsMap(accounts);
       setSessionsMap(sessions);
-    }, []);
+
+      const saved = getSavedSession();
+      if (!saved || !saved.username) { setCurrentUser(null); return; }
+
+      const key = saved.username.trim().toLowerCase();
+      const acc = accounts[key];
+      if (!acc) { saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Account revoked."); return; }
+
+      const own = isOwnerIdentity(acc.username, acc);
+      if (!own && !acc.infinite && acc.expiresAt && Date.now() >= acc.expiresAt) {
+        await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("License expired."); return;
+      }
+
+      const remoteSess = sessions[key];
+      if (remoteSess && remoteSess.kicked && (!saved.loginAt || (remoteSess.kickedAt || 0) >= saved.loginAt)) {
+        await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Kicked out by owner."); return;
+      }
+
+      // Send live heartbeat ping to Firebase so Active Accounts on Site shows live online users!
+      await dbUpsertSession({
+        username: acc.username,
+        email: acc.email || "",
+        role: own ? "owner" : "user",
+        loginAt: saved.loginAt || Date.now(),
+        lastPing: Date.now(),
+        currentView: view,
+        kicked: false
+      });
+      setSessionsMap(getLocalStore(LS_SESSIONS));
+    }, [view, toast]);
 
     useEffect(() => {
       refreshDatabaseAndSession();
-      const interval = setInterval(refreshDatabaseAndSession, 8000);
+      const interval = setInterval(refreshDatabaseAndSession, 5000);
       return () => clearInterval(interval);
     }, [refreshDatabaseAndSession]);
 
@@ -1613,19 +1961,28 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       saveInstalledGame(g.slug, bestIdx);
       setInstalledMap(getInstalledGames());
       setInstallingGame(null);
-      setPlayingServerIdx(bestIdx);
-      setPlaying(g);
-    }, []);
+      if (!settings.cloak) {
+        setPlayingServerIdx(bestIdx);
+        setPlaying(g);
+        return;
+      }
+      if (!openCloaked(frameSource(g, bestIdx), settings)) toast("Popup blocked");
+    }, [settings, toast]);
 
     const handleCardClick = useCallback((g) => {
       if (installedMap[g.slug]) launchGame(g, 0);
       else setInstallingGame(g);
     }, [installedMap, launchGame]);
 
+    const hideFloatingPills = view === "browser" || view === "movies" || view === "music";
+
     return h(Fragment, null,
       h(Stars),
       !currentUser ? h(LoginBox, { onLoginSuccess: (sess) => { setCurrentUser(sess); refreshDatabaseAndSession(); toast(`Welcome, ${sess.username}!`); } }) : null,
       h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: navigate, isOwner }),
+      !hideFloatingPills ? h("div", { id: "topRight", style: { display: "flex", gap: 8, alignItems: "center" } },
+        currentUser ? h("button", { className: "pill", onClick: () => navigate(isOwner ? "creator" : "account") }, isOwner ? `\uD83D\uDC51 ${currentUser.username}` : `\uD83D\uDFE2 ${currentUser.username}`) : null
+      ) : null,
       h("main", { ref: mainRef },
         view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); } }) : null,
         view === "youtube" ? h(YouTubeView, { toast }) : null,
@@ -1635,9 +1992,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         view === "chat" ? h(ChatView, { currentUser, accountsMap }) : null,
         view === "movies" ? h(MoviesView, { toast }) : null,
         view === "music" ? h(MusicView, { toast }) : null,
-        view === "account" ? h(AccountProfileView, { currentUser, accountsMap, onLogout: () => { saveCurrentSession(null); setCurrentUser(null); }, onOpenCreator: () => navigate("creator"), isOwner }) : null,
+        view === "account" ? h(AccountProfileView, { currentUser, accountsMap, onLogout: async () => { await dbDeleteSession(currentUser.username); saveCurrentSession(null); setCurrentUser(null); setView("home"); }, onOpenCreator: () => navigate("creator"), isOwner }) : null,
         view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabaseAndSession, toast }) : null,
-        view === "settings" ? h(SettingsView, { settings, onSave: (s) => { setSettings(s); saveSettings(s); }, onCloakSite: () => cloakSite(settings) }) : null
+        view === "settings" ? h(SettingsView, { settings, onSave: (s) => { setSettings(s); saveSettings(s); toast("Saved"); }, onCloakSite: () => cloakSite(settings) }) : null
       ),
       installingGame ? h(GameInstallerModal, { game: installingGame, onComplete: launchGame, onCancel: () => setInstallingGame(null) }) : null,
       playing ? h(Player, { game: playing, initialServerIdx: playingServerIdx, onClose: () => setPlaying(null) }) : null,
