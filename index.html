@@ -67,7 +67,7 @@ button, input, select, optgroup, textarea, ::file-selector-button {
   --text: #e6e6e6;
   --muted: #8a8a90;
 }
-* { box-sizing: border-box; }
+- { box-sizing: border-box; }
 html, body, #root { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: "Outfit", system-ui, sans-serif; overflow: hidden; }
 button { cursor: pointer; font-family: inherit; }
 
@@ -235,7 +235,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     <script>
 (function () {
 
-  // Built-in React 18/19 fallback runtime in case external CDNs are blocked on restricted networks
   if (!window.React || !window.ReactDOM) {
     const SVG_TAGS = new Set(["svg", "path", "rect", "circle", "g", "line", "polyline", "polygon", "ellipse"]);
     const UNITLESS = new Set(["opacity", "zIndex", "fontWeight", "lineHeight", "flex", "flexGrow", "flexShrink", "order", "zoom"]);
@@ -541,33 +540,18 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     };
   }
 
-
   // ============================================================================
   // OWNER & REAL-TIME DATABASE CONFIGURATION
   // ============================================================================
   const AUTH_CONFIG = {
-    // 1. REAL-TIME CLOUD DATABASE URL (Firebase Realtime Database REST Endpoint)
-    // Paste your Firebase Realtime Database URL here (e.g. "https://your-project-default-rtdb.firebaseio.com")
-    // OR configure it anytime inside the UI via the "Cloud DB" button.
-    // When empty, it uses a pre-configured shared live cloud bucket + localStorage sync so it works out of the box!
     dbUrl: "https://unblockedgames-cdc48-default-rtdb.firebaseio.com",
-
-    // 2. OWNER ACCESS WHITELIST (Usernames OR Emails)
-    // Only users matching an entry in ownerUsernames or ownerEmails get Owner privileges
-    // and can see/open the Account Creator icon at the bottom of the sidebar.
     ownerUsernames: ["kevin", "owner", "admin"],
     ownerEmails: [
       "kevinlamfamily@hotmail.com", 
       "kevinhuygialam@gmail.com", 
       "kl2@leonardsgwav.catholic.edu.au"
     ],
-
-    // 3. MASTER OWNER PASSWORD
-    // Allows you (the owner) to log in with any ownerUsername or ownerEmail above:
     masterOwnerPassword: "admin",
-
-    // 4. GOOGLE SITE MAIN HUB URL (Optional)
-    // If you want the standalone login.html page to automatically redirect to your Google Site Main Hub page:
     mainHubUrl: ""
   };
 
@@ -624,7 +608,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     } catch {}
   }
 
-  // Ensure default owner account exists in local store
   function ensureDefaultOwner(accounts) {
     const map = Object.assign({}, accounts);
     const primaryOwner = (AUTH_CONFIG.ownerUsernames[0] || "kevin").toLowerCase();
@@ -778,1065 +761,32 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return `${secs}s`;
   }
 
-
   const { useState, useEffect, useRef, useCallback, useMemo, memo, StrictMode, createElement: h, Fragment } = window.React;
   const { createRoot } = window.ReactDOM;
 
-  // --- src/data/games.ts ---
+  // --- GAMES DATA ---
   const GAMES = [
- {
-  "slug": "1v1lol",
-  "name": "1v1.LOL",
-  "cat": "Shooter",
-  "embed": "https://1v1-lol.gitlab.io/file/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/1/1v1lol_retina.webp"
- },
- {
-  "slug": "2v2io",
-  "name": "2v2.io",
-  "cat": "Shooter",
-  "embed": "https://2v2io.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/2/2v2io_retina.webp"
- },
- {
-  "slug": "67-clicker",
-  "name": "67 Clicker",
-  "cat": "Clicker",
-  "embed": "https://67-clicker.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/6/67-clicker_large.webp"
- },
- {
-  "slug": "a-small-world-cup",
-  "name": "A Small World Cup",
-  "cat": "Sports",
-  "embed": "https://a-small-world-cup.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/a-small-world-cup_retina.webp"
- },
- {
-  "slug": "agario",
-  "name": "Agar.io",
-  "cat": ".io",
-  "embed": "https://agar.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/agario_retina.webp"
- },
- {
-  "slug": "among-us-danger-run",
-  "name": "Among Us Danger Run",
-  "cat": "Action",
-  "embed": "https://among-us-danger-run.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/among-us-danger-run_retina.webp"
- },
- {
-  "slug": "angry-birds-2",
-  "name": "Angry Birds 2",
-  "cat": "Puzzle",
-  "embed": "https://angry-birds-2.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/angry-birds-2_retina.webp"
- },
- {
-  "slug": "anomalous-coffee-machine",
-  "name": "Anomalous Coffee Machine",
-  "cat": "Horror",
-  "embed": "https://anomalous-coffee-machine.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/anomalous-coffee-machine_xlarge.webp"
- },
- {
-  "slug": "arrasio",
-  "name": "Arras.io",
-  "cat": ".io",
-  "embed": "https://arras.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/arrasio_retina.webp"
- },
- {
-  "slug": "backrooms",
-  "name": "Backrooms",
-  "cat": "Horror",
-  "embed": "https://backrooms.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/backrooms_retina.webp"
- },
- {
-  "slug": "backyard-baseball",
-  "name": "Backyard Baseball",
-  "cat": "Sports",
-  "embed": "https://backyard-baseball.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/backyard-baseball_retina.webp"
- },
- {
-  "slug": "bad-ice-cream",
-  "name": "Bad Ice Cream",
-  "cat": "Puzzle",
-  "embed": "swf:https://unblockedgameswtf.net/uploads/games/bad-ice-cream_game.swf",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bad-ice-cream_retina.webp"
- },
- {
-  "slug": "baldis-basics",
-  "name": "Baldi's Basics",
-  "cat": "Horror",
-  "embed": "https://baldis-basics.tops-games.workers.dev/"
- },
- {
-  "slug": "baseball-9",
-  "name": "Baseball 9",
-  "cat": "Sports",
-  "embed": "https://baseball-9.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/baseball-9_xlarge.webp"
- },
- {
-  "slug": "basket-random",
-  "name": "Basket Random",
-  "cat": "Sports",
-  "embed": "https://basket-random.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basket-random_retina.webp"
- },
- {
-  "slug": "basketball-bros",
-  "name": "Basketball Bros",
-  "cat": "Sports",
-  "embed": "https://basketball-bros.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketball-bros_large.webp"
- },
- {
-  "slug": "basketball-stars",
-  "name": "Basketball Stars",
-  "cat": "Sports",
-  "embed": "https://basketball-stars.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketball-stars_retina.webp"
- },
- {
-  "slug": "basketbros",
-  "name": "BasketBros",
-  "cat": "Sports",
-  "embed": "https://basketbros.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketbros_retina.webp"
- },
- {
-  "slug": "big-shot-boxing",
-  "name": "Big Shot Boxing",
-  "cat": "Sports",
-  "embed": "https://big-shot-boxing.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/big-shot-boxing_retina.webp"
- },
- {
-  "slug": "bitlife",
-  "name": "BitLife Life Simulator",
-  "cat": "Casual",
-  "embed": "https://joemama980.github.io/games/bitlife/"
- },
- {
-  "slug": "blockpost",
-  "name": "Blockpost",
-  "cat": "Shooter",
-  "embed": "https://www.y8.com/embed/blockpost"
- },
- {
-  "slug": "blowout",
-  "name": "Blowout",
-  "cat": "Arcade",
-  "embed": "https://blowout.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/blowout_retina.webp"
- },
- {
-  "slug": "bonkio",
-  "name": "Bonk.io",
-  "cat": ".io",
-  "embed": "https://bonk.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bonkio_retina.webp"
- },
- {
-  "slug": "boxing-random",
-  "name": "Boxing Random",
-  "cat": "Sports",
-  "embed": "https://boxing-random.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/boxing-random_retina.webp"
- },
- {
-  "slug": "build-now-gg",
-  "name": "Build Now GG",
-  "cat": "Shooter",
-  "embed": "https://buildnow-gg.venkogames.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/build-now-gg_retina.webp"
- },
- {
-  "slug": "bullet-force",
-  "name": "Bullet Force",
-  "cat": "Shooter",
-  "embed": "https://games.crazygames.com/en_US/bullet-force-multiplayer/index.html?v=1.292",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bullet-force_retina.webp"
- },
- {
-  "slug": "bullet-force-multiplayer",
-  "name": "Bullet Force Multiplayer",
-  "cat": "Shooter",
-  "embed": "https://bullet-force-multiplayer.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bullet-force-multiplayer_retina.webp"
- },
- {
-  "slug": "candy-crush",
-  "name": "Candy Crush",
-  "cat": "Puzzle",
-  "embed": "https://candy-crush.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/candy-crush_retina.webp"
- },
- {
-  "slug": "chrome-dino",
-  "name": "Chrome Dino",
-  "cat": "Arcade",
-  "embed": "https://joemama980.github.io/games/dinogame/"
- },
- {
-  "slug": "clash-of-vikings",
-  "name": "Clash of Vikings",
-  "cat": "Strategy",
-  "embed": "https://clash-of-vikings.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/clash-of-vikings_retina.webp"
- },
- {
-  "slug": "color-tunnel",
-  "name": "Color Tunnel",
-  "cat": "Arcade",
-  "embed": "https://color-tunnel.houseofhazards-lol.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/color-tunnel_retina.webp"
- },
- {
-  "slug": "combat-reloaded",
-  "name": "Combat Reloaded",
-  "cat": "Shooter",
-  "embed": "https://html5.gamemonetize.co/lfijb0bl3oiqhjq0217qgy0fdbrvf8s5/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/combat-reloaded_retina.webp"
- },
- {
-  "slug": "conquerio",
-  "name": "Conquer.io",
-  "cat": ".io",
-  "embed": "https://html5.gamedistribution.com/40156cca0c094e6fa739cbd9145bf2b6/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/conquerio_retina.webp"
- },
- {
-  "slug": "contexto",
-  "name": "Contexto",
-  "cat": "Puzzle",
-  "embed": "https://contextogame.co/game/contextogame/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/contexto_large.webp"
- },
- {
-  "slug": "count-masters-stickman-games",
-  "name": "Count Masters: Stickman Games",
-  "cat": "Casual",
-  "embed": "https://html5.gamedistribution.com/a28b70925f134b68b1760fa15fa3f87e/?gd_sdk_referrer_url=https://gamedistribution.com/games/count-master/"
- },
- {
-  "slug": "counter-strike-2",
-  "name": "Counter-Strike 2",
-  "cat": "Shooter",
-  "embed": "https://counter-strike-2.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/counter-strike-2_retina.webp"
- },
- {
-  "slug": "crossy-road",
-  "name": "Crossy Road",
-  "cat": "Arcade",
-  "embed": "https://crossy-road.tops-games.workers.dev/"
- },
- {
-  "slug": "curvefeverio",
-  "name": "Curvefever.io",
-  "cat": ".io",
-  "embed": "https://curvefever.pro/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/curvefeverio_retina.webp"
- },
- {
-  "slug": "dakarr2cc",
-  "name": "Dakarr2.cc",
-  "cat": ".io",
-  "embed": "https://dakarr2.cc/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/dakarr2cc_retina.webp"
- },
- {
-  "slug": "dasmetry",
-  "name": "Dasmetry",
-  "cat": "Arcade",
-  "embed": "https://dasmetry.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/dasmetry_retina.webp"
- },
- {
-  "slug": "deadshotio",
-  "name": "Deadshot.io",
-  "cat": "Shooter",
-  "embed": "https://deadshot.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/deadshotio_retina.webp"
- },
- {
-  "slug": "deeeepio",
-  "name": "Deeeep.io",
-  "cat": ".io",
-  "embed": "https://deeeep.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/deeeepio_retina.webp"
- },
- {
-  "slug": "diepio",
-  "name": "Diep.io",
-  "cat": ".io",
-  "embed": "https://diep.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/diepio_retina.webp"
- },
- {
-  "slug": "dino-bros",
-  "name": "Dino Bros",
-  "cat": "Puzzle",
-  "embed": "https://dino-bros.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/dino-bros_retina.webp"
- },
- {
-  "slug": "draw-climber",
-  "name": "Draw Climber",
-  "cat": "Puzzle",
-  "embed": "https://html5.gamedistribution.com/b00ba96e1d1c4a739454fd9c1e8f7393/?gd_sdk_referrer_url=https://gamedistribution.com/games/draw-climber/"
- },
- {
-  "slug": "drift-boss",
-  "name": "Drift Boss",
-  "cat": "Racing",
-  "embed": "https://drift-boss.venkogames.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/drift-boss_retina.webp"
- },
- {
-  "slug": "driving-mad-io",
-  "name": "Driving Mad io",
-  "cat": "Racing",
-  "embed": "https://driving-mad-io.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/driving-mad-io_retina.webp"
- },
- {
-  "slug": "dunk-clash",
-  "name": "Dunk Clash",
-  "cat": "Sports",
-  "embed": "https://gamea.azgame.io/dunk-clash/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/dunk-clash_retina.webp"
- },
- {
-  "slug": "eagle-ride",
-  "name": "Eagle Ride",
-  "cat": "Arcade",
-  "embed": "https://eagle-ride.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/e/eagle-ride_retina.webp"
- },
- {
-  "slug": "eggy-car",
-  "name": "Eggy Car",
-  "cat": "Racing",
-  "embed": "https://eggy-car.tops-games.workers.dev/"
- },
- {
-  "slug": "escape-road",
-  "name": "Escape Road",
-  "cat": "Racing",
-  "embed": "https://escape-road.tops-games.workers.dev/"
- },
- {
-  "slug": "evio",
-  "name": "Ev.io",
-  "cat": "Shooter",
-  "embed": "https://ev.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/e/evio_retina.webp"
- },
- {
-  "slug": "extreme-run-3d",
-  "name": "Extreme Run 3D",
-  "cat": "Arcade",
-  "embed": "https://extreme-run-3d.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/e/extreme-run-3d_retina.webp"
- },
- {
-  "slug": "fancy-pants-adventure-2",
-  "name": "Fancy Pants Adventure 2",
-  "cat": "Platformer",
-  "embed": "https://joemama980.github.io/games/fancypantsadventure2/"
- },
- {
-  "slug": "florrio",
-  "name": "Florr.io",
-  "cat": ".io",
-  "embed": "https://florr.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/f/florrio_retina.webp"
- },
- {
-  "slug": "fnf-indie-cross",
-  "name": "FNF Indie Cross",
-  "cat": "Casual",
-  "embed": "https://fnf.kdata1.com/crossed-out/2.2/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/f/fnf-indie-cross_retina.webp"
- },
- {
-  "slug": "football-bros",
-  "name": "Football Bros",
-  "cat": "Sports",
-  "embed": "https://football-bros.classroomgames.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/f/football-bros_retina.webp"
- },
- {
-  "slug": "football-legends",
-  "name": "Football Legends",
-  "cat": "Sports",
-  "embed": "https://football-legends.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/f/football-legends_retina.webp"
- },
- {
-  "slug": "forward-assault",
-  "name": "Forward Assault",
-  "cat": "Shooter",
-  "embed": "https://games.crazygames.com/en_US/forward-assault/index.html",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/f/forward-assault_retina.webp"
- },
- {
-  "slug": "forward-assault-remix",
-  "name": "Forward Assault Remix",
-  "cat": "Shooter",
-  "embed": "https://www.crazygames.com/embed/forward-assault",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/f/forward-assault-remix_retina.webp"
- },
- {
-  "slug": "gacha-life",
-  "name": "Gacha Life",
-  "cat": "Casual",
-  "embed": "https://gacha-life.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/g/gacha-life_retina.webp"
- },
- {
-  "slug": "gacha-life-2",
-  "name": "Gacha Life 2",
-  "cat": "Casual",
-  "embed": "https://gacha-life-2.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/g/gacha-life-2_retina.webp"
- },
- {
-  "slug": "germsio",
-  "name": "Germs.io",
-  "cat": ".io",
-  "embed": "https://germs.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/g/germsio_retina.webp"
- },
- {
-  "slug": "globle",
-  "name": "Globle",
-  "cat": "Puzzle",
-  "embed": "https://globle.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/g/globle_retina.webp"
- },
- {
-  "slug": "golf-orbit",
-  "name": "Golf Orbit",
-  "cat": "Sports",
-  "embed": "https://golf-orbit.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/g/golf-orbit_retina.webp"
- },
- {
-  "slug": "gotaio",
-  "name": "Gota.io",
-  "cat": ".io",
-  "embed": "https://play.gota.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/g/gotaio_retina.webp"
- },
- {
-  "slug": "granny",
-  "name": "Granny",
-  "cat": "Horror",
-  "embed": "https://granny.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/g/granny_retina.webp"
- },
- {
-  "slug": "gun-mayhem-redux",
-  "name": "Gun Mayhem Redux",
-  "cat": "Shooter",
-  "embed": "https://joemama980.github.io/games/gunmayhemredux/"
- },
- {
-  "slug": "gunspin",
-  "name": "GunSpin",
-  "cat": "Shooter",
-  "embed": "https://gunspin.tops-games.workers.dev/"
- },
- {
-  "slug": "happy-wheels",
-  "name": "Happy Wheels",
-  "cat": "Action",
-  "embed": "https://happy-wheels.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/happy-wheels_retina.webp"
- },
- {
-  "slug": "havreio",
-  "name": "Havre.io",
-  "cat": ".io",
-  "embed": "https://havre.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/havreio_retina.webp"
- },
- {
-  "slug": "head-soccer",
-  "name": "Head Soccer",
-  "cat": "Sports",
-  "embed": "https://head-soccer.io/game/head-soccer-og/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/head-soccer_retina.webp"
- },
- {
-  "slug": "hexanaut",
-  "name": "Hexanaut",
-  "cat": ".io",
-  "embed": "https://hexanaut.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/hexanaut_retina.webp"
- },
- {
-  "slug": "holeio",
-  "name": "Hole.io",
-  "cat": ".io",
-  "embed": "https://holeio.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/holeio_retina.webp"
- },
- {
-  "slug": "house-of-hazards",
-  "name": "House of Hazards",
-  "cat": "Action",
-  "embed": "https://house-of-hazards.venkogames.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/house-of-hazards_retina.webp"
- },
- {
-  "slug": "huggy-wuggy",
-  "name": "Huggy Wuggy",
-  "cat": "Horror",
-  "embed": "https://huggy-wuggy.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/huggy-wuggy_retina.webp"
- },
- {
-  "slug": "italian-brainrot-clicker",
-  "name": "Italian Brainrot Clicker",
-  "cat": "Clicker",
-  "embed": "https://italian-brainrot-clicker.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/i/italian-brainrot-clicker_retina.webp"
- },
- {
-  "slug": "jetpack-joyride",
-  "name": "Jetpack Joyride",
-  "cat": "Arcade",
-  "embed": "https://jetpack-joyride.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/j/jetpack-joyride_retina.webp"
- },
- {
-  "slug": "karate-bros",
-  "name": "Karate Bros",
-  "cat": "Fighting",
-  "embed": "https://karate-bros.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/karate-bros_large.webp"
- },
- {
-  "slug": "kart-bros",
-  "name": "Kart Bros",
-  "cat": "Racing",
-  "embed": "https://kart-bros.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/kart-bros_retina.webp"
- },
- {
-  "slug": "kourio",
-  "name": "Kour.io",
-  "cat": "Shooter",
-  "embed": "https://kour.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/kourio_retina.webp"
- },
- {
-  "slug": "krunkerio",
-  "name": "Krunker.io",
-  "cat": "Shooter",
-  "embed": "https://krunker.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/krunkerio_retina.webp"
- },
- {
-  "slug": "level-devil",
-  "name": "Level Devil",
-  "cat": "Platformer",
-  "embed": "https://level-devil.classroomgames.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/l/level-devil_retina.webp"
- },
- {
-  "slug": "little-big-snake",
-  "name": "Little Big Snake",
-  "cat": ".io",
-  "embed": "https://little-big-snake.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/l/little-big-snake_xlarge.webp"
- },
- {
-  "slug": "longcat",
-  "name": "Longcat",
-  "cat": "Puzzle",
-  "embed": "https://www.y8.com/embed/longcat"
- },
- {
-  "slug": "mini-car-ball",
-  "name": "Mini Car Ball",
-  "cat": "Sports",
-  "embed": "https://mini-car-ball.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/m/mini-car-ball_retina.webp"
- },
- {
-  "slug": "moomooio",
-  "name": "MooMoo.io",
-  "cat": ".io",
-  "embed": "https://moomoo.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/m/moomooio_retina.webp"
- },
- {
-  "slug": "moto-x3m",
-  "name": "Moto X3M",
-  "cat": "Racing",
-  "embed": "https://moto-x3m.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/m/moto-x3m_retina.webp"
- },
- {
-  "slug": "narrow-one",
-  "name": "Narrow One",
-  "cat": "Action",
-  "embed": "https://narrow.one/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/n/narrow-one_medium.webp"
- },
- {
-  "slug": "ninjago-rush",
-  "name": "Ninjago Rush",
-  "cat": "Action",
-  "embed": "https://ninjago-rush.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/n/ninjago-rush_retina.webp"
- },
- {
-  "slug": "overtake-x",
-  "name": "Overtake X",
-  "cat": "Racing",
-  "embed": "https://game.azgame.io/overtake-x/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/o/overtake-x_retina.webp"
- },
- {
-  "slug": "papas-cupcakeria",
-  "name": "Papa's Cupcakeria",
-  "cat": "Casual",
-  "embed": "https://joemama980.github.io/games/papascupcakeria/"
- },
- {
-  "slug": "papas-pizzeria",
-  "name": "Papa's Pizzeria",
-  "cat": "Casual",
-  "embed": "https://papas-pizzeria.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/p/papas-pizzeria_retina.webp"
- },
- {
-  "slug": "paper-animals-io",
-  "name": "Paper Animals io",
-  "cat": ".io",
-  "embed": "https://paper-animals-io.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/p/paper-animals-io_retina.webp"
- },
- {
-  "slug": "paperio-2",
-  "name": "Paper.io 2",
-  "cat": ".io",
-  "embed": "https://paperio-2.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/p/paperio-2_retina.webp"
- },
- {
-  "slug": "penalty-shooters-2",
-  "name": "Penalty Shooters 2",
-  "cat": "Sports",
-  "embed": "https://penalty-shooters-2.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/p/penalty-shooters-2_retina.webp"
- },
- {
-  "slug": "polytrack",
-  "name": "PolyTrack",
-  "cat": "Racing",
-  "embed": "https://polytrack.venkogames.workers.dev/"
- },
- {
-  "slug": "ragdoll-archers",
-  "name": "Ragdoll Archers",
-  "cat": "Action",
-  "embed": "https://ragdoll-archers.venkogames.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/r/ragdoll-archers_retina.webp"
- },
- {
-  "slug": "ragdoll-hit",
-  "name": "Ragdoll Hit",
-  "cat": "Action",
-  "embed": "https://ragdoll-hit.venkogames.workers.dev/"
- },
- {
-  "slug": "red-ball",
-  "name": "Red Ball",
-  "cat": "Platformer",
-  "embed": "https://red-ball.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/r/red-ball_large.webp"
- },
- {
-  "slug": "retro-bowl",
-  "name": "Retro Bowl",
-  "cat": "Sports",
-  "embed": "https://retro-bowl.classroomgames.workers.dev/"
- },
- {
-  "slug": "rocket-goal",
-  "name": "Rocket Goal",
-  "cat": "Sports",
-  "embed": "https://rocketgoal.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/r/rocket-goal_xlarge.webp"
- },
- {
-  "slug": "room-clicker",
-  "name": "Room Clicker",
-  "cat": "Clicker",
-  "embed": "https://room-clicker.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/r/room-clicker_retina.webp"
- },
- {
-  "slug": "royaledle",
-  "name": "Royaledle",
-  "cat": "Puzzle",
-  "embed": "https://clashdle.com/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/r/royaledle_large.webp"
- },
- {
-  "slug": "shell-shockers",
-  "name": "Shell Shockers",
-  "cat": "Shooter",
-  "embed": "https://shell-shockers.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/shell-shockers_retina.webp"
- },
- {
-  "slug": "skip-it",
-  "name": "Skip It!",
-  "cat": "Arcade",
-  "embed": "https://skip-it.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/skip-it_large.webp"
- },
- {
-  "slug": "sky-race",
-  "name": "Sky Race",
-  "cat": "Racing",
-  "embed": "https://www.y8.com/embed/skyrace"
- },
- {
-  "slug": "slice-master",
-  "name": "Slice Master",
-  "cat": "Casual",
-  "embed": "https://slice-master.classroomgames.workers.dev/"
- },
- {
-  "slug": "slitherio",
-  "name": "Slither.io",
-  "cat": ".io",
-  "embed": "https://gulper.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slitherio_retina.webp"
- },
- {
-  "slug": "slope",
-  "name": "Slope",
-  "cat": "Arcade",
-  "embed": "https://slope.tops-games.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slope_retina.webp"
- },
- {
-  "slug": "slope-rider-3d",
-  "name": "Slope Rider 3D",
-  "cat": "Arcade",
-  "embed": "https://slope-rider-3d.1games.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slope-rider-3d_retina.webp"
- },
- {
-  "slug": "slope-run",
-  "name": "Slope Run",
-  "cat": "Arcade",
-  "embed": "https://sloperungame.io/slope-run.embed",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slope-run_retina.webp"
- },
- {
-  "slug": "slow-roads",
-  "name": "Slow Roads",
-  "cat": "Racing",
-  "embed": "https://slow-roads.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slow-roads_xlarge.webp"
- },
- {
-  "slug": "smash-karts",
-  "name": "Smash Karts",
-  "cat": "Racing",
-  "embed": "https://smashkarts.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/smash-karts_retina.webp"
- },
- {
-  "slug": "snake-io",
-  "name": "Snake io",
-  "cat": ".io",
-  "embed": "https://snake-io.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/snake-io_retina.webp"
- },
- {
-  "slug": "snow-rider-3d",
-  "name": "Snow Rider 3D",
-  "cat": "Racing",
-  "embed": "https://snow-rider-3d.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/snow-rider-3d_retina.webp"
- },
- {
-  "slug": "space-waves",
-  "name": "Space Waves",
-  "cat": "Arcade",
-  "embed": "https://space-waves.classroomgames.workers.dev/"
- },
- {
-  "slug": "spades",
-  "name": "Spades",
-  "cat": "Card",
-  "embed": "https://spades.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/spades_retina.webp"
- },
- {
-  "slug": "stack-tower",
-  "name": "Stack Tower",
-  "cat": "Arcade",
-  "embed": "https://stack-tower.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/stack-tower_retina.webp"
- },
- {
-  "slug": "starveio",
-  "name": "Starve.io",
-  "cat": ".io",
-  "embed": "https://starve.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/starveio_retina.webp"
- },
- {
-  "slug": "stick-fighter",
-  "name": "Stick Fighter",
-  "cat": "Fighting",
-  "embed": "https://stick-fighter.tops-games.workers.dev/"
- },
- {
-  "slug": "stick-merge",
-  "name": "Stick Merge",
-  "cat": "Puzzle",
-  "embed": "https://stick-merge.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/stick-merge_retina.webp"
- },
- {
-  "slug": "stickman-hook",
-  "name": "Stickman Hook",
-  "cat": "Arcade",
-  "embed": "https://stickman-hook.tops-games.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/stickman-hook_retina.webp"
- },
- {
-  "slug": "street-fighter-2",
-  "name": "Street Fighter 2",
-  "cat": "Fighting",
-  "embed": "https://street-fighter-2.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/street-fighter-2_retina.webp"
- },
- {
-  "slug": "stunt-simulator",
-  "name": "Stunt Simulator",
-  "cat": "Racing",
-  "embed": "https://stunt-simulator.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/stunt-simulator_retina.webp"
- },
- {
-  "slug": "subway-surfers",
-  "name": "Subway Surfers",
-  "cat": "Arcade",
-  "embed": "https://joemama980.github.io/games/subwaysurfers/"
- },
- {
-  "slug": "super-fowlst",
-  "name": "Super Fowlst",
-  "cat": "Action",
-  "embed": "https://super-fowlst.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/super-fowlst_retina.webp"
- },
- {
-  "slug": "super-fowlst-2",
-  "name": "Super Fowlst 2",
-  "cat": "Action",
-  "embed": "https://super-fowlst-2.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/super-fowlst-2_retina.webp"
- },
- {
-  "slug": "survivio",
-  "name": "Surviv.io",
-  "cat": ".io",
-  "embed": "https://surviv.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/survivio_retina.webp"
- },
- {
-  "slug": "survival-race",
-  "name": "Survival Race",
-  "cat": "Racing",
-  "embed": "https://survival-race.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/survival-race_retina.webp"
- },
- {
-  "slug": "tap-road",
-  "name": "Tap Road",
-  "cat": "Arcade",
-  "embed": "https://tap-road.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/tap-road_retina.webp"
- },
- {
-  "slug": "territorialio",
-  "name": "Territorial.io",
-  "cat": ".io",
-  "embed": "https://territorialio.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/territorialio_retina.webp"
- },
- {
-  "slug": "the-binding-of-isaac",
-  "name": "The Binding of Isaac",
-  "cat": "Action",
-  "embed": "https://the-binding-of-isaac.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/the-binding-of-isaac_retina.webp"
- },
- {
-  "slug": "tomb-of-the-mask",
-  "name": "Tomb of the Mask",
-  "cat": "Arcade",
-  "embed": "https://tomb-of-the-mask.venkogames.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/tomb-of-the-mask_retina.webp"
- },
- {
-  "slug": "traffic-rally",
-  "name": "Traffic Rally",
-  "cat": "Racing",
-  "embed": "https://traffic-rally.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/traffic-rally_retina.webp"
- },
- {
-  "slug": "travle",
-  "name": "Travle",
-  "cat": "Puzzle",
-  "embed": "https://travle.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/travle_large.webp"
- },
- {
-  "slug": "tunnel-rush",
-  "name": "Tunnel Rush",
-  "cat": "Arcade",
-  "embed": "https://tunnel-rush.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/tunnel-rush_retina.webp"
- },
- {
-  "slug": "typing-test",
-  "name": "Typing Test",
-  "cat": "Puzzle",
-  "embed": "https://typing-test.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/typing-test_medium.webp"
- },
- {
-  "slug": "ultrakill",
-  "name": "Ultrakill",
-  "cat": "Shooter",
-  "embed": "https://ultrakill.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/u/ultrakill_retina.webp"
- },
- {
-  "slug": "unmatched-basketball",
-  "name": "Unmatched Basketball",
-  "cat": "Sports",
-  "embed": "https://g2.igroutka.ru/lib/crazy/games/unmatched-basketball/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/u/unmatched-basketball_retina.webp"
- },
- {
-  "slug": "unmatched-ego",
-  "name": "Unmatched Ego",
-  "cat": "Sports",
-  "embed": "https://unmatched-ego.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/u/unmatched-ego_retina.webp"
- },
- {
-  "slug": "vengeio",
-  "name": "Venge.io",
-  "cat": "Shooter",
-  "embed": "https://vengeio.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/v/vengeio_retina.webp"
- },
- {
-  "slug": "wacky-flip",
-  "name": "Wacky Flip",
-  "cat": "Arcade",
-  "embed": "https://wacky-flip.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/wacky-flip_retina.webp"
- },
- {
-  "slug": "war-brokers",
-  "name": "War Brokers",
-  "cat": "Shooter",
-  "embed": "https://warbrokers.io/game3d.php?nick=guest&autoJoin=true&classic=true",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/war-brokers_retina.webp"
- },
- {
-  "slug": "war-the-knights",
-  "name": "War the Knights",
-  "cat": "Strategy",
-  "embed": "https://war-the-knights.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/war-the-knights_retina.webp"
- },
- {
-  "slug": "wave-dash-geometry-arrow",
-  "name": "Wave Dash: Geometry Arrow",
-  "cat": "Arcade",
-  "embed": "https://geometry-arrow.tops-games.workers.dev/"
- },
- {
-  "slug": "wingsio",
-  "name": "Wings.io",
-  "cat": ".io",
-  "embed": "https://wings.io/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/wingsio_retina.webp"
- },
- {
-  "slug": "woomy-arrasio",
-  "name": "Woomy-Arras.io",
-  "cat": ".io",
-  "embed": "https://woomy-arrasio.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/woomy-arrasio_retina.webp"
- },
- {
-  "slug": "worldle",
-  "name": "Worldle",
-  "cat": "Puzzle",
-  "embed": "https://worldle.teuteuf.fr/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/worldle_large.webp"
- },
- {
-  "slug": "wrestle-bros",
-  "name": "Wrestle Bros",
-  "cat": "Sports",
-  "embed": "https://wrestle-bros.venkogames.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/wrestle-bros_retina.webp"
- },
- {
-  "slug": "zombsio",
-  "name": "Zombs.io",
-  "cat": ".io",
-  "embed": "https://zombsio.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/z/zombsio_retina.webp"
- },
- {
-  "slug": "zombsroyaleio",
-  "name": "ZombsRoyale.io",
-  "cat": "Shooter",
-  "embed": "https://zombsroyaleio.unblockedgameswtf.workers.dev/",
-  "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/z/zombsroyaleio_retina.webp"
- }
-];
+   { "slug": "1v1lol", "name": "1v1.LOL", "cat": "Shooter", "embed": "https://1v1-lol.gitlab.io/file/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/1/1v1lol_retina.webp" },
+   { "slug": "2v2io", "name": "2v2.io", "cat": "Shooter", "embed": "https://2v2io.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/2/2v2io_retina.webp" },
+   { "slug": "67-clicker", "name": "67 Clicker", "cat": "Clicker", "embed": "https://67-clicker.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/6/67-clicker_large.webp" },
+   { "slug": "a-small-world-cup", "name": "A Small World Cup", "cat": "Sports", "embed": "https://a-small-world-cup.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/a-small-world-cup_retina.webp" },
+   { "slug": "agario", "name": "Agar.io", "cat": ".io", "embed": "https://agar.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/agario_retina.webp" },
+   { "slug": "basketball-bros", "name": "Basketball Bros", "cat": "Sports", "embed": "https://basketball-bros.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketball-bros_large.webp" },
+   { "slug": "bitlife", "name": "BitLife Life Simulator", "cat": "Casual", "embed": "https://joemama980.github.io/games/bitlife/" },
+   { "slug": "build-now-gg", "name": "Build Now GG", "cat": "Shooter", "embed": "https://buildnow-gg.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/build-now-gg_retina.webp" },
+   { "slug": "chrome-dino", "name": "Chrome Dino", "cat": "Arcade", "embed": "https://joemama980.github.io/games/dinogame/" },
+   { "slug": "crossy-road", "name": "Crossy Road", "cat": "Arcade", "embed": "https://crossy-road.tops-games.workers.dev/" },
+   { "slug": "drift-boss", "name": "Drift Boss", "cat": "Racing", "embed": "https://drift-boss.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/drift-boss_retina.webp" },
+   { "slug": "eggy-car", "name": "Eggy Car", "cat": "Racing", "embed": "https://eggy-car.tops-games.workers.dev/" },
+   { "slug": "escape-road", "name": "Escape Road", "cat": "Racing", "embed": "https://escape-road.tops-games.workers.dev/" },
+   { "slug": "moto-x3m", "name": "Moto X3M", "cat": "Racing", "embed": "https://moto-x3m.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/m/moto-x3m_retina.webp" },
+   { "slug": "retro-bowl", "name": "Retro Bowl", "cat": "Sports", "embed": "https://retro-bowl.classroomgames.workers.dev/" },
+   { "slug": "slope", "name": "Slope", "cat": "Arcade", "embed": "https://slope.tops-games.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slope_retina.webp" },
+   { "slug": "subway-surfers", "name": "Subway Surfers", "cat": "Arcade", "embed": "https://joemama980.github.io/games/subwaysurfers/" },
+   { "slug": "tunnel-rush", "name": "Tunnel Rush", "cat": "Arcade", "embed": "https://tunnel-rush.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/tunnel-rush_retina.webp" }
+  ];
 
-  // --- src/lib/settings.ts ---
-  const DEFAULTS = {
-    cloak: true,
-    title: "about:blank",
-    icon: "",
-    redirect: false,
-    decoy: "https://classroom.google.com",
-    panic: true,
-  };
-
+  const DEFAULTS = { cloak: true, title: "about:blank", icon: "", redirect: false, decoy: "https://classroom.google.com", panic: true };
   const KEY = "ug_settings";
 
   function loadSettings() {
@@ -1853,7 +803,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     } catch {}
   }
 
-  // --- src/lib/launch.ts ---
   function frameSource(game) {
     if (game.embed.startsWith("swf:")) {
       const swf = game.embed.slice(4);
@@ -1862,23 +811,18 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         '<script src="https://unpkg.com/@ruffle-rs/ruffle"><\/script></head><body><div id="p"></div><script>' +
         "addEventListener('load',function(){var r=window.RufflePlayer.newest();var p=r.createPlayer();" +
         "p.style.width='100%';p.style.height='100%';document.getElementById('p').appendChild(p);" +
-        "p.load({url:" +
-        JSON.stringify(swf) +
-        ",allowScriptAccess:false,autoplay:'auto',unmuteOverlay:'hidden',letterbox:'on'});});<\/script></body></html>";
+        "p.load({url:" + JSON.stringify(swf) + ",allowScriptAccess:false,autoplay:'auto',unmuteOverlay:'hidden',letterbox:'on'});});<\/script></body></html>";
       return { srcdoc: doc };
     }
     return { src: game.embed };
   }
 
-  const FRAME_ALLOW =
-    "fullscreen; autoplay; gamepad; clipboard-write; accelerometer; gyroscope; pointer-lock; microphone; keyboard-map";
+  const FRAME_ALLOW = "fullscreen; autoplay; gamepad; clipboard-write; accelerometer; gyroscope; pointer-lock; microphone; keyboard-map";
 
   function buildCloak(w, source, s) {
     const d = w.document;
     d.open();
-    d.write(
-      '<!DOCTYPE html><html><head><meta charset="utf-8"><title></title></head><body></body></html>'
-    );
+    d.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title></title></head><body></body></html>');
     d.close();
     d.title = s.title || "about:blank";
     if (s.icon) {
@@ -1888,11 +832,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       d.head.appendChild(l);
     }
     const st = d.createElement("style");
-    st.textContent =
-      "html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#000}" +
-      "iframe{position:fixed;inset:0;width:100vw;height:100vh;border:0;background:#000}" +
-      "#fs{position:fixed;top:10px;right:10px;z-index:9;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.65);color:#fff;font:18px sans-serif;cursor:pointer;opacity:0;transition:opacity .25s}" +
-      "body:hover #fs{opacity:.35}#fs:hover{opacity:1}";
+    st.textContent = "html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#000}iframe{position:fixed;inset:0;width:100vw;height:100vh;border:0;background:#000}#fs{position:fixed;top:10px;right:10px;z-index:9;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.65);color:#fff;font:18px sans-serif;cursor:pointer;opacity:0;transition:opacity .25s}body:hover #fs{opacity:.35}#fs:hover{opacity:1}";
     d.head.appendChild(st);
     const f = d.createElement("iframe");
     if (source.srcdoc) f.srcdoc = source.srcdoc;
@@ -1928,132 +868,34 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return openCloaked({ src: location.href.split("#")[0] }, s);
   }
 
-  // --- src/components/Icons.tsx ---
+  // --- ICONS ---
   function Svg({ children, sw = 1.8 }) {
-    return h(
-      "svg",
-      {
-        viewBox: "0 0 24 24",
-        fill: "none",
-        stroke: "currentColor",
-        strokeWidth: sw,
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-      },
-      children
-    );
+    return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
   }
+  const HomeIcon = (p) => h(Svg, p, h("path", { d: "M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" }));
+  const ChatIcon = (p) => h(Svg, p, h("path", { d: "M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" }));
+  const GamesIcon = (p) => h(Svg, p, h("path", { d: "M6 12h4M8 10v4M15 13h.01M18 11h.01" }), h("path", { d: "M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.7 8A3 3 0 0 0 6 18.5L8 16h8l2 2.5a3 3 0 0 0 4.9-2.3l-1.7-8A4 4 0 0 0 17.3 5z" }));
+  const MoviesIcon = (p) => h(Svg, p, h("rect", { x: "3", y: "4", width: "18", height: "16", rx: "2" }), h("path", { d: "M8 4v16M16 4v16M3 12h18" }));
+  const MusicIcon = (p) => h(Svg, p, h("path", { d: "M9 18V5l12-2v13" }), h("circle", { cx: "6", cy: "18", r: "3" }), h("circle", { cx: "18", cy: "16", r: "3" }));
+  const AiIcon = (p) => h(Svg, p, h("rect", { x: "5", y: "5", width: "14", height: "14", rx: "2" }), h("rect", { x: "9", y: "9", width: "6", height: "6" }), h("path", { d: "M9 1v4M15 1v4M9 19v4M15 19v4M1 9h4M1 15h4M19 9h4M19 15h4" }));
+  const AccountIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "8", r: "4" }), h("path", { d: "M4 21a8 8 0 0 1 16 0" }));
+  const CreatorIcon = (p) => h(Svg, p, h("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }), h("circle", { cx: "9", cy: "7", r: "4" }), h("line", { x1: "19", y1: "8", x2: "19", y2: "14" }), h("line", { x1: "22", y1: "11", x2: "16", y2: "11" }));
+  const EyeIcon = (p) => h(Svg, p, h("path", { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }), h("circle", { cx: "12", cy: "12", r: "3" }));
+  const EyeOffIcon = (p) => h(Svg, p, h("path", { d: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" }), h("line", { x1: "1", y1: "1", x2: "23", y2: "23" }));
+  const SettingsIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "3" }), h("path", { d: "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" }));
+  const ChevronIcon = (p) => h(Svg, p, h("path", { d: "m9 18 6-6-6-6" }));
+  const SearchIcon = (p) => h(Svg, p, h("circle", { cx: "11", cy: "11", r: "8" }), h("path", { d: "m21 21-4.3-4.3" }));
+  const RefreshIcon = (p) => h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
 
-  const HomeIcon = (p) =>
-    h(Svg, p, h("path", { d: "M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" }));
-
-  const ChatIcon = (p) =>
-    h(Svg, p, h("path", { d: "M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" }));
-
-  const GamesIcon = (p) =>
-    h(
-      Svg,
-      p,
-      h("path", { d: "M6 12h4M8 10v4M15 13h.01M18 11h.01" }),
-      h("path", { d: "M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.7 8A3 3 0 0 0 6 18.5L8 16h8l2 2.5a3 3 0 0 0 4.9-2.3l-1.7-8A4 4 0 0 0 17.3 5z" })
-    );
-
-  const MoviesIcon = (p) =>
-    h(
-      Svg,
-      p,
-      h("rect", { x: "3", y: "4", width: "18", height: "16", rx: "2" }),
-      h("path", { d: "M8 4v16M16 4v16M3 12h18" })
-    );
-
-  const MusicIcon = (p) =>
-    h(
-      Svg,
-      p,
-      h("path", { d: "M9 18V5l12-2v13" }),
-      h("circle", { cx: "6", cy: "18", r: "3" }),
-      h("circle", { cx: "18", cy: "16", r: "3" })
-    );
-
-  const AiIcon = (p) =>
-    h(
-      Svg,
-      p,
-      h("rect", { x: "5", y: "5", width: "14", height: "14", rx: "2" }),
-      h("rect", { x: "9", y: "9", width: "6", height: "6" }),
-      h("path", { d: "M9 1v4M15 1v4M9 19v4M15 19v4M1 9h4M1 15h4M19 9h4M19 15h4" })
-    );
-
-  const AccountIcon = (p) =>
-    h(
-      Svg,
-      p,
-      h("circle", { cx: "12", cy: "8", r: "4" }),
-      h("path", { d: "M4 21a8 8 0 0 1 16 0" })
-    );
-
-  // Account Creator Icon (User Plus / Key Shield at bottom of Sidebar for Owner)
-  const CreatorIcon = (p) =>
-    h(
-      Svg,
-      p,
-      h("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }),
-      h("circle", { cx: "9", cy: "7", r: "4" }),
-      h("line", { x1: "19", y1: "8", x2: "19", y2: "14" }),
-      h("line", { x1: "22", y1: "11", x2: "16", y2: "11" })
-    );
-
-  const EyeIcon = (p) =>
-    h(
-      Svg,
-      p,
-      h("path", { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }),
-      h("circle", { cx: "12", cy: "12", r: "3" })
-    );
-
-  const EyeOffIcon = (p) =>
-    h(
-      Svg,
-      p,
-      h("path", { d: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" }),
-      h("line", { x1: "1", y1: "1", x2: "23", y2: "23" })
-    );
-
-  const SettingsIcon = (p) =>
-    h(
-      Svg,
-      p,
-      h("circle", { cx: "12", cy: "12", r: "3" }),
-      h("path", {
-        d: "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z",
-      })
-    );
-
-  const ChevronIcon = (p) =>
-    h(Svg, p, h("path", { d: "m9 18 6-6-6-6" }));
-
-  const SearchIcon = (p) =>
-    h(
-      Svg,
-      p,
-      h("circle", { cx: "11", cy: "11", r: "8" }),
-      h("path", { d: "m21 21-4.3-4.3" })
-    );
-
-  const RefreshIcon = (p) =>
-    h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
-
-  // --- src/components/Stars.tsx ---
+  // --- Stars Component ---
   function Stars() {
     const ref = useRef(null);
-
     useEffect(() => {
       const cv = ref.current;
       const ctx = cv.getContext("2d");
       let W = 0, H = 0, raf = 0;
       let stars = [];
       const dpr = window.devicePixelRatio || 1;
-
       const resize = () => {
         W = cv.width = innerWidth * dpr;
         H = cv.height = innerHeight * dpr;
@@ -2061,21 +903,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         cv.style.height = innerHeight + "px";
         const n = Math.floor((innerWidth * innerHeight) / 9000);
         stars = Array.from({ length: n }, () => ({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          r: (Math.random() * 1.4 + 0.5) * dpr,
-          s: (Math.random() * 0.12 + 0.02) * dpr,
-          p: Math.random() * Math.PI * 2,
-          f: Math.random() * 0.02 + 0.005,
+          x: Math.random() * W, y: Math.random() * H,
+          r: (Math.random() * 1.4 + 0.5) * dpr, s: (Math.random() * 0.12 + 0.02) * dpr,
+          p: Math.random() * Math.PI * 2, f: Math.random() * 0.02 + 0.005,
         }));
       };
-
       const frame = () => {
         ctx.clearRect(0, 0, W, H);
         ctx.fillStyle = "#fff";
         for (const s of stars) {
-          s.y += s.s;
-          s.p += s.f;
+          s.y += s.s; s.p += s.f;
           if (s.y > H + 5) { s.y = -5; s.x = Math.random() * W; }
           ctx.globalAlpha = 0.35 + 0.55 * Math.abs(Math.sin(s.p));
           ctx.beginPath();
@@ -2084,40 +921,20 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         }
         raf = requestAnimationFrame(frame);
       };
-
       addEventListener("resize", resize);
       resize();
       frame();
-      return () => {
-        removeEventListener("resize", resize);
-        cancelAnimationFrame(raf);
-      };
+      return () => { removeEventListener("resize", resize); cancelAnimationFrame(raf); };
     }, []);
-
     return h("canvas", { id: "stars", ref });
   }
 
-  // --- src/components/Sidebar.tsx ---
+  // --- Sidebar Component ---
   function Sidebar({ view, open, onToggle, onNavigate, isOwner }) {
     const btn = (id, label, icon) =>
-      h(
-        "button",
-        {
-          key: id,
-          className: "side-btn" + (view === id ? " active" : ""),
-          title: label,
-          onClick: () => onNavigate(id),
-        },
-        icon,
-        h("span", null, label)
-      );
-
-    return h(
-      "nav",
-      { id: "sidebar", className: open ? "open" : "" },
-      h(
-        "div",
-        { className: "side-group", style: { paddingTop: 2 } },
+      h("button", { key: id, className: "side-btn" + (view === id ? " active" : ""), title: label, onClick: () => onNavigate(id) }, icon, h("span", null, label));
+    return h("nav", { id: "sidebar", className: open ? "open" : "" },
+      h("div", { className: "side-group", style: { paddingTop: 2 } },
         btn("home", "Home", h(HomeIcon)),
         btn("chat", "Chat", h(ChatIcon)),
         btn("games", "Games", h(GamesIcon)),
@@ -2126,45 +943,25 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         btn("ai", "AI", h(AiIcon))
       ),
       h("div", { className: "spacer" }),
-      h(
-        "div",
-        { className: "side-group", style: { paddingBottom: 6 } },
+      h("div", { className: "side-group", style: { paddingBottom: 6 } },
         isOwner ? btn("creator", "Account Creator", h(CreatorIcon)) : null,
         btn("account", "Account", h(AccountIcon)),
         btn("settings", "Settings", h(SettingsIcon)),
-        h(
-          "button",
-          {
-            className: "side-btn",
-            id: "expandBtn",
-            title: open ? "Collapse" : "Expand",
-            onClick: onToggle,
-          },
-          h(ChevronIcon),
-          h("span", null, "Collapse")
-        )
+        h("button", { className: "side-btn", id: "expandBtn", title: open ? "Collapse" : "Expand", onClick: onToggle }, h(ChevronIcon), h("span", null, "Collapse"))
       )
     );
   }
 
-  // --- src/components/Home.tsx ---
+  // --- Home Component ---
   const WORDS = ["Browse", "Search games", "Slope", "Subway Surfers", "Play anything"];
-
   function useTypingPlaceholder(paused) {
     const [text, setText] = useState("Browse");
     const pausedRef = useRef(paused);
     pausedRef.current = paused;
-
     useEffect(() => {
-      let w = 0, i = 0, del = false;
-      let t;
+      let w = 0, i = 0, del = false, t;
       const tick = () => {
-        if (pausedRef.current) {
-          i = 0; del = false;
-          setText("Browse");
-          t = setTimeout(tick, 600);
-          return;
-        }
+        if (pausedRef.current) { i = 0; del = false; setText("Browse"); t = setTimeout(tick, 600); return; }
         const word = WORDS[w];
         setText(word.slice(0, i) + "|");
         let delay = del ? 45 : 95;
@@ -2176,7 +973,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       tick();
       return () => clearTimeout(t);
     }, []);
-
     return text;
   }
 
@@ -2184,429 +980,324 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [value, setValue] = useState("");
     const [focused, setFocused] = useState(false);
     const placeholder = useTypingPlaceholder(focused || !!value);
-
-    const submit = (e) => {
-      e.preventDefault();
-      const v = value.trim();
-      if (!v) return;
-      onSearch(v);
-      setValue("");
-    };
-
-    return h(
-      "section",
-      { className: "view", id: "home" },
+    const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
+    return h("section", { className: "view", id: "home" },
       h("div", { className: "logo-wrap" }, h("h1", { className: "logo" }, "unblockedgames")),
-      h(
-        "div",
-        { className: "search-wrap" },
-        h(
-          "form",
-          { className: "search", autoComplete: "off", onSubmit: submit },
+      h("div", { className: "search-wrap" },
+        h("form", { className: "search", autoComplete: "off", onSubmit: submit },
           h(SearchIcon),
-          h("input", {
-            type: "text",
-            spellCheck: false,
-            value,
-            placeholder: focused ? "Browse" : placeholder,
-            onChange: (e) => setValue(e.target.value),
-            onFocus: () => setFocused(true),
-            onBlur: () => setFocused(false),
-          })
+          h("input", { type: "text", spellCheck: false, value, placeholder: focused ? "Browse" : placeholder, onChange: (e) => setValue(e.target.value), onFocus: () => setFocused(true), onBlur: () => setFocused(false) })
         )
       ),
-      h(
-        "div",
-        { className: "quick" },
+      h("div", { className: "quick" },
         h("button", { onClick: () => onNavigate("games") }, h("div", { className: "circ" }, h(GamesIcon)), "Games"),
         h("button", { onClick: () => onNavigate("music") }, h("div", { className: "circ" }, h(MusicIcon)), "Music"),
         h("button", { onClick: () => onNavigate("ai") }, h("div", { className: "circ" }, h(AiIcon)), "AI"),
         h("button", { onClick: () => onNavigate("movies") }, h("div", { className: "circ" }, h(MoviesIcon)), "Movies")
       ),
-      h(
-        "div",
-        { className: "ad" },
-        "ADVERTISEMENT",
-        h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon))
-      )
+      h("div", { className: "ad" }, "ADVERTISEMENT", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
     );
   }
 
-  // --- src/components/GamesView.tsx ---
+  // --- Games Component ---
   const CATS = ["All", ...Array.from(new Set(GAMES.map((g) => g.cat))).sort()];
-
-  function hue(s) {
-    let hVal = 0;
-    for (const c of s) hVal = (hVal * 31 + c.charCodeAt(0)) % 360;
-    return hVal;
-  }
-
+  function hue(s) { let hVal = 0; for (const c of s) hVal = (hVal * 31 + c.charCodeAt(0)) % 360; return hVal; }
   const Card = memo(function Card({ game, onPlay }) {
     const [imgOk, setImgOk] = useState(true);
     const hVal = hue(game.slug);
     const initials = game.name.replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase();
-    return h(
-      "div",
-      { className: "card", onClick: () => onPlay(game) },
-      h(
-        "div",
-        {
-          className: "thumb",
-          style: { background: `linear-gradient(135deg,hsl(${hVal} 55% 28%),hsl(${(hVal + 50) % 360} 60% 12%))` },
-        },
+    return h("div", { className: "card", onClick: () => onPlay(game) },
+      h("div", { className: "thumb", style: { background: `linear-gradient(135deg,hsl(${hVal} 55% 28%),hsl(${(hVal + 50) % 360} 60% 12%))` } },
         h("span", null, initials),
-        game.thumb && imgOk
-          ? h("img", {
-              src: game.thumb,
-              alt: game.name,
-              loading: "lazy",
-              referrerPolicy: "no-referrer",
-              onError: () => setImgOk(false),
-            })
-          : null,
+        game.thumb && imgOk ? h("img", { src: game.thumb, alt: game.name, loading: "lazy", referrerPolicy: "no-referrer", onError: () => setImgOk(false) }) : null,
         game.embed.startsWith("swf:") ? h("div", { className: "badge" }, "FLASH") : null
       ),
-      h(
-        "div",
-        { className: "info" },
-        h("div", { className: "name", title: game.name }, game.name),
-        h("div", { className: "tag" }, game.cat)
-      )
+      h("div", { className: "info" }, h("div", { className: "name", title: game.name }, game.name), h("div", { className: "tag" }, game.cat))
     );
   });
 
   function GamesView({ query, onQuery, onPlay }) {
     const [cat, setCat] = useState("All");
-
     const list = useMemo(() => {
       const q = query.trim().toLowerCase();
-      return GAMES.filter(
-        (g) =>
-          (cat === "All" || g.cat === cat) &&
-          (!q || g.name.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q))
-      );
+      return GAMES.filter((g) => (cat === "All" || g.cat === cat) && (!q || g.name.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q)));
     }, [query, cat]);
 
-    return h(
-      "section",
-      { className: "view", id: "games" },
-      h(
-        "div",
-        { className: "page" },
+    return h("section", { className: "view", id: "games" },
+      h("div", { className: "page" },
         h("h2", null, "Games"),
-        h(
-          "p",
-          { className: "sub" },
-          "Click any game and it loads straight from its own host in a cloaked ",
-          h("code", null, "about:blank"),
-          " tab, with no portal page in between."
-        ),
-        h(
-          "div",
-          { className: "toolbar" },
-          h(
-            "div",
-            { className: "search" },
+        h("p", { className: "sub" }, "Click any game and it loads straight from its own host in a cloaked ", h("code", null, "about:blank"), " tab."),
+        h("div", { className: "toolbar" },
+          h("div", { className: "search" },
             h(SearchIcon),
-            h("input", {
-              type: "text",
-              placeholder: "Search games...",
-              spellCheck: false,
-              value: query,
-              onChange: (e) => onQuery(e.target.value),
-            })
+            h("input", { type: "text", placeholder: "Search games...", spellCheck: false, value: query, onChange: (e) => onQuery(e.target.value) })
           )
         ),
-        h(
-          "div",
-          { className: "chips" },
-          CATS.map((c) =>
-            h(
-              "button",
-              {
-                key: c,
-                className: "chip" + (c === cat ? " on" : ""),
-                onClick: () => setCat(c),
-              },
-              c
-            )
-          )
-        ),
+        h("div", { className: "chips" }, CATS.map((c) => h("button", { key: c, className: "chip" + (c === cat ? " on" : ""), onClick: () => setCat(c) }, c))),
         h("div", { className: "count" }, `${list.length} game${list.length === 1 ? "" : "s"}`),
-        h(
-          "div",
-          { className: "grid" },
-          list.map((g) => h(Card, { key: g.slug, game: g, onPlay }))
-        ),
+        h("div", { className: "grid" }, list.map((g) => h(Card, { key: g.slug, game: g, onPlay }))),
         list.length === 0 ? h("div", { className: "empty" }, "No games found.") : null
       )
     );
   }
 
-  // --- src/components/SettingsView.tsx ---
-  function Toggle({ checked, onChange }) {
-    return h(
-      "label",
-      { className: "toggle" },
-      h("input", {
-        type: "checkbox",
-        checked,
-        onChange: (e) => onChange(e.target.checked),
-      }),
-      h("span")
+  // --- Real-Time Live Chat Component ---
+  function ChatView({ currentUser, accountsMap }) {
+    const [messages, setMessages] = useState([]);
+    const [inputMessage, setInputMessage] = useState("");
+    const messagesEndRef = useRef(null);
+
+    // Fetch / listen to global chat room in Firebase
+    useEffect(() => {
+      const fetchChat = async () => {
+        const base = getDbUrl();
+        if (!base) {
+          try {
+            const local = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+            setMessages(local);
+          } catch {}
+          return;
+        }
+        try {
+          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
+              list.sort((a, b) => a.timestamp - b.timestamp);
+              setMessages(list);
+            } else {
+              setMessages([]);
+            }
+          }
+        } catch {}
+      };
+
+      fetchChat();
+      const interval = setInterval(fetchChat, 4000);
+      return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    const sendMessage = async (e) => {
+      e.preventDefault();
+      const text = inputMessage.trim();
+      if (!text || !currentUser) return;
+
+      const acc = accountsMap[currentUser.username.toLowerCase()] || currentUser;
+      const isUserOwner = isOwnerIdentity(currentUser.username, acc);
+
+      const newMsg = {
+        sender: currentUser.username,
+        role: isUserOwner ? "owner" : "user",
+        text,
+        timestamp: Date.now()
+      };
+
+      const base = getDbUrl();
+      if (base) {
+        try {
+          await fetch(`${base}/global_chat.json`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newMsg)
+          });
+        } catch {}
+      } else {
+        try {
+          const prev = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+          const next = [...prev, { id: "msg_" + Date.now(), ...newMsg }];
+          localStorage.setItem("ug_global_chat_v1", JSON.stringify(next));
+          setMessages(next);
+        } catch {}
+      }
+
+      setInputMessage("");
+      // immediate poll
+      setTimeout(async () => {
+        if (base) {
+          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
+              list.sort((a, b) => a.timestamp - b.timestamp);
+              setMessages(list);
+            }
+          }
+        }
+      }, 300);
+    };
+
+    return h("section", { className: "view" },
+      h("div", { className: "page", style: { maxWidth: 900, display: "flex", flexDirection: "column", height: "calc(100vh - 40px)" } },
+        h("div", { style: { marginBottom: 16 } },
+          h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+            h("h2", { style: { margin: 0 } }, "Live School Chat"),
+            h("span", { className: "badge-pill live" }, "ONLINE SYNC")
+          ),
+          h("p", { className: "sub", style: { margin: "4px 0 0" } }, "Chat in real-time with everyone currently online on the portal.")
+        ),
+        // Chat Box Panel
+        h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden", background: "#08080a" } },
+          // Messages list area
+          h("div", { style: { flex: 1, padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14 } },
+            messages.length === 0
+              ? h("div", { style: { margin: "auto", color: "var(--muted)", textAlign: "center" } }, "No messages yet. Say hello to your schoolmates! 👋")
+              : messages.map((m) => {
+                  const isMe = m.sender.toLowerCase() === currentUser?.username?.toLowerCase();
+                  const isOwnerMsg = m.role === "owner";
+                  return h("div", { key: m.id || m.timestamp, style: { display: "flex", flexDirection: "column", alignItems: isMe ? "flex-end" : "flex-start" } },
+                    h("div", { style: { display: "flex", alignItems: "center", gap: 6, marginBottom: 4 } },
+                      h("span", { style: { fontSize: 12, fontWeight: 600, color: "#aaa" } }, m.sender),
+                      isOwnerMsg
+                        ? h("span", { className: "badge-pill owner", style: { fontSize: 10, padding: "1px 6px" } }, "OWNER")
+                        : h("span", { className: "badge-pill", style: { fontSize: 10, padding: "1px 6px" } }, "LICENSED"),
+                      h("span", { style: { fontSize: 10, color: "#666" } }, new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+                    ),
+                    h("div", { style: { background: isMe ? "#2563eb" : "#18181b", color: "#fff", padding: "10px 14px", borderRadius: 14, fontSize: 14, maxWidth: "75%", wordBreak: "break-word", border: "1px solid var(--border)" } }, m.text)
+                  );
+                }),
+            h("div", { ref: messagesEndRef })
+          ),
+          // Input Form
+          h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 14, background: "#0e0e11", borderTop: "1px solid var(--border)" } },
+            h("input", {
+              className: "field",
+              type: "text",
+              placeholder: "Type a message...",
+              spellCheck: false,
+              value: inputMessage,
+              onChange: (e) => setInputMessage(e.target.value),
+              style: { flex: 1, margin: 0 }
+            }),
+            h("button", { type: "submit", className: "btn", style: { padding: "0 24px" } }, "Send")
+          )
+        )
+      )
     );
+  }
+
+  // --- Settings Component ---
+  function Toggle({ checked, onChange }) {
+    return h("label", { className: "toggle" }, h("input", { type: "checkbox", checked, onChange: (e) => onChange(e.target.checked) }), h("span"));
   }
 
   function SettingsView({ settings, onSave, onCloakSite }) {
     const [s, setS] = useState(settings);
     const set = (k, v) => setS((p) => ({ ...p, [k]: v }));
-
-    return h(
-      "section",
-      { className: "view", id: "settings" },
-      h(
-        "div",
-        { className: "page", style: { maxWidth: 720 } },
+    return h("section", { className: "view", id: "settings" },
+      h("div", { className: "page", style: { maxWidth: 720 } },
         h("h2", null, "Settings"),
         h("p", { className: "sub" }, "Customize your cloak. Settings are stored in your browser."),
-        h(
-          "div",
-          { className: "setting" },
-          h(
-            "div",
-            { className: "row" },
-            h(
-              "div",
-              null,
-              h("h3", null, "about:blank cloaking"),
-              h(
-                "p",
-                { style: { margin: 0 } },
-                "Launch games in a new about:blank tab so the game's URL never shows in the address bar. When off, games play in a full-screen player inside this tab."
-              )
-            ),
+        h("div", { className: "setting" },
+          h("div", { className: "row" },
+            h("div", null, h("h3", null, "about:blank cloaking"), h("p", { style: { margin: 0 } }, "Launch games in a new about:blank tab.")),
             h(Toggle, { checked: s.cloak, onChange: (v) => set("cloak", v) })
           )
         ),
-        h(
-          "div",
-          { className: "setting" },
+        h("div", { className: "setting" },
           h("h3", null, "Cloaked tab title"),
-          h("p", null, "What the new tab will be called."),
-          h("input", {
-            className: "field",
-            placeholder: "about:blank",
-            spellCheck: false,
-            value: s.title,
-            onChange: (e) => set("title", e.target.value),
-          })
+          h("input", { className: "field", placeholder: "about:blank", spellCheck: false, value: s.title, onChange: (e) => set("title", e.target.value) })
         ),
-        h(
-          "div",
-          { className: "setting" },
+        h("div", { className: "setting" },
           h("h3", null, "Cloaked tab icon"),
-          h("p", null, "Optional favicon URL for the cloaked tab (leave empty for none)."),
-          h("input", {
-            className: "field",
-            placeholder: "https://www.google.com/favicon.ico",
-            spellCheck: false,
-            value: s.icon,
-            onChange: (e) => set("icon", e.target.value),
-          })
+          h("input", { className: "field", placeholder: "https://www.google.com/favicon.ico", spellCheck: false, value: s.icon, onChange: (e) => set("icon", e.target.value) })
         ),
-        h(
-          "div",
-          { className: "setting" },
-          h(
-            "div",
-            { className: "row" },
-            h(
-              "div",
-              null,
-              h("h3", null, "Redirect this tab after launch"),
-              h("p", { style: { margin: 0 } }, "After opening the cloaked tab, send this tab to a decoy site.")
-            ),
+        h("div", { className: "setting" },
+          h("div", { className: "row" },
+            h("div", null, h("h3", null, "Redirect this tab after launch"), h("p", { style: { margin: 0 } }, "Send this tab to a decoy site.")),
             h(Toggle, { checked: s.redirect, onChange: (v) => set("redirect", v) })
           ),
-          h("input", {
-            className: "field",
-            placeholder: DEFAULTS.decoy,
-            style: { marginTop: 14 },
-            spellCheck: false,
-            value: s.decoy,
-            onChange: (e) => set("decoy", e.target.value),
-          })
+          h("input", { className: "field", placeholder: DEFAULTS.decoy, style: { marginTop: 14 }, spellCheck: false, value: s.decoy, onChange: (e) => set("decoy", e.target.value) })
         ),
-        h(
-          "div",
-          { className: "setting" },
+        h("div", { className: "setting" },
           h("h3", null, "Panic key"),
           h("p", null, "Press ", h("b", null, "`"), " (backtick) anywhere to instantly jump to the decoy site."),
-          h(
-            "div",
-            { className: "row" },
-            h("span", { style: { color: "var(--muted)", fontSize: 13 } }, "Enabled"),
-            h(Toggle, { checked: s.panic, onChange: (v) => set("panic", v) })
-          )
+          h("div", { className: "row" }, h("span", { style: { color: "var(--muted)", fontSize: 13 } }, "Enabled"), h(Toggle, { checked: s.panic, onChange: (v) => set("panic", v) }))
         ),
-        h(
-          "div",
-          { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
-          h(
-            "button",
-            {
-              className: "btn",
-              onClick: () =>
-                onSave({
-                  ...s,
-                  title: s.title.trim() || "about:blank",
-                  icon: s.icon.trim(),
-                  decoy: s.decoy.trim() || DEFAULTS.decoy,
-                }),
-            },
-            "Save"
-          ),
+        h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
+          h("button", { className: "btn", onClick: () => onSave({ ...s, title: s.title.trim() || "about:blank", icon: s.icon.trim(), decoy: s.decoy.trim() || DEFAULTS.decoy }) }, "Save"),
           h("button", { className: "btn ghost", onClick: onCloakSite }, "Open whole site in about:blank")
         )
       )
     );
   }
 
-  // --- src/components/Player.tsx ---
+  // --- Player Component ---
   function Player({ game, onClose }) {
     const [nonce, setNonce] = useState(0);
     const frameRef = useRef(null);
     const source = frameSource(game);
-
     useEffect(() => {
       frameRef.current?.focus();
       const onKey = (e) => e.key === "Escape" && onClose();
       addEventListener("keydown", onKey);
       return () => removeEventListener("keydown", onKey);
     }, [onClose]);
-
-    return h(
-      "div",
-      { id: "player" },
-      h(
-        "div",
-        { className: "bar" },
+    return h("div", { id: "player" },
+      h("div", { className: "bar" },
         h("button", { className: "pill", onClick: onClose }, "\u2190 Back"),
         h("div", { className: "ttl" }, game.name),
         h("button", { className: "pill", onClick: () => setNonce((n) => n + 1) }, "Reload"),
         h("button", { className: "pill", onClick: () => frameRef.current?.requestFullscreen?.() }, "Fullscreen")
       ),
-      h("iframe", {
-        key: nonce,
-        ref: frameRef,
-        title: game.name,
-        src: source.src,
-        srcDoc: source.srcdoc,
-        allow: FRAME_ALLOW,
-        allowFullScreen: true,
-        referrerPolicy: "origin",
-      })
+      h("iframe", { key: nonce, ref: frameRef, title: game.name, src: source.src, srcDoc: source.srcdoc, allow: FRAME_ALLOW, allowFullScreen: true, referrerPolicy: "origin" })
     );
   }
 
-  // --- src/components/Modal.tsx ---
   function Modal({ children, onClose }) {
-    return h(
-      "div",
-      {
-        id: "modalBg",
-        onClick: (e) => e.target === e.currentTarget && onClose(),
-      },
-      h("div", { className: "modal" }, children)
-    );
+    return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
   }
 
-  // --- src/components/Soon.tsx ---
   function Soon({ icon, title, text = "Coming soon." }) {
-    return h(
-      "section",
-      { className: "view" },
-      h(
-        "div",
-        { className: "soon" },
-        h("div", { className: "circ" }, icon),
-        h("h2", null, title),
-        h("p", null, text)
-      )
-    );
+    return h("section", { className: "view" }, h("div", { className: "soon" }, h("div", { className: "circ" }, icon), h("h2", null, title), h("p", null, text)));
   }
 
-  // --- Account View (Current User Profile & Logout) ---
+  // --- Account Profile View ---
   function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner }) {
     const [now, setNow] = useState(Date.now());
-    useEffect(() => {
-      const t = setInterval(() => setNow(Date.now()), 1000);
-      return () => clearInterval(t);
-    }, []);
-
+    useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
     const acc = currentUser ? accountsMap[currentUser.username.toLowerCase()] || currentUser : null;
 
-    return h(
-      "section",
-      { className: "view" },
-      h(
-        "div",
-        { className: "page", style: { maxWidth: 680 } },
+    return h("section", { className: "view" },
+      h("div", { className: "page", style: { maxWidth: 680 } },
         h("h2", null, "Account"),
         h("p", { className: "sub" }, "Your active license & session details."),
-        acc
-          ? h(
-              "div",
-              { className: "pop-panel" },
-              h(
-                "div",
-                { className: "row", style: { marginBottom: 16 } },
-                h(
-                  "div",
-                  null,
-                  h(
-                    "div",
-                    { style: { display: "flex", alignItems: "center", gap: 10 } },
-                    h("h3", { style: { fontSize: 22, margin: 0 } }, acc.username),
-                    isOwner
-                      ? h("span", { className: "badge-pill owner" }, "OWNER")
-                      : h("span", { className: "badge-pill live" }, "LICENSED USER")
-                  ),
-                  acc.email ? h("p", { style: { color: "var(--muted)", fontSize: 13, margin: "4px 0 0" } }, acc.email) : null
-                ),
-                h("button", { className: "btn danger sm", onClick: onLogout }, "Log Out")
+        acc ? h("div", { className: "pop-panel" },
+          h("div", { className: "row", style: { marginBottom: 16 } },
+            h("div", null,
+              h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+                h("h3", { style: { fontSize: 22, margin: 0 } }, acc.username),
+                isOwner ? h("span", { className: "badge-pill owner" }, "OWNER") : h("span", { className: "badge-pill live" }, "LICENSED USER")
               ),
-              h(
-                "div",
-                { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginTop: 14 } },
-                h(
-                  "div",
-                  { className: "setting", style: { margin: 0, padding: 14 } },
-                  h("span", { className: "auth-label" }, "License Key"),
-                  h("div", { className: "mono-box" }, acc.licenseKey || "UG-XXXX-XXXX")
-                ),
-                h(
-                  "div",
-                  { className: "setting", style: { margin: 0, padding: 14 } },
-                  h("span", { className: "auth-label" }, "Remaining Time"),
-                  h("div", { style: { fontSize: 16, fontWeight: 600, color: "#fff" } }, formatRemainingTime(acc, now))
-                )
-              ),
-              isOwner
-                ? h(
-                    "div",
-                    { style: { marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 } },
-                    h("span", { style: { fontSize: 13, color: "var(--muted)" } }, "You have Owner privileges to manage accounts & live sessions."),
-                    h("button", { className: "btn sm", onClick: onOpenCreator }, "Open Account Creator Hub")
-                  )
-                : null
+              acc.email ? h("p", { style: { color: "var(--muted)", fontSize: 13, margin: "4px 0 0" } }, acc.email) : null
+            ),
+            h("button", { className: "btn danger sm", onClick: onLogout }, "Log Out")
+          ),
+          h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginTop: 14 } },
+            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
+              h("span", { className: "auth-label" }, "License Key"),
+              h("div", { className: "mono-box" }, acc.licenseKey || "UG-XXXX-XXXX")
+            ),
+            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
+              h("span", { className: "auth-label" }, "Remaining Time"),
+              h("div", { style: { fontSize: 16, fontWeight: 600, color: "#fff" } }, formatRemainingTime(acc, now))
             )
-          : null
+          ),
+          isOwner ? h("div", { style: { marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 } },
+            h("span", { style: { fontSize: 13, color: "var(--muted)" } }, "You have Owner privileges."),
+            h("button", { className: "btn sm", onClick: onOpenCreator }, "Open Account Creator Hub")
+          ) : null
+        ) : null
       )
     );
   }
 
-  // --- Owner Account Creator Hub View ---
+  // --- Account Creator Hub ---
   function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
     const [createModal, setCreateModal] = useState(false);
     const [dbModal, setDbModal] = useState(false);
@@ -2617,517 +1308,172 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [newInfinite, setNewInfinite] = useState(false);
     const [revealedPw, setRevealedPw] = useState({});
     const [now, setNow] = useState(Date.now());
-    const [lastSync, setLastSync] = useState(Date.now());
     const [dbUrlInput, setDbUrlInput] = useState(getDbUrl());
 
-    // 1-second ticker for live remaining license countdowns
+    useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
     useEffect(() => {
-      const t = setInterval(() => setNow(Date.now()), 1000);
-      return () => clearInterval(t);
-    }, []);
-
-    // Auto-refresh live users every 10 seconds
-    useEffect(() => {
-      const poll = setInterval(() => {
-        onRefresh();
-        setLastSync(Date.now());
-      }, 10000);
+      const poll = setInterval(() => { onRefresh(); }, 10000);
       return () => clearInterval(poll);
     }, [onRefresh]);
 
-    const toggleReveal = (uname) => {
-      setRevealedPw((prev) => ({ ...prev, [uname]: !prev[uname] }));
-    };
+    const toggleReveal = (uname) => setRevealedPw((p) => ({ ...p, [uname]: !p[uname] }));
 
     const handleCreateAccount = async (e) => {
       e.preventDefault();
       const u = newUsername.trim();
       const p = newPassword.trim();
-      if (!u || !p) {
-        toast("Please enter both a Username and Password");
-        return;
-      }
+      if (!u || !p) { toast("Please enter both a Username and Password"); return; }
       const hrs = Math.max(1, Math.min(24, Number(newHours) || 1));
       const acc = {
-        username: u,
-        email: newEmail.trim() || "",
-        password: p,
-        licenseKey: genLicenseKey(),
-        infinite: !!newInfinite,
-        durationHours: hrs,
+        username: u, email: newEmail.trim() || "", password: p,
+        licenseKey: genLicenseKey(), infinite: !!newInfinite, durationHours: hrs,
         expiresAt: newInfinite ? null : Date.now() + hrs * 3600 * 1000,
-        role: isOwnerIdentity(u, { email: newEmail.trim() }) ? "owner" : "user",
-        createdAt: Date.now()
+        role: isOwnerIdentity(u, { email: newEmail.trim() }) ? "owner" : "user", createdAt: Date.now()
       };
       await dbSaveAccount(acc);
       await onRefresh();
-      setNewUsername("");
-      setNewPassword("");
-      setNewEmail("");
-      setNewHours(12);
-      setNewInfinite(false);
-      setCreateModal(false);
-      toast(`Account "${u}" created with license!`);
+      setNewUsername(""); setNewPassword(""); setNewEmail(""); setNewHours(12); setNewInfinite(false); setCreateModal(false);
+      toast(`Account "${u}" created!`);
     };
 
     const handleAdjustDuration = async (acc, hoursVal, infVal) => {
       const hrs = Math.max(1, Math.min(24, Number(hoursVal) || 1));
-      const updated = {
-        ...acc,
-        durationHours: hrs,
-        infinite: !!infVal,
-        expiresAt: infVal ? null : Date.now() + hrs * 3600 * 1000
-      };
+      const updated = { ...acc, durationHours: hrs, infinite: !!infVal, expiresAt: infVal ? null : Date.now() + hrs * 3600 * 1000 };
       await dbSaveAccount(updated);
       await onRefresh();
     };
 
-    const handleRevokeAccount = async (username) => {
-      await dbDeleteAccount(username);
-      await onRefresh();
-      toast(`Revoked & deleted "${username}" immediately`);
-    };
-
+    const handleRevokeAccount = async (username) => { await dbDeleteAccount(username); await onRefresh(); toast(`Revoked "${username}"`); };
     const handleKickUser = async (sess) => {
-      const kickedSess = {
-        ...sess,
-        kicked: true,
-        kickedAt: Date.now()
-      };
-      await dbUpsertSession(kickedSess);
+      await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
       await onRefresh();
-      toast(`Kicked "${sess.username}" out of the hub (license kept)`);
+      toast(`Kicked "${sess.username}"`);
     };
 
     const accountsList = Object.values(accountsMap || {}).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const activeSessions = Object.values(sessionsMap || {}).filter((s) => s && !s.kicked && accountsMap[s.username?.toLowerCase()] && now - (s.lastPing || 0) < 35000);
 
-    // Active sessions: online within the last 35 seconds and not kicked, and account still exists
-    const activeSessions = Object.values(sessionsMap || {}).filter(
-      (s) => s && !s.kicked && accountsMap[s.username?.toLowerCase()] && now - (s.lastPing || 0) < 35000
-    );
-
-    return h(
-      "section",
-      { className: "view", id: "creator" },
-      h(
-        "div",
-        { className: "page", style: { maxWidth: 1180 } },
-        h(
-          "div",
-          { className: "row", style: { flexWrap: "wrap", marginBottom: 24 } },
-          h(
-            "div",
-            null,
-            h(
-              "div",
-              { style: { display: "flex", alignItems: "center", gap: 10 } },
+    return h("section", { className: "view", id: "creator" },
+      h("div", { className: "page", style: { maxWidth: 1180 } },
+        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 24 } },
+          h("div", null,
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
               h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
               h("span", { className: "badge-pill owner" }, "OWNER ONLY")
             ),
-            h(
-              "p",
-              { className: "sub", style: { margin: "6px 0 0" } },
-              "Create real licensed accounts, adjust remaining license time, monitor live active users (refreshes every 10s), and kick or revoke access instantly."
-            )
+            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Manage accounts, licenses, and live online users.")
           ),
-          h(
-            "div",
-            { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
-            h(
-              "button",
-              { className: "btn ghost", onClick: () => setDbModal(true) },
-              getDbUrl() ? "\u2601\uFE0F Cloud DB Connected" : "\u2699\uFE0F Cloud DB Setup"
-            ),
-            h(
-              "button",
-              { className: "btn", onClick: () => setCreateModal(true) },
-              "+ Create a New Account"
-            )
+          h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
+            h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "\u2601\uFE0F Cloud DB Connected" : "\u2699\uFE0F Cloud DB Setup"),
+            h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create a New Account")
           )
         ),
-
-        // LIVE ACTIVE USERS PANEL
-        h(
-          "div",
-          { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
-          h(
-            "div",
-            { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
-            h(
-              "div",
-              { style: { display: "flex", alignItems: "center", gap: 10 } },
+        // Live Active Users
+        h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
+          h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
               h("span", { className: "status-dot" }),
               h("h3", { style: { margin: 0, fontSize: 18 } }, `Active Accounts on Site (${activeSessions.length} Live)`),
               h("span", { className: "badge-pill live" }, "Auto-refreshes every 10s")
             ),
-            h(
-              "button",
-              {
-                className: "pill",
-                onClick: () => {
-                  onRefresh();
-                  setLastSync(Date.now());
-                  toast("Live users refreshed");
-                }
-              },
-              "Refresh Now"
-            )
+            h("button", { className: "pill", onClick: () => { onRefresh(); toast("Refreshed"); } }, "Refresh Now")
           ),
           activeSessions.length === 0
-            ? h(
-                "div",
-                { style: { padding: "22px 0", textAlign: "center", color: "var(--muted)", fontSize: 13.5 } },
-                "No active users online right now."
-              )
-            : h(
-                "div",
-                { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))", gap: 14 } },
+            ? h("div", { style: { padding: "22px 0", textAlign: "center", color: "var(--muted)", fontSize: 13.5 } }, "No active users online right now.")
+            : h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))", gap: 14 } },
                 activeSessions.map((sess) => {
                   const acc = accountsMap[sess.username.toLowerCase()];
-                  return h(
-                    "div",
-                    { key: sess.username, className: "pop-panel", style: { background: "#0e0e12" } },
-                    h(
-                      "div",
-                      { className: "row", style: { marginBottom: 10 } },
-                      h(
-                        "div",
-                        { style: { display: "flex", alignItems: "center", gap: 8 } },
+                  return h("div", { key: sess.username, className: "pop-panel", style: { background: "#0e0e12" } },
+                    h("div", { className: "row", style: { marginBottom: 10 } },
+                      h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
                         h("span", { className: "status-dot" }),
                         h("strong", { style: { fontSize: 16 } }, sess.username),
                         acc?.role === "owner" ? h("span", { className: "badge-pill owner" }, "OWNER") : null
                       ),
                       h("span", { style: { fontSize: 12, color: "var(--muted)" } }, `View: ${sess.currentView || "home"}`)
                     ),
-                    h(
-                      "div",
-                      { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 14 } },
-                      "Remaining License: ",
-                      h("strong", { style: { color: "#e4e4e4" } }, formatRemainingTime(acc, now))
-                    ),
-                    h(
-                      "div",
-                      { style: { display: "flex", gap: 8 } },
-                      h(
-                        "button",
-                        {
-                          className: "btn warn sm",
-                          style: { flex: 1 },
-                          onClick: () => handleKickUser(sess)
-                        },
-                        "Kick Out"
-                      ),
-                      h(
-                        "button",
-                        {
-                          className: "btn danger sm",
-                          style: { flex: 1 },
-                          onClick: () => handleRevokeAccount(sess.username)
-                        },
-                        "Revoke"
-                      )
+                    h("div", { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 14 } }, "Remaining: ", h("strong", { style: { color: "#e4e4e4" } }, formatRemainingTime(acc, now))),
+                    h("div", { style: { display: "flex", gap: 8 } },
+                      h("button", { className: "btn warn sm", style: { flex: 1 }, onClick: () => handleKickUser(sess) }, "Kick Out"),
+                      h("button", { className: "btn danger sm", style: { flex: 1 }, onClick: () => handleRevokeAccount(sess.username) }, "Revoke")
                     )
                   );
                 })
               )
         ),
-
-        // ALL CREATED ACCOUNTS POP-OUT PANELS
         h("h3", { style: { fontSize: 20, fontWeight: 600, marginBottom: 14 } }, `Licensed Accounts (${accountsList.length})`),
-        accountsList.length === 0
-          ? h("div", { className: "empty" }, "No accounts created yet. Click '+ Create a New Account' above.")
-          : h(
-              "div",
-              { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
-              accountsList.map((acc) => {
-                const key = acc.username.toLowerCase();
-                const isShown = !!revealedPw[key];
-                const remText = formatRemainingTime(acc, now);
-                const isExpired = remText === "Expired";
-                const isOnline = activeSessions.some((s) => s.username.toLowerCase() === key);
-                const sliderVal = acc.durationHours || 12;
-
-                return h(
-                  "div",
-                  { key: acc.username, className: "pop-panel" },
-                  // Header row: Username + Online/Role badge + Revoke red button
-                  h(
-                    "div",
-                    { className: "row", style: { marginBottom: 14 } },
-                    h(
-                      "div",
-                      { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
-                      h("span", { className: "status-dot" + (isOnline ? "" : isExpired ? " exp" : " off") }),
-                      h("span", { style: { fontSize: 17, fontWeight: 600 } }, acc.username),
-                      acc.role === "owner" ? h("span", { className: "badge-pill owner" }, "OWNER") : null,
-                      isOnline ? h("span", { className: "badge-pill live" }, "ONLINE") : null
-                    ),
-                    h(
-                      "button",
-                      {
-                        className: "btn danger sm",
-                        onClick: () => handleRevokeAccount(acc.username),
-                        title: "Deletes account from database & immediately logs user out"
-                      },
-                      "Revoke"
-                    )
-                  ),
-
-                  // Credentials & License Key Box
-                  h(
-                    "div",
-                    { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, background: "#070709", padding: "12px 14px", borderRadius: 12, border: "1px solid var(--border)" } },
-                    h(
-                      "div",
-                      { className: "row" },
-                      h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Username"),
-                      h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace" } }, acc.username)
-                    ),
-                    h(
-                      "div",
-                      { className: "row" },
-                      h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Password"),
-                      h(
-                        "div",
-                        { style: { display: "flex", alignItems: "center", gap: 8 } },
-                        h(
-                          "span",
-                          { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: isShown ? "normal" : "0.18em" } },
-                          isShown ? acc.password : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
-                        ),
-                        h(
-                          "button",
-                          {
-                            className: "eye-btn",
-                            title: isShown ? "Hide Password" : "Show Password",
-                            onClick: () => toggleReveal(key)
-                          },
-                          isShown ? h(EyeOffIcon) : h(EyeIcon)
-                        )
-                      )
-                    ),
-                    h(
-                      "div",
-                      { className: "row" },
-                      h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "License"),
-                      h("span", { style: { fontSize: 12, fontFamily: "monospace", color: "#bcbcc4" } }, acc.licenseKey || "UG-LICENSE")
-                    ),
-                    h(
-                      "div",
-                      { className: "row" },
-                      h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Remaining Time"),
-                      h(
-                        "span",
-                        { style: { fontSize: 13, fontWeight: 600, color: isExpired ? "#f87171" : "#86efac" } },
-                        remText
-                      )
-                    )
-                  ),
-
-                  // Live License Time Slider (1-24h) + Infinite Checkbox
-                  h(
-                    "div",
-                    { style: { borderTop: "1px solid var(--border)", paddingTop: 12 } },
-                    h(
-                      "div",
-                      { className: "row", style: { marginBottom: 8 } },
-                      h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Adjust License Time (1-24h)"),
-                      h(
-                        "span",
-                        { style: { fontSize: 12.5, fontWeight: 600 } },
-                        acc.infinite ? "Infinite \u221E" : `${sliderVal} hour${sliderVal === 1 ? "" : "s"}`
-                      )
-                    ),
-                    h("input", {
-                      type: "range",
-                      min: 1,
-                      max: 24,
-                      step: 1,
-                      className: "slider",
-                      disabled: !!acc.infinite,
-                      value: sliderVal,
-                      onChange: (e) => handleAdjustDuration(acc, Number(e.target.value), false)
-                    }),
-                    h(
-                      "div",
-                      { className: "row", style: { marginTop: 10 } },
-                      h(
-                        "label",
-                        { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, cursor: "pointer", userSelect: "none" } },
-                        h("input", {
-                          type: "checkbox",
-                          checked: !!acc.infinite,
-                          onChange: (e) => handleAdjustDuration(acc, sliderVal, e.target.checked),
-                          style: { width: 16, height: 16, accentColor: "#e4e4e4", cursor: "pointer" }
-                        }),
-                        "Infinite License"
-                      ),
-                      isOnline
-                        ? h(
-                            "button",
-                            {
-                              className: "btn warn sm",
-                              onClick: () => {
-                                const sess = activeSessions.find((s) => s.username.toLowerCase() === key);
-                                if (sess) handleKickUser(sess);
-                              }
-                            },
-                            "Kick Out"
-                          )
-                        : null
-                    )
-                  )
-                );
-              })
-            )
-      ),
-
-      // CREATE ACCOUNT POPUP MODAL
-      createModal
-        ? h(
-            Modal,
-            { onClose: () => setCreateModal(false) },
-            h("h3", null, "Create account"),
-            h("p", null, "Generate a real licensed account in the database so your friend can log in."),
-            h(
-              "form",
-              { onSubmit: handleCreateAccount, autoComplete: "off" },
-              h(
-                "div",
-                { style: { marginBottom: 12 } },
-                h("label", { className: "auth-label" }, "Username"),
-                h("input", {
-                  className: "field",
-                  placeholder: "Enter username...",
-                  spellCheck: false,
-                  value: newUsername,
-                  onChange: (e) => setNewUsername(e.target.value)
-                })
+        h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
+          accountsList.map((acc) => {
+            const key = acc.username.toLowerCase();
+            const isShown = !!revealedPw[key];
+            const remText = formatRemainingTime(acc, now);
+            const isOnline = activeSessions.some((s) => s.username.toLowerCase() === key);
+            const sliderVal = acc.durationHours || 12;
+            return h("div", { key: acc.username, className: "pop-panel" },
+              h("div", { className: "row", style: { marginBottom: 14 } },
+                h("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
+                  h("span", { className: "status-dot" + (isOnline ? "" : " off") }),
+                  h("span", { style: { fontSize: 17, fontWeight: 600 } }, acc.username),
+                  acc.role === "owner" ? h("span", { className: "badge-pill owner" }, "OWNER") : null,
+                  isOnline ? h("span", { className: "badge-pill live" }, "ONLINE") : null
+                ),
+                h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke")
               ),
-              h(
-                "div",
-                { style: { marginBottom: 12 } },
-                h("label", { className: "auth-label" }, "Password"),
-                h("input", {
-                  className: "field",
-                  type: "text",
-                  placeholder: "Enter password...",
-                  spellCheck: false,
-                  value: newPassword,
-                  onChange: (e) => setNewPassword(e.target.value)
-                })
-              ),
-              h(
-                "div",
-                { style: { marginBottom: 16 } },
-                h("label", { className: "auth-label" }, "Email (Optional - for owner/user lookup)"),
-                h("input", {
-                  className: "field",
-                  type: "email",
-                  placeholder: "friend@example.com (optional)",
-                  spellCheck: false,
-                  value: newEmail,
-                  onChange: (e) => setNewEmail(e.target.value)
-                })
-              ),
-              h(
-                "div",
-                { className: "setting", style: { padding: 14, marginBottom: 18 } },
-                h(
-                  "div",
-                  { className: "row", style: { marginBottom: 8 } },
-                  h("span", { style: { fontSize: 13, fontWeight: 600 } }, "License Time"),
-                  h(
-                    "span",
-                    { style: { fontSize: 13, fontWeight: 600, color: "#fff" } },
-                    newInfinite ? "Infinite \u221E" : `${newHours} hour${Number(newHours) === 1 ? "" : "s"}`
+              h("div", { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, background: "#070709", padding: "12px 14px", borderRadius: 12, border: "1px solid var(--border)" } },
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Password"),
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: isShown ? "normal" : "0.18em" } }, isShown ? acc.password : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"),
+                    h("button", { className: "eye-btn", onClick: () => toggleReveal(key) }, isShown ? h(EyeOffIcon) : h(EyeIcon))
                   )
                 ),
-                h("input", {
-                  type: "range",
-                  min: 1,
-                  max: 24,
-                  step: 1,
-                  className: "slider",
-                  disabled: newInfinite,
-                  value: newHours,
-                  onChange: (e) => setNewHours(Number(e.target.value))
-                }),
-                h(
-                  "div",
-                  { style: { display: "flex", justifyContent: "space-between", fontSize: 11, color: "var(--muted)", marginTop: 4, marginBottom: 10 } },
-                  h("span", null, "1h"),
-                  h("span", null, "6h"),
-                  h("span", null, "12h"),
-                  h("span", null, "18h"),
-                  h("span", null, "24h")
-                ),
-                h(
-                  "label",
-                  { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, cursor: "pointer", userSelect: "none" } },
-                  h("input", {
-                    type: "checkbox",
-                    checked: newInfinite,
-                    onChange: (e) => setNewInfinite(e.target.checked),
-                    style: { width: 16, height: 16, accentColor: "#e4e4e4", cursor: "pointer" }
-                  }),
-                  "Infinite (Never expires)"
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "License"), h("span", { style: { fontSize: 12, fontFamily: "monospace", color: "#bcbcc4" } }, acc.licenseKey)),
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Remaining"), h("span", { style: { fontSize: 13, fontWeight: 600, color: "#86efac" } }, remText))
+              ),
+              h("div", { style: { borderTop: "1px solid var(--border)", paddingTop: 12 } },
+                h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Duration (1-24h)"), h("span", { style: { fontSize: 12.5, fontWeight: 600 } }, acc.infinite ? "Infinite \u221E" : `${sliderVal}h`)),
+                h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: !!acc.infinite, value: sliderVal, onChange: (e) => handleAdjustDuration(acc, Number(e.target.value), false) }),
+                h("div", { className: "row", style: { marginTop: 10 } },
+                  h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, cursor: "pointer" } },
+                    h("input", { type: "checkbox", checked: !!acc.infinite, onChange: (e) => handleAdjustDuration(acc, sliderVal, e.target.checked), style: { width: 16, height: 16, accentColor: "#e4e4e4" } }),
+                    "Infinite License"
+                  )
                 )
-              ),
-              h(
-                "div",
-                { className: "actions" },
-                h("button", { type: "submit", className: "btn" }, "Create"),
-                h("button", { type: "button", className: "btn ghost", onClick: () => setCreateModal(false) }, "Cancel")
               )
+            );
+          })
+        )
+      ),
+      createModal ? h(Modal, { onClose: () => setCreateModal(false) },
+        h("h3", null, "Create account"),
+        h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
+          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Username"), h("input", { className: "field", placeholder: "Username...", value: newUsername, onChange: (e) => setNewUsername(e.target.value) })),
+          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Password"), h("input", { className: "field", type: "text", placeholder: "Password...", value: newPassword, onChange: (e) => setNewPassword(e.target.value) })),
+          h("div", { style: { marginBottom: 16 } }, h("label", { className: "auth-label" }, "Email (Optional)"), h("input", { className: "field", type: "email", placeholder: "email@example.com", value: newEmail, onChange: (e) => setNewEmail(e.target.value) })),
+          h("div", { className: "setting", style: { padding: 14, marginBottom: 18 } },
+            h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 13, fontWeight: 600 } }, "License Time"), h("span", { style: { fontSize: 13, fontWeight: 600 } }, newInfinite ? "Infinite" : `${newHours}h`)),
+            h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: newInfinite, value: newHours, onChange: (e) => setNewHours(Number(e.target.value)) }),
+            h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, cursor: "pointer", marginTop: 10 } },
+              h("input", { type: "checkbox", checked: newInfinite, onChange: (e) => setNewInfinite(e.target.checked), style: { width: 16, height: 16 } }),
+              "Infinite (Never expires)"
             )
-          )
-        : null,
-
-      // CLOUD DATABASE SETUP MODAL
-      dbModal
-        ? h(
-            Modal,
-            { onClose: () => setDbModal(false) },
-            h("h3", null, "Real-Time Cloud Database"),
-            h(
-              "p",
-              null,
-              "To sync accounts, live active users, kicks, and revokes across different friends' computers, paste a free Firebase Realtime Database URL below (e.g. https://your-project-default-rtdb.firebaseio.com)."
-            ),
-            h("input", {
-              className: "field",
-              placeholder: "https://your-app-default-rtdb.firebaseio.com",
-              spellCheck: false,
-              value: dbUrlInput,
-              onChange: (e) => setDbUrlInput(e.target.value),
-              style: { marginBottom: 16 }
-            }),
-            h(
-              "div",
-              { className: "actions" },
-              h(
-                "button",
-                {
-                  className: "btn",
-                  onClick: async () => {
-                    setCustomDbUrl(dbUrlInput);
-                    await onRefresh();
-                    setDbModal(false);
-                    toast(dbUrlInput.trim() ? "Cloud Database connected!" : "Using browser local database");
-                  }
-                },
-                "Save Database URL"
-              ),
-              h("button", { className: "btn ghost", onClick: () => setDbModal(false) }, "Close")
-            )
-          )
-        : null
+          ),
+          h("div", { className: "actions" }, h("button", { type: "submit", className: "btn" }, "Create"), h("button", { type: "button", className: "btn ghost", onClick: () => setCreateModal(false) }, "Cancel"))
+        )
+      ) : null,
+      dbModal ? h(Modal, { onClose: () => setDbModal(false) },
+        h("h3", null, "Real-Time Cloud Database"),
+        h("p", null, "Paste your free Firebase Realtime Database URL below."),
+        h("input", { className: "field", placeholder: "https://your-app-default-rtdb.firebaseio.com", value: dbUrlInput, onChange: (e) => setDbUrlInput(e.target.value), style: { marginBottom: 16 } }),
+        h("div", { className: "actions" },
+          h("button", { className: "btn", onClick: async () => { setCustomDbUrl(dbUrlInput); await onRefresh(); setDbModal(false); toast("Connected!"); } }, "Save"),
+          h("button", { className: "btn ghost", onClick: () => setDbModal(false) }, "Close")
+        )
+      ) : null
     );
   }
 
-  // --- Login Gate Overlay Component (Used when unauthenticated or in standalone login.html) ---
-  function LoginBox({ onLoginSuccess, standalone, toast }) {
+  // --- Login Gate Overlay ---
+  function LoginBox({ onLoginSuccess }) {
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
     const [showPw, setShowPw] = useState(false);
@@ -3139,137 +1485,58 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       setErr("");
       const idClean = identifier.trim();
       const pwClean = password.trim();
-      if (!idClean || !pwClean) {
-        setErr("Please enter your Username and Password.");
-        return;
-      }
+      if (!idClean || !pwClean) { setErr("Please enter Username and Password."); return; }
       setLoading(true);
       const { accounts } = await dbFetchAll();
       const lower = idClean.toLowerCase();
-
-      // Match by username or email
       let matched = accounts[lower];
-      if (!matched) {
-        matched = Object.values(accounts).find(
-          (a) => a.email && a.email.trim().toLowerCase() === lower
-        );
-      }
+      if (!matched) matched = Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === lower);
 
-      // Also allow owner whitelist login with masterOwnerPassword
       if (!matched && isOwnerIdentity(lower, null) && pwClean === AUTH_CONFIG.masterOwnerPassword) {
         matched = {
           username: idClean.includes("@") ? (AUTH_CONFIG.ownerUsernames[0] || "kevin") : idClean,
           email: idClean.includes("@") ? idClean : (AUTH_CONFIG.ownerEmails[0] || ""),
-          password: pwClean,
-          licenseKey: "UG-OWNR-ROOT-0001",
-          infinite: true,
-          expiresAt: null,
-          durationHours: 24,
-          role: "owner",
-          createdAt: Date.now()
+          password: pwClean, licenseKey: "UG-OWNR-ROOT-0001", infinite: true, expiresAt: null, role: "owner", createdAt: Date.now()
         };
         await dbSaveAccount(matched);
       }
 
       if (!matched || matched.password !== pwClean) {
-        setLoading(false);
-        setErr("Invalid username or password. Contact the owner for a license.");
-        return;
+        setLoading(false); setErr("Invalid username or password."); return;
       }
 
       const isOwn = isOwnerIdentity(matched.username, matched);
       if (!isOwn && !matched.infinite && matched.expiresAt && Date.now() >= matched.expiresAt) {
-        setLoading(false);
-        setErr("Your account license has expired. Contact the owner to renew it.");
-        return;
+        setLoading(false); setErr("License has expired."); return;
       }
 
-      const sessionObj = {
-        username: matched.username,
-        email: matched.email || "",
-        role: isOwn ? "owner" : "user",
-        loginAt: Date.now(),
-        lastPing: Date.now(),
-        currentView: "home",
-        kicked: false
-      };
-
+      const sessionObj = { username: matched.username, email: matched.email || "", role: isOwn ? "owner" : "user", loginAt: Date.now(), lastPing: Date.now(), currentView: "home", kicked: false };
       await dbUpsertSession(sessionObj);
       saveCurrentSession(sessionObj);
       setLoading(false);
-      onLoginSuccess(sessionObj, matched);
+      onLoginSuccess(sessionObj);
     };
 
-    return h(
-      "div",
-      { className: "auth-overlay" },
-      h(
-        "div",
-        { className: "auth-box" },
+    return h("div", { className: "auth-overlay" },
+      h("div", { className: "auth-box" },
         h("h1", { className: "auth-logo" }, "unblockedgames"),
-        h("p", { className: "auth-sub" }, "Sign in with your licensed account to access the hub."),
+        h("p", { className: "auth-sub" }, "Sign in with your licensed account."),
         err ? h("div", { className: "auth-err" }, err) : null,
-        h(
-          "form",
-          { onSubmit: handleSubmit, autoComplete: "off" },
-          h(
-            "div",
-            { style: { marginBottom: 14 } },
-            h("label", { className: "auth-label" }, "Username or Email"),
-            h("input", {
-              className: "field",
-              type: "text",
-              placeholder: "Enter username...",
-              spellCheck: false,
-              value: identifier,
-              onChange: (e) => setIdentifier(e.target.value)
-            })
-          ),
-          h(
-            "div",
-            { style: { marginBottom: 20 } },
-            h("label", { className: "auth-label" }, "Password"),
-            h(
-              "div",
-              { style: { position: "relative", display: "flex", alignItems: "center" } },
-              h("input", {
-                className: "field",
-                type: showPw ? "text" : "password",
-                placeholder: "Enter password...",
-                spellCheck: false,
-                value: password,
-                onChange: (e) => setPassword(e.target.value),
-                style: { paddingRight: 44 }
-              }),
-              h(
-                "button",
-                {
-                  type: "button",
-                  className: "eye-btn",
-                  onClick: () => setShowPw((v) => !v),
-                  style: { position: "absolute", right: 7, border: 0, background: "transparent" }
-                },
-                showPw ? h(EyeOffIcon) : h(EyeIcon)
-              )
+        h("form", { onSubmit: handleSubmit, autoComplete: "off" },
+          h("div", { style: { marginBottom: 14 } }, h("label", { className: "auth-label" }, "Username or Email"), h("input", { className: "field", placeholder: "Username...", value: identifier, onChange: (e) => setIdentifier(e.target.value) })),
+          h("div", { style: { marginBottom: 20 } }, h("label", { className: "auth-label" }, "Password"),
+            h("div", { style: { position: "relative", display: "flex", alignItems: "center" } },
+              h("input", { className: "field", type: showPw ? "text" : "password", placeholder: "Password...", value: password, onChange: (e) => setPassword(e.target.value), style: { paddingRight: 44 } }),
+              h("button", { type: "button", className: "eye-btn", onClick: () => setShowPw((v) => !v), style: { position: "absolute", right: 7, border: 0, background: "transparent" } }, showPw ? h(EyeOffIcon) : h(EyeIcon))
             )
           ),
-          h(
-            "button",
-            {
-              type: "submit",
-              className: "btn",
-              disabled: loading,
-              style: { width: "100%" }
-            },
-            loading ? "Verifying License..." : "Sign In"
-          )
+          h("button", { type: "submit", className: "btn", disabled: loading, style: { width: "100%" } }, loading ? "Verifying..." : "Sign In")
         )
       )
     );
   }
 
-
-  // --- src/App.tsx (Main Hub with Real-Time License Verification & Owner Account Creator) ---
+  // --- Main App Component ---
   function App() {
     const [view, setView] = useState("home");
     const [open, setOpen] = useState(false);
@@ -3287,16 +1554,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [sessionsMap, setSessionsMap] = useState({});
 
     const toast = useCallback((msg) => {
-      setToastMsg(msg);
-      setToastOn(true);
+      setToastMsg(msg); setToastOn(true);
       clearTimeout(toastT.current);
       toastT.current = setTimeout(() => setToastOn(false), 2400);
     }, []);
 
-    const navigate = useCallback((v) => {
-      setView(v);
-      mainRef.current?.scrollTo(0, 0);
-    }, []);
+    const navigate = useCallback((v) => { setView(v); mainRef.current?.scrollTo(0, 0); }, []);
 
     const isOwner = useMemo(() => {
       if (!currentUser) return false;
@@ -3304,297 +1567,71 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       return isOwnerIdentity(currentUser.username, acc || currentUser);
     }, [currentUser, accountsMap]);
 
-    // Sync & validate current user session against database (checks Revoke, Kick, and License Expiry)
     const refreshDatabaseAndSession = useCallback(async () => {
       const { accounts, sessions } = await dbFetchAll();
       setAccountsMap(accounts);
       setSessionsMap(sessions);
 
       const saved = getSavedSession();
-      if (!saved || !saved.username) {
-        setCurrentUser(null);
-        return;
-      }
+      if (!saved || !saved.username) { setCurrentUser(null); return; }
 
       const key = saved.username.trim().toLowerCase();
       const acc = accounts[key];
+      if (!acc) { saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Account revoked."); return; }
 
-      // 1. Check if account was REVOKED (deleted from database)
-      if (!acc) {
-        saveCurrentSession(null);
-        setCurrentUser(null);
-        setPlaying(null);
-        toast("Your account was revoked by the owner.");
-        return;
-      }
-
-      // 2. Check if license EXPIRED
       const own = isOwnerIdentity(acc.username, acc);
       if (!own && !acc.infinite && acc.expiresAt && Date.now() >= acc.expiresAt) {
-        await dbDeleteSession(acc.username);
-        saveCurrentSession(null);
-        setCurrentUser(null);
-        setPlaying(null);
-        toast("Your license time has expired.");
-        return;
+        await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("License expired."); return;
       }
 
-      // 3. Check if user was KICKED OUT by the owner
       const remoteSess = sessions[key];
       if (remoteSess && remoteSess.kicked && (!saved.loginAt || (remoteSess.kickedAt || 0) >= saved.loginAt)) {
-        await dbDeleteSession(acc.username);
-        saveCurrentSession(null);
-        setCurrentUser(null);
-        setPlaying(null);
-        toast("You were kicked out of the hub by the owner.");
-        return;
+        await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Kicked out."); return;
       }
 
-      // 4. Send live heartbeat ping so Owner's Active Users panel shows this user live
-      const updatedSess = {
-        username: acc.username,
-        email: acc.email || "",
-        role: own ? "owner" : "user",
-        loginAt: saved.loginAt || Date.now(),
-        lastPing: Date.now(),
-        currentView: view,
-        kicked: false
-      };
-      await dbUpsertSession(updatedSess);
-      const refreshedList = getLocalStore(LS_SESSIONS);
-      setSessionsMap(refreshedList);
+      await dbUpsertSession({ username: acc.username, email: acc.email || "", role: own ? "owner" : "user", loginAt: saved.loginAt || Date.now(), lastPing: Date.now(), currentView: view, kicked: false });
+      setSessionsMap(getLocalStore(LS_SESSIONS));
     }, [view, toast]);
 
-    // Initial check + 5-second heartbeat/revocation listener + cross-tab instant sync
     useEffect(() => {
       refreshDatabaseAndSession();
       const interval = setInterval(refreshDatabaseAndSession, 5000);
-      const onStorage = () => refreshDatabaseAndSession();
-      addEventListener("storage", onStorage);
-      if (bc) bc.onmessage = () => refreshDatabaseAndSession();
-      return () => {
-        clearInterval(interval);
-        removeEventListener("storage", onStorage);
-      };
+      return () => clearInterval(interval);
     }, [refreshDatabaseAndSession]);
 
-    useEffect(() => {
-      const onKey = (e) => {
-        const tag = (document.activeElement?.tagName || "").toUpperCase();
-        if (e.key === "`" && settings.panic && !/INPUT|TEXTAREA|SELECT/.test(tag)) {
-          location.href = settings.decoy;
-        }
-        if (e.key === "Escape") setModal(null);
-      };
-      addEventListener("keydown", onKey);
-      return () => removeEventListener("keydown", onKey);
-    }, [settings.panic, settings.decoy]);
+    const play = useCallback((g) => {
+      if (!settings.cloak) { setPlaying(g); return; }
+      if (!openCloaked(frameSource(g), settings)) toast("Popup blocked");
+    }, [settings, toast]);
 
-    const play = useCallback(
-      (g) => {
-        if (!settings.cloak) {
-          setPlaying(g);
-          return;
-        }
-        if (!openCloaked(frameSource(g), settings)) {
-          toast("Popup blocked \u2014 allow popups for this site");
-        }
-      },
-      [settings, toast]
-    );
-
-    const doCloakSite = () => {
-      if (!cloakSite(settings)) toast("Popup blocked \u2014 allow popups for this site");
-    };
-
-    const copyLink = () => {
-      (navigator.clipboard ? navigator.clipboard.writeText(location.href) : Promise.reject())
-        .then(() => toast("Link copied"))
-        .catch(() => toast("Copy failed"));
-      setModal(null);
-    };
-
-    const handleLogout = async () => {
-      if (currentUser?.username) {
-        await dbDeleteSession(currentUser.username);
-      }
-      saveCurrentSession(null);
-      setCurrentUser(null);
-      setPlaying(null);
-      setView("home");
-      toast("Logged out");
-    };
-
-    const closeBtn = h("button", { className: "btn", onClick: () => setModal(null) }, "Close");
-
-    return h(
-      Fragment,
-      null,
+    return h(Fragment, null,
       h(Stars),
-      !currentUser
-        ? h(LoginBox, {
-            standalone: false,
-            toast,
-            onLoginSuccess: (sess) => {
-              setCurrentUser(sess);
-              refreshDatabaseAndSession();
-              toast(`Welcome, ${sess.username}!`);
-            }
-          })
-        : null,
-      h(Sidebar, {
-        view,
-        open,
-        onToggle: () => setOpen((o) => !o),
-        onNavigate: navigate,
-        isOwner
-      }),
-      h(
-        "div",
-        { id: "topRight", style: { display: "flex", gap: 8, alignItems: "center" } },
-        currentUser
-          ? h(
-              "button",
-              {
-                className: "pill",
-                onClick: () => navigate(isOwner ? "creator" : "account"),
-                title: "Active Account"
-              },
-              isOwner ? `\uD83D\uDC51 ${currentUser.username}` : `\uD83D\uDFE2 ${currentUser.username}`
-            )
-          : null,
+      !currentUser ? h(LoginBox, { onLoginSuccess: (sess) => { setCurrentUser(sess); refreshDatabaseAndSession(); toast(`Welcome, ${sess.username}!`); } }) : null,
+      h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: navigate, isOwner }),
+      h("div", { id: "topRight", style: { display: "flex", gap: 8, alignItems: "center" } },
+        currentUser ? h("button", { className: "pill", onClick: () => navigate(isOwner ? "creator" : "account") }, isOwner ? `\uD83D\uDC51 ${currentUser.username}` : `\uD83D\uDFE2 ${currentUser.username}`) : null,
         h("button", { className: "pill", onClick: () => setModal("links") }, "Get More Links")
       ),
-      h(
-        "div",
-        { id: "footerLinks" },
+      h("div", { id: "footerLinks" },
         h("button", { className: "pill", onClick: () => setModal("privacy") }, "Privacy"),
         h("button", { className: "pill", onClick: () => setModal("dmca") }, "DMCA"),
         h("button", { className: "pill", onClick: () => setModal("partners") }, "Partners")
       ),
-      h(
-        "main",
-        { ref: mainRef },
-        view === "home"
-          ? h(Home, {
-              onNavigate: navigate,
-              onSearch: (q) => {
-                setQuery(q);
-                navigate("games");
-              },
-            })
-          : null,
+      h("main", { ref: mainRef },
+        view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); } }) : null,
         view === "games" ? h(GamesView, { query, onQuery: setQuery, onPlay: play }) : null,
-        view === "chat" ? h(Soon, { icon: h(ChatIcon, { sw: 1.6 }), title: "Chat" }) : null,
+        view === "chat" ? h(ChatView, { currentUser, accountsMap }) : null,
         view === "movies" ? h(Soon, { icon: h(MoviesIcon, { sw: 1.6 }), title: "Movies" }) : null,
         view === "music" ? h(Soon, { icon: h(MusicIcon, { sw: 1.6 }), title: "Music" }) : null,
         view === "ai" ? h(Soon, { icon: h(AiIcon, { sw: 1.6 }), title: "AI" }) : null,
-        view === "account"
-          ? h(AccountProfileView, {
-              currentUser,
-              accountsMap,
-              onLogout: handleLogout,
-              onOpenCreator: () => navigate("creator"),
-              isOwner
-            })
-          : null,
-        view === "creator" && isOwner
-          ? h(AccountCreatorView, {
-              accountsMap,
-              sessionsMap,
-              onRefresh: refreshDatabaseAndSession,
-              toast
-            })
-          : null,
-        view === "settings"
-          ? h(SettingsView, {
-              settings,
-              onSave: (s) => {
-                setSettings(s);
-                saveSettings(s);
-                toast("Settings saved");
-              },
-              onCloakSite: doCloakSite,
-            })
-          : null
+        view === "account" ? h(AccountProfileView, { currentUser, accountsMap, onLogout: async () => { await dbDeleteSession(currentUser.username); saveCurrentSession(null); setCurrentUser(null); setView("home"); }, onOpenCreator: () => navigate("creator"), isOwner }) : null,
+        view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabaseAndSession, toast }) : null,
+        view === "settings" ? h(SettingsView, { settings, onSave: (s) => { setSettings(s); saveSettings(s); toast("Saved"); }, onCloakSite: () => cloakSite(settings) }) : null
       ),
       playing ? h(Player, { game: playing, onClose: () => setPlaying(null) }) : null,
-      modal
-        ? h(
-            Modal,
-            { onClose: () => setModal(null) },
-            modal === "privacy"
-              ? h(
-                  Fragment,
-                  null,
-                  h("h3", null, "Privacy"),
-                  h(
-                    "p",
-                    null,
-                    "unblockedgames does not collect personal data. Your settings are stored only in your browser using local storage."
-                  ),
-                  h("div", { className: "actions" }, closeBtn)
-                )
-              : null,
-            modal === "dmca"
-              ? h(
-                  Fragment,
-                  null,
-                  h("h3", null, "DMCA"),
-                  h(
-                    "p",
-                    null,
-                    "We don't host any games. Each title is embedded straight from the publisher or host that serves it. If you are a rights holder and want something removed, contact the original host."
-                  ),
-                  h("div", { className: "actions" }, closeBtn)
-                )
-              : null,
-            modal === "partners"
-              ? h(
-                  Fragment,
-                  null,
-                  h("h3", null, "Partners"),
-                  h(
-                    "p",
-                    null,
-                    "Games are embedded directly from their original hosts, including Y8, GameDistribution, GitHub Pages and the publishers' own sites."
-                  ),
-                  h("div", { className: "actions" }, closeBtn)
-                )
-              : null,
-            modal === "links"
-              ? h(
-                  Fragment,
-                  null,
-                  h("h3", null, "Get More Links"),
-                  h(
-                    "p",
-                    null,
-                    "Bookmark this page, share it with friends, and open the whole site inside an ",
-                    h("b", null, "about:blank"),
-                    " tab so the address never shows up in the address bar."
-                  ),
-                  h(
-                    "div",
-                    { className: "actions" },
-                    h(
-                      "button",
-                      {
-                        className: "btn",
-                        onClick: () => {
-                          setModal(null);
-                          doCloakSite();
-                        },
-                      },
-                      "Open in about:blank"
-                    ),
-                    h("button", { className: "btn ghost", onClick: copyLink }, "Copy link"),
-                    h("button", { className: "btn ghost", onClick: () => setModal(null) }, "Close")
-                  )
-                )
-              : null
-          )
-        : null,
+      modal ? h(Modal, { onClose: () => setModal(null) },
+        modal === "links" ? h(Fragment, null, h("h3", null, "Get More Links"), h("p", null, "Bookmark this page."), h("div", { className: "actions" }, h("button", { className: "btn", onClick: () => { setModal(null); cloakSite(settings); } }, "Open in about:blank"), h("button", { className: "btn ghost", onClick: () => setModal(null) }, "Close"))) : null
+      ) : null,
       h("div", { id: "toast", className: toastOn ? "show" : "" }, toastMsg)
     );
   }
