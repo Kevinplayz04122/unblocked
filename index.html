@@ -90,7 +90,7 @@ button { cursor: pointer; font-family: inherit; }
 /* Main */
 main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; overflow-y: auto; overflow-x: hidden; transition: left 0.25s ease; }
 #sidebar.open ~ main { left: 190px; }
-.view { min-height: 100%; animation: fade 0.35s ease; }
+.view { height: 100%; animation: fade 0.35s ease; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 /* Pills */
@@ -882,7 +882,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const CreatorIcon = (p) => h(Svg, p, h("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }), h("circle", { cx: "9", cy: "7", r: "4" }), h("line", { x1: "19", y1: "8", x2: "19", y2: "14" }), h("line", { x1: "22", y1: "11", x2: "16", y2: "11" }));
   const EyeIcon = (p) => h(Svg, p, h("path", { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }), h("circle", { cx: "12", cy: "12", r: "3" }));
   const EyeOffIcon = (p) => h(Svg, p, h("path", { d: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" }), h("line", { x1: "1", y1: "1", x2: "23", y2: "23" }));
-  const SettingsIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "3" }), h("path", { d: "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" }));
+  const SettingsIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "3" }), h("path", { d: "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l-.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" }));
   const ChevronIcon = (p) => h(Svg, p, h("path", { d: "m9 18 6-6-6-6" }));
   const SearchIcon = (p) => h(Svg, p, h("circle", { cx: "11", cy: "11", r: "8" }), h("path", { d: "m21 21-4.3-4.3" }));
   const RefreshIcon = (p) => h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
@@ -1041,13 +1041,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Real-Time Live Chat Component ---
+  // --- Real-Time Live Chat Component (Fullscreen + Attachments) ---
   function ChatView({ currentUser, accountsMap }) {
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
+    const [attachment, setAttachment] = useState(null);
     const messagesEndRef = useRef(null);
 
-    // Fetch / listen to global chat room in Firebase
     useEffect(() => {
       const fetchChat = async () => {
         const base = getDbUrl();
@@ -1082,10 +1082,29 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
+    const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert("File size must be under 2MB for cloud sync.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (uploadEvent) => {
+        setAttachment({
+          name: file.name,
+          type: file.type,
+          data: uploadEvent.target.result
+        });
+      };
+      reader.readAsDataURL(file);
+    };
+
     const sendMessage = async (e) => {
       e.preventDefault();
       const text = inputMessage.trim();
-      if (!text || !currentUser) return;
+      if (!text && !attachment) return;
+      if (!currentUser) return;
 
       const acc = accountsMap[currentUser.username.toLowerCase()] || currentUser;
       const isUserOwner = isOwnerIdentity(currentUser.username, acc);
@@ -1094,6 +1113,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         sender: currentUser.username,
         role: isUserOwner ? "owner" : "user",
         text,
+        attachment: attachment || null,
         timestamp: Date.now()
       };
 
@@ -1116,7 +1136,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       }
 
       setInputMessage("");
-      // immediate poll
+      setAttachment(null);
+
       setTimeout(async () => {
         if (base) {
           const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
@@ -1132,21 +1153,18 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       }, 300);
     };
 
-    return h("section", { className: "view" },
-      h("div", { className: "page", style: { maxWidth: 900, display: "flex", flexDirection: "column", height: "calc(100vh - 40px)" } },
-        h("div", { style: { marginBottom: 16 } },
-          h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-            h("h2", { style: { margin: 0 } }, "Live School Chat"),
-            h("span", { className: "badge-pill live" }, "ONLINE SYNC")
-          ),
-          h("p", { className: "sub", style: { margin: "4px 0 0" } }, "Chat in real-time with everyone currently online on the portal.")
-        ),
-        // Chat Box Panel
-        h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden", background: "#08080a" } },
-          // Messages list area
+    return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
+      h("div", { style: { padding: "20px 24px 0", flexShrink: 0 } },
+        h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+          h("h2", { style: { margin: 0, fontSize: 26 } }, "Live School Chat"),
+          h("span", { className: "badge-pill live" }, "FULLSCREEN SYNC")
+        )
+      ),
+      h("div", { style: { flex: 1, display: "flex", flexDirection: "column", padding: "16px 24px 24px", overflow: "hidden" } },
+        h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden", background: "#060608", height: "100%" } },
           h("div", { style: { flex: 1, padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14 } },
             messages.length === 0
-              ? h("div", { style: { margin: "auto", color: "var(--muted)", textAlign: "center" } }, "No messages yet. Say hello to your schoolmates! 👋")
+              ? h("div", { style: { margin: "auto", color: "var(--muted)", textAlign: "center" } }, "No messages yet. Send an image or message to start chatting! 🚀")
               : messages.map((m) => {
                   const isMe = m.sender.toLowerCase() === currentUser?.username?.toLowerCase();
                   const isOwnerMsg = m.role === "owner";
@@ -1158,23 +1176,37 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                         : h("span", { className: "badge-pill", style: { fontSize: 10, padding: "1px 6px" } }, "LICENSED"),
                       h("span", { style: { fontSize: 10, color: "#666" } }, new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
                     ),
-                    h("div", { style: { background: isMe ? "#2563eb" : "#18181b", color: "#fff", padding: "10px 14px", borderRadius: 14, fontSize: 14, maxWidth: "75%", wordBreak: "break-word", border: "1px solid var(--border)" } }, m.text)
+                    h("div", { style: { background: isMe ? "#2563eb" : "#18181b", color: "#fff", padding: "12px 16px", borderRadius: 14, fontSize: 14, maxWidth: "75%", wordBreak: "break-word", border: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 8 } },
+                      m.text ? h("span", null, m.text) : null,
+                      m.attachment ? (
+                        m.attachment.type.startsWith("image/") ?
+                          h("img", { src: m.attachment.data, alt: m.attachment.name, style: { maxWidth: "100%", maxHeight: 260, borderRadius: 8, objectFit: "cover" } }) :
+                          h("a", { href: m.attachment.data, download: m.attachment.name, style: { color: "#93c5fd", textDecoration: "underline", fontSize: "13px" } }, `📎 ${m.attachment.name}`)
+                      ) : null
+                    )
                   );
                 }),
             h("div", { ref: messagesEndRef })
           ),
-          // Input Form
-          h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 14, background: "#0e0e11", borderTop: "1px solid var(--border)" } },
+          attachment ? h("div", { style: { padding: "8px 16px", background: "#111116", borderTop: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" } },
+            h("span", { style: { fontSize: 13, color: "#93c5fd" } }, `Attached: ${attachment.name}`),
+            h("button", { type: "button", className: "btn danger sm", onClick: () => setAttachment(null) }, "Remove")
+          ) : null,
+          h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 16, background: "#0e0e11", borderTop: "1px solid var(--border)", alignItems: "center" } },
+            h("label", { className: "btn ghost", style: { display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 14px", height: 44, cursor: "pointer", margin: 0 } },
+              "📁 Image",
+              h("input", { type: "file", accept: "image/*,*/*", onChange: handleFileChange, style: { display: "none" } })
+            ),
             h("input", {
               className: "field",
               type: "text",
-              placeholder: "Type a message...",
+              placeholder: "Type a message or attach an image...",
               spellCheck: false,
               value: inputMessage,
               onChange: (e) => setInputMessage(e.target.value),
               style: { flex: 1, margin: 0 }
             }),
-            h("button", { type: "submit", className: "btn", style: { padding: "0 24px" } }, "Send")
+            h("button", { type: "submit", className: "btn", style: { padding: "0 28px", height: 44 } }, "Send")
           )
         )
       )
@@ -1368,7 +1400,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create a New Account")
           )
         ),
-        // Live Active Users
         h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
           h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
             h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
