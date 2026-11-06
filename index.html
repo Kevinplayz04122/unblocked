@@ -6,7 +6,7 @@
     <title>unblockedgames</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
 /* Tailwind v4 Preflight Base */
 *, ::after, ::before, ::backdrop, ::file-selector-button {
@@ -46,6 +46,12 @@ button, input, select, optgroup, textarea, ::file-selector-button {
 }
 html, body, #root { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: "Outfit", system-ui, sans-serif; overflow: hidden; }
 button { cursor: pointer; font-family: inherit; }
+
+/* Custom Scrollbars */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.16); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.28); }
 
 #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
@@ -195,19 +201,81 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .badge-pill.brave { background: rgba(251, 84, 43, 0.18); color: #ff8566; border-color: rgba(251, 84, 43, 0.45); }
 .badge-pill.spotify { background: rgba(29, 185, 84, 0.18); color: #4ade80; border-color: rgba(29, 185, 84, 0.45); }
 
-/* Spotify Music Row */
-.song-row { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid transparent; transition: 0.2s; cursor: pointer; }
-.song-row:hover { background: rgba(255,255,255,0.07); border-color: var(--border); }
-.song-row.playing { background: rgba(29, 185, 84, 0.12); border-color: rgba(29, 185, 84, 0.4); }
+/* ============================================================================
+   NETFLIX UI STYLES
+   ============================================================================ */
+.nf-wrap { background: #141414; min-height: 100%; padding-bottom: 80px; color: #fff; position: relative; }
+.nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(20,20,20,0.75) 70%, transparent 100%); backdrop-filter: blur(8px); gap: 20px; flex-wrap: wrap; }
+.nf-logo { color: #e50914; font-size: 28px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; text-shadow: 0 2px 14px rgba(229,9,20,0.45); cursor: pointer; }
+.nf-navlinks { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+.nf-navlink { font-size: 14px; font-weight: 500; color: #e5e5e5; cursor: pointer; transition: 0.2s; background: none; border: 0; }
+.nf-navlink:hover, .nf-navlink.active { color: #fff; font-weight: 700; }
+.nf-hero { position: relative; height: 68vh; min-height: 440px; max-height: 680px; width: 100%; overflow: hidden; display: flex; align-items: flex-end; padding: 0 42px 64px; }
+.nf-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; filter: brightness(0.65); transform: scale(1.03); transition: transform 0.6s ease; }
+.nf-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #141414 0%, rgba(20,20,20,0.85) 38%, rgba(20,20,20,0.2) 75%, transparent 100%), linear-gradient(180deg, transparent 50%, rgba(20,20,20,0.85) 85%, #141414 100%); }
+.nf-hero-content { position: relative; z-index: 5; max-width: 620px; }
+.nf-badge-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13px; font-weight: 700; }
+.nf-n-series { display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.18em; color: #d4d4d8; font-size: 12px; font-weight: 800; }
+.nf-n-series b { color: #e50914; font-size: 18px; font-weight: 900; }
+.nf-match { color: #46d369; font-weight: 700; }
+.nf-age { border: 1px solid rgba(255,255,255,0.4); padding: 1px 6px; font-size: 11px; border-radius: 3px; }
+.nf-hero-title { font-size: clamp(34px, 5vw, 62px); font-weight: 800; line-height: 1.05; margin: 0 0 14px; letter-spacing: -0.02em; text-shadow: 0 4px 24px rgba(0,0,0,0.85); }
+.nf-hero-desc { color: #d4d4d8; font-size: 15px; line-height: 1.5; margin: 0 0 22px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 2px 8px rgba(0,0,0,0.9); }
+.nf-hero-btns { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.nf-btn-play { display: inline-flex; align-items: center; gap: 10px; background: #fff; color: #000; font-weight: 700; font-size: 15.5px; padding: 0 26px; height: 46px; border-radius: 6px; transition: 0.2s; }
+.nf-btn-play:hover { background: rgba(255,255,255,0.82); transform: scale(1.03); }
+.nf-btn-info { display: inline-flex; align-items: center; gap: 10px; background: rgba(109, 109, 110, 0.7); color: #fff; font-weight: 600; font-size: 15.5px; padding: 0 24px; height: 46px; border-radius: 6px; backdrop-filter: blur(8px); transition: 0.2s; }
+.nf-btn-info:hover { background: rgba(109, 109, 110, 0.45); }
+.nf-row-section { padding: 10px 42px 18px; position: relative; z-index: 6; }
+.nf-row-title { font-size: 20px; font-weight: 700; margin: 0 0 12px; color: #e5e5e5; display: flex; align-items: center; gap: 10px; }
+.nf-carousel { display: flex; gap: 14px; overflow-x: auto; padding: 8px 4px 18px; scroll-behavior: smooth; }
+.nf-card { flex: 0 0 195px; border-radius: 8px; overflow: hidden; background: #1f1f1f; position: relative; cursor: pointer; transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.28s ease; border: 1px solid rgba(255,255,255,0.06); }
+.nf-card:hover { transform: scale(1.09) translateY(-6px); z-index: 15; box-shadow: 0 16px 38px rgba(0,0,0,0.9); border-color: rgba(255,255,255,0.3); }
+.nf-card-poster { width: 100%; height: 285px; object-fit: cover; background: #262626; display: block; }
+.nf-card-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(0,0,0,0.92) 100%); opacity: 0; transition: opacity 0.25s; display: flex; flex-direction: column; justify-content: flex-end; padding: 14px; }
+.nf-card:hover .nf-card-overlay { opacity: 1; }
+.nf-play-circle { width: 38px; height: 38px; border-radius: 50%; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; margin-bottom: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.6); }
 
-@media (max-width: 640px) {
-  .quick { gap: 16px; }
-  .page { padding: 28px 18px 90px; }
-  #footerLinks .pill { padding: 6px 12px; }
-  .search { height: 64px; padding: 0 20px; }
-  .ad { display: none; }
-  .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-}
+/* ============================================================================
+   SPOTIFY DESKTOP UI STYLES
+   ============================================================================ */
+.sp-app { display: flex; flex-direction: column; height: 100%; width: 100%; background: #000; color: #fff; overflow: hidden; padding: 8px; gap: 8px; }
+.sp-body { flex: 1; display: flex; gap: 8px; overflow: hidden; min-height: 0; }
+.sp-sidebar { width: 270px; flex-shrink: 0; background: #121212; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; }
+.sp-nav-box { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.sp-lib-box { flex: 1; padding: 12px 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.sp-pl-item { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 6px; cursor: pointer; transition: 0.15s; text-align: left; width: 100%; }
+.sp-pl-item:hover { background: #1f1f1f; }
+.sp-pl-item.active { background: #282828; }
+.sp-pl-cover { width: 46px; height: 46px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.sp-main { flex: 1; background: #121212; border-radius: 8px; overflow-y: auto; position: relative; display: flex; flex-direction: column; }
+.sp-header { padding: 28px 28px 24px; display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap; position: relative; }
+.sp-header-art { width: 192px; height: 192px; border-radius: 6px; box-shadow: 0 12px 42px rgba(0,0,0,0.65); object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 68px; flex-shrink: 0; }
+.sp-action-bar { display: flex; align-items: center; gap: 20px; padding: 18px 28px; }
+.sp-big-play { width: 56px; height: 56px; border-radius: 50%; background: #1ed760; color: #000; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; box-shadow: 0 8px 20px rgba(0,0,0,0.45); transition: transform 0.15s, background 0.15s; }
+.sp-big-play:hover { transform: scale(1.06); background: #3be477; }
+.sp-table { width: 100%; padding: 0 28px 32px; }
+.sp-thead { display: grid; grid-template-columns: 40px 4fr 3fr 90px; align-items: center; padding: 0 16px 8px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #b3b3b3; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.sp-trow { display: grid; grid-template-columns: 40px 4fr 3fr 90px; align-items: center; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: background 0.15s; color: #b3b3b3; font-size: 14px; }
+.sp-trow:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.sp-trow.active { background: rgba(29, 185, 84, 0.14); color: #1ed760; }
+.sp-player-bar { height: 84px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 16px; flex-shrink: 0; }
+
+/* ============================================================================
+   BRAVE CHROMIUM BROWSER SHELL STYLES
+   ============================================================================ */
+.br-shell { display: flex; flex-direction: column; height: 100%; width: 100%; background: #18181b; color: #f4f4f5; overflow: hidden; }
+.br-tabstrip { display: flex; align-items: flex-end; gap: 4px; padding: 8px 12px 0; background: #0c0c0e; overflow-x: auto; flex-shrink: 0; }
+.br-tab { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; max-width: 220px; min-width: 130px; border-radius: 10px 10px 0 0; background: #141418; color: #a1a1aa; font-size: 12.5px; cursor: pointer; transition: 0.15s; border: 1px solid transparent; border-bottom: 0; }
+.br-tab.active { background: #1e1e24; color: #fff; border-color: rgba(255,255,255,0.1); }
+.br-toolbar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #1e1e24; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; flex-wrap: wrap; }
+.br-navbtn { width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #d4d4d8; transition: 0.15s; }
+.br-navbtn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.br-omnibar { flex: 1; min-width: 240px; height: 36px; background: #111115; border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; display: flex; align-items: center; padding: 0 14px; gap: 10px; transition: 0.2s; }
+.br-omnibar:focus-within { border-color: #fb542b; box-shadow: 0 0 0 2px rgba(251, 84, 43, 0.25); }
+.br-bookmarks { display: flex; align-items: center; gap: 6px; padding: 6px 14px; background: #18181d; border-bottom: 1px solid rgba(255,255,255,0.07); overflow-x: auto; font-size: 12px; flex-shrink: 0; }
+.br-bm-item { padding: 3px 10px; border-radius: 999px; color: #d4d4d8; white-space: nowrap; transition: 0.15s; }
+.br-bm-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
     </style>
   </head>
   <body>
@@ -747,34 +815,29 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
    { "slug": "zombsroyaleio", "name": "ZombsRoyale.io", "cat": "Shooter", "embed": "https://zombsroyaleio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/z/zombsroyaleio_retina.webp" }
   ];
 
-  // --- INITIAL CURATED MOVIES, ANIME & SHOWS CATALOG ---
+  // --- NETFLIX MOVIES, ANIME & SERIES CATALOG WITH BACKDROPS & SYNOPSES ---
   const INITIAL_MEDIA = [
-    { id: "tt1375666", tmdb: "27205", title: "Inception", cat: "Movies", year: "2010", rating: "8.8", thumb: "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg", type: "movie" },
-    { id: "tt0816692", tmdb: "157336", title: "Interstellar", cat: "Movies", year: "2014", rating: "8.7", thumb: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", type: "movie" },
-    { id: "tt4633694", tmdb: "324857", title: "Spider-Man: Into the Spider-Verse", cat: "Movies", year: "2018", rating: "8.4", thumb: "https://image.tmdb.org/t/p/w500/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg", type: "movie" },
-    { id: "tt9362722", tmdb: "569094", title: "Spider-Man: Across the Spider-Verse", cat: "Movies", year: "2023", rating: "8.6", thumb: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg", type: "movie" },
-    { id: "tt0468569", tmdb: "155", title: "The Dark Knight", cat: "Movies", year: "2008", rating: "9.0", thumb: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg", type: "movie" },
-    { id: "tt6263850", tmdb: "533535", title: "Deadpool & Wolverine", cat: "Movies", year: "2024", rating: "7.8", thumb: "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", type: "movie" },
-    { id: "tt15239678", tmdb: "693134", title: "Dune: Part Two", cat: "Movies", year: "2024", rating: "8.5", thumb: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg", type: "movie" },
-    { id: "tt4154796", tmdb: "299534", title: "Avengers: Endgame", cat: "Movies", year: "2019", rating: "8.4", thumb: "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg", type: "movie" },
-    { id: "tt6718170", tmdb: "502356", title: "The Super Mario Bros. Movie", cat: "Movies", year: "2023", rating: "7.5", thumb: "https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg", type: "movie" },
-    { id: "tt15398776", tmdb: "872585", title: "Oppenheimer", cat: "Movies", year: "2023", rating: "8.3", thumb: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", type: "movie" },
-    { id: "tt0245429", tmdb: "129", title: "Spirited Away", cat: "Anime", year: "2001", rating: "8.6", thumb: "https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg", type: "movie" },
-    { id: "tt5311514", tmdb: "372058", title: "Your Name (Kimi no Na wa)", cat: "Anime", year: "2016", rating: "8.5", thumb: "https://image.tmdb.org/t/p/w500/q719jXXEzOoYaps6babgKnONONX.jpg", type: "movie" },
-    { id: "tt11032374", tmdb: "635302", title: "Demon Slayer: Mugen Train", cat: "Anime", year: "2020", rating: "8.2", thumb: "https://image.tmdb.org/t/p/w500/h8Rb9gBr48ODIwYUttZNYeMWeUU.jpg", type: "movie" },
-    { id: "tt14331144", tmdb: "810693", title: "Jujutsu Kaisen 0", cat: "Anime", year: "2021", rating: "7.8", thumb: "https://image.tmdb.org/t/p/w500/3pTwMUEavTzVOh6yLN0aEwR7uSy.jpg", type: "movie" },
-    { id: "tt16428256", tmdb: "916224", title: "Suzume", cat: "Anime", year: "2022", rating: "8.0", thumb: "https://image.tmdb.org/t/p/w500/vIeu8WysZrTSFb2uhPViKjX9EcC.jpg", type: "movie" },
-    { id: "tt12343534", tmdb: "95479", title: "Jujutsu Kaisen (Series)", cat: "Anime", year: "2020", rating: "8.6", thumb: "https://image.tmdb.org/t/p/w500/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg", type: "tv" },
-    { id: "tt2560140", tmdb: "1429", title: "Attack on Titan (Series)", cat: "Anime", year: "2013", rating: "9.1", thumb: "https://image.tmdb.org/t/p/w500/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg", type: "tv" },
-    { id: "tt0388629", tmdb: "37854", title: "One Piece (Series)", cat: "Anime", year: "1999", rating: "9.0", thumb: "https://image.tmdb.org/t/p/w500/cMD9Ygz11zjJzAovURpO75Qg7rT.jpg", type: "tv" },
-    { id: "tt9335498", tmdb: "85937", title: "Demon Slayer (Series)", cat: "Anime", year: "2019", rating: "8.7", thumb: "https://image.tmdb.org/t/p/w500/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg", type: "tv" },
-    { id: "tt0903747", tmdb: "1396", title: "Breaking Bad (Series)", cat: "TV Shows", year: "2008", rating: "9.5", thumb: "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg", type: "tv" },
-    { id: "tt4574334", tmdb: "66732", title: "Stranger Things (Series)", cat: "TV Shows", year: "2016", rating: "8.7", thumb: "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg", type: "tv" },
-    { id: "tt2861424", tmdb: "60625", title: "Rick and Morty (Series)", cat: "TV Shows", year: "2013", rating: "9.1", thumb: "https://image.tmdb.org/t/p/w500/gdIrmf2DdY5mgN6ycVP0XlzKzbE.jpg", type: "tv" },
-    { id: "ia-spiderman", title: "Spider-Man (Classic Cartoon)", cat: "Direct Unblocked", year: "1967", rating: "8.0", directEmbed: "https://archive.org/embed/spider-man-1967-animated-series", type: "archive" },
-    { id: "ia-spongebob", title: "SpongeBob Classics Collection", cat: "Direct Unblocked", year: "1999", rating: "9.0", directEmbed: "https://archive.org/embed/spongebob-squarepants-season-1", type: "archive" },
-    { id: "ia-batman", title: "Batman: The Animated Series", cat: "Direct Unblocked", year: "1992", rating: "9.0", directEmbed: "https://archive.org/embed/batman-the-animated-series-1992", type: "archive" },
-    { id: "ia-notld", title: "Night of the Living Dead (Full Movie)", cat: "Direct Unblocked", year: "1968", rating: "7.8", directEmbed: "https://archive.org/embed/night_of_the_living_dead", type: "archive" }
+    { id: "tt9362722", tmdb: "569094", title: "Spider-Man: Across the Spider-Verse", cat: "Movies", year: "2023", rating: "98% Match", age: "PG", thumb: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg", backdrop: "https://image.tmdb.org/t/p/original/4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg", desc: "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People charged with protecting its very existence.", type: "movie" },
+    { id: "tt15239678", tmdb: "693134", title: "Dune: Part Two", cat: "Movies", year: "2024", rating: "97% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg", backdrop: "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg", desc: "Paul Atreides unites with Chani and the Fremen while on a warpath of revenge against the conspirators who destroyed his family.", type: "movie" },
+    { id: "tt6263850", tmdb: "533535", title: "Deadpool & Wolverine", cat: "Movies", year: "2024", rating: "96% Match", age: "R", thumb: "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", backdrop: "https://image.tmdb.org/t/p/original/yDHYTfA3R0jFYba16jBB1ef8oIt.jpg", desc: "Wolverine is recovering from his injuries when he crosses paths with the loudmouth Deadpool. They team up to defeat a common enemy.", type: "movie" },
+    { id: "tt0816692", tmdb: "157336", title: "Interstellar", cat: "Movies", year: "2014", rating: "99% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", backdrop: "https://image.tmdb.org/t/p/original/xJHokMbljvjADYdit5fK5VQsXEG.jpg", desc: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival across the stars.", type: "movie" },
+    { id: "tt1375666", tmdb: "27205", title: "Inception", cat: "Movies", year: "2010", rating: "98% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg", backdrop: "https://image.tmdb.org/t/p/original/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg", desc: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea.", type: "movie" },
+    { id: "tt0468569", tmdb: "155", title: "The Dark Knight", cat: "Movies", year: "2008", rating: "99% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg", backdrop: "https://image.tmdb.org/t/p/original/nMKdUUepR0i5zn0y1T4CsSB5chy.jpg", desc: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest tests.", type: "movie" },
+    { id: "tt4154796", tmdb: "299534", title: "Avengers: Endgame", cat: "Movies", year: "2019", rating: "97% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg", backdrop: "https://image.tmdb.org/t/p/original/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg", desc: "After the devastating events of Infinity War, the Avengers assemble once more in order to reverse Thanos' actions and restore balance.", type: "movie" },
+    { id: "tt15398776", tmdb: "872585", title: "Oppenheimer", cat: "Movies", year: "2023", rating: "95% Match", age: "R", thumb: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", backdrop: "https://image.tmdb.org/t/p/original/fm6KqXpk3M2HVveHwCrBSSBaO0V.jpg", desc: "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.", type: "movie" },
+    { id: "tt6718170", tmdb: "502356", title: "The Super Mario Bros. Movie", cat: "Movies", year: "2023", rating: "94% Match", age: "PG", thumb: "https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg", backdrop: "https://image.tmdb.org/t/p/original/9n2tJBplPbgR2ca05hS5CKXwP2c.jpg", desc: "A Brooklyn plumber named Mario travels through the Mushroom Kingdom with a princess named Peach and an anthropomorphic mushroom named Toad.", type: "movie" },
+    { id: "tt12343534", tmdb: "95479", title: "Jujutsu Kaisen", cat: "Anime", year: "2020", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg", backdrop: "https://image.tmdb.org/t/p/original/gmECX1DvFgdUPjtio2zaL8BPYPu.jpg", desc: "Yuji Itadori joins a secret organization of Jujutsu Sorcerers in order to kill a powerful Curse named Ryomen Sukuna.", type: "tv" },
+    { id: "tt9335498", tmdb: "85937", title: "Demon Slayer: Kimetsu no Yaiba", cat: "Anime", year: "2019", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg", backdrop: "https://image.tmdb.org/t/p/original/nTvM4mhqNlHIvUkI1gVnW6XP7GG.jpg", desc: "A family is attacked by demons and only two members survive - Tanjiro and his sister Nezuko, who is turning into a demon slowly.", type: "tv" },
+    { id: "tt2560140", tmdb: "1429", title: "Attack on Titan", cat: "Anime", year: "2013", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg", backdrop: "https://image.tmdb.org/t/p/original/rqbCbjB19amtOtFQbb3K2lgm2zv.jpg", desc: "After his hometown is destroyed and his mother is killed, young Eren Jaeger vows to cleanse the earth of the giant humanoid Titans.", type: "tv" },
+    { id: "tt0388629", tmdb: "37854", title: "One Piece", cat: "Anime", year: "1999", rating: "98% Match", age: "TV-14", thumb: "https://image.tmdb.org/t/p/w500/cMD9Ygz11zjJzAovURpO75Qg7rT.jpg", backdrop: "https://image.tmdb.org/t/p/original/2rmK7mnchw9Xr3XdiTFSxTTLXqv.jpg", desc: "Monkey D. Luffy sets off on an adventure with his pirate crew in hopes of finding the greatest treasure ever, known as the One Piece.", type: "tv" },
+    { id: "tt5311514", tmdb: "372058", title: "Your Name (Kimi no Na wa)", cat: "Anime", year: "2016", rating: "98% Match", age: "PG", thumb: "https://image.tmdb.org/t/p/w500/q719jXXEzOoYaps6babgKnONONX.jpg", backdrop: "https://image.tmdb.org/t/p/original/dIWwZW7dJJtqC6CgWzYkNVKIUm8.jpg", desc: "Two teenagers share a profound, magical connection upon discovering they are swapping bodies.", type: "movie" },
+    { id: "tt0245429", tmdb: "129", title: "Spirited Away", cat: "Anime", year: "2001", rating: "99% Match", age: "PG", thumb: "https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg", backdrop: "https://image.tmdb.org/t/p/original/Ab8mkHmkYADjU7wQiOkia9BzGvS.jpg", desc: "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits.", type: "movie" },
+    { id: "tt0903747", tmdb: "1396", title: "Breaking Bad", cat: "TV Shows", year: "2008", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg", backdrop: "https://image.tmdb.org/t/p/original/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg", desc: "A chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine with a former student.", type: "tv" },
+    { id: "tt4574334", tmdb: "66732", title: "Stranger Things", cat: "TV Shows", year: "2016", rating: "98% Match", age: "TV-14", thumb: "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg", backdrop: "https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg", desc: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.", type: "tv" },
+    { id: "tt2861424", tmdb: "60625", title: "Rick and Morty", cat: "TV Shows", year: "2013", rating: "97% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/gdIrmf2DdY5mgN6ycVP0XlzKzbE.jpg", backdrop: "https://image.tmdb.org/t/p/original/uGy4DCmM33I7l86W7iCskNkvmLD.jpg", desc: "An animated series that follows the exploits of a super scientist and his not-so-bright grandson across infinite dimensions.", type: "tv" },
+    { id: "ia-spiderman", title: "Spider-Man (Classic Series)", cat: "Direct Unblocked", year: "1967", rating: "95% Match", age: "TV-G", thumb: "https://image.tmdb.org/t/p/w500/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg", directEmbed: "https://archive.org/embed/spider-man-1967-animated-series", desc: "Direct Internet Archive stream — 100% immune to school firewalls.", type: "archive" },
+    { id: "ia-spongebob", title: "SpongeBob Classics Collection", cat: "Direct Unblocked", year: "1999", rating: "99% Match", age: "TV-Y", thumb: "https://image.tmdb.org/t/p/w500/amvtZgiTty0GHIgD56gpouBWrcy.jpg", directEmbed: "https://archive.org/embed/spongebob-squarepants-season-1", desc: "Direct Internet Archive stream — 100% immune to school firewalls.", type: "archive" },
+    { id: "ia-batman", title: "Batman: The Animated Series", cat: "Direct Unblocked", year: "1992", rating: "98% Match", age: "TV-PG", thumb: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg", directEmbed: "https://archive.org/embed/batman-the-animated-series-1992", desc: "Direct Internet Archive stream — 100% immune to school firewalls.", type: "archive" }
   ];
 
   const DEFAULTS = { cloak: true, title: "about:blank", icon: "", redirect: false, decoy: "https://classroom.google.com", panic: true };
@@ -890,7 +953,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("canvas", { id: "stars", ref });
   }
 
-  // --- Sidebar Component (Added Brave Browser Tab) ---
+  // --- Sidebar Component ---
   function Sidebar({ view, open, onToggle, onNavigate, isOwner }) {
     const btn = (id, label, icon) =>
       h("button", { key: id, className: "side-btn" + (view === id ? " active" : ""), title: label, onClick: () => onNavigate(id) }, icon, h("span", null, label));
@@ -901,7 +964,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         btn("chat", "Chat", h(ChatIcon)),
         btn("games", "Games", h(GamesIcon)),
         btn("movies", "Movies & Anime", h(MoviesIcon)),
-        btn("music", "Music", h(MusicIcon)),
+        btn("music", "Spotify", h(MusicIcon)),
         btn("ai", "AI", h(AiIcon))
       ),
       h("div", { className: "spacer" }),
@@ -954,8 +1017,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       h("div", { className: "quick" },
         h("button", { onClick: () => onNavigate("games") }, h("div", { className: "circ" }, h(GamesIcon)), "Games"),
         h("button", { onClick: () => onNavigate("browser") }, h("div", { className: "circ" }, h(BrowserIcon)), "Brave"),
-        h("button", { onClick: () => onNavigate("music") }, h("div", { className: "circ" }, h(MusicIcon)), "Music"),
-        h("button", { onClick: () => onNavigate("movies") }, h("div", { className: "circ" }, h(MoviesIcon)), "Movies"),
+        h("button", { onClick: () => onNavigate("music") }, h("div", { className: "circ" }, h(MusicIcon)), "Spotify"),
+        h("button", { onClick: () => onNavigate("movies") }, h("div", { className: "circ" }, h(MoviesIcon)), "Netflix"),
         h("button", { onClick: () => onNavigate("chat") }, h("div", { className: "circ" }, h(ChatIcon)), "Chat")
       ),
       h("div", { className: "ad" }, "100% FREE \u2022 100% UNDETECTED", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
@@ -1005,23 +1068,31 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // 1. SPOTIFY-STYLE MUSIC HUB (FortiGuard Safe via Apple API + Lofi Streams)
+  // 1. AUTHENTIC SPOTIFY DESKTOP UI (FortiGuard Safe via Apple API + Lofi Streams)
   // ============================================================================
   const PLAYLIST_PRESETS = [
-    { id: "hits", name: "🔥 Today's Top Hits", query: "top hits 2025 2026" },
-    { id: "phonk", name: "⚡ Drift Phonk & Gym", query: "drift phonk" },
-    { id: "rap", name: "🎤 Hip-Hop & Rap", query: "travis scott drake kendrick" },
-    { id: "gaming", name: "🎮 Gaming Beats", query: "electronic gamingncs" },
-    { id: "anime", name: "🌸 Anime Openings", query: "anime opening" },
-    { id: "chill", name: "🌙 Late Night Vibes", query: "the weeknd joji" }
+    { id: "hits", name: "Today's Top Hits", desc: "The biggest songs in the world right now. Cover: Global Chart", color: "#1e3264", icon: "🔥", query: "top hits 2025 2026" },
+    { id: "phonk", name: "Drift Phonk & Gym", desc: "High-energy bass & aggressive phonk for gaming and PRs.", color: "#8d1732", icon: "⚡", query: "drift phonk" },
+    { id: "rap", name: "RapCaviar", desc: "New music from Travis Scott, Kendrick Lamar, Drake & Playboi Carti.", color: "#ba5d07", icon: "🎤", query: "travis scott drake kendrick" },
+    { id: "gaming", name: "Top Gaming Tracks", desc: "The ultimate electronic & NCS soundtrack for your matches.", color: "#148a08", icon: "🎮", query: "electronic gaming ncs" },
+    { id: "anime", name: "Anime Now", desc: "Iconic openings and endings from Jujutsu Kaisen, Demon Slayer & more.", color: "#7358ff", icon: "🌸", query: "anime opening" },
+    { id: "chill", name: "Late Night Vibes", desc: "Smooth R&B and synthwave for late night sessions.", color: "#27856a", icon: "🌙", query: "the weeknd joji" }
   ];
 
   const RADIO_STREAMS = [
-    { trackId: "r1", trackName: "24/7 Lofi Hip-Hop Study Radio", artistName: "SomaFM Groove Salad", artworkUrl100: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=200&q=80", previewUrl: "https://ice1.somafm.com/groovesalad-128-mp3", isLive: true },
-    { trackId: "r2", trackName: "24/7 Synthwave & Cyberpunk Radio", artistName: "SomaFM Space Station", artworkUrl100: "https://images.unsplash.com/photo-1563089145-599997674d42?w=200&q=80", previewUrl: "https://ice1.somafm.com/spacestation-128-mp3", isLive: true },
-    { trackId: "r3", trackName: "24/7 Indie Pop Rocks Radio", artistName: "SomaFM Indie", artworkUrl100: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&q=80", previewUrl: "https://ice1.somafm.com/indiepop-128-mp3", isLive: true },
-    { trackId: "r4", trackName: "24/7 Hacker / DEF CON Beats", artistName: "SomaFM DEF CON Radio", artworkUrl100: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=200&q=80", previewUrl: "https://ice1.somafm.com/defcon-128-mp3", isLive: true }
+    { trackId: "r1", trackName: "24/7 Lofi Hip-Hop Study Beats", artistName: "Lofi Girl / SomaFM Groove Salad", collectionName: "Live 24/7 Stream", trackTimeMillis: 0, artworkUrl100: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=200&q=80", previewUrl: "https://ice1.somafm.com/groovesalad-128-mp3", isLive: true },
+    { trackId: "r2", trackName: "24/7 Synthwave & Cyberpunk Radio", artistName: "SomaFM Space Station", collectionName: "Live 24/7 Stream", trackTimeMillis: 0, artworkUrl100: "https://images.unsplash.com/photo-1563089145-599997674d42?w=200&q=80", previewUrl: "https://ice1.somafm.com/spacestation-128-mp3", isLive: true },
+    { trackId: "r3", trackName: "24/7 Indie Pop & Bedroom Pop", artistName: "SomaFM Indie Pop Rocks", collectionName: "Live 24/7 Stream", trackTimeMillis: 0, artworkUrl100: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&q=80", previewUrl: "https://ice1.somafm.com/indiepop-128-mp3", isLive: true },
+    { trackId: "r4", trackName: "24/7 DEF CON Hacker Electronic Radio", artistName: "SomaFM DEF CON", collectionName: "Live 24/7 Stream", trackTimeMillis: 0, artworkUrl100: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=200&q=80", previewUrl: "https://ice1.somafm.com/defcon-128-mp3", isLive: true }
   ];
+
+  function fmtMs(ms) {
+    if (!ms) return "LIVE";
+    const totalSec = Math.floor(ms / 1000);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${m}:${s < 10 ? "0" : ""}${s}`;
+  }
 
   function MusicView({ toast }) {
     const [searchQ, setSearchQ] = useState("");
@@ -1033,13 +1104,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [loading, setLoading] = useState(false);
     const [currentTrack, setCurrentTrack] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [progress, setProgress] = useState(0);
+    const [curTime, setCurTime] = useState(0);
+    const [durTime, setDurTime] = useState(30);
+    const [volume, setVolume] = useState(0.85);
     const audioRef = useRef(null);
 
     const fetchSongs = useCallback(async (term) => {
       setLoading(true);
       try {
-        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=song&limit=36`);
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=song&limit=40`);
         const data = await res.json();
         setTracks(data.results || []);
       } catch {
@@ -1075,6 +1148,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       }
       setCurrentTrack(t);
       audioRef.current.src = t.previewUrl;
+      audioRef.current.volume = volume;
       audioRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
     };
 
@@ -1094,159 +1168,274 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       playTrack(tracks[nextIdx]);
     };
 
-    return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
-      h("audio", {
-        ref: audioRef,
-        onTimeUpdate: (e) => {
-          const el = e.currentTarget;
-          if (el.duration) setProgress((el.currentTime / el.duration) * 100);
-        },
-        onEnded: nextTrack
-      }),
-      // Main Spotify Layout
-      h("div", { style: { flex: 1, display: "flex", overflow: "hidden", padding: "20px 24px 10px", gap: 20 } },
-        // Left Playlists Panel
-        h("div", { className: "pop-panel", style: { width: 250, flexShrink: 0, display: "flex", flexDirection: "column", gap: 8, overflowY: "auto", background: "#08080b" } },
-          h("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8 } },
-            h("span", { style: { fontSize: 18, fontWeight: 700, color: "#1db954" } }, "● Spotify Hub"),
-            h("span", { className: "badge-pill spotify" }, "UNBLOCKED")
+    const prevTrack = () => {
+      if (!currentTrack || tracks.length === 0) return;
+      const idx = tracks.findIndex((x) => x.trackId === currentTrack.trackId);
+      const prevIdx = (idx - 1 + tracks.length) % tracks.length;
+      playTrack(tracks[prevIdx]);
+    };
+
+    const activePresetObj = useMemo(() => {
+      if (activePlaylist === "liked") return { name: "Liked Songs", desc: "Your personal saved tracks stored in your browser.", color: "#4b22b4", icon: "💜" };
+      if (activePlaylist === "radio") return { name: "24/7 Live Radio", desc: "Non-stop full-length Lofi, Synthwave & Gaming radio streams.", color: "#0d73ec", icon: "📻" };
+      if (activePlaylist === "search") return { name: `Search: "${searchQ}"`, desc: "Top matching tracks from Apple Music CDN.", color: "#1db954", icon: "🔍" };
+      return PLAYLIST_PRESETS.find((p) => p.id === activePlaylist) || PLAYLIST_PRESETS[0];
+    }, [activePlaylist, searchQ]);
+
+    return h("section", { className: "view" },
+      h("div", { className: "sp-app" },
+        h("audio", {
+          ref: audioRef,
+          onTimeUpdate: (e) => {
+            setCurTime(e.currentTarget.currentTime || 0);
+            setDurTime(e.currentTarget.duration || 30);
+          },
+          onEnded: nextTrack
+        }),
+
+        // TOP BODY: LEFT SIDEBAR + MAIN PLAYLIST VIEW
+        h("div", { className: "sp-body" },
+          // Left Spotify Library Sidebar
+          h("div", { className: "sp-sidebar" },
+            h("div", { className: "sp-nav-box" },
+              h("div", { style: { display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 18, color: "#fff" } },
+                h("span", { style: { color: "#1ed760", fontSize: 24 } }, "●"),
+                "Spotify"
+              ),
+              h("form", { onSubmit: handleSearch, style: { display: "flex", alignItems: "center", background: "#242424", borderRadius: 999, padding: "0 12px", height: 38 } },
+                h(SearchIcon),
+                h("input", {
+                  type: "text",
+                  placeholder: "What do you want to play?",
+                  value: searchQ,
+                  onChange: (e) => setSearchQ(e.target.value),
+                  style: { flex: 1, background: "transparent", border: 0, outline: 0, color: "#fff", fontSize: 13, paddingLeft: 8 }
+                })
+              )
+            ),
+            h("div", { className: "sp-lib-box" },
+              h("div", { style: { padding: "4px 10px 8px", fontSize: 12, fontWeight: 700, color: "#b3b3b3", letterSpacing: "0.06em" } }, "YOUR LIBRARY"),
+              // Liked Songs
+              h("button", {
+                className: "sp-pl-item" + (activePlaylist === "liked" ? " active" : ""),
+                onClick: () => setActivePlaylist("liked")
+              },
+                h("div", { className: "sp-pl-cover", style: { background: "linear-gradient(135deg, #450af5, #c4efd9)" } }, "🤍"),
+                h("div", { style: { minWidth: 0 } },
+                  h("div", { style: { fontWeight: 600, fontSize: 14, color: activePlaylist === "liked" ? "#1ed760" : "#fff" } }, "Liked Songs"),
+                  h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, `Playlist • ${likedTracks.length} songs`)
+                )
+              ),
+              // 24/7 Live Radio
+              h("button", {
+                className: "sp-pl-item" + (activePlaylist === "radio" ? " active" : ""),
+                onClick: () => setActivePlaylist("radio")
+              },
+                h("div", { className: "sp-pl-cover", style: { background: "linear-gradient(135deg, #0d73ec, #1ed760)" } }, "📻"),
+                h("div", { style: { minWidth: 0 } },
+                  h("div", { style: { fontWeight: 600, fontSize: 14, color: activePlaylist === "radio" ? "#1ed760" : "#fff" } }, "24/7 Lofi & Synth Radio"),
+                  h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, "Live Stream • Non-stop")
+                )
+              ),
+              // Made For You Presets
+              PLAYLIST_PRESETS.map((p) =>
+                h("button", {
+                  key: p.id,
+                  className: "sp-pl-item" + (activePlaylist === p.id ? " active" : ""),
+                  onClick: () => setActivePlaylist(p.id)
+                },
+                  h("div", { className: "sp-pl-cover", style: { background: p.color } }, p.icon),
+                  h("div", { style: { minWidth: 0 } },
+                    h("div", { style: { fontWeight: 600, fontSize: 14, color: activePlaylist === p.id ? "#1ed760" : "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, p.name),
+                    h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, "Spotify Playlist")
+                  )
+                )
+              )
+            )
           ),
-          h("div", { className: "auth-label", style: { marginTop: 4 } }, "Your Library"),
-          h("button", {
-            className: "chip" + (activePlaylist === "liked" ? " on" : ""),
-            style: { textAlign: "left", width: "100%", borderRadius: 10, padding: "10px 12px" },
-            onClick: () => setActivePlaylist("liked")
-          }, `💚 Liked Songs (${likedTracks.length})`),
-          h("button", {
-            className: "chip" + (activePlaylist === "radio" ? " on" : ""),
-            style: { textAlign: "left", width: "100%", borderRadius: 10, padding: "10px 12px" },
-            onClick: () => setActivePlaylist("radio")
-          }, "📻 24/7 Live Radio Streams"),
-          h("div", { className: "auth-label", style: { marginTop: 12 } }, "Recommended Playlists"),
-          PLAYLIST_PRESETS.map((p) =>
-            h("button", {
-              key: p.id,
-              className: "chip" + (activePlaylist === p.id ? " on" : ""),
-              style: { textAlign: "left", width: "100%", borderRadius: 10, padding: "10px 12px" },
-              onClick: () => setActivePlaylist(p.id)
-            }, p.name)
+
+          // Main Spotify Content Area
+          h("div", { className: "sp-main" },
+            // Dynamic Gradient Playlist Header
+            h("div", {
+              className: "sp-header",
+              style: { background: `linear-gradient(180deg, ${activePresetObj.color} 0%, rgba(18,18,18,0.6) 100%)` }
+            },
+              tracks[0]?.artworkUrl100
+                ? h("img", { src: tracks[0].artworkUrl100.replace("100x100", "400x400"), className: "sp-header-art" })
+                : h("div", { className: "sp-header-art", style: { background: activePresetObj.color } }, activePresetObj.icon),
+              h("div", { style: { flex: 1, minWidth: 240 } },
+                h("div", { style: { fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" } }, "Public Playlist"),
+                h("h1", { style: { fontSize: "clamp(32px, 5vw, 68px)", fontWeight: 800, lineHeight: 1.05, margin: "6px 0 12px", letterSpacing: "-0.03em" } }, activePresetObj.name),
+                h("p", { style: { color: "rgba(255,255,255,0.75)", fontSize: 14, marginBottom: 8 } }, activePresetObj.desc),
+                h("div", { style: { fontSize: 13, fontWeight: 600, color: "#fff" } }, `Spotify • ${tracks.length} songs`)
+              )
+            ),
+
+            // Big Green Play Button Action Bar
+            h("div", { className: "sp-action-bar" },
+              h("button", {
+                className: "sp-big-play",
+                onClick: () => tracks.length > 0 && playTrack(currentTrack || tracks[0]),
+                title: "Play"
+              }, isPlaying ? "⏸" : "▶"),
+              h("button", {
+                className: "btn ghost sm",
+                style: { borderRadius: 999 },
+                onClick: () => {
+                  if (tracks.length > 0) {
+                    const rand = tracks[Math.floor(Math.random() * tracks.length)];
+                    playTrack(rand);
+                  }
+                }
+              }, "🔀 Shuffle Play")
+            ),
+
+            // 4-Column Tracklist Table
+            h("div", { className: "sp-table" },
+              h("div", { className: "sp-thead" },
+                h("span", null, "#"),
+                h("span", null, "Title"),
+                h("span", null, "Album"),
+                h("span", { style: { textAlign: "right" } }, "⏱")
+              ),
+              loading ? h("div", { className: "empty" }, "Loading tracks...") :
+              tracks.length === 0 ? h("div", { className: "empty" }, "No songs found.") :
+              tracks.map((t, i) => {
+                const isCurr = currentTrack && currentTrack.trackId === t.trackId;
+                const isLiked = likedTracks.some((x) => x.trackId === t.trackId);
+                return h("div", {
+                  key: t.trackId || i,
+                  className: "sp-trow" + (isCurr ? " active" : ""),
+                  onClick: () => playTrack(t)
+                },
+                  h("span", { style: { fontWeight: 600, color: isCurr ? "#1ed760" : "#b3b3b3" } }, isCurr && isPlaying ? "ılı" : i + 1),
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 12, minWidth: 0, paddingRight: 12 } },
+                    h("img", {
+                      src: (t.artworkUrl100 || "").replace("100x100", "200x200"),
+                      style: { width: 40, height: 40, borderRadius: 4, objectFit: "cover", flexShrink: 0, background: "#282828" }
+                    }),
+                    h("div", { style: { minWidth: 0 } },
+                      h("div", { style: { fontWeight: 600, color: isCurr ? "#1ed760" : "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, t.trackName),
+                      h("div", { style: { fontSize: 12.5, color: "#b3b3b3", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, t.artistName)
+                    )
+                  ),
+                  h("div", { style: { whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", paddingRight: 12, fontSize: 13 } }, t.collectionName || "Single"),
+                  h("div", { style: { display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 12 } },
+                    h("button", {
+                      onClick: (e) => toggleLike(e, t),
+                      style: { fontSize: 14, opacity: isLiked ? 1 : 0.55 }
+                    }, isLiked ? "💚" : "🤍"),
+                    h("span", { style: { fontSize: 13, width: 38, textAlign: "right" } }, fmtMs(t.trackTimeMillis))
+                  )
+                );
+              })
+            )
           )
         ),
 
-        // Right Songs & Search Area
-        h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", background: "linear-gradient(180deg, #112218 0%, #09090c 38%)" } },
-          // Top Search Bar
-          h("form", { onSubmit: handleSearch, style: { display: "flex", gap: 10, marginBottom: 16 } },
-            h("input", {
-              className: "field",
-              placeholder: "Search any song, artist, or album (e.g. Travis Scott, Playboi Carti, Phonk)...",
-              value: searchQ,
-              onChange: (e) => setSearchQ(e.target.value),
-              style: { flex: 1, background: "rgba(0,0,0,0.55)" }
-            }),
-            h("button", { type: "submit", className: "btn", style: { background: "#1db954", color: "#000" } }, "Search")
+        // BOTTOM PERSISTENT SPOTIFY DOCK
+        h("div", { className: "sp-player-bar" },
+          // Left: Now Playing Info
+          currentTrack ? h("div", { style: { display: "flex", alignItems: "center", gap: 14, width: 280, minWidth: 0 } },
+            h("img", { src: currentTrack.artworkUrl100.replace("100x100", "200x200"), style: { width: 56, height: 56, borderRadius: 6, objectFit: "cover" } }),
+            h("div", { style: { minWidth: 0, flex: 1 } },
+              h("div", { style: { fontWeight: 600, fontSize: 14, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, currentTrack.trackName),
+              h("div", { style: { fontSize: 12, color: "#b3b3b3", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, currentTrack.artistName)
+            ),
+            h("button", { onClick: (e) => toggleLike(e, currentTrack), style: { fontSize: 16 } }, likedTracks.some((x) => x.trackId === currentTrack.trackId) ? "💚" : "🤍")
+          ) : h("div", { style: { width: 280, fontSize: 13, color: "#b3b3b3" } }, "Pick any song to start playing"),
+
+          // Center: Transport + Scrubber
+          h("div", { style: { flex: 1, maxWidth: 560, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 } },
+            h("div", { style: { display: "flex", alignItems: "center", gap: 20 } },
+              h("button", { onClick: prevTrack, style: { color: "#b3b3b3", fontSize: 16 } }, "⏮"),
+              h("button", {
+                onClick: () => currentTrack && playTrack(currentTrack),
+                style: { width: 34, height: 34, borderRadius: "50%", background: "#fff", color: "#000", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800 }
+              }, isPlaying ? "⏸" : "▶"),
+              h("button", { onClick: nextTrack, style: { color: "#b3b3b3", fontSize: 16 } }, "⏭")
+            ),
+            h("div", { style: { width: "100%", display: "flex", alignItems: "center", gap: 10, fontSize: 11, color: "#b3b3b3" } },
+              h("span", null, fmtMs(curTime * 1000)),
+              h("input", {
+                type: "range",
+                min: 0,
+                max: durTime || 30,
+                step: 0.2,
+                value: curTime,
+                onChange: (e) => {
+                  const val = Number(e.target.value);
+                  setCurTime(val);
+                  if (audioRef.current) audioRef.current.currentTime = val;
+                },
+                className: "slider",
+                style: { height: 4 }
+              }),
+              h("span", null, currentTrack?.isLive ? "LIVE" : fmtMs(durTime * 1000))
+            )
           ),
 
-          // Tracklist Scroll Container
-          h("div", { style: { flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 6, paddingRight: 4 } },
-            loading ? h("div", { className: "empty" }, "Loading tracks...") :
-            tracks.length === 0 ? h("div", { className: "empty" }, "No tracks in this playlist yet.") :
-            tracks.map((t, i) => {
-              const isCurr = currentTrack && currentTrack.trackId === t.trackId;
-              const isLiked = likedTracks.some((x) => x.trackId === t.trackId);
-              return h("div", {
-                key: t.trackId || i,
-                className: "song-row" + (isCurr ? " playing" : ""),
-                onClick: () => playTrack(t)
+          // Right: Volume Slider
+          h("div", { style: { width: 220, display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 10 } },
+            h("span", { style: { fontSize: 14, color: "#b3b3b3" } }, "🔊"),
+            h("input", {
+              type: "range",
+              min: 0,
+              max: 1,
+              step: 0.02,
+              value: volume,
+              onChange: (e) => {
+                const v = Number(e.target.value);
+                setVolume(v);
+                if (audioRef.current) audioRef.current.volume = v;
               },
-                h("span", { style: { width: 24, fontSize: 13, color: isCurr ? "#1db954" : "var(--muted)", fontWeight: 600 } }, isCurr && isPlaying ? "▶" : i + 1),
-                h("img", {
-                  src: (t.artworkUrl100 || "").replace("100x100", "200x200"),
-                  alt: t.trackName,
-                  style: { width: 44, height: 44, borderRadius: 8, objectFit: "cover", background: "#18181b" }
-                }),
-                h("div", { style: { flex: 1, minWidth: 0 } },
-                  h("div", { style: { fontWeight: 600, fontSize: 14.5, color: isCurr ? "#4ade80" : "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, t.trackName),
-                  h("div", { style: { fontSize: 12.5, color: "var(--muted)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, t.artistName)
-                ),
-                t.isLive ? h("span", { className: "badge-pill live" }, "24/7 LIVE") : null,
-                h("button", {
-                  className: "eye-btn",
-                  onClick: (e) => toggleLike(e, t),
-                  title: "Like Song",
-                  style: { color: isLiked ? "#4ade80" : "#888" }
-                }, isLiked ? "💚" : "🤍")
-              );
+              className: "slider",
+              style: { width: 100, height: 4 }
             })
           )
         )
-      ),
-
-      // Bottom Persistent Spotify Player Bar
-      h("div", { style: { height: 84, margin: "0 24px 16px", background: "#0c0c10", border: "1px solid var(--border)", borderRadius: 16, padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20 } },
-        currentTrack ? h("div", { style: { display: "flex", alignItems: "center", gap: 12, width: 260 } },
-          h("img", { src: currentTrack.artworkUrl100, style: { width: 52, height: 52, borderRadius: 10, objectFit: "cover" } }),
-          h("div", { style: { minWidth: 0 } },
-            h("div", { style: { fontWeight: 600, fontSize: 14, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, currentTrack.trackName),
-            h("div", { style: { fontSize: 12, color: "var(--muted)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, currentTrack.artistName)
-          )
-        ) : h("div", { style: { width: 260, fontSize: 13, color: "var(--muted)" } }, "Select any song to start listening"),
-
-        h("div", { style: { flex: 1, maxWidth: 460, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 } },
-          h("div", { style: { display: "flex", alignItems: "center", gap: 14 } },
-            h("button", {
-              className: "btn sm",
-              style: { background: "#1db954", color: "#000", borderRadius: 999, padding: "0 20px", fontWeight: 700 },
-              onClick: () => currentTrack && playTrack(currentTrack)
-            }, isPlaying ? "⏸ Pause" : "▶ Play"),
-            h("button", { className: "btn ghost sm", onClick: nextTrack }, "⏭ Next")
-          ),
-          h("div", { style: { width: "100%", height: 5, background: "#222", borderRadius: 999, overflow: "hidden" } },
-            h("div", { style: { width: `${progress}%`, height: "100%", background: "#1db954", transition: "width 0.2s" } })
-          )
-        ),
-
-        h("div", { style: { width: 180, textAlign: "right", fontSize: 12, color: "var(--muted)" } }, "Apple / Icecast Stream")
       )
     );
   }
 
   // ============================================================================
-  // 2. MOVIES, TV & ANIME STREAMING HUB (Multi-Server + Live Search)
+  // 2. NETFLIX CINEMA UI FOR MOVIES, ANIME & TV SHOWS
   // ============================================================================
   function MoviesView({ toast }) {
     const [cat, setCat] = useState("All");
     const [searchQ, setSearchQ] = useState("");
     const [mediaList, setMediaList] = useState(INITIAL_MEDIA);
+    const [heroItem, setHeroItem] = useState(INITIAL_MEDIA[0]);
     const [activeMedia, setActiveMedia] = useState(null);
     const [serverIdx, setServerIdx] = useState(0);
     const [season, setSeason] = useState(1);
     const [episode, setEpisode] = useState(1);
     const [searching, setSearching] = useState(false);
 
-    // Live Search for Any Anime or Movie using Jikan / iTunes Lookup
     const handleSearchMedia = async (e) => {
       e.preventDefault();
       const q = searchQ.trim();
       if (!q) { setMediaList(INITIAL_MEDIA); return; }
       setSearching(true);
       try {
-        // Search both Movies (iTunes API) and Anime (Jikan API) simultaneously
         const [itunesRes, animeRes] = await Promise.all([
           fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(q)}&media=movie&limit=12`).then((r) => r.json()).catch(() => ({ results: [] })),
           fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(q)}&limit=12`).then((r) => r.json()).catch(() => ({ data: [] }))
         ]);
 
         const foundMovies = (itunesRes.results || []).map((m) => ({
-          id: m.trackName,
+          id: "it_" + m.trackId,
           tmdb: "",
           title: m.trackName,
           cat: "Movies",
           year: (m.releaseDate || "").slice(0, 4) || "Movie",
-          rating: "HD",
+          rating: "96% Match",
+          age: m.contentAdvisoryRating || "PG-13",
           thumb: (m.artworkUrl100 || "").replace("100x100bb", "500x500bb"),
-          type: "search_embed",
-          searchQuery: m.trackName
+          backdrop: (m.artworkUrl100 || "").replace("100x100bb", "1200x1200bb"),
+          desc: m.longDescription || m.shortDescription || `Watch ${m.trackName} in full HD.`,
+          type: "search_embed"
         }));
 
         const foundAnime = (animeRes.data || []).map((a) => ({
@@ -1255,23 +1444,23 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           title: a.title_english || a.title,
           cat: "Anime",
           year: a.year || "Anime",
-          rating: a.score || "8.5",
+          rating: "98% Match",
+          age: "TV-14",
           thumb: a.images?.jpg?.large_image_url || "",
-          type: "anime_search",
-          searchQuery: a.title_english || a.title
+          backdrop: a.images?.jpg?.large_image_url || "",
+          desc: a.synopsis || `Watch ${a.title} episodes subbed & dubbed.`,
+          type: "anime_search"
         }));
 
         const localMatches = INITIAL_MEDIA.filter((x) => x.title.toLowerCase().includes(q.toLowerCase()));
-        setMediaList([...localMatches, ...foundMovies, ...foundAnime]);
+        const combined = [...localMatches, ...foundMovies, ...foundAnime];
+        setMediaList(combined);
+        if (combined[0]) setHeroItem(combined[0]);
       } catch {
         toast("Showing local library results");
       }
       setSearching(false);
     };
-
-    const filtered = useMemo(() => {
-      return mediaList.filter((m) => cat === "All" || m.cat === cat);
-    }, [mediaList, cat]);
 
     const getEmbedUrl = (item, srv) => {
       if (item.type === "archive") return item.directEmbed;
@@ -1280,186 +1469,301 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         if (srv === 0) return `https://vidsrc.xyz/embed/tv/${id}/${season}-${episode}`;
         if (srv === 1) return `https://vidsrc.to/embed/tv/${id}/${season}/${episode}`;
         if (srv === 2) return `https://multiembed.mov/?video_id=${item.id}&s=${season}&e=${episode}`;
-        return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
+        if (srv === 3) return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
+        return `https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
       }
       if (item.type === "movie") {
         if (srv === 0) return `https://vidsrc.xyz/embed/movie/${id}`;
         if (srv === 1) return `https://vidsrc.to/embed/movie/${id}`;
         if (srv === 2) return `https://multiembed.mov/?video_id=${item.id}`;
-        return `https://www.2embed.cc/embed/${id}`;
+        if (srv === 3) return `https://www.2embed.cc/embed/${id}`;
+        return `https://vidsrc.me/embed/movie?tmdb=${id}`;
       }
-      // Dynamic searched movie or anime fallback
       const qEnc = encodeURIComponent(item.title);
-      if (srv === 0) return `https://archive.org/details/movies?and[]=${qEnc}`;
-      return `https://www.bing.com/videos/search?q=${qEnc}+full+episode+hd`;
+      return `https://archive.org/details/movies?and[]=${qEnc}`;
     };
 
-    return h("section", { className: "view" },
-      h("div", { className: "page" },
-        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 12 } },
-          h("div", null,
-            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-              h("h2", { style: { margin: 0 } }, "Movies, Anime & TV"),
-              h("span", { className: "badge-pill live" }, "FREE HD STREAMING")
-            ),
-            h("p", { className: "sub", style: { margin: "4px 0 0" } }, "Watch full movies, anime series, and shows for free. Switch servers at the top of the player if a host is blocked by school Wi-Fi.")
-          )
-        ),
-
-        // Active Video Player Modal / Theatre Box
-        activeMedia ? h("div", { className: "pop-panel", style: { marginBottom: 28, padding: 16, background: "#050507" } },
-          h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 12, gap: 10 } },
-            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-              h("button", { className: "btn ghost sm", onClick: () => setActiveMedia(null) }, "✕ Close Player"),
-              h("h3", { style: { margin: 0, fontSize: 18 } }, activeMedia.title),
-              h("span", { className: "badge-pill" }, activeMedia.cat)
-            ),
-            // Server Switcher
-            h("div", { style: { display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" } },
-              activeMedia.type === "tv" ? h(Fragment, null,
-                h("label", { style: { fontSize: 12, color: "var(--muted)" } }, "Season:"),
-                h("input", { type: "number", min: 1, max: 30, value: season, onChange: (e) => setSeason(Number(e.target.value) || 1), className: "field", style: { width: 58, height: 32, padding: "0 8px" } }),
-                h("label", { style: { fontSize: 12, color: "var(--muted)" } }, "Ep:"),
-                h("input", { type: "number", min: 1, max: 100, value: episode, onChange: (e) => setEpisode(Number(e.target.value) || 1), className: "field", style: { width: 58, height: 32, padding: "0 8px", marginRight: 8 } })
-              ) : null,
-              [0, 1, 2, 3].map((idx) =>
-                h("button", {
-                  key: idx,
-                  className: "chip" + (serverIdx === idx ? " on" : ""),
-                  onClick: () => setServerIdx(idx)
-                }, `Server ${idx + 1}`)
-              )
-            )
-          ),
-          h("div", { style: { position: "relative", width: "100%", height: "62vh", background: "#000", borderRadius: 12, overflow: "hidden", border: "1px solid var(--border)" } },
-            h("iframe", {
-              key: `${activeMedia.id}_${serverIdx}_${season}_${episode}`,
-              src: getEmbedUrl(activeMedia, serverIdx),
-              style: { width: "100%", height: "100%", border: 0 },
-              allow: FRAME_ALLOW,
-              allowFullScreen: true,
-              referrerPolicy: "origin"
-            })
-          )
-        ) : null,
-
-        // Search & Filter Toolbar
-        h("form", { className: "toolbar", onSubmit: handleSearchMedia },
-          h("div", { className: "search" },
-            h(SearchIcon),
-            h("input", {
-              type: "text",
-              placeholder: "Search any Movie, Anime, or Series...",
-              value: searchQ,
-              onChange: (e) => {
-                setSearchQ(e.target.value);
-                if (!e.target.value.trim()) setMediaList(INITIAL_MEDIA);
-              }
-            })
-          ),
-          h("button", { type: "submit", className: "btn", style: { height: 52 } }, searching ? "Searching..." : "Search All")
-        ),
-
-        h("div", { className: "chips" },
-          ["All", "Movies", "Anime", "TV Shows", "Direct Unblocked"].map((c) =>
-            h("button", { key: c, className: "chip" + (cat === c ? " on" : ""), onClick: () => setCat(c) }, c)
-          )
-        ),
-
-        h("div", { className: "grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(185px, 1fr))" } },
-          filtered.map((item) =>
+    const renderRow = (title, items) => {
+      if (!items || items.length === 0) return null;
+      return h("div", { className: "nf-row-section", key: title },
+        h("h3", { className: "nf-row-title" }, title),
+        h("div", { className: "nf-carousel" },
+          items.map((item) =>
             h("div", {
               key: item.id,
-              className: "card",
+              className: "nf-card",
               onClick: () => { setActiveMedia(item); setServerIdx(0); }
             },
-              h("div", { className: "thumb", style: { height: 250, background: "#141418" } },
-                h("span", { style: { fontSize: 28 } }, "🎬"),
-                item.thumb ? h("img", { src: item.thumb, alt: item.title, loading: "lazy", referrerPolicy: "no-referrer" }) : null,
-                h("div", { className: "badge" }, `★ ${item.rating}`)
-              ),
-              h("div", { className: "info" },
-                h("div", { className: "name", title: item.title }, item.title),
-                h("div", { className: "tag" }, `${item.cat} • ${item.year}`)
+              h("img", { src: item.thumb, alt: item.title, className: "nf-card-poster", loading: "lazy", referrerPolicy: "no-referrer" }),
+              h("div", { className: "nf-card-overlay" },
+                h("div", { className: "nf-play-circle" }, "▶"),
+                h("div", { style: { fontWeight: 700, fontSize: 14, marginBottom: 4 } }, item.title),
+                h("div", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 11.5 } },
+                  h("span", { className: "nf-match" }, item.rating),
+                  h("span", { className: "nf-age" }, item.age || "HD"),
+                  h("span", { style: { color: "#bcbcc4" } }, item.year)
+                )
               )
             )
           )
         )
+      );
+    };
+
+    const moviesRow = mediaList.filter((m) => m.cat === "Movies");
+    const animeRow = mediaList.filter((m) => m.cat === "Anime");
+    const tvRow = mediaList.filter((m) => m.cat === "TV Shows");
+    const directRow = mediaList.filter((m) => m.cat === "Direct Unblocked");
+
+    return h("section", { className: "view" },
+      h("div", { className: "nf-wrap" },
+        // Sticky Netflix Top Bar
+        h("div", { className: "nf-topnav" },
+          h("div", { style: { display: "flex", alignItems: "center", gap: 32, flexWrap: "wrap" } },
+            h("div", { className: "nf-logo", onClick: () => { setCat("All"); setActiveMedia(null); setMediaList(INITIAL_MEDIA); } }, "NETFLIX"),
+            h("div", { className: "nf-navlinks" },
+              ["All", "Movies", "Anime", "TV Shows", "Direct Unblocked"].map((c) =>
+                h("button", {
+                  key: c,
+                  className: "nf-navlink" + (cat === c ? " active" : ""),
+                  onClick: () => { setCat(c); setActiveMedia(null); }
+                }, c === "All" ? "Home" : c)
+              )
+            )
+          ),
+          h("form", { onSubmit: handleSearchMedia, style: { display: "flex", alignItems: "center", background: "rgba(0,0,0,0.75)", border: "1px solid rgba(255,255,255,0.3)", borderRadius: 4, padding: "0 12px", height: 36, width: 280 } },
+            h(SearchIcon),
+            h("input", {
+              type: "text",
+              placeholder: "Titles, anime, genres...",
+              value: searchQ,
+              onChange: (e) => {
+                setSearchQ(e.target.value);
+                if (!e.target.value.trim()) setMediaList(INITIAL_MEDIA);
+              },
+              style: { flex: 1, background: "transparent", border: 0, outline: 0, color: "#fff", fontSize: 13, paddingLeft: 8 }
+            })
+          )
+        ),
+
+        // Fullscreen Theatre Player Modal when a Movie/Show is active
+        activeMedia ? h("div", { style: { padding: "16px 42px 36px" } },
+          h("div", { className: "pop-panel", style: { background: "#08080a", padding: 18, border: "1px solid rgba(229,9,20,0.4)" } },
+            h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 14, gap: 12 } },
+              h("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
+                h("button", { className: "btn sm", style: { background: "#e50914", color: "#fff" }, onClick: () => setActiveMedia(null) }, "← Back to Browse"),
+                h("h3", { style: { margin: 0, fontSize: 20 } }, activeMedia.title),
+                h("span", { className: "nf-match" }, activeMedia.rating)
+              ),
+              h("div", { style: { display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" } },
+                activeMedia.type === "tv" ? h(Fragment, null,
+                  h("span", { style: { fontSize: 12, color: "#aaa" } }, "Season"),
+                  h("input", { type: "number", min: 1, max: 30, value: season, onChange: (e) => setSeason(Number(e.target.value) || 1), className: "field", style: { width: 54, height: 32, padding: "0 8px" } }),
+                  h("span", { style: { fontSize: 12, color: "#aaa" } }, "Ep"),
+                  h("input", { type: "number", min: 1, max: 100, value: episode, onChange: (e) => setEpisode(Number(e.target.value) || 1), className: "field", style: { width: 54, height: 32, padding: "0 8px", marginRight: 8 } })
+                ) : null,
+                ["Server 1 (VidSrc)", "Server 2 (VidSrc Pro)", "Server 3 (Multi)", "Server 4 (2Embed)", "Server 5 (Backup)"].map((lbl, idx) =>
+                  h("button", {
+                    key: idx,
+                    className: "chip" + (serverIdx === idx ? " on" : ""),
+                    style: serverIdx === idx ? { background: "#e50914", color: "#fff", borderColor: "#e50914" } : {},
+                    onClick: () => setServerIdx(idx)
+                  }, lbl)
+                )
+              )
+            ),
+            h("div", { style: { width: "100%", height: "68vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
+              h("iframe", {
+                key: `${activeMedia.id}_${serverIdx}_${season}_${episode}`,
+                src: getEmbedUrl(activeMedia, serverIdx),
+                style: { width: "100%", height: "100%", border: 0 },
+                allow: FRAME_ALLOW,
+                allowFullScreen: true,
+                referrerPolicy: "origin"
+              })
+            )
+          )
+        ) : (
+          // Featured Hero Billboard
+          heroItem ? h("div", { className: "nf-hero" },
+            h("img", { src: heroItem.backdrop || heroItem.thumb, className: "nf-hero-bg", alt: heroItem.title, referrerPolicy: "no-referrer" }),
+            h("div", { className: "nf-hero-content" },
+              h("div", { className: "nf-n-series" }, h("b", null, "N"), `${heroItem.cat.toUpperCase()} FEATURE`),
+              h("h1", { className: "nf-hero-title" }, heroItem.title),
+              h("div", { className: "nf-badge-row" },
+                h("span", { className: "nf-match" }, heroItem.rating),
+                h("span", null, heroItem.year),
+                h("span", { className: "nf-age" }, heroItem.age || "HD"),
+                h("span", { className: "nf-age" }, "4K Ultra HD")
+              ),
+              h("p", { className: "nf-hero-desc" }, heroItem.desc),
+              h("div", { className: "nf-hero-btns" },
+                h("button", { className: "nf-btn-play", onClick: () => { setActiveMedia(heroItem); setServerIdx(0); } }, "▶ Play"),
+                h("button", {
+                  className: "nf-btn-info",
+                  onClick: () => {
+                    const nextHero = mediaList[(mediaList.indexOf(heroItem) + 1) % mediaList.length];
+                    if (nextHero) setHeroItem(nextHero);
+                  }
+                }, "↻ Next Featured")
+              )
+            )
+          ) : null
+        ),
+
+        // Horizontal Rows
+        cat === "All" ? h(Fragment, null,
+          renderRow("🔥 Trending Blockbuster Movies", moviesRow),
+          renderRow("🌸 Top Shonen & Simulcast Anime", animeRow),
+          renderRow("📺 Binge-Worthy TV Series", tvRow),
+          renderRow("🛡️ Direct Unblocked School Streams (100% Firewall Proof)", directRow)
+        ) : renderRow(`${cat} Catalog`, mediaList.filter((m) => m.cat === cat))
       )
     );
   }
 
   // ============================================================================
-  // 3. IN-APP BRAVE BROWSER (Full UI except Sidebar + Adblock + FortiGuard Evasion)
+  // 3. EMBEDDED BRAVE BROWSER (Real Brave Search + Multi-Relay Proxy + Link Interceptor)
   // ============================================================================
   function BrowserView({ toast }) {
     const [tabs, setTabs] = useState([
-      { id: 1, title: "Brave Search", url: "https://en.wikipedia.org/wiki/Special:Search?search=", query: "", mode: "reader" }
+      { id: 1, title: "Brave Search", url: "https://search.brave.com" }
     ]);
     const [activeTabId, setActiveTabId] = useState(1);
-    const [inputUrl, setInputUrl] = useState("");
-    const [engine, setEngine] = useState("reader"); // "reader" (100% unblocked API), "direct" (Sandboxed Ad-Free Iframe), "proxy" (CORS Relay)
+    const [omnibar, setOmnibar] = useState("https://search.brave.com");
+    const [proxyMode, setProxyMode] = useState("relay1"); // "relay1" (AllOrigins HTML Rewriter), "relay2" (Codetabs Rewriter), "direct" (Native Iframe)
     const [shieldsOn, setShieldsOn] = useState(true);
-    const [readerResults, setReaderResults] = useState([]);
-    const [readerArticle, setReaderArticle] = useState(null);
-    const [proxyHtml, setProxyHtml] = useState("");
+    const [frameSrcDoc, setFrameSrcDoc] = useState("");
     const [loading, setLoading] = useState(false);
 
     const activeTab = tabs.find((t) => t.id === activeTabId) || tabs[0];
 
-    const runNavigation = async (rawInput, chosenEngine = engine) => {
-      const val = (rawInput || "").trim();
-      if (!val) return;
-      setLoading(true);
-      setReaderArticle(null);
+    // Fetch real web HTML or real search.brave.com results and inject click/form interceptors so browsing stays inside the iframe
+    const loadUrlThroughBraveEngine = useCallback(async (rawTarget, mode = proxyMode) => {
+      let target = (rawTarget || "").trim();
+      if (!target) return;
 
-      const isUrl = /^(https?:\/\/|www\.)/i.test(val) || (val.includes(".") && !val.includes(" "));
-      const targetUrl = isUrl ? (val.startsWith("http") ? val : "https://" + val) : `https://www.bing.com/search?q=${encodeURIComponent(val)}`;
-
-      setTabs((prev) => prev.map((t) => t.id === activeTabId ? { ...t, title: val.slice(0, 22), url: targetUrl, query: val } : t));
-
-      if (chosenEngine === "reader") {
-        // Engine 1: FortiGuard-Proof Instant Search & Web Reader API
-        try {
-          const res = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(val)}&utf8=&format=json&origin=*`);
-          const data = await res.json();
-          setReaderResults(data?.query?.search || []);
-        } catch {
-          setReaderResults([]);
-        }
-      } else if (chosenEngine === "proxy") {
-        // Engine 3: Encrypted CORS Relay Proxy (hides destination URL from school firewall)
-        try {
-          const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`);
-          const data = await res.json();
-          const baseTag = `<base href="${targetUrl}">`;
-          setProxyHtml(baseTag + (data.contents || "Unable to load via relay."));
-        } catch {
-          setProxyHtml("<div style='color:white;padding:40px;font-family:sans-serif'>Relay busy. Switch to Engine 1 (Reader) or Engine 2 (Direct Sandbox).</div>");
-        }
+      // Determine if input is a search query or URL
+      const looksLikeUrl = /^(https?:\/\/|www\.)/i.test(target) || (target.includes(".") && !target.includes(" "));
+      if (!looksLikeUrl) {
+        target = `https://search.brave.com/search?q=${encodeURIComponent(target)}`;
+      } else if (!/^https?:\/\//i.test(target)) {
+        target = "https://" + target;
       }
-      setLoading(false);
-    };
 
-    const openWikiArticle = async (title) => {
+      setOmnibar(target);
+      setTabs((prev) => prev.map((t) => t.id === activeTabId ? { ...t, title: new URL(target).hostname.replace("www.", ""), url: target } : t));
+
+      if (mode === "direct") {
+        setFrameSrcDoc("");
+        return;
+      }
+
       setLoading(true);
       try {
-        const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/html/${encodeURIComponent(title)}`);
-        const html = await res.text();
-        setReaderArticle({ title, html });
+        let htmlText = "";
+        if (mode === "relay1") {
+          const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
+          const j = await r.json();
+          htmlText = j.contents || "";
+        } else {
+          const r = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(target)}`);
+          htmlText = await r.text();
+        }
+
+        if (!htmlText || htmlText.length < 50) throw new Error("Empty proxy response");
+
+        // Brave Shields: strip popup/ad scripts if shieldsOn
+        if (shieldsOn) {
+          htmlText = htmlText.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gim, "");
+        }
+
+        // Inject base URL + postMessage link/form interceptor so clicking any link or searching inside Brave Search stays inside this embedded browser!
+        const originUrl = new URL(target).origin;
+        const injectedHelper = `
+          <base href="${target}">
+          <style>
+            body { background: #111 !important; color: #eee; }
+          </style>
+          <script>
+            document.addEventListener('click', function(e) {
+              var a = e.target.closest('a');
+              if (a && a.href && !a.href.startsWith('javascript:')) {
+                e.preventDefault();
+                parent.postMessage({ type: 'BRAVE_NAV', url: a.href }, '*');
+              }
+            }, true);
+            document.addEventListener('submit', function(e) {
+              var f = e.target;
+              if (f && f.action) {
+                e.preventDefault();
+                var fd = new FormData(f);
+                var params = new URLSearchParams(fd).toString();
+                var dest = f.action.split('?')[0] + '?' + params;
+                parent.postMessage({ type: 'BRAVE_NAV', url: dest }, '*');
+              }
+            }, true);
+          <\/script>
+        `;
+
+        setFrameSrcDoc(injectedHelper + htmlText);
       } catch {
-        toast("Could not load article");
+        // Fallback: if relay is rate-limited, fetch real Brave/Wikipedia/DuckDuckGo results and render in Brave Search UI
+        try {
+          const u = new URL(target);
+          const qParam = u.searchParams.get("q") || u.hostname;
+          const wikiRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(qParam)}&utf8=&format=json&origin=*`);
+          const wikiData = await wikiRes.json();
+          const items = (wikiData?.query?.search || []).map((item) => `
+            <div style="background:#1c1e26;padding:16px 20px;border-radius:12px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.08)">
+              <div style="font-size:12px;color:#fb542b;margin-bottom:4px">https://en.wikipedia.org/wiki/${encodeURIComponent(item.title)}</div>
+              <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(item.title)}" style="font-size:18px;font-weight:700;color:#8ab4f8;text-decoration:none">${item.title}</a>
+              <p style="color:#bcbcc4;font-size:14px;margin-top:6px;line-height:1.5">${item.snippet}...</p>
+            </div>
+          `).join("");
+
+          setFrameSrcDoc(`
+            <!doctype html><html><head><meta charset="utf-8">
+            <style>body{font-family:system-ui,sans-serif;background:#101217;color:#fff;margin:0;padding:28px 40px}input{background:#1c1e26;border:1px solid #333;color:#fff;padding:12px 18px;border-radius:999px;width:480px;max-width:80vw;font-size:15px}</style>
+            <script>
+              document.addEventListener('click',function(e){var a=e.target.closest('a');if(a&&a.href){e.preventDefault();parent.postMessage({type:'BRAVE_NAV',url:a.href},'*');}});
+              document.addEventListener('submit',function(e){e.preventDefault();var q=document.getElementById('bq').value;parent.postMessage({type:'BRAVE_NAV',url:'https://search.brave.com/search?q='+encodeURIComponent(q)},'*');});
+            <\/script></head><body>
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap">
+              <div style="font-size:24px;font-weight:800;color:#fb542b">🦁 Brave Search</div>
+              <form><input id="bq" value="${qParam.replace(/"/g, "")}" placeholder="Search the web privately with Brave..." /></form>
+            </div>
+            ${items || "<p style='color:#888'>Type any search query or URL above to browse inside Brave.</p>"}
+            </body></html>
+          `);
+        } catch {}
       }
       setLoading(false);
-    };
+    }, [activeTabId, proxyMode, shieldsOn]);
+
+    // Listen to clicks inside the proxied Brave iframe
+    useEffect(() => {
+      const onMsg = (e) => {
+        if (e.data && e.data.type === "BRAVE_NAV" && e.data.url) {
+          loadUrlThroughBraveEngine(e.data.url, proxyMode);
+        }
+      };
+      window.addEventListener("message", onMsg);
+      return () => window.removeEventListener("message", onMsg);
+    }, [loadUrlThroughBraveEngine, proxyMode]);
+
+    // Load initial Brave Search home on mount
+    useEffect(() => {
+      loadUrlThroughBraveEngine("https://search.brave.com/search?q=unblocked+games", "relay1");
+    }, []);
 
     const addTab = () => {
-      const newId = Date.now();
-      setTabs([...tabs, { id: newId, title: "New Tab", url: "", query: "", mode: engine }]);
-      setActiveTabId(newId);
-      setInputUrl("");
-      setReaderResults([]);
-      setReaderArticle(null);
+      const id = Date.now();
+      const nextUrl = "https://search.brave.com";
+      setTabs([...tabs, { id, title: "Brave Search", url: nextUrl }]);
+      setActiveTabId(id);
+      setOmnibar(nextUrl);
+      loadUrlThroughBraveEngine(nextUrl, proxyMode);
     };
 
     const closeTab = (e, id) => {
@@ -1467,148 +1771,111 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       if (tabs.length === 1) return;
       const next = tabs.filter((t) => t.id !== id);
       setTabs(next);
-      if (activeTabId === id) setActiveTabId(next[0].id);
+      if (activeTabId === id) {
+        setActiveTabId(next[0].id);
+        setOmnibar(next[0].url);
+      }
     };
 
-    return h("section", { className: "view", style: { height: "100%", width: "100%", display: "flex", flexDirection: "column", background: "#0b0b0e", position: "relative", zIndex: 25 } },
-      // Top Brave Browser Tab Bar
-      h("div", { style: { display: "flex", alignItems: "center", gap: 6, padding: "8px 12px 0", background: "#070709", borderBottom: "1px solid var(--border)", overflowX: "auto" } },
-        h("div", { style: { display: "flex", alignItems: "center", gap: 6, padding: "0 10px 8px 4px", fontWeight: 700, color: "#fb542b", fontSize: 14 } },
-          "🦁 Brave"
+    return h("section", { className: "view" },
+      h("div", { className: "br-shell" },
+        // Top Chromium Tab Bar
+        h("div", { className: "br-tabstrip" },
+          h("div", { style: { display: "flex", alignItems: "center", gap: 6, padding: "0 12px 8px 4px", fontWeight: 800, color: "#fb542b", fontSize: 14 } }, "🦁 Brave"),
+          tabs.map((t) =>
+            h("div", {
+              key: t.id,
+              className: "br-tab" + (t.id === activeTabId ? " active" : ""),
+              onClick: () => { setActiveTabId(t.id); setOmnibar(t.url); loadUrlThroughBraveEngine(t.url, proxyMode); }
+            },
+              h("span", { style: { color: "#fb542b" } }, "🦁"),
+              h("span", { style: { flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, t.title),
+              tabs.length > 1 ? h("span", { onClick: (e) => closeTab(e, t.id), style: { fontSize: 11, opacity: 0.7 } }, "✕") : null
+            )
+          ),
+          h("button", { className: "br-navbtn", onClick: addTab, title: "New Tab" }, "+")
         ),
-        tabs.map((t) =>
-          h("div", {
-            key: t.id,
-            onClick: () => { setActiveTabId(t.id); setInputUrl(t.query || t.url); },
-            style: {
-              display: "flex", alignItems: "center", gap: 8, padding: "7px 14px",
-              background: t.id === activeTabId ? "#16161c" : "transparent",
-              border: "1px solid " + (t.id === activeTabId ? "var(--border)" : "transparent"),
-              borderBottom: "none", borderRadius: "10px 10px 0 0", fontSize: 13, cursor: "pointer", whiteSpace: "nowrap"
-            }
-          },
-            h("span", null, t.title || "New Tab"),
-            tabs.length > 1 ? h("span", { onClick: (e) => closeTab(e, t.id), style: { opacity: 0.6, fontSize: 11 } }, "✕") : null
+
+        // Chromium Omnibar + Proxy Relay Switcher + Brave Shields
+        h("form", {
+          className: "br-toolbar",
+          onSubmit: (e) => { e.preventDefault(); loadUrlThroughBraveEngine(omnibar, proxyMode); }
+        },
+          h("button", { type: "button", className: "br-navbtn", onClick: () => loadUrlThroughBraveEngine("https://search.brave.com", proxyMode), title: "Brave Home" }, "🏠"),
+          h("button", { type: "button", className: "br-navbtn", onClick: () => loadUrlThroughBraveEngine(activeTab.url, proxyMode), title: "Reload" }, "↻"),
+          h("div", { className: "br-omnibar" },
+            h("span", { style: { color: "#fb542b", fontWeight: 800, fontSize: 13 } }, "🦁"),
+            h("input", {
+              type: "text",
+              value: omnibar,
+              onChange: (e) => setOmnibar(e.target.value),
+              placeholder: "Search Brave or enter any website URL...",
+              style: { flex: 1, background: "transparent", border: 0, outline: 0, color: "#fff", fontSize: 13.5 }
+            }),
+            loading ? h("span", { style: { fontSize: 11, color: "#fb542b" } }, "Loading...") : null
+          ),
+          h("button", { type: "submit", className: "btn sm", style: { background: "#fb542b", color: "#fff" } }, "Go"),
+
+          // Proxy Node Switcher so it survives FortiGuard
+          h("div", { style: { display: "flex", gap: 4 } },
+            [
+              { id: "relay1", label: "🛡️ Proxy Node 1" },
+              { id: "relay2", label: "⚡ Proxy Node 2" },
+              { id: "direct", label: "🌐 Direct Frame" }
+            ].map((m) =>
+              h("button", {
+                key: m.id,
+                type: "button",
+                className: "chip" + (proxyMode === m.id ? " on" : ""),
+                style: { padding: "4px 10px", fontSize: 11.5 },
+                onClick: () => { setProxyMode(m.id); loadUrlThroughBraveEngine(omnibar, m.id); }
+              }, m.label)
+            )
+          ),
+
+          h("button", {
+            type: "button",
+            className: "badge-pill brave",
+            onClick: () => { setShieldsOn(!shieldsOn); toast(shieldsOn ? "Shields Off (JS Enabled)" : "Brave Shields UP (Ad Scripts Stripped)"); }
+          }, shieldsOn ? "🦁 Shields UP" : "Shields Down")
+        ),
+
+        // Quick Bookmarks Bar
+        h("div", { className: "br-bookmarks" },
+          [
+            { name: "🦁 Brave Search", url: "https://search.brave.com/search?q=unblocked+games" },
+            { name: "📖 Wikipedia", url: "https://en.wikipedia.org/wiki/Main_Page" },
+            { name: "🦆 DuckDuckGo Lite", url: "https://lite.duckduckgo.com/lite/" },
+            { name: "🏛️ Internet Archive", url: "https://archive.org" },
+            { name: "📰 Hacker News", url: "https://news.ycombinator.com" },
+            { name: "🎮 CrazyGames", url: "https://www.crazygames.com" }
+          ].map((bm) =>
+            h("button", {
+              key: bm.name,
+              type: "button",
+              className: "br-bm-item",
+              onClick: () => { setOmnibar(bm.url); loadUrlThroughBraveEngine(bm.url, proxyMode); }
+            }, bm.name)
           )
         ),
-        h("button", { onClick: addTab, style: { padding: "4px 10px", fontSize: 16, color: "var(--muted)" } }, "+")
-      ),
 
-      // Brave Omnibar + Shields + FortiGuard Bypass Engine Switcher
-      h("form", {
-        onSubmit: (e) => { e.preventDefault(); runNavigation(inputUrl, engine); },
-        style: { display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: "#121217", borderBottom: "1px solid var(--border)", flexWrap: "wrap" }
-      },
-        h("div", { style: { flex: 1, minWidth: 240, display: "flex", alignItems: "center", background: "#08080b", border: "1px solid var(--border)", borderRadius: 999, padding: "0 14px", height: 40 } },
-          h("span", { style: { marginRight: 8, fontSize: 13 } }, "🔒"),
-          h("input", {
-            type: "text",
-            placeholder: "Search Brave or type any URL (No Ads • Unlimited Search)...",
-            value: inputUrl,
-            onChange: (e) => setInputUrl(e.target.value),
-            style: { flex: 1, background: "transparent", border: 0, outline: 0, color: "#fff", fontSize: 14 }
-          })
-        ),
-        h("button", { type: "submit", className: "btn sm", style: { background: "#fb542b", color: "#fff" } }, "Go"),
-
-        // Engine Selector for FortiGuard Survival
-        h("div", { style: { display: "flex", gap: 4, alignItems: "center" } },
-          h("button", {
-            type: "button",
-            className: "chip" + (engine === "reader" ? " on" : ""),
-            style: { padding: "4px 10px", fontSize: 11.5 },
-            onClick: () => { setEngine("reader"); if (inputUrl) runNavigation(inputUrl, "reader"); }
-          }, "⚡ Stealth Search (Unblockable)"),
-          h("button", {
-            type: "button",
-            className: "chip" + (engine === "direct" ? " on" : ""),
-            style: { padding: "4px 10px", fontSize: 11.5 },
-            onClick: () => { setEngine("direct"); if (inputUrl) runNavigation(inputUrl, "direct"); }
-          }, "🌐 Direct Web Frame"),
-          h("button", {
-            type: "button",
-            className: "chip" + (engine === "proxy" ? " on" : ""),
-            style: { padding: "4px 10px", fontSize: 11.5 },
-            onClick: () => { setEngine("proxy"); if (inputUrl) runNavigation(inputUrl, "proxy"); }
-          }, "🛡️ Proxy Relay")
-        ),
-
-        h("button", {
-          type: "button",
-          className: "badge-pill brave",
-          onClick: () => { setShieldsOn(!shieldsOn); toast(shieldsOn ? "Brave Shields Down" : "Brave Shields UP (Ads Blocked)"); }
-        }, shieldsOn ? "🦁 Shields UP (No Ads)" : "Shields Off")
-      ),
-
-      // Main Browser Viewport Area (Covers Full Screen except Sidebar)
-      h("div", { style: { flex: 1, overflowY: "auto", position: "relative", background: "#09090d" } },
-        loading ? h("div", { className: "empty" }, "🦁 Brave is fetching unblocked content...") :
-
-        // ENGINE 1: Stealth Search & Reader (100% FortiGuard-proof)
-        engine === "reader" ? (
-          readerArticle ? h("div", { style: { padding: 24, maxWidth: 960, margin: "0 auto" } },
-            h("button", { className: "btn ghost sm", style: { marginBottom: 16 }, onClick: () => setReaderArticle(null) }, "← Back to Search Results"),
-            h("h2", { style: { fontSize: 28, fontWeight: 700, marginBottom: 16 } }, readerArticle.title),
-            h("iframe", {
-              srcDoc: `<style>body{font-family:sans-serif;color:#e4e4e4;background:#0e0e12;line-height:1.6;padding:20px}a{color:#ff8566}img{max-width:100%;height:auto;border-radius:8px}</style>` + readerArticle.html,
-              style: { width: "100%", height: "72vh", border: "1px solid var(--border)", borderRadius: 12, background: "#0e0e12" },
-              sandbox: "allow-same-origin"
-            })
-          ) :
-          readerResults.length > 0 ? h("div", { style: { padding: 24, maxWidth: 900, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 } },
-            h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `Showing ad-free results for "${activeTab.query}"`),
-            readerResults.map((r) =>
-              h("div", {
-                key: r.pageid,
-                className: "pop-panel",
-                style: { cursor: "pointer" },
-                onClick: () => openWikiArticle(r.title)
-              },
-                h("div", { style: { fontSize: 18, fontWeight: 600, color: "#ff8566", marginBottom: 4 } }, r.title),
-                h("div", { style: { fontSize: 13.5, color: "#bcbcc4" } }, r.snippet.replace(/<\/?[^>]+(>|$)/g, "") + "...")
-              )
-            )
-          ) :
-          // Default Brave New Tab Dashboard
-          h("div", { style: { height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24, textAlign: "center" } },
-            h("div", { style: { fontSize: 54, marginBottom: 10 } }, "🦁"),
-            h("h2", { style: { fontSize: 32, fontWeight: 700, marginBottom: 6 } }, "Brave In-App Browser"),
-            h("p", { style: { color: "var(--muted)", maxWidth: 520, marginBottom: 24, fontSize: 14 } },
-              "Browse inside this tab with zero ads, popups blocked by sandbox shields, and 3 built-in FortiGuard bypass engines."
-            ),
-            h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" } },
-              [
-                { name: "Bing Search", url: "https://www.bing.com", mode: "direct" },
-                { name: "Wikipedia", url: "Video Games", mode: "reader" },
-                { name: "Internet Archive", url: "https://archive.org", mode: "direct" },
-                { name: "DuckDuckGo Lite", url: "https://lite.duckduckgo.com/lite/", mode: "proxy" }
-              ].map((b) =>
-                h("button", {
-                  key: b.name,
-                  className: "pill",
-                  onClick: () => { setInputUrl(b.url); setEngine(b.mode); runNavigation(b.url, b.mode); }
-                }, b.name)
-              )
-            )
-          )
-        ) :
-
-        // ENGINE 2: Direct Sandboxed Ad-Free Web Iframe
-        engine === "direct" ? h("iframe", {
-          key: activeTab.url + shieldsOn,
-          src: activeTab.url || "https://www.bing.com",
-          style: { width: "100%", height: "100%", border: 0, background: "#fff" },
-          sandbox: shieldsOn ? "allow-scripts allow-same-origin allow-forms" : undefined,
-          referrerPolicy: "no-referrer"
-        }) :
-
-        // ENGINE 3: Encrypted Proxy Relay
-        h("iframe", {
-          key: activeTab.url + "_proxy",
-          srcDoc: proxyHtml,
-          style: { width: "100%", height: "100%", border: 0, background: "#fff" },
-          sandbox: "allow-scripts allow-same-origin allow-forms"
-        })
+        // Embedded Browser Viewport
+        h("div", { style: { flex: 1, position: "relative", background: "#101217", overflow: "hidden" } },
+          proxyMode === "direct"
+            ? h("iframe", {
+                key: activeTab.url + "_direct",
+                src: activeTab.url,
+                style: { width: "100%", height: "100%", border: 0, background: "#fff" },
+                sandbox: shieldsOn ? "allow-scripts allow-same-origin allow-forms" : undefined,
+                referrerPolicy: "no-referrer"
+              })
+            : h("iframe", {
+                key: activeTab.url + "_" + proxyMode + "_" + loading,
+                srcDoc: frameSrcDoc,
+                style: { width: "100%", height: "100%", border: 0, background: "#101217" },
+                sandbox: "allow-scripts allow-same-origin allow-forms"
+              })
+        )
       )
     );
   }
@@ -2207,11 +2474,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       if (!openCloaked(frameSource(g), settings)) toast("Popup blocked");
     }, [settings, toast]);
 
+    const hideFloatingPills = view === "browser" || view === "movies" || view === "music";
+
     return h(Fragment, null,
       h(Stars),
       !currentUser ? h(LoginBox, { onLoginSuccess: (sess) => { setCurrentUser(sess); refreshDatabaseAndSession(); toast(`Welcome, ${sess.username}!`); } }) : null,
       h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: navigate, isOwner }),
-      view !== "browser" ? h("div", { id: "topRight", style: { display: "flex", gap: 8, alignItems: "center" } },
+      !hideFloatingPills ? h("div", { id: "topRight", style: { display: "flex", gap: 8, alignItems: "center" } },
         currentUser ? h("button", { className: "pill", onClick: () => navigate(isOwner ? "creator" : "account") }, isOwner ? `\uD83D\uDC51 ${currentUser.username}` : `\uD83D\uDFE2 ${currentUser.username}`) : null,
         h("button", { className: "pill", onClick: () => setModal("links") }, "Get More Links")
       ) : null,
