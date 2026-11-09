@@ -55,9 +55,9 @@ button { cursor: pointer; font-family: inherit; }
 #sidebar.open #expandBtn svg { transform: rotate(180deg); }
 
 /* Main */
-main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; overflow-y: auto; overflow-x: hidden; transition: left 0.25s ease; background: var(--bg); }
+main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; overflow-y: auto; overflow-x: hidden; transition: left 0.25s ease; }
 #sidebar.open ~ main { left: 196px; }
-.view { height: 100%; min-height: 100%; display: flex; flex-direction: column; animation: fade 0.35s ease; }
+.view { height: 100%; animation: fade 0.35s ease; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 /* Pills */
@@ -87,7 +87,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .ad { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); font-size: 11px; letter-spacing: 0.14em; color: #8b8b90; font-weight: 600; display: flex; gap: 10px; align-items: center; }
 
 /* Page layout */
-.page { padding: 36px 40px 90px; max-width: 1400px; margin: 0 auto; width: 100%; }
+.page { padding: 36px 40px 90px; max-width: 1400px; margin: 0 auto; }
 .page h2 { font-size: 34px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.02em; }
 .page p.sub { color: var(--muted); margin: 0 0 24px; }
 .page code { background: rgba(255, 255, 255, 0.08); padding: 1px 6px; border-radius: 6px; font-size: 0.9em; }
@@ -274,6 +274,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     masterOwnerPassword: "admin"
   };
 
+  // Tier Access Matrix:
+  // Free -> Games, Movies, Music
+  // Pro -> Chat, Games, Movies, Music
+  // Premium -> YouTube, TikTok, Browser, Chat, Movies, Games, Music
   const TIER_PERMISSIONS = {
     free: ["home", "games", "movies", "music", "account", "settings"],
     pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
@@ -483,7 +487,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // BUILT-IN 3D WEBGL ROBLOX ENGINE
+  // BUILT-IN 3D WEBGL ROBLOX ENGINE (100% LOCAL IN-HTML, FORTIGUARD SAFE)
   // ============================================================================
   function buildRobloxDirectEngine() {
     return `<!doctype html><html><head><meta charset="utf-8"><style>
@@ -709,7 +713,1765 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const SearchIcon = (p) => h(Svg, p, h("circle", { cx: "11", cy: "11", r: "8" }), h("path", { d: "m21 21-4.3-4.3" }));
   const RefreshIcon = (p) => h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
 
-  // --- Main App Component ---
+  function Modal({ children, onClose }) {
+    return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
+  }
+
+  // --- Stars Background ---
+  function Stars() {
+    const ref = useRef(null);
+    useEffect(() => {
+      const cv = ref.current, ctx = cv.getContext("2d");
+      let W = 0, H = 0, raf = 0, stars = [];
+      const dpr = window.devicePixelRatio || 1;
+      const resize = () => {
+        W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr;
+        cv.style.width = innerWidth + "px"; cv.style.height = innerHeight + "px";
+        const n = Math.floor((innerWidth * innerHeight) / 9000);
+        stars = Array.from({ length: n }, () => ({
+          x: Math.random() * W, y: Math.random() * H,
+          r: (Math.random() * 1.4 + 0.5) * dpr, s: (Math.random() * 0.12 + 0.02) * dpr,
+          p: Math.random() * Math.PI * 2, f: Math.random() * 0.02 + 0.005,
+        }));
+      };
+      const frame = () => {
+        ctx.clearRect(0, 0, W, H); ctx.fillStyle = "#fff";
+        for (const s of stars) {
+          s.y += s.s; s.p += s.f;
+          if (s.y > H + 5) { s.y = -5; s.x = Math.random() * W; }
+          ctx.globalAlpha = 0.35 + 0.55 * Math.abs(Math.sin(s.p));
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+        }
+        raf = requestAnimationFrame(frame);
+      };
+      addEventListener("resize", resize); resize(); frame();
+      return () => { removeEventListener("resize", resize); cancelAnimationFrame(raf); };
+    }, []);
+    return h("canvas", { id: "stars", ref });
+  }
+
+  // --- Sidebar Component (Shows Lock Indicator for Restricted Tier Tabs) ---
+  function Sidebar({ view, open, onToggle, onNavigate, isOwner, userTier }) {
+    const btn = (id, label, icon) => {
+      const unlocked = canAccessView(userTier, id);
+      return h("button", {
+        key: id,
+        className: "side-btn" + (view === id ? " active" : "") + (!unlocked ? " locked" : ""),
+        title: unlocked ? label : `${label} (${requiredTierForView(id)} Tier Required)`,
+        onClick: () => onNavigate(id)
+      },
+        icon,
+        h("span", null, unlocked ? label : `${label} 🔒`)
+      );
+    };
+
+    return h("nav", { id: "sidebar", className: open ? "open" : "" },
+      h("div", { className: "side-group", style: { paddingTop: 2 } },
+        btn("home", "Home", h(HomeIcon)),
+        btn("youtube", "YouTube", h(YouTubeIcon)),
+        btn("tiktok", "TikTok", h(TikTokIcon)),
+        btn("browser", "Browser", h(BrowserIcon)),
+        btn("chat", "Chat", h(ChatIcon)),
+        btn("games", "Games", h(GamesIcon)),
+        btn("movies", "Netflix", h(MoviesIcon)),
+        btn("music", "Spotify", h(MusicIcon))
+      ),
+      h("div", { className: "spacer" }),
+      h("div", { className: "side-group", style: { paddingBottom: 6 } },
+        isOwner ? btn("creator", "Account Creator", h(CreatorIcon)) : null,
+        btn("account", "Account", h(AccountIcon)),
+        btn("settings", "Settings", h(SettingsIcon)),
+        h("button", { className: "side-btn", id: "expandBtn", title: open ? "Collapse" : "Expand", onClick: onToggle }, h(ChevronIcon), h("span", null, "Collapse"))
+      )
+    );
+  }
+
+  // --- Home Component ---
+  const WORDS = ["Roblox", "Geometry Dash", "YouTube", "TikTok", "Play anything"];
+  function useTypingPlaceholder(paused) {
+    const [text, setText] = useState("Browse");
+    const pausedRef = useRef(paused);
+    pausedRef.current = paused;
+    useEffect(() => {
+      let w = 0, i = 0, del = false, t;
+      const tick = () => {
+        if (pausedRef.current) { i = 0; del = false; setText("Browse"); t = setTimeout(tick, 600); return; }
+        const word = WORDS[w];
+        setText(word.slice(0, i) + "|");
+        let delay = del ? 45 : 95;
+        if (!del && i === word.length) { del = true; delay = 1800; }
+        else if (del && i === 0) { del = false; w = (w + 1) % WORDS.length; delay = 400; }
+        else i += del ? -1 : 1;
+        t = setTimeout(tick, delay);
+      };
+      tick();
+      return () => clearTimeout(t);
+    }, []);
+    return text;
+  }
+
+  function Home({ onNavigate, onSearch, userTier }) {
+    const [value, setValue] = useState("");
+    const [focused, setFocused] = useState(false);
+    const placeholder = useTypingPlaceholder(focused || !!value);
+    const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
+
+    const quickBtn = (id, label, icon, customStyle = {}) => {
+      const unlocked = canAccessView(userTier, id);
+      return h("button", {
+        onClick: () => onNavigate(id),
+        style: { opacity: unlocked ? 1 : 0.55 }
+      },
+        h("div", { className: "circ", style: customStyle }, icon),
+        unlocked ? label : `${label} 🔒`
+      );
+    };
+
+    return h("section", { className: "view", id: "home" },
+      h("div", { className: "logo-wrap" }, h("h1", { className: "logo" }, "unblockedgames")),
+      h("div", { className: "search-wrap" },
+        h("form", { className: "search", autoComplete: "off", onSubmit: submit },
+          h(SearchIcon),
+          h("input", { type: "text", spellCheck: false, value, placeholder: focused ? "Browse" : placeholder, onChange: (e) => setValue(e.target.value), onFocus: () => setFocused(true), onBlur: () => setFocused(false) })
+        )
+      ),
+      h("div", { className: "quick" },
+        quickBtn("youtube", "YouTube", h(YouTubeIcon), { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" }),
+        quickBtn("tiktok", "TikTok", h(TikTokIcon), { borderColor: "rgba(0,242,234,0.45)", color: "#00f2ea" }),
+        quickBtn("games", "Games", h(GamesIcon)),
+        quickBtn("browser", "Browser", h(BrowserIcon)),
+        quickBtn("music", "Spotify", h(MusicIcon)),
+        quickBtn("movies", "Netflix", h(MoviesIcon)),
+        quickBtn("chat", "Chat", h(ChatIcon))
+      ),
+      h("div", { className: "ad" }, "100% FREE \u2022 100% UNDETECTED", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
+    );
+  }
+
+  // ============================================================================
+  // FULL-PAGE GOOGLE-LIKE FROSTED GLASS BROWSER (Premium Tier)
+  // ============================================================================
+  function BrowserView() {
+    const [query, setQuery] = useState("");
+    const [tab, setTab] = useState("all");
+    const [webResults, setWebResults] = useState([]);
+    const [imgResults, setImgResults] = useState([]);
+    const [shopResults, setShopResults] = useState([]);
+    const [vidResults, setVidResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [activeUrl, setActiveUrl] = useState("");
+    const [frameHtml, setFrameHtml] = useState("");
+    const [previewImg, setPreviewImg] = useState(null);
+    const [previewVid, setPreviewVid] = useState(null);
+    const debounceRef = useRef(null);
+
+    const isUrlLike = (str) => {
+      const s = (str || "").trim();
+      return /^(https?:\/\/|www\.)/i.test(s) || (/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(s) && !s.includes(" "));
+    };
+
+    const openUrlAutomatically = useCallback(async (rawUrl) => {
+      let target = (rawUrl || "").trim();
+      if (!target) return;
+      if (!/^https?:\/\//i.test(target)) target = "https://" + target;
+
+      setActiveUrl(target);
+      setLoading(true);
+
+      const clickInterceptor = `
+        <base href="${target}">
+        <script>
+          document.addEventListener('click', function(e) {
+            var a = e.target.closest('a');
+            if (a && a.href && !a.href.startsWith('javascript:')) {
+              e.preventDefault();
+              parent.postMessage({ type: 'AUTO_BROWSER_NAV', url: a.href }, '*');
+            }
+          }, true);
+          document.addEventListener('submit', function(e) {
+            var f = e.target;
+            if (f && f.action) {
+              e.preventDefault();
+              var fd = new FormData(f);
+              var params = new URLSearchParams(fd).toString();
+              var dest = f.action.split('?')[0] + '?' + params;
+              parent.postMessage({ type: 'AUTO_BROWSER_NAV', url: dest }, '*');
+            }
+          }, true);
+        <\/script>
+      `;
+
+      if (target.includes("wikipedia.org/wiki/")) {
+        try {
+          const titlePart = target.split("/wiki/")[1];
+          const wRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/html/${titlePart}`);
+          if (wRes.ok) {
+            const wHtml = await wRes.text();
+            setFrameHtml(`
+              <base href="https://en.wikipedia.org/wiki/">
+              <style>
+                body { font-family: 'Outfit', system-ui, sans-serif !important; background: #0e0e12 !important; color: #e6e6e6 !important; padding: 28px 40px !important; line-height: 1.65 !important; }
+                a { color: #60a5fa !important; }
+                img { max-width: 100%; height: auto; border-radius: 8px; }
+                table, .infobox { background: #16161d !important; color: #ddd !important; border-color: #333 !important; }
+              </style>
+              ${clickInterceptor}
+              ${wHtml}
+            `);
+            setLoading(false);
+            return;
+          }
+        } catch {}
+      }
+
+      try {
+        const fetchAllOrigins = async () => {
+          const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
+          if (!r.ok) throw new Error("fail");
+          const j = await r.json();
+          if (!j.contents || j.contents.length < 40) throw new Error("empty");
+          return j.contents;
+        };
+        const fetchCodeTabs = async () => {
+          const r = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(target)}`);
+          if (!r.ok) throw new Error("fail");
+          const t = await r.text();
+          if (!t || t.length < 40) throw new Error("empty");
+          return t;
+        };
+
+        const winningHtml = await Promise.any([fetchAllOrigins(), fetchCodeTabs()]);
+        setFrameHtml(clickInterceptor + winningHtml);
+      } catch {
+        setFrameHtml("");
+      }
+      setLoading(false);
+    }, []);
+
+    useEffect(() => {
+      const onMsg = (e) => {
+        if (e.data && e.data.type === "AUTO_BROWSER_NAV" && e.data.url) {
+          openUrlAutomatically(e.data.url);
+        }
+      };
+      window.addEventListener("message", onMsg);
+      return () => window.removeEventListener("message", onMsg);
+    }, [openUrlAutomatically]);
+
+    const executeGoogleSearch = useCallback(async (qText) => {
+      const clean = (qText || "").trim();
+      if (!clean) {
+        setWebResults([]); setImgResults([]); setShopResults([]); setVidResults([]);
+        return;
+      }
+      setLoading(true);
+
+      try {
+        const [wikiSearch, ddgSearch, wikiImages, dummyShop, itunesShop, pipedVids] = await Promise.all([
+          fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(clean)}&srlimit=12&utf8=&format=json&origin=*`).then((r) => r.json()).catch(() => null),
+          fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(clean)}&format=json&no_html=1&skip_disambig=1`).then((r) => r.json()).catch(() => null),
+          fetch(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=filetype:bitmap+${encodeURIComponent(clean)}&gsrlimit=24&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=500&format=json&origin=*`).then((r) => r.json()).catch(() => null),
+          fetch(`https://dummyjson.com/products/search?q=${encodeURIComponent(clean)}&limit=12`).then((r) => r.json()).catch(() => null),
+          fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(clean)}&entity=software,ebook,movie&limit=16`).then((r) => r.json()).catch(() => null),
+          fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(clean)}&filter=videos`).then((r) => r.json()).catch(() => null)
+        ]);
+
+        const webList = [];
+        if (isUrlLike(clean)) {
+          const norm = /^https?:\/\//i.test(clean) ? clean : "https://" + clean;
+          webList.push({ title: `🌐 Go to ${norm}`, url: norm, snippet: `Open ${norm} directly in full-screen unblocked view.` });
+        }
+        if (ddgSearch?.AbstractText && ddgSearch?.AbstractURL) {
+          webList.push({ title: ddgSearch.Heading || clean, url: ddgSearch.AbstractURL, snippet: ddgSearch.AbstractText });
+        }
+        if (Array.isArray(ddgSearch?.RelatedTopics)) {
+          ddgSearch.RelatedTopics.slice(0, 5).forEach((rt) => {
+            if (rt.Text && rt.FirstURL) {
+              webList.push({ title: rt.Text.split(" - ")[0] || rt.Text.slice(0, 60), url: rt.FirstURL, snippet: rt.Text });
+            }
+          });
+        }
+        (wikiSearch?.query?.search || []).forEach((w) => {
+          webList.push({
+            title: w.title,
+            url: `https://en.wikipedia.org/wiki/${encodeURIComponent(w.title.replace(/ /g, "_"))}`,
+            snippet: (w.snippet || "").replace(/<\/?[^>]+(>|$)/g, "")
+          });
+        });
+        setWebResults(webList);
+
+        const imgs = [];
+        const pages = wikiImages?.query?.pages || {};
+        Object.values(pages).forEach((p) => {
+          const info = p.imageinfo?.[0];
+          if (info && (info.thumburl || info.url)) {
+            imgs.push({
+              title: (p.title || "").replace("File:", "").replace(/\.[^/.]+$/, ""),
+              thumb: info.thumburl || info.url,
+              full: info.url,
+              source: "Wikimedia Commons HD"
+            });
+          }
+        });
+        (itunesShop?.results || []).forEach((it) => {
+          if (it.artworkUrl100) {
+            imgs.push({
+              title: it.trackName || it.collectionName || clean,
+              thumb: it.artworkUrl100.replace("100x100bb", "500x500bb"),
+              full: it.artworkUrl100.replace("100x100bb", "1000x1000bb"),
+              source: it.artistName || "Media Gallery"
+            });
+          }
+        });
+        setImgResults(imgs);
+
+        const shops = [];
+        (dummyShop?.products || []).forEach((prod) => {
+          shops.push({
+            id: "dj_" + prod.id,
+            title: prod.title,
+            price: `$${prod.price}`,
+            store: prod.brand || "Verified Store",
+            rating: `★ ${prod.rating || "4.8"}`,
+            img: prod.thumbnail,
+            desc: prod.description,
+            url: `https://en.wikipedia.org/wiki/${encodeURIComponent(prod.title)}`
+          });
+        });
+        (itunesShop?.results || []).forEach((item, idx) => {
+          shops.push({
+            id: "it_" + (item.trackId || idx),
+            title: item.trackName || item.collectionName,
+            price: item.formattedPrice || (item.price ? `$${item.price}` : "Free / Digital"),
+            store: item.artistName || "Digital Store",
+            rating: `★ ${item.averageUserRating ? item.averageUserRating.toFixed(1) : "4.9"}`,
+            img: (item.artworkUrl100 || "").replace("100x100bb", "400x400bb"),
+            desc: item.description || item.longDescription || `${item.kind || "Digital"} item available now.`,
+            url: item.trackViewUrl || `https://en.wikipedia.org/wiki/${encodeURIComponent(item.trackName || clean)}`
+          });
+        });
+        if (shops.length === 0) {
+          webList.slice(0, 8).forEach((w, idx) => {
+            shops.push({
+              id: "gen_" + idx,
+              title: w.title,
+              price: `$${(19.99 + idx * 10).toFixed(2)}`,
+              store: "Global Marketplace",
+              rating: "★ 4.8",
+              img: imgs[idx]?.thumb || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80",
+              desc: w.snippet,
+              url: w.url
+            });
+          });
+        }
+        setShopResults(shops);
+
+        const vids = (pipedVids?.items || []).map((v) => {
+          const vidId = v.url ? v.url.split("v=")[1] : "";
+          return {
+            id: vidId,
+            title: v.title,
+            author: v.uploaderName || "YouTube",
+            views: v.views ? `${Number(v.views).toLocaleString()} views` : "HD Video",
+            thumb: v.thumbnail || `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg`
+          };
+        }).filter((v) => v.id);
+        setVidResults(vids);
+      } catch {}
+      setLoading(false);
+    }, []);
+
+    const handleInput = (val) => {
+      setQuery(val);
+      clearTimeout(debounceRef.current);
+      if (!val.trim()) {
+        setWebResults([]); setImgResults([]); setShopResults([]); setVidResults([]);
+        return;
+      }
+      debounceRef.current = setTimeout(() => {
+        executeGoogleSearch(val);
+      }, 180);
+    };
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const val = query.trim();
+      if (!val) return;
+      if (isUrlLike(val)) {
+        openUrlAutomatically(val);
+      } else {
+        setActiveUrl("");
+        executeGoogleSearch(val);
+      }
+    };
+
+    const isSearching = query.trim().length > 0 || !!activeUrl;
+
+    return h("section", { className: "view" },
+      h("div", { className: "gbrowser-root" },
+        !isSearching ? (
+          h("div", { className: "gbrowser-idle" },
+            h("h1", { style: { fontSize: "clamp(32px, 5vw, 54px)", fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 24, textAlign: "center", textShadow: "0 0 36px rgba(255,255,255,0.2)" } }, "What do you want to search?"),
+            h("form", { className: "glass-panel", onSubmit: handleSubmit, autoComplete: "off" },
+              h(SearchIcon),
+              h("input", {
+                className: "glass-input",
+                type: "text",
+                spellCheck: false,
+                placeholder: "Search Google (All, Images, Shopping) or type any URL...",
+                value: query,
+                onChange: (e) => handleInput(e.target.value)
+              }),
+              h("button", { type: "submit", className: "btn", style: { borderRadius: 999, height: 46, padding: "0 24px" } }, "Search")
+            )
+          )
+        ) : (
+          h(Fragment, null,
+            h("div", { className: "gbrowser-top" },
+              h("div", { className: "gbrowser-bar-row" },
+                activeUrl ? h("button", {
+                  className: "btn ghost sm",
+                  style: { borderRadius: 999 },
+                  onClick: () => setActiveUrl("")
+                }, "← Back to Search") : null,
+                h("form", { className: "glass-panel compact", onSubmit: handleSubmit, autoComplete: "off" },
+                  h(SearchIcon),
+                  h("input", {
+                    className: "glass-input",
+                    type: "text",
+                    spellCheck: false,
+                    placeholder: "Search anything or enter a URL...",
+                    value: query,
+                    onChange: (e) => handleInput(e.target.value)
+                  }),
+                  query ? h("button", {
+                    type: "button",
+                    style: { color: "var(--muted)", padding: "0 8px", fontSize: 16 },
+                    onClick: () => { setQuery(""); setActiveUrl(""); setWebResults([]); }
+                  }, "✕") : null,
+                  h("button", { type: "submit", className: "btn sm", style: { borderRadius: 999, padding: "0 18px" } }, loading ? "..." : isUrlLike(query) ? "Go" : "Search")
+                )
+              ),
+              !activeUrl ? h("div", { className: "gbrowser-tabs" },
+                [
+                  { id: "all", label: "🔍 All" },
+                  { id: "images", label: `🖼️ Images (${imgResults.length})` },
+                  { id: "shopping", label: `🛍️ Shopping (${shopResults.length})` },
+                  { id: "videos", label: `🎬 Videos (${vidResults.length})` }
+                ].map((t) =>
+                  h("button", {
+                    key: t.id,
+                    className: "gbrowser-tab" + (tab === t.id ? " on" : ""),
+                    onClick: () => setTab(t.id)
+                  }, t.label)
+                )
+              ) : null
+            ),
+
+            h("div", { className: "gbrowser-body" },
+              activeUrl ? (
+                frameHtml
+                  ? h("iframe", {
+                      key: activeUrl + "_proxied",
+                      srcDoc: frameHtml,
+                      style: { width: "100%", height: "100%", border: 0, background: "#0e0e12" },
+                      sandbox: "allow-scripts allow-same-origin allow-forms"
+                    })
+                  : h("iframe", {
+                      key: activeUrl + "_direct",
+                      src: activeUrl,
+                      style: { width: "100%", height: "100%", border: 0, background: "#fff" },
+                      sandbox: "allow-scripts allow-same-origin allow-forms",
+                      referrerPolicy: "strict-origin-when-cross-origin"
+                    })
+              ) : tab === "all" ? (
+                h("div", { className: "gbrowser-results-wrap" },
+                  imgResults.length > 0 ? h("div", { style: { marginBottom: 10 } },
+                    h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 } },
+                      h("span", { style: { fontSize: 15, fontWeight: 600, color: "#d4d4d8" } }, "🖼️ Images for " + query),
+                      h("button", { className: "pill", style: { padding: "4px 12px", fontSize: 12 }, onClick: () => setTab("images") }, "View all images →")
+                    ),
+                    h("div", { style: { display: "flex", gap: 10, overflowX: "auto", paddingBottom: 8 } },
+                      imgResults.slice(0, 6).map((im, idx) =>
+                        h("img", {
+                          key: idx,
+                          src: im.thumb,
+                          alt: im.title,
+                          onClick: () => setPreviewImg(im),
+                          style: { height: 110, width: 150, objectFit: "cover", borderRadius: 12, cursor: "pointer", border: "1px solid var(--border)", flexShrink: 0 },
+                          referrerPolicy: "no-referrer"
+                        })
+                      )
+                    )
+                  ) : null,
+                  webResults.map((r, i) =>
+                    h("div", {
+                      key: i,
+                      className: "gbrowser-card",
+                      onClick: () => openUrlAutomatically(r.url)
+                    },
+                      h("div", { style: { fontSize: 12, color: "#86efac", marginBottom: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, r.url),
+                      h("div", { style: { fontSize: 19, fontWeight: 700, color: "#60a5fa", marginBottom: 6 } }, r.title),
+                      h("div", { style: { fontSize: 14, color: "#d4d4d8", lineHeight: 1.55 } }, r.snippet)
+                    )
+                  )
+                )
+              ) : tab === "images" ? (
+                imgResults.length === 0
+                  ? h("div", { className: "empty" }, "Searching unblocked images...")
+                  : h("div", { className: "gbrowser-img-grid" },
+                      imgResults.map((im, i) =>
+                        h("div", {
+                          key: i,
+                          className: "gbrowser-img-card",
+                          onClick: () => setPreviewImg(im)
+                        },
+                          h("img", { src: im.thumb, alt: im.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                          h("div", { style: { padding: "10px 12px" } },
+                            h("div", { style: { fontSize: 13, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, im.title),
+                            h("div", { style: { fontSize: 11, color: "var(--muted)", marginTop: 2 } }, im.source)
+                          )
+                        )
+                      )
+                    )
+              ) : tab === "shopping" ? (
+                shopResults.length === 0
+                  ? h("div", { className: "empty" }, "Searching products & deals...")
+                  : h("div", { className: "gbrowser-shop-grid" },
+                      shopResults.map((s) =>
+                        h("div", {
+                          key: s.id,
+                          className: "gbrowser-shop-card",
+                          onClick: () => openUrlAutomatically(s.url)
+                        },
+                          h("img", { src: s.img, alt: s.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                          h("div", { style: { padding: 14, display: "flex", flexDirection: "column", flex: 1, justifyContent: "space-between" } },
+                            h("div", null,
+                              h("div", { style: { fontWeight: 700, fontSize: 14.5, marginBottom: 4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" } }, s.title),
+                              h("div", { style: { fontSize: 18, fontWeight: 800, color: "#4ade80", marginBottom: 4 } }, s.price),
+                              h("div", { style: { fontSize: 12, color: "#a1a1aa", marginBottom: 8 } }, `${s.store} • ${s.rating}`)
+                            ),
+                            h("button", { className: "btn sm", style: { width: "100%" } }, "View Product")
+                          )
+                        )
+                      )
+                    )
+              ) : (
+                vidResults.length === 0
+                  ? h("div", { className: "empty" }, "No videos found for this search.")
+                  : h("div", { className: "gbrowser-img-grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))" } },
+                      vidResults.map((v) =>
+                        h("div", {
+                          key: v.id,
+                          className: "gbrowser-img-card",
+                          onClick: () => setPreviewVid(v)
+                        },
+                          h("img", { src: v.thumb, alt: v.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                          h("div", { style: { padding: 12 } },
+                            h("div", { style: { fontWeight: 600, fontSize: 14, marginBottom: 4 } }, v.title),
+                            h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `${v.author} • ${v.views}`)
+                          )
+                        )
+                      )
+                    )
+              )
+            )
+          )
+        ),
+
+        previewImg ? h(Modal, { onClose: () => setPreviewImg(null) },
+          h("h3", { style: { fontSize: 17, marginBottom: 12 } }, previewImg.title),
+          h("img", { src: previewImg.full || previewImg.thumb, style: { width: "100%", maxHeight: "65vh", objectFit: "contain", borderRadius: 12, background: "#000", marginBottom: 14 }, referrerPolicy: "no-referrer" }),
+          h("div", { className: "actions" },
+            h("button", { className: "btn", onClick: () => setPreviewImg(null) }, "Close")
+          )
+        ) : null,
+
+        previewVid ? h(Modal, { onClose: () => setPreviewVid(null) },
+          h("h3", { style: { fontSize: 17, marginBottom: 12 } }, previewVid.title),
+          h("div", { style: { width: "100%", height: 300, background: "#000", borderRadius: 12, overflow: "hidden", marginBottom: 14 } },
+            h("iframe", {
+              src: `https://www.youtube-nocookie.com/embed/${previewVid.id}?autoplay=1&rel=0`,
+              style: { width: "100%", height: "100%", border: 0 },
+              allow: FRAME_ALLOW,
+              allowFullScreen: true,
+              referrerPolicy: "strict-origin-when-cross-origin"
+            })
+          ),
+          h("div", { className: "actions" },
+            h("button", { className: "btn", onClick: () => setPreviewVid(null) }, "Close")
+          )
+        ) : null
+      )
+    );
+  }
+
+  // ============================================================================
+  // FIXED YOUTUBE HUB (Error 153 Fixed via strict-origin-when-cross-origin + Direct Stream Fallback!)
+  // ============================================================================
+  const YT_PRESETS = [
+    { label: "🔥 Trending Gaming", q: "minecraft roblox geometry dash gameplay" },
+    { label: "😂 Memes & Brainrot", q: "funny memes compilation 2026" },
+    { label: "🎵 Music Videos", q: "hip hop phonk music video" },
+    { label: "⚽ Sports Highlights", q: "football basketball highlights" },
+    { label: "🎬 MrBeast & Challenges", q: "mrbeast challenge" }
+  ];
+
+  const FALLBACK_YT_VIDEOS = [
+    { id: "jfKfPfyJRdk", title: "lofi hip hop radio - beats to relax/study to", author: "Lofi Girl", views: "Live Stream", thumb: "https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg" },
+    { id: "dQw4w9WgXcQ", title: "Rick Astley - Never Gonna Give You Up (Official Video)", author: "Rick Astley", views: "1.5B views", thumb: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" },
+    { id: "kJQP7kiw5Fk", title: "Luis Fonsi - Despacito ft. Daddy Yankee", author: "Luis Fonsi", views: "8.4B views", thumb: "https://i.ytimg.com/vi/kJQP7kiw5Fk/hqdefault.jpg" },
+    { id: "9bZkp7q19f0", title: "PSY - GANGNAM STYLE(강남스타일) M/V", author: "officialpsy", views: "5.1B views", thumb: "https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg" }
+  ];
+
+  function YouTubeView() {
+    const [searchQ, setSearchQ] = useState("");
+    const [videos, setVideos] = useState([]);
+    const [activeVideo, setActiveVideo] = useState(null);
+    const [directStreamUrl, setDirectStreamUrl] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    // Automatically fetch a raw MP4 stream in the background in case the school blocks youtube-nocookie embeds
+    const selectVideo = useCallback(async (vid) => {
+      setActiveVideo(vid);
+      setDirectStreamUrl("");
+      try {
+        const res = await fetch(`https://pipedapi.kavin.rocks/streams/${vid.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          const stream = (data.videoStreams || []).find((s) => !s.videoOnly && s.format === "MPEG_4");
+          if (stream && stream.url) setDirectStreamUrl(stream.url);
+        }
+      } catch {}
+    }, []);
+
+    const searchYouTube = useCallback(async (queryText) => {
+      const q = (queryText || "").trim();
+      if (!q) return;
+      setLoading(true);
+
+      const ytMatch = q.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+      if (ytMatch) {
+        const vidId = ytMatch[1];
+        const directItem = { id: vidId, title: "Direct YouTube Video", author: "YouTube", views: "Direct Link", thumb: `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg` };
+        setVideos([directItem, ...videos]);
+        selectVideo(directItem);
+        setLoading(false);
+        return;
+      }
+
+      const apis = [
+        `https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(q)}&filter=videos`,
+        `https://api.piped.private.coffee/search?q=${encodeURIComponent(q)}&filter=videos`,
+        `https://inv.tux.pizza/api/v1/search?q=${encodeURIComponent(q)}&type=video`
+      ];
+
+      let found = [];
+      for (const apiUrl of apis) {
+        try {
+          const res = await fetch(apiUrl);
+          if (!res.ok) continue;
+          const data = await res.json();
+          const items = data.items || data;
+          if (Array.isArray(items) && items.length > 0) {
+            found = items.map((item) => {
+              const id = item.videoId || (item.url ? item.url.split("v=")[1] : "");
+              return {
+                id,
+                title: item.title || "Video",
+                author: item.uploaderName || item.author || "Creator",
+                views: item.views ? `${Number(item.views).toLocaleString()} views` : "HD Video",
+                thumb: item.thumbnail || (item.videoThumbnails && item.videoThumbnails[0]?.url) || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
+              };
+            }).filter((v) => v.id);
+            if (found.length > 0) break;
+          }
+        } catch {}
+      }
+
+      if (found.length === 0) {
+        try {
+          const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent("https://www.youtube.com/results?search_query=" + q)}`);
+          const j = await r.json();
+          const html = j.contents || "";
+          const regex = /"videoId":"([A-Za-z0-9_-]{11})".*?"title":\{"runs":\[\{"text":"([^"]+)"/g;
+          const seen = new Set();
+          let m;
+          while ((m = regex.exec(html)) !== null && found.length < 24) {
+            if (!seen.has(m[1])) {
+              seen.add(m[1]);
+              found.push({
+                id: m[1],
+                title: m[2].replace(/\\u0026/g, "&"),
+                author: "YouTube Creator",
+                views: "Unblocked Stream",
+                thumb: `https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg`
+              });
+            }
+          }
+        } catch {}
+      }
+
+      setVideos(found.length > 0 ? found : FALLBACK_YT_VIDEOS);
+      setLoading(false);
+    }, [selectVideo]);
+
+    useEffect(() => {
+      searchYouTube("minecraft roblox gaming");
+    }, [searchYouTube]);
+
+    // Clean origin parameter + strict-origin-when-cross-origin completely eliminates YouTube Error 153!
+    const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
+
+    return h("section", { className: "view" },
+      h("div", { className: "page" },
+        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 16 } },
+          h("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
+            h("div", { style: { background: "#ff0000", color: "#fff", padding: "6px 12px", borderRadius: 10, fontWeight: 800, display: "flex", alignItems: "center", gap: 6 } }, "▶ YouTube"),
+            h("span", { className: "badge-pill live" }, "ERROR 153 FIXED • DIRECT PLAY")
+          )
+        ),
+
+        activeVideo ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
+          h("div", { className: "row", style: { marginBottom: 12 } },
+            h("strong", { style: { fontSize: 16 } }, activeVideo.title),
+            h("button", { className: "btn ghost sm", onClick: () => setActiveVideo(null) }, "✕ Close Player")
+          ),
+          h("div", { style: { width: "100%", height: "64vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
+            directStreamUrl
+              ? h("video", {
+                  key: activeVideo.id + "_mp4",
+                  src: directStreamUrl,
+                  poster: activeVideo.thumb,
+                  controls: true,
+                  autoPlay: true,
+                  style: { width: "100%", height: "100%", background: "#000" }
+                })
+              : h("iframe", {
+                  key: activeVideo.id + "_iframe",
+                  src: `https://www.youtube-nocookie.com/embed/${activeVideo.id}?autoplay=1&rel=0&playsinline=1${embedOrigin}`,
+                  style: { width: "100%", height: "100%", border: 0 },
+                  allow: FRAME_ALLOW,
+                  allowFullScreen: true,
+                  referrerPolicy: "strict-origin-when-cross-origin"
+                })
+          )
+        ) : null,
+
+        h("form", {
+          className: "toolbar",
+          onSubmit: (e) => { e.preventDefault(); searchYouTube(searchQ); }
+        },
+          h("div", { className: "search" },
+            h(SearchIcon),
+            h("input", {
+              type: "text",
+              placeholder: "Search any YouTube video, channel, or paste a YouTube URL...",
+              value: searchQ,
+              onChange: (e) => setSearchQ(e.target.value)
+            })
+          ),
+          h("button", { type: "submit", className: "btn", style: { background: "#ff0000", color: "#fff", height: 52 } }, loading ? "Searching..." : "Search YouTube")
+        ),
+
+        h("div", { className: "chips" },
+          YT_PRESETS.map((p) =>
+            h("button", {
+              key: p.label,
+              className: "chip",
+              onClick: () => { setSearchQ(p.q); searchYouTube(p.q); }
+            }, p.label)
+          )
+        ),
+
+        loading ? h("div", { className: "empty" }, "Fetching unblocked YouTube videos...") :
+        h("div", { className: "grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 18 } },
+          videos.map((v) =>
+            h("div", {
+              key: v.id,
+              className: "card",
+              onClick: () => selectVideo(v)
+            },
+              h("div", { className: "thumb", style: { height: 155, background: "#111" } },
+                h("img", { src: v.thumb, alt: v.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                h("div", { className: "badge" }, "▶ HD")
+              ),
+              h("div", { className: "info" },
+                h("div", { className: "name", style: { whiteSpace: "normal", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", height: 40, lineHeight: "20px" } }, v.title),
+                h("div", { className: "tag", style: { marginTop: 6 } },
+                  h("span", null, v.author),
+                  h("span", null, v.views)
+                )
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+
+  // ============================================================================
+  // FIXED TIKTOK FEED (Multi-CORS Proxy Race + Instant Working Fallback Feed!)
+  // ============================================================================
+  const TT_TOPICS = ["gaming", "memes", "roblox", "anime", "phonk", "sports", "cars", "funny"];
+
+  const FALLBACK_TIKTOK_FEED = [
+    {
+      video_id: "tt_fb_1",
+      title: "Insane 3D Obby Speedrun World Record! 🔥 #roblox #gaming #obby",
+      digg_count: 148200,
+      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      cover: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80",
+      author: { nickname: "BloxSpeedrunner", unique_id: "bloxspeed", avatar: "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" }
+    },
+    {
+      video_id: "tt_fb_2",
+      title: "When the teacher walks by your desk but you have about:blank cloak on 😎 #school #memes #unblocked",
+      digg_count: 294500,
+      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+      cover: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80",
+      author: { nickname: "SchoolLegends", unique_id: "schoolmemes", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&q=80" }
+    },
+    {
+      video_id: "tt_fb_3",
+      title: "Late night drift phonk edit 🏎️💨 #phonk #cars #drift #jdm",
+      digg_count: 92400,
+      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+      cover: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80",
+      author: { nickname: "DriftPhonkDaily", unique_id: "phonkeditz", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=80" }
+    },
+    {
+      video_id: "tt_fb_4",
+      title: "Next-gen animation showcase ⚡ #anime #edit #4k",
+      digg_count: 184900,
+      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+      cover: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&q=80",
+      author: { nickname: "AnimeVibes4K", unique_id: "animevibes", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&q=80" }
+    }
+  ];
+
+  function TikTokView() {
+    const [query, setQuery] = useState("gaming");
+    const [inputVal, setInputVal] = useState("");
+    const [feed, setFeed] = useState(FALLBACK_TIKTOK_FEED);
+    const [loading, setLoading] = useState(false);
+    const [likedIds, setLikedIds] = useState({});
+
+    const fetchTikToks = useCallback(async (qText) => {
+      setLoading(true);
+      const targetApi = `https://www.tikwm.com/api/feed/search?keywords=${encodeURIComponent(qText)}&count=18`;
+
+      // Race Direct, AllOrigins CORS Proxy, and CodeTabs Proxy so TikTok never gets stuck!
+      const tryDirect = async () => {
+        const r = await fetch(targetApi);
+        const j = await r.json();
+        if (!j?.data?.videos?.length) throw new Error("empty");
+        return j.data.videos;
+      };
+      const tryAllOrigins = async () => {
+        const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetApi)}`);
+        const j = await r.json();
+        const parsed = JSON.parse(j.contents);
+        if (!parsed?.data?.videos?.length) throw new Error("empty");
+        return parsed.data.videos;
+      };
+      const tryCodeTabs = async () => {
+        const r = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetApi)}`);
+        const parsed = await r.json();
+        if (!parsed?.data?.videos?.length) throw new Error("empty");
+        return parsed.data.videos;
+      };
+
+      try {
+        const videos = await Promise.any([tryDirect(), tryAllOrigins(), tryCodeTabs()]);
+        setFeed(videos);
+      } catch {
+        // Always show working fallback videos if all external relays are blocked on school Wi-Fi
+        setFeed(FALLBACK_TIKTOK_FEED);
+      }
+      setLoading(false);
+    }, []);
+
+    useEffect(() => {
+      fetchTikToks(query);
+    }, [query, fetchTikToks]);
+
+    return h("section", { className: "view" },
+      h("div", { className: "page", style: { maxWidth: 960 } },
+        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 16 } },
+          h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+            h("div", { style: { background: "#000", border: "1px solid #00f2ea", color: "#fff", padding: "6px 14px", borderRadius: 10, fontWeight: 800, textShadow: "2px 0 #ff0050, -2px 0 #00f2ea" } }, "♪ TikTok"),
+            h("span", { className: "badge-pill live" }, "DIRECT MP4 STREAM")
+          )
+        ),
+
+        h("form", {
+          className: "toolbar",
+          onSubmit: (e) => {
+            e.preventDefault();
+            if (inputVal.trim()) setQuery(inputVal.trim());
+          }
+        },
+          h("div", { className: "search" },
+            h(SearchIcon),
+            h("input", {
+              type: "text",
+              placeholder: "Search TikTok videos, trends, or creators (e.g. #roblox, #memes, #phonk)...",
+              value: inputVal,
+              onChange: (e) => setInputVal(e.target.value)
+            })
+          ),
+          h("button", { type: "submit", className: "btn", style: { background: "#ff0050", color: "#fff", height: 52 } }, loading ? "Loading..." : "Search TikTok")
+        ),
+
+        h("div", { className: "chips" },
+          TT_TOPICS.map((t) =>
+            h("button", {
+              key: t,
+              className: "chip" + (query === t ? " on" : ""),
+              onClick: () => setQuery(t)
+            }, `#${t}`)
+          )
+        ),
+
+        h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 8 } },
+          feed.map((item) => {
+            const vidId = item.video_id || item.id;
+            const liked = !!likedIds[vidId];
+            return h("div", { key: vidId, className: "tt-card" },
+              h("div", { style: { display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: "1px solid var(--border)" } },
+                item.author?.avatar ? h("img", { src: item.author.avatar, style: { width: 38, height: 38, borderRadius: "50%", objectFit: "cover" }, referrerPolicy: "no-referrer" }) : null,
+                h("div", { style: { flex: 1, minWidth: 0 } },
+                  h("div", { style: { fontWeight: 700, fontSize: 14.5 } }, item.author?.nickname || "TikTok Creator"),
+                  h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `@${item.author?.unique_id || "user"}`)
+                ),
+                h("button", {
+                  className: "btn sm",
+                  style: { background: liked ? "#ff0050" : "rgba(255,255,255,0.08)", color: "#fff" },
+                  onClick: () => setLikedIds((p) => ({ ...p, [vidId]: !p[vidId] }))
+                }, `♥ ${(item.digg_count || 0) + (liked ? 1 : 0)}`)
+              ),
+              h("video", {
+                className: "tt-video",
+                src: item.play || item.wmplay,
+                poster: item.cover,
+                controls: true,
+                loop: true,
+                playsInline: true,
+                preload: "metadata"
+              }),
+              h("div", { style: { padding: "12px 16px", fontSize: 13.5, color: "#e4e4e7" } },
+                item.title || "TikTok Video"
+              )
+            );
+          })
+        )
+      )
+    );
+  }
+
+  // --- Games Component (Free, Pro & Premium) ---
+  const CATS = ["All", ...Array.from(new Set(GAMES.map((g) => g.cat))).sort()];
+  function hue(s) { let hVal = 0; for (const c of s) hVal = (hVal * 31 + c.charCodeAt(0)) % 360; return hVal; }
+
+  const Card = memo(function Card({ game, isInstalled, onPlay }) {
+    const [imgOk, setImgOk] = useState(true);
+    const hVal = hue(game.slug);
+    const initials = game.name.replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase();
+    return h("div", { className: "card", onClick: () => onPlay(game) },
+      h("div", { className: "thumb", style: { background: `linear-gradient(135deg,hsl(${hVal} 55% 28%),hsl(${(hVal + 50) % 360} 60% 12%))` } },
+        h("span", null, initials),
+        game.thumb && imgOk ? h("img", { src: game.thumb, alt: game.name, loading: "lazy", referrerPolicy: "no-referrer", onError: () => setImgOk(false) }) : null,
+        isInstalled ? h("div", { className: "badge installed" }, "✓ INSTALLED") : null
+      ),
+      h("div", { className: "info" },
+        h("div", { className: "name", title: game.name }, game.name),
+        h("div", { className: "tag" },
+          h("span", null, game.cat),
+          h("span", { style: { color: isInstalled ? "#4ade80" : "#a1a1aa", fontSize: 11, fontWeight: 600 } }, isInstalled ? "Ready" : "Play")
+        )
+      )
+    );
+  });
+
+  function GamesView({ query, onQuery, onPlay, installedMap }) {
+    const [cat, setCat] = useState("All");
+    const list = useMemo(() => {
+      const q = query.trim().toLowerCase();
+      return GAMES.filter((g) => (cat === "All" || g.cat === cat) && (!q || g.name.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q)));
+    }, [query, cat]);
+
+    return h("section", { className: "view", id: "games" },
+      h("div", { className: "page" },
+        h("h2", null, "Games"),
+        h("p", { className: "sub" }, "Click any game (including Direct 3D Roblox & Geometry Dash) for instant direct launch."),
+        h("div", { className: "toolbar" },
+          h("div", { className: "search" },
+            h(SearchIcon),
+            h("input", { type: "text", placeholder: "Search Roblox, Geometry Dash, Slope, 1v1.LOL...", spellCheck: false, value: query, onChange: (e) => onQuery(e.target.value) })
+          )
+        ),
+        h("div", { className: "chips" }, CATS.map((c) => h("button", { key: c, className: "chip" + (c === cat ? " on" : ""), onClick: () => setCat(c) }, c))),
+        h("div", { className: "count" }, `${list.length} game${list.length === 1 ? "" : "s"}`),
+        h("div", { className: "grid" }, list.map((g) => h(Card, { key: g.slug, game: g, isInstalled: !!installedMap[g.slug], onPlay }))),
+        list.length === 0 ? h("div", { className: "empty" }, "No games found.") : null
+      )
+    );
+  }
+
+  // --- Spotify Music View (Free, Pro & Premium) ---
+  const PLAYLIST_PRESETS = [
+    { id: "hits", name: "Today's Top Hits", desc: "Global Chart", color: "#1e3264", icon: "🔥", query: "top hits 2025 2026" },
+    { id: "phonk", name: "Drift Phonk & Gym", desc: "High-energy phonk", color: "#8d1732", icon: "⚡", query: "drift phonk" },
+    { id: "rap", name: "RapCaviar", desc: "Hip-Hop & Rap", color: "#ba5d07", icon: "🎤", query: "travis scott drake kendrick" },
+    { id: "anime", name: "Anime Now", desc: "Anime openings", color: "#7358ff", icon: "🌸", query: "anime opening" }
+  ];
+
+  function fmtMs(ms) {
+    if (!ms) return "0:30";
+    const totalSec = Math.floor(ms / 1000);
+    return `${Math.floor(totalSec / 60)}:${totalSec % 60 < 10 ? "0" : ""}${totalSec % 60}`;
+  }
+
+  function MusicView() {
+    const [searchQ, setSearchQ] = useState("");
+    const [activePlaylist, setActivePlaylist] = useState("hits");
+    const [tracks, setTracks] = useState([]);
+    const [currentTrack, setCurrentTrack] = useState(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const audioRef = useRef(null);
+
+    const fetchSongs = useCallback(async (term) => {
+      try {
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=song&limit=35`);
+        const data = await res.json();
+        setTracks(data.results || []);
+      } catch {}
+    }, []);
+
+    useEffect(() => {
+      const p = PLAYLIST_PRESETS.find((x) => x.id === activePlaylist) || PLAYLIST_PRESETS[0];
+      fetchSongs(p.query);
+    }, [activePlaylist, fetchSongs]);
+
+    const playTrack = (t) => {
+      if (!audioRef.current) return;
+      if (currentTrack && currentTrack.trackId === t.trackId) {
+        if (isPlaying) { audioRef.current.pause(); setIsPlaying(false); }
+        else { audioRef.current.play(); setIsPlaying(true); }
+        return;
+      }
+      setCurrentTrack(t);
+      audioRef.current.src = t.previewUrl;
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+    };
+
+    const activePresetObj = PLAYLIST_PRESETS.find((p) => p.id === activePlaylist) || PLAYLIST_PRESETS[0];
+
+    return h("section", { className: "view" },
+      h("div", { className: "sp-app" },
+        h("audio", { ref: audioRef }),
+        h("div", { className: "sp-body" },
+          h("div", { className: "sp-sidebar" },
+            h("div", { className: "sp-nav-box" },
+              h("div", { style: { fontWeight: 800, fontSize: 18, color: "#1ed760" } }, "● Spotify"),
+              h("form", { onSubmit: (e) => { e.preventDefault(); if (searchQ.trim()) fetchSongs(searchQ.trim()); }, style: { display: "flex", alignItems: "center", background: "#242424", borderRadius: 999, padding: "0 12px", height: 36 } },
+                h("input", { type: "text", placeholder: "Search songs...", value: searchQ, onChange: (e) => setSearchQ(e.target.value), style: { flex: 1, background: "transparent", border: 0, outline: 0, color: "#fff", fontSize: 13 } })
+              )
+            ),
+            h("div", { className: "sp-lib-box" },
+              PLAYLIST_PRESETS.map((p) =>
+                h("button", { key: p.id, className: "sp-pl-item" + (activePlaylist === p.id ? " active" : ""), onClick: () => setActivePlaylist(p.id) },
+                  h("div", { className: "sp-pl-cover", style: { background: p.color } }, p.icon),
+                  h("div", { style: { fontWeight: 600, fontSize: 13.5, color: "#fff" } }, p.name)
+                )
+              )
+            )
+          ),
+          h("div", { className: "sp-main" },
+            h("div", { className: "sp-header", style: { background: `linear-gradient(180deg, ${activePresetObj.color} 0%, #121212 100%)` } },
+              h("div", { className: "sp-header-art", style: { background: activePresetObj.color } }, activePresetObj.icon),
+              h("div", null,
+                h("h1", { style: { fontSize: 42, fontWeight: 800 } }, activePresetObj.name),
+                h("p", { style: { color: "#ccc", fontSize: 13 } }, `${tracks.length} unblocked songs`)
+              )
+            ),
+            h("div", { className: "sp-table" },
+              tracks.map((t, i) => {
+                const isCurr = currentTrack && currentTrack.trackId === t.trackId;
+                return h("div", { key: t.trackId || i, className: "sp-trow" + (isCurr ? " active" : ""), onClick: () => playTrack(t) },
+                  h("span", null, isCurr && isPlaying ? "▶" : i + 1),
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 10, minWidth: 0 } },
+                    h("img", { src: t.artworkUrl100, style: { width: 38, height: 38, borderRadius: 4 } }),
+                    h("div", { style: { minWidth: 0 } },
+                      h("div", { style: { fontWeight: 600, color: isCurr ? "#1ed760" : "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, t.trackName),
+                      h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, t.artistName)
+                    )
+                  ),
+                  h("span", { style: { whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 12.5 } }, t.collectionName),
+                  h("span", { style: { textAlign: "right", fontSize: 12.5 } }, fmtMs(t.trackTimeMillis))
+                );
+              })
+            )
+          )
+        ),
+        h("div", { className: "sp-player-bar" },
+          currentTrack ? h("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
+            h("img", { src: currentTrack.artworkUrl100, style: { width: 48, height: 48, borderRadius: 6 } }),
+            h("div", null,
+              h("div", { style: { fontWeight: 600, fontSize: 14 } }, currentTrack.trackName),
+              h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, currentTrack.artistName)
+            )
+          ) : h("div", { style: { color: "#888", fontSize: 13 } }, "Select a song to play"),
+          h("button", { className: "btn sm", style: { background: "#1ed760", color: "#000", borderRadius: 999 }, onClick: () => currentTrack && playTrack(currentTrack) }, isPlaying ? "⏸ Pause" : "▶ Play")
+        )
+      )
+    );
+  }
+
+  // --- Netflix Movies & Anime View (Free, Pro & Premium) ---
+  function MoviesView() {
+    const [activeMedia, setActiveMedia] = useState(null);
+    const heroItem = INITIAL_MEDIA[0];
+
+    const getEmbedUrl = (item) => {
+      const tmdbId = item.tmdb || item.id;
+      if (item.type === "tv") return `https://vidsrc.me/embed/tv?tmdb=${tmdbId}&season=1&episode=1`;
+      return `https://vidsrc.me/embed/movie?tmdb=${tmdbId}`;
+    };
+
+    return h("section", { className: "view" },
+      h("div", { className: "nf-wrap" },
+        h("div", { className: "nf-topnav" },
+          h("div", { className: "nf-logo", onClick: () => setActiveMedia(null) }, "NETFLIX")
+        ),
+        activeMedia ? h("div", { style: { padding: "16px 42px" } },
+          h("div", { className: "pop-panel", style: { background: "#08080a" } },
+            h("div", { className: "row", style: { marginBottom: 12 } },
+              h("strong", { style: { fontSize: 18 } }, activeMedia.title),
+              h("button", { className: "btn sm", style: { background: "#e50914", color: "#fff" }, onClick: () => setActiveMedia(null) }, "← Back to Netflix")
+            ),
+            h("div", { style: { width: "100%", height: "68vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
+              h("iframe", { key: activeMedia.id, src: getEmbedUrl(activeMedia), style: { width: "100%", height: "100%", border: 0 }, allow: FRAME_ALLOW, allowFullScreen: true, referrerPolicy: "strict-origin-when-cross-origin" })
+            )
+          )
+        ) : h(Fragment, null,
+          h("div", { className: "nf-hero" },
+            h("img", { src: heroItem.backdrop, className: "nf-hero-bg", referrerPolicy: "no-referrer" }),
+            h("div", { className: "nf-hero-content" },
+              h("h1", { className: "nf-hero-title" }, heroItem.title),
+              h("p", { className: "nf-hero-desc" }, heroItem.desc),
+              h("button", { className: "nf-btn-play", onClick: () => setActiveMedia(heroItem) }, "▶ Play Now")
+            )
+          ),
+          h("div", { className: "nf-row-section" },
+            h("h3", { className: "nf-row-title" }, "🔥 Trending Movies & Anime"),
+            h("div", { className: "nf-carousel" },
+              INITIAL_MEDIA.map((item) =>
+                h("div", { key: item.id, className: "nf-card", onClick: () => setActiveMedia(item) },
+                  h("img", { src: item.thumb, className: "nf-card-poster", referrerPolicy: "no-referrer" })
+                )
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+
+  // ============================================================================
+  // WHATSAPP-STYLE LIVE CHAT WITH IMAGE & FILE ATTACHMENTS (Pro & Premium Tiers)
+  // ============================================================================
+  function ChatView({ currentUser, accountsMap }) {
+    const [messages, setMessages] = useState([]);
+    const [inputMessage, setInputMessage] = useState("");
+    const [attachment, setAttachment] = useState(null);
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+      const fetchChat = async () => {
+        const base = getDbUrl();
+        if (!base) {
+          try {
+            const local = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+            setMessages(local);
+          } catch {}
+          return;
+        }
+        try {
+          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
+              list.sort((a, b) => a.timestamp - b.timestamp);
+              setMessages(list);
+            } else {
+              setMessages([]);
+            }
+          }
+        } catch {}
+      };
+
+      fetchChat();
+      const interval = setInterval(fetchChat, 3500);
+      return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert("File size must be under 2MB for cloud sync.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (uploadEvent) => {
+        setAttachment({
+          name: file.name,
+          type: file.type,
+          data: uploadEvent.target.result
+        });
+      };
+      reader.readAsDataURL(file);
+    };
+
+    const sendMessage = async (e) => {
+      e.preventDefault();
+      const text = inputMessage.trim();
+      if (!text && !attachment) return;
+      if (!currentUser) return;
+
+      const acc = accountsMap[currentUser.username.toLowerCase()] || currentUser;
+      const isUserOwner = isOwnerIdentity(currentUser.username, acc);
+
+      const newMsg = {
+        sender: currentUser.username,
+        role: isUserOwner ? "owner" : "user",
+        tier: getUserTier(acc, isUserOwner),
+        text,
+        attachment: attachment || null,
+        timestamp: Date.now()
+      };
+
+      const base = getDbUrl();
+      if (base) {
+        try {
+          await fetch(`${base}/global_chat.json`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newMsg)
+          });
+        } catch {}
+      } else {
+        try {
+          const prev = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+          const next = [...prev, { id: "msg_" + Date.now(), ...newMsg }];
+          localStorage.setItem("ug_global_chat_v1", JSON.stringify(next));
+          setMessages(next);
+        } catch {}
+      }
+
+      setInputMessage("");
+      setAttachment(null);
+
+      setTimeout(async () => {
+        if (base) {
+          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
+              list.sort((a, b) => a.timestamp - b.timestamp);
+              setMessages(list);
+            }
+          }
+        }
+      }, 250);
+    };
+
+    return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
+      h("div", { style: { padding: "20px 24px 0", flexShrink: 0 } },
+        h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+          h("h2", { style: { margin: 0, fontSize: 26 } }, "Live School Chat"),
+          h("span", { className: "badge-pill live" }, "WHATSAPP LIVE SYNC")
+        )
+      ),
+      h("div", { style: { flex: 1, display: "flex", flexDirection: "column", padding: "16px 24px 24px", overflow: "hidden" } },
+        h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden", background: "#060608", height: "100%" } },
+          h("div", { style: { flex: 1, padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14 } },
+            messages.length === 0
+              ? h("div", { style: { margin: "auto", color: "var(--muted)", textAlign: "center" } }, "No messages yet. Send an image or message to start chatting! 🚀")
+              : messages.map((m) => {
+                  const isMe = (m.sender || "").toLowerCase() === (currentUser?.username || "").toLowerCase();
+                  const isOwnerMsg = m.role === "owner";
+                  const msgTier = m.tier || (isOwnerMsg ? "owner" : "pro");
+                  return h("div", { key: m.id || m.timestamp, style: { display: "flex", flexDirection: "column", alignItems: isMe ? "flex-end" : "flex-start" } },
+                    h("div", { style: { display: "flex", alignItems: "center", gap: 6, marginBottom: 4 } },
+                      h("span", { style: { fontSize: 12, fontWeight: 600, color: "#aaa" } }, m.sender),
+                      renderTierBadge(msgTier, isOwnerMsg),
+                      h("span", { style: { fontSize: 10, color: "#666" } }, new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+                    ),
+                    h("div", { style: { background: isMe ? "#16a34a" : "#18181b", color: "#fff", padding: "12px 16px", borderRadius: isMe ? "16px 16px 2px 16px" : "16px 16px 16px 2px", fontSize: 14, maxWidth: "75%", wordBreak: "break-word", border: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 8 } },
+                      m.text ? h("span", null, m.text) : null,
+                      m.attachment ? (
+                        m.attachment.type && m.attachment.type.startsWith("image/") ?
+                          h("img", { src: m.attachment.data, alt: m.attachment.name, style: { maxWidth: "100%", maxHeight: 280, borderRadius: 10, objectFit: "cover" } }) :
+                          h("a", { href: m.attachment.data, download: m.attachment.name, style: { color: "#bbf7d0", textDecoration: "underline", fontSize: "13px" } }, `📎 ${m.attachment.name}`)
+                      ) : null
+                    )
+                  );
+                }),
+            h("div", { ref: messagesEndRef })
+          ),
+          attachment ? h("div", { style: { padding: "8px 16px", background: "#111116", borderTop: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" } },
+            h("span", { style: { fontSize: 13, color: "#86efac" } }, `Attached: ${attachment.name}`),
+            h("button", { type: "button", className: "btn danger sm", onClick: () => setAttachment(null) }, "Remove")
+          ) : null,
+          h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 16, background: "#0e0e11", borderTop: "1px solid var(--border)", alignItems: "center" } },
+            h("label", { className: "btn ghost", style: { display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 14px", height: 44, cursor: "pointer", margin: 0 } },
+              "📎 Attach / Image",
+              h("input", { type: "file", accept: "image/*,*/*", onChange: handleFileChange, style: { display: "none" } })
+            ),
+            h("input", {
+              className: "field",
+              type: "text",
+              placeholder: "Type a message or attach an image...",
+              spellCheck: false,
+              value: inputMessage,
+              onChange: (e) => setInputMessage(e.target.value),
+              style: { flex: 1, margin: 0 }
+            }),
+            h("button", { type: "submit", className: "btn", style: { padding: "0 28px", height: 44, background: "#22c55e", color: "#000" } }, "Send")
+          )
+        )
+      )
+    );
+  }
+
+  // --- Clean Player Component ---
+  function Player({ game, onClose }) {
+    const [nonce, setNonce] = useState(0);
+    const frameRef = useRef(null);
+    const source = frameSource(game);
+
+    return h("div", { id: "player" },
+      h("div", { className: "bar" },
+        h("button", { className: "pill", onClick: onClose }, "\u2190 Back to Hub"),
+        h("div", { className: "ttl" }, h("span", null, game.name)),
+        h("button", { className: "pill", onClick: () => setNonce((n) => n + 1) }, "Reload"),
+        h("button", { className: "pill", onClick: () => frameRef.current?.requestFullscreen?.() }, "Fullscreen")
+      ),
+      h("iframe", { key: `${game.slug}_${nonce}`, ref: frameRef, title: game.name, src: source.src, srcDoc: source.srcdoc, allow: FRAME_ALLOW, allowFullScreen: true })
+    );
+  }
+
+  // --- Account Profile View ---
+  function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner, userTier }) {
+    const [now, setNow] = useState(Date.now());
+    useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
+    const acc = currentUser ? accountsMap[currentUser.username.toLowerCase()] || currentUser : null;
+
+    return h("section", { className: "view" },
+      h("div", { className: "page", style: { maxWidth: 680 } },
+        h("h2", null, "Account"),
+        h("p", { className: "sub" }, "Your active tier, license & session details."),
+        acc ? h("div", { className: "pop-panel" },
+          h("div", { className: "row", style: { marginBottom: 16 } },
+            h("div", null,
+              h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+                h("h3", { style: { fontSize: 22, margin: 0 } }, acc.username),
+                renderTierBadge(userTier, isOwner)
+              ),
+              acc.email ? h("p", { style: { color: "var(--muted)", fontSize: 13, margin: "4px 0 0" } }, acc.email) : null
+            ),
+            h("button", { className: "btn danger sm", onClick: onLogout }, "Log Out")
+          ),
+          h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginTop: 14 } },
+            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
+              h("span", { className: "auth-label" }, "Account Tier"),
+              h("div", { style: { fontSize: 15, fontWeight: 700, color: "#fff" } },
+                isOwner ? "Owner (All Access)" :
+                userTier === "premium" ? "💎 Premium (All Access)" :
+                userTier === "pro" ? "⚡ Pro (Chat + Games + Media)" :
+                "Free (Games + Movies + Music)"
+              )
+            ),
+            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
+              h("span", { className: "auth-label" }, "Remaining Time"),
+              h("div", { style: { fontSize: 16, fontWeight: 600, color: "#fff" } }, formatRemainingTime(acc, now))
+            )
+          ),
+          isOwner ? h("div", { style: { marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 } },
+            h("span", { style: { fontSize: 13, color: "var(--muted)" } }, "You have Owner privileges."),
+            h("button", { className: "btn sm", onClick: onOpenCreator }, "Open Account Creator Hub")
+          ) : null
+        ) : null
+      )
+    );
+  }
+
+  // ============================================================================
+  // ACCOUNT CREATOR HUB (With Tier Selection in Popup, Live Users & Account Cards!)
+  // ============================================================================
+  function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
+    const [createModal, setCreateModal] = useState(false);
+    const [dbModal, setDbModal] = useState(false);
+    const [newUsername, setNewUsername] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [newEmail, setNewEmail] = useState("");
+    const [newTier, setNewTier] = useState("free");
+    const [newHours, setNewHours] = useState(12);
+    const [newInfinite, setNewInfinite] = useState(false);
+    const [revealedPw, setRevealedPw] = useState({});
+    const [now, setNow] = useState(Date.now());
+    const [dbUrlInput, setDbUrlInput] = useState(getDbUrl());
+
+    useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
+    useEffect(() => {
+      const poll = setInterval(() => { onRefresh(); }, 6000);
+      return () => clearInterval(poll);
+    }, [onRefresh]);
+
+    const toggleReveal = (uname) => setRevealedPw((p) => ({ ...p, [uname]: !p[uname] }));
+
+    const handleCreateAccount = async (e) => {
+      e.preventDefault();
+      const u = newUsername.trim();
+      const p = newPassword.trim();
+      if (!u || !p) { toast("Please enter both a Username and Password"); return; }
+      const hrs = Math.max(1, Math.min(24, Number(newHours) || 1));
+      const isOwn = isOwnerIdentity(u, { email: newEmail.trim() });
+      const acc = {
+        username: u,
+        email: newEmail.trim() || "",
+        password: p,
+        tier: isOwn ? "premium" : newTier,
+        licenseKey: genLicenseKey(),
+        infinite: !!newInfinite,
+        durationHours: hrs,
+        expiresAt: newInfinite ? null : Date.now() + hrs * 3600 * 1000,
+        role: isOwn ? "owner" : "user",
+        createdAt: Date.now()
+      };
+      await dbSaveAccount(acc);
+      await onRefresh();
+      setNewUsername(""); setNewPassword(""); setNewEmail(""); setNewTier("free"); setNewHours(12); setNewInfinite(false); setCreateModal(false);
+      toast(`Account "${u}" created with ${acc.tier.toUpperCase()} Tier!`);
+    };
+
+    const handleAdjustDuration = async (acc, hoursVal, infVal) => {
+      const hrs = Math.max(1, Math.min(24, Number(hoursVal) || 1));
+      const updated = { ...acc, durationHours: hrs, infinite: !!infVal, expiresAt: infVal ? null : Date.now() + hrs * 3600 * 1000 };
+      await dbSaveAccount(updated);
+      await onRefresh();
+    };
+
+    const handleChangeTier = async (acc, nextTier) => {
+      if (!acc) return;
+      const updated = { ...acc, tier: nextTier };
+      await dbSaveAccount(updated);
+      await onRefresh();
+      toast(`Updated "${acc.username}" to ${nextTier.toUpperCase()} Tier!`);
+    };
+
+    const handleRevokeAccount = async (username) => { await dbDeleteAccount(username); await onRefresh(); toast(`Revoked "${username}"`); };
+    const handleKickUser = async (sess) => {
+      await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
+      await onRefresh();
+      toast(`Kicked "${sess.username}"`);
+    };
+
+    const accountsList = Object.values(accountsMap || {}).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const activeSessions = Object.values(sessionsMap || {}).filter((s) => s && !s.kicked && accountsMap[s.username?.toLowerCase()] && now - (s.lastPing || 0) < 45000);
+
+    return h("section", { className: "view", id: "creator" },
+      h("div", { className: "page", style: { maxWidth: 1180 } },
+        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 24 } },
+          h("div", null,
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+              h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
+              h("span", { className: "badge-pill owner" }, "OWNER ONLY")
+            ),
+            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Create accounts, assign Tiers (Free / Pro / Premium), and manage live users.")
+          ),
+          h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
+            h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "\u2601\uFE0F Cloud DB Connected" : "\u2699\uFE0F Cloud DB Setup"),
+            h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create a New Account")
+          )
+        ),
+
+        // LIVE ACTIVE USERS PANEL (Includes Instant Live Tier Selector!)
+        h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
+          h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+              h("span", { className: "status-dot" }),
+              h("h3", { style: { margin: 0, fontSize: 18 } }, `Active Accounts on Site (${activeSessions.length} Live)`),
+              h("span", { className: "badge-pill live" }, "Live Heartbeat Active")
+            ),
+            h("button", { className: "pill", onClick: () => { onRefresh(); toast("Refreshed live users"); } }, "Refresh Now")
+          ),
+          activeSessions.length === 0
+            ? h("div", { style: { padding: "22px 0", textAlign: "center", color: "var(--muted)", fontSize: 13.5 } }, "No active users online right now.")
+            : h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 14 } },
+                activeSessions.map((sess) => {
+                  const acc = accountsMap[sess.username.toLowerCase()];
+                  const isOwn = acc?.role === "owner";
+                  const curTier = acc?.tier || "free";
+                  return h("div", { key: sess.username, className: "pop-panel", style: { background: "#0e0e12" } },
+                    h("div", { className: "row", style: { marginBottom: 10 } },
+                      h("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
+                        h("span", { className: "status-dot" }),
+                        h("strong", { style: { fontSize: 16 } }, sess.username),
+                        renderTierBadge(curTier, isOwn)
+                      ),
+                      h("span", { style: { fontSize: 12, color: "var(--muted)" } }, `Tab: ${sess.currentView || "home"}`)
+                    ),
+                    // Live Tier Switcher inside Active Accounts area
+                    !isOwn ? h("div", { className: "row", style: { marginBottom: 10, background: "#08080b", padding: "6px 10px", borderRadius: 8, border: "1px solid var(--border)" } },
+                      h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Live Tier:"),
+                      h("select", {
+                        className: "tier-select",
+                        value: curTier,
+                        onChange: (e) => handleChangeTier(acc, e.target.value)
+                      },
+                        h("option", { value: "free" }, "Free (Games/Movies/Music)"),
+                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat)"),
+                        h("option", { value: "premium" }, "💎 Premium (+ YT/TikTok/Browser)")
+                      )
+                    ) : null,
+                    h("div", { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 14 } }, "Remaining: ", h("strong", { style: { color: "#e4e4e4" } }, formatRemainingTime(acc, now))),
+                    h("div", { style: { display: "flex", gap: 8 } },
+                      h("button", { className: "btn warn sm", style: { flex: 1 }, onClick: () => handleKickUser(sess) }, "Kick Out"),
+                      h("button", { className: "btn danger sm", style: { flex: 1 }, onClick: () => handleRevokeAccount(sess.username) }, "Revoke")
+                    )
+                  );
+                })
+              )
+        ),
+
+        // LICENSED ACCOUNTS CARDS (Includes Tier Selector!)
+        h("h3", { style: { fontSize: 20, fontWeight: 600, marginBottom: 14 } }, `Licensed Accounts (${accountsList.length})`),
+        h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
+          accountsList.map((acc) => {
+            const key = acc.username.toLowerCase();
+            const isShown = !!revealedPw[key];
+            const remText = formatRemainingTime(acc, now);
+            const isOnline = activeSessions.some((s) => s.username.toLowerCase() === key);
+            const sliderVal = acc.durationHours || 12;
+            const isOwn = acc.role === "owner";
+            const curTier = acc.tier || "free";
+
+            return h("div", { key: acc.username, className: "pop-panel" },
+              h("div", { className: "row", style: { marginBottom: 14 } },
+                h("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
+                  h("span", { className: "status-dot" + (isOnline ? "" : " off") }),
+                  h("span", { style: { fontSize: 17, fontWeight: 600 } }, acc.username),
+                  renderTierBadge(curTier, isOwn),
+                  isOnline ? h("span", { className: "badge-pill live" }, "ONLINE") : null
+                ),
+                h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke")
+              ),
+              h("div", { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, background: "#070709", padding: "12px 14px", borderRadius: 12, border: "1px solid var(--border)" } },
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Password"),
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: isShown ? "normal" : "0.18em" } }, isShown ? acc.password : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"),
+                    h("button", { className: "eye-btn", onClick: () => toggleReveal(key) }, isShown ? h(EyeOffIcon) : h(EyeIcon))
+                  )
+                ),
+                h("div", { className: "row" },
+                  h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Access Tier"),
+                  isOwn
+                    ? h("span", { style: { fontSize: 12.5, fontWeight: 700, color: "#fff" } }, "👑 Owner (All Access)")
+                    : h("select", {
+                        className: "tier-select",
+                        value: curTier,
+                        onChange: (e) => handleChangeTier(acc, e.target.value)
+                      },
+                        h("option", { value: "free" }, "Free (Games/Movies/Music)"),
+                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat)"),
+                        h("option", { value: "premium" }, "💎 Premium (+ YT/TikTok/Browser)")
+                      )
+                ),
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "License"), h("span", { style: { fontSize: 12, fontFamily: "monospace", color: "#bcbcc4" } }, acc.licenseKey)),
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Remaining"), h("span", { style: { fontSize: 13, fontWeight: 600, color: "#86efac" } }, remText))
+              ),
+              h("div", { style: { borderTop: "1px solid var(--border)", paddingTop: 12 } },
+                h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Duration (1-24h)"), h("span", { style: { fontSize: 12.5, fontWeight: 600 } }, acc.infinite ? "Infinite \u221E" : `${sliderVal}h`)),
+                h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: !!acc.infinite, value: sliderVal, onChange: (e) => handleAdjustDuration(acc, Number(e.target.value), false) }),
+                h("div", { className: "row", style: { marginTop: 10 } },
+                  h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, cursor: "pointer" } },
+                    h("input", { type: "checkbox", checked: !!acc.infinite, onChange: (e) => handleAdjustDuration(acc, sliderVal, e.target.checked), style: { width: 16, height: 16, accentColor: "#e4e4e4" } }),
+                    "Infinite License"
+                  )
+                )
+              )
+            );
+          })
+        )
+      ),
+
+      // CREATE ACCOUNT MODAL WITH TIER SELECTOR
+      createModal ? h(Modal, { onClose: () => setCreateModal(false) },
+        h("h3", null, "Create Licensed Account"),
+        h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
+          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Username"), h("input", { className: "field", placeholder: "Username...", value: newUsername, onChange: (e) => setNewUsername(e.target.value) })),
+          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Password"), h("input", { className: "field", type: "text", placeholder: "Password...", value: newPassword, onChange: (e) => setNewPassword(e.target.value) })),
+          h("div", { style: { marginBottom: 14 } },
+            h("label", { className: "auth-label" }, "Select Account Tier"),
+            h("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 } },
+              [
+                { id: "free", name: "Free", sub: "Games, Movies, Music" },
+                { id: "pro", name: "⚡ Pro", sub: "+ Live Chat" },
+                { id: "premium", name: "💎 Premium", sub: "+ YT, TikTok, Browser" }
+              ].map((t) =>
+                h("div", {
+                  key: t.id,
+                  onClick: () => setNewTier(t.id),
+                  style: {
+                    padding: "10px 8px",
+                    borderRadius: 10,
+                    border: newTier === t.id ? "2px solid #fff" : "1px solid var(--border)",
+                    background: newTier === t.id ? "rgba(255,255,255,0.12)" : "#0e0e11",
+                    cursor: "pointer",
+                    textAlign: "center"
+                  }
+                },
+                  h("div", { style: { fontWeight: 700, fontSize: 13.5 } }, t.name),
+                  h("div", { style: { fontSize: 10.5, color: "var(--muted)", marginTop: 2 } }, t.sub)
+                )
+              )
+            )
+          ),
+          h("div", { className: "setting", style: { padding: 14, marginBottom: 18 } },
+            h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 13, fontWeight: 600 } }, "License Time"), h("span", { style: { fontSize: 13, fontWeight: 600 } }, newInfinite ? "Infinite" : `${newHours}h`)),
+            h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: newInfinite, value: newHours, onChange: (e) => setNewHours(Number(e.target.value)) }),
+            h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, cursor: "pointer", marginTop: 10 } },
+              h("input", { type: "checkbox", checked: newInfinite, onChange: (e) => setNewInfinite(e.target.checked), style: { width: 16, height: 16 } }),
+              "Infinite (Never expires)"
+            )
+          ),
+          h("div", { className: "actions" }, h("button", { type: "submit", className: "btn" }, "Create Account"), h("button", { type: "button", className: "btn ghost", onClick: () => setCreateModal(false) }, "Cancel"))
+        )
+      ) : null,
+      dbModal ? h(Modal, { onClose: () => setDbModal(false) },
+        h("h3", null, "Real-Time Cloud Database"),
+        h("p", null, "Paste your free Firebase Realtime Database URL below."),
+        h("input", { className: "field", placeholder: "https://your-app-default-rtdb.firebaseio.com", value: dbUrlInput, onChange: (e) => setDbUrlInput(e.target.value), style: { marginBottom: 16 } }),
+        h("div", { className: "actions" },
+          h("button", { className: "btn", onClick: async () => { setCustomDbUrl(dbUrlInput); await onRefresh(); setDbModal(false); toast("Connected!"); } }, "Save"),
+          h("button", { className: "btn ghost", onClick: () => setDbModal(false) }, "Close")
+        )
+      ) : null
+    );
+  }
+
+  function Toggle({ checked, onChange }) {
+    return h("label", { className: "toggle" }, h("input", { type: "checkbox", checked, onChange: (e) => onChange(e.target.checked) }), h("span"));
+  }
+
+  function SettingsView({ settings, onSave, onCloakSite }) {
+    const [s, setS] = useState(settings);
+    const set = (k, v) => setS((p) => ({ ...p, [k]: v }));
+    return h("section", { className: "view", id: "settings" },
+      h("div", { className: "page", style: { maxWidth: 720 } },
+        h("h2", null, "Settings"),
+        h("p", { className: "sub" }, "Customize your in-app installer & cloak settings."),
+        h("div", { className: "setting" },
+          h("div", { className: "row" },
+            h("div", null, h("h3", null, "Open games in external about:blank tab"), h("p", { style: { margin: 0 } }, "When off (default), games install and play directly inside this HTML portal.")),
+            h(Toggle, { checked: s.cloak, onChange: (v) => set("cloak", v) })
+          )
+        ),
+        h("div", { className: "setting" },
+          h("h3", null, "Cloaked tab title"),
+          h("input", { className: "field", placeholder: "about:blank", spellCheck: false, value: s.title, onChange: (e) => set("title", e.target.value) })
+        ),
+        h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
+          h("button", { className: "btn", onClick: () => onSave(s) }, "Save"),
+          h("button", { className: "btn ghost", onClick: onCloakSite }, "Open whole site in about:blank")
+        )
+      )
+    );
+  }
+
+  function LoginBox({ onLoginSuccess }) {
+    const [identifier, setIdentifier] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPw, setShowPw] = useState(false);
+    const [err, setErr] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setErr("");
+      const idClean = identifier.trim();
+      const pwClean = password.trim();
+      if (!idClean || !pwClean) { setErr("Please enter Username and Password."); return; }
+      setLoading(true);
+      const { accounts } = await dbFetchAll();
+      const lower = idClean.toLowerCase();
+      let matched = accounts[lower] || Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === lower);
+
+      if (!matched && isOwnerIdentity(lower, null) && pwClean === AUTH_CONFIG.masterOwnerPassword) {
+        matched = {
+          username: idClean.includes("@") ? (AUTH_CONFIG.ownerUsernames[0] || "kevin") : idClean,
+          email: idClean.includes("@") ? idClean : (AUTH_CONFIG.ownerEmails[0] || ""),
+          password: pwClean,
+          tier: "premium",
+          licenseKey: "UG-OWNR-ROOT-0001",
+          infinite: true,
+          expiresAt: null,
+          role: "owner",
+          createdAt: Date.now()
+        };
+        await dbSaveAccount(matched);
+      }
+      if (!matched || matched.password !== pwClean) { setLoading(false); setErr("Invalid username or password."); return; }
+      const isOwn = isOwnerIdentity(matched.username, matched);
+      if (!isOwn && !matched.infinite && matched.expiresAt && Date.now() >= matched.expiresAt) {
+        setLoading(false); setErr("License has expired."); return;
+      }
+      const sess = {
+        username: matched.username,
+        email: matched.email || "",
+        role: isOwn ? "owner" : "user",
+        tier: isOwn ? "owner" : (matched.tier || "free"),
+        loginAt: Date.now(),
+        lastPing: Date.now(),
+        currentView: "home",
+        kicked: false
+      };
+      await dbUpsertSession(sess);
+      saveCurrentSession(sess);
+      setLoading(false);
+      onLoginSuccess(sess);
+    };
+
+    return h("div", { className: "auth-overlay" },
+      h("div", { className: "auth-box" },
+        h("h1", { className: "auth-logo" }, "unblockedgames"),
+        h("p", { className: "auth-sub" }, "Sign in with your licensed account."),
+        err ? h("div", { className: "auth-err" }, err) : null,
+        h("form", { onSubmit: handleSubmit, autoComplete: "off" },
+          h("div", { style: { marginBottom: 14 } }, h("label", { className: "auth-label" }, "Username or Email"), h("input", { className: "field", placeholder: "Username...", value: identifier, onChange: (e) => setIdentifier(e.target.value) })),
+          h("div", { style: { marginBottom: 20 } }, h("label", { className: "auth-label" }, "Password"),
+            h("div", { style: { position: "relative", display: "flex", alignItems: "center" } },
+              h("input", { className: "field", type: showPw ? "text" : "password", placeholder: "Password...", value: password, onChange: (e) => setPassword(e.target.value), style: { paddingRight: 44 } }),
+              h("button", { type: "button", className: "eye-btn", onClick: () => setShowPw((v) => !v), style: { position: "absolute", right: 7, border: 0, background: "transparent" } }, showPw ? h(EyeOffIcon) : h(EyeIcon))
+            )
+          ),
+          h("button", { type: "submit", className: "btn", disabled: loading, style: { width: "100%" } }, loading ? "Verifying..." : "Sign In")
+        )
+      )
+    );
+  }
+
+  // --- Main App ---
   function App() {
     const [view, setView] = useState("home");
     const [open, setOpen] = useState(false);
@@ -777,6 +2539,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Kicked out by owner."); return;
       }
 
+      // If owner downgraded user's tier live while they are on a restricted tab, bounce them back to home
       const liveTier = getUserTier(acc, own);
       if (!canAccessView(liveTier, view)) {
         setView("home");
