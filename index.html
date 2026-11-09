@@ -7,7 +7,7 @@
     <title>unblockedgames</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
 *, ::after, ::before, ::backdrop, ::file-selector-button { box-sizing: border-box; margin: 0; padding: 0; border: 0 solid; }
 html, :host { line-height: 1.5; -webkit-text-size-adjust: 100%; tab-size: 4; font-family: "Outfit", system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -28,8 +28,6 @@ button, input, select, optgroup, textarea, ::file-selector-button {
   --border: rgba(255, 255, 255, 0.09);
   --text: #e6e6e6;
   --muted: #8a8a90;
-  --tt-red: #fe2c55;
-  --tt-cyan: #25f4ee;
 }
 html, body, #root { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: "Outfit", system-ui, sans-serif; overflow: hidden; }
 button { cursor: pointer; font-family: inherit; }
@@ -164,12 +162,14 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .pop-panel:hover { border-color: rgba(255, 255, 255, 0.25); }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; display: inline-block; }
 .status-dot.off { background: #71717a; box-shadow: none; }
+.status-dot.exp { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
 .slider { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: #232329; border-radius: 999px; outline: none; cursor: pointer; }
 .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #e4e4e4; cursor: pointer; border: 2px solid #0b0b0d; }
 .slider:disabled { opacity: 0.35; cursor: not-allowed; }
 .eye-btn { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border); border-radius: 8px; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; color: #cfcfd4; cursor: pointer; }
 .eye-btn:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
 .eye-btn svg { width: 15px; height: 15px; }
+.mono-box { font-family: monospace; background: #070709; border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; font-size: 13px; color: #e4e4e4; display: inline-flex; align-items: center; gap: 8px; }
 
 /* Tier Badges */
 .badge-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, 0.07); border: 1px solid var(--border); letter-spacing: 0.03em; }
@@ -184,33 +184,36 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
    ============================================================================ */
 .gbrowser-root { height: 100%; width: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden; }
 .gbrowser-idle { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
-.gbrowser-top { background: rgba(14, 14, 18, 0.82); backdrop-filter: blur(24px) saturate(150%); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 14px 28px 0; flex-shrink: 0; z-index: 15; }
+.gbrowser-top { background: rgba(14, 14, 18, 0.82); backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 14px 28px 0; flex-shrink: 0; z-index: 15; }
 .gbrowser-bar-row { display: flex; align-items: center; gap: 14px; max-width: 1100px; }
-.glass-panel { width: min(820px, 92vw); background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px; padding: 8px 12px 8px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); display: flex; align-items: center; gap: 12px; }
-.glass-panel.compact { width: 100%; max-width: 780px; padding: 4px 8px 4px 18px; }
-.glass-panel:focus-within { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.38); }
-.glass-panel svg { width: 20px; height: 20px; color: rgba(255, 255, 255, 0.75); }
-.glass-input { flex: 1; height: 46px; background: transparent; border: 0; outline: 0; color: #fff; font: 400 18px "Outfit", sans-serif; }
+.glass-panel { width: min(820px, 92vw); background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px) saturate(140%); -webkit-backdrop-filter: blur(24px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px; padding: 8px 12px 8px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.22); display: flex; align-items: center; gap: 12px; transition: all 0.22s ease; }
+.glass-panel.compact { width: 100%; max-width: 780px; padding: 4px 8px 4px 18px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }
+.glass-panel:focus-within { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.38); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 255, 255, 0.08); }
+.glass-panel svg { width: 20px; height: 20px; color: rgba(255, 255, 255, 0.75); flex-shrink: 0; }
+.glass-input { flex: 1; height: 46px; background: transparent; border: 0; outline: 0; color: #fff; font: 400 18px "Outfit", sans-serif; min-width: 0; }
 .glass-panel.compact .glass-input { height: 38px; font-size: 15.5px; }
 .glass-input::placeholder { color: rgba(255, 255, 255, 0.42); }
 .gbrowser-tabs { display: flex; gap: 24px; margin-top: 12px; padding-left: 8px; }
-.gbrowser-tab { padding: 8px 4px 11px; font-size: 14px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 7px; }
+.gbrowser-tab { padding: 8px 4px 11px; font-size: 14px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: 0.18s; }
+.gbrowser-tab:hover { color: #fff; }
 .gbrowser-tab.on { color: #60a5fa; border-bottom-color: #60a5fa; }
 .gbrowser-body { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; }
 .gbrowser-results-wrap { max-width: 960px; padding: 24px 32px 80px; display: flex; flex-direction: column; gap: 14px; }
-.gbrowser-card { background: rgba(20, 20, 26, 0.65); border: 1px solid rgba(255, 255, 255, 0.11); border-radius: 16px; padding: 16px 20px; cursor: pointer; transition: 0.2s; }
-.gbrowser-card:hover { background: rgba(32, 32, 42, 0.85); border-color: rgba(96, 165, 250, 0.45); }
+.gbrowser-card { background: rgba(20, 20, 26, 0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.11); border-radius: 16px; padding: 16px 20px; cursor: pointer; transition: 0.2s; }
+.gbrowser-card:hover { background: rgba(32, 32, 42, 0.85); border-color: rgba(96, 165, 250, 0.45); transform: translateY(-2px); }
 .gbrowser-img-grid { padding: 24px 32px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
-.gbrowser-img-card { background: #0d0d12; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; }
-.gbrowser-img-card img { width: 100%; height: 175px; object-fit: cover; }
+.gbrowser-img-card { background: #0d0d12; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; transition: 0.22s; }
+.gbrowser-img-card:hover { transform: scale(1.03); border-color: rgba(255,255,255,0.35); }
+.gbrowser-img-card img { width: 100%; height: 175px; object-fit: cover; background: #16161d; }
 .gbrowser-shop-grid { padding: 24px 32px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); gap: 18px; }
-.gbrowser-shop-card { background: rgba(20, 20, 26, 0.75); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; }
+.gbrowser-shop-card { background: rgba(20, 20, 26, 0.75); backdrop-filter: blur(14px); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: 0.22s; }
+.gbrowser-shop-card:hover { transform: translateY(-4px); border-color: rgba(74, 222, 128, 0.45); box-shadow: 0 14px 30px rgba(0,0,0,0.65); }
 .gbrowser-shop-card img { width: 100%; height: 190px; object-fit: contain; background: #fff; padding: 12px; }
 
 /* Netflix UI */
 .nf-wrap { background: #141414; min-height: 100%; padding-bottom: 80px; color: #fff; position: relative; }
-.nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: rgba(20,20,20,0.85); backdrop-filter: blur(8px); }
-.nf-logo { color: #e50914; font-size: 28px; font-weight: 800; letter-spacing: 0.04em; cursor: pointer; }
+.nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: rgba(20,20,20,0.85); backdrop-filter: blur(8px); gap: 20px; flex-wrap: wrap; }
+.nf-logo { color: #e50914; font-size: 28px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; }
 .nf-hero { position: relative; height: 62vh; min-height: 400px; width: 100%; overflow: hidden; display: flex; align-items: flex-end; padding: 0 42px 54px; }
 .nf-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
 .nf-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #141414 0%, rgba(20,20,20,0.75) 45%, transparent 100%), linear-gradient(180deg, transparent 50%, #141414 100%); }
@@ -221,9 +224,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .nf-row-section { padding: 10px 42px 18px; position: relative; z-index: 6; }
 .nf-row-title { font-size: 19px; font-weight: 700; margin: 0 0 12px; color: #e5e5e5; }
 .nf-carousel { display: flex; gap: 14px; overflow-x: auto; padding: 8px 4px 18px; }
-.nf-card { flex: 0 0 185px; border-radius: 8px; overflow: hidden; background: #1f1f1f; cursor: pointer; transition: transform 0.25s ease; border: 1px solid rgba(255,255,255,0.06); }
-.nf-card:hover { transform: scale(1.07); }
-.nf-card-poster { width: 100%; height: 270px; object-fit: cover; }
+.nf-card { flex: 0 0 185px; border-radius: 8px; overflow: hidden; background: #1f1f1f; position: relative; cursor: pointer; transition: transform 0.25s ease; border: 1px solid rgba(255,255,255,0.06); }
+.nf-card:hover { transform: scale(1.07); z-index: 15; }
+.nf-card-poster { width: 100%; height: 270px; object-fit: cover; display: block; }
 
 /* Spotify UI */
 .sp-app { display: flex; flex-direction: column; height: 100%; width: 100%; background: #000; color: #fff; overflow: hidden; padding: 8px; gap: 8px; }
@@ -236,23 +239,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .sp-pl-cover { width: 42px; height: 42px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 .sp-main { flex: 1; background: #121212; border-radius: 8px; overflow-y: auto; display: flex; flex-direction: column; }
 .sp-header { padding: 24px; display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
-.sp-header-art { width: 160px; height: 160px; border-radius: 6px; object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 56px; }
+.sp-header-art { width: 160px; height: 160px; border-radius: 6px; box-shadow: 0 12px 36px rgba(0,0,0,0.6); object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 56px; }
 .sp-table { width: 100%; padding: 0 24px 32px; }
 .sp-trow { display: grid; grid-template-columns: 36px 4fr 3fr 80px; align-items: center; padding: 8px 12px; border-radius: 6px; cursor: pointer; color: #b3b3b3; font-size: 14px; }
 .sp-trow:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .sp-trow.active { background: rgba(29, 185, 84, 0.14); color: #1ed760; }
 .sp-player-bar { height: 80px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 16px; flex-shrink: 0; }
 
-/* TikTok Live Mirrors & Unblocked Hub */
-.tt-view-root { height: 100%; width: 100%; display: flex; flex-direction: column; background: #000; color: #fff; overflow: hidden; }
-.tt-view-nav { height: 56px; border-bottom: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: #0b0b0e; flex-shrink: 0; z-index: 25; }
-.tt-logo { font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer; }
-.tt-logo span.cyan { color: var(--tt-cyan); text-shadow: 1px 0 var(--tt-red); }
-.tt-mode-switch { display: flex; gap: 6px; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 10px; border: 1px solid var(--border); }
-.tt-mode-btn { padding: 5px 12px; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: var(--muted); cursor: pointer; transition: 0.2s; }
-.tt-mode-btn.active { background: var(--tt-red); color: #fff; }
-.tt-frame-container { flex: 1; width: 100%; height: 100%; position: relative; background: #000; overflow: hidden; }
-.tt-frame-container iframe { width: 100%; height: 100%; border: 0; background: #000; }
+/* TikTok Feed UI */
+.tt-card { background: #0d0d11; border: 1px solid var(--border); border-radius: 18px; overflow: hidden; max-width: 420px; width: 100%; margin: 0 auto 24px; box-shadow: 0 18px 40px rgba(0,0,0,0.8); }
+.tt-video { width: 100%; max-height: 620px; background: #000; display: block; object-fit: contain; }
     </style>
   </head>
   <body>
@@ -278,6 +274,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     masterOwnerPassword: "admin"
   };
 
+  // Tier Access Matrix:
+  // Free -> Games, Movies, Music
+  // Pro -> Chat, Games, Movies, Music
+  // Premium -> YouTube, TikTok, Browser, Chat, Movies, Games, Music
   const TIER_PERMISSIONS = {
     free: ["home", "games", "movies", "music", "account", "settings"],
     pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
@@ -316,7 +316,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const LS_CURRENT_USER = "ug_active_user_v1";
   const LS_DB_URL = "ug_custom_db_url_v1";
   const LS_INSTALLED_GAMES = "ug_installed_games_v1";
-  const LS_ALERTS = "ug_local_alerts_v1";
   const bc = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("ug_realtime_sync") : null;
 
   function getInstalledGames() {
@@ -461,54 +460,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       try { await fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" }); } catch {}
     }
   }
-
-  // Live Screen Alert DB Utilities
-  async function dbSendUserAlert(targetUsername, alertData) {
-    const key = targetUsername.trim().toLowerCase();
-    const base = getDbUrl();
-    const alertObj = { ...alertData, id: "alert_" + Date.now(), timestamp: Date.now() };
-    if (base) {
-      try {
-        await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, {
-          method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(alertObj)
-        });
-      } catch {}
-    } else {
-      const store = getLocalStore(LS_ALERTS);
-      store[key] = alertObj;
-      setLocalStore(LS_ALERTS, store);
-    }
-  }
-
-  async function dbFetchUserAlert(username) {
-    if (!username) return null;
-    const key = username.trim().toLowerCase();
-    const base = getDbUrl();
-    if (base) {
-      try {
-        const res = await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, { cache: "no-store" });
-        if (res.ok) return await res.json();
-      } catch {}
-    } else {
-      const store = getLocalStore(LS_ALERTS);
-      return store[key] || null;
-    }
-    return null;
-  }
-
-  async function dbClearUserAlert(username) {
-    if (!username) return;
-    const key = username.trim().toLowerCase();
-    const base = getDbUrl();
-    if (base) {
-      try { await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, { method: "DELETE" }); } catch {}
-    } else {
-      const store = getLocalStore(LS_ALERTS);
-      delete store[key];
-      setLocalStore(LS_ALERTS, store);
-    }
-  }
-
   function getSavedSession() {
     try { const raw = localStorage.getItem(LS_CURRENT_USER); if (raw) return JSON.parse(raw); } catch {}
     return null;
@@ -608,7 +559,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // FULL GAMES CATALOG (ALL 75 WORKING GAMES)
+  // FULL GAMES CATALOG
   // ============================================================================
   const GAMES = [
    { "slug": "roblox", "name": "Roblox", "cat": "Action", "embed": "roblox-direct-engine", "thumb": "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" },
@@ -740,8 +691,1386 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   function cloakSite(s) { return openCloaked({ src: location.href.split("#")[0] }, s); }
 
   // ============================================================================
-  // ACCOUNT PROFILE VIEW
+  // ICONS
   // ============================================================================
+  function Svg({ children, sw = 1.8 }) {
+    return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
+  }
+  const HomeIcon = (p) => h(Svg, p, h("path", { d: "M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" }));
+  const YouTubeIcon = (p) => h(Svg, p, h("rect", { x: "2", y: "5", width: "20", height: "14", rx: "4" }), h("polygon", { points: "10 9 15 12 10 15 10 9", fill: "currentColor" }));
+  const TikTokIcon = (p) => h(Svg, p, h("path", { d: "M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" }));
+  const ChatIcon = (p) => h(Svg, p, h("path", { d: "M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" }));
+  const GamesIcon = (p) => h(Svg, p, h("path", { d: "M6 12h4M8 10v4M15 13h.01M18 11h.01" }), h("path", { d: "M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.7 8A3 3 0 0 0 6 18.5L8 16h8l2 2.5a3 3 0 0 0 4.9-2.3l-1.7-8A4 4 0 0 0 17.3 5z" }));
+  const MoviesIcon = (p) => h(Svg, p, h("rect", { x: "3", y: "4", width: "18", height: "16", rx: "2" }), h("path", { d: "M8 4v16M16 4v16M3 12h18" }));
+  const MusicIcon = (p) => h(Svg, p, h("path", { d: "M9 18V5l12-2v13" }), h("circle", { cx: "6", cy: "18", r: "3" }), h("circle", { cx: "18", cy: "16", r: "3" }));
+  const BrowserIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "10" }), h("line", { x1: "2", y1: "12", x2: "22", y2: "12" }), h("path", { d: "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" }));
+  const AccountIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "8", r: "4" }), h("path", { d: "M4 21a8 8 0 0 1 16 0" }));
+  const CreatorIcon = (p) => h(Svg, p, h("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }), h("circle", { cx: "9", cy: "7", r: "4" }), h("line", { x1: "19", y1: "8", x2: "19", y2: "14" }), h("line", { x1: "22", y1: "11", x2: "16", y2: "11" }));
+  const EyeIcon = (p) => h(Svg, p, h("path", { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }), h("circle", { cx: "12", cy: "12", r: "3" }));
+  const EyeOffIcon = (p) => h(Svg, p, h("path", { d: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" }), h("line", { x1: "1", y1: "1", x2: "23", y2: "23" }));
+  const SettingsIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "3" }), h("path", { d: "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" }));
+  const ChevronIcon = (p) => h(Svg, p, h("path", { d: "m9 18 6-6-6-6" }));
+  const SearchIcon = (p) => h(Svg, p, h("circle", { cx: "11", cy: "11", r: "8" }), h("path", { d: "m21 21-4.3-4.3" }));
+  const RefreshIcon = (p) => h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
+
+  function Modal({ children, onClose }) {
+    return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
+  }
+
+  // --- Stars Background ---
+  function Stars() {
+    const ref = useRef(null);
+    useEffect(() => {
+      const cv = ref.current, ctx = cv.getContext("2d");
+      let W = 0, H = 0, raf = 0, stars = [];
+      const dpr = window.devicePixelRatio || 1;
+      const resize = () => {
+        W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr;
+        cv.style.width = innerWidth + "px"; cv.style.height = innerHeight + "px";
+        const n = Math.floor((innerWidth * innerHeight) / 9000);
+        stars = Array.from({ length: n }, () => ({
+          x: Math.random() * W, y: Math.random() * H,
+          r: (Math.random() * 1.4 + 0.5) * dpr, s: (Math.random() * 0.12 + 0.02) * dpr,
+          p: Math.random() * Math.PI * 2, f: Math.random() * 0.02 + 0.005,
+        }));
+      };
+      const frame = () => {
+        ctx.clearRect(0, 0, W, H); ctx.fillStyle = "#fff";
+        for (const s of stars) {
+          s.y += s.s; s.p += s.f;
+          if (s.y > H + 5) { s.y = -5; s.x = Math.random() * W; }
+          ctx.globalAlpha = 0.35 + 0.55 * Math.abs(Math.sin(s.p));
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+        }
+        raf = requestAnimationFrame(frame);
+      };
+      addEventListener("resize", resize); resize(); frame();
+      return () => { removeEventListener("resize", resize); cancelAnimationFrame(raf); };
+    }, []);
+    return h("canvas", { id: "stars", ref });
+  }
+
+  // --- Sidebar Component (Shows Lock Indicator for Restricted Tier Tabs) ---
+  function Sidebar({ view, open, onToggle, onNavigate, isOwner, userTier }) {
+    const btn = (id, label, icon) => {
+      const unlocked = canAccessView(userTier, id);
+      return h("button", {
+        key: id,
+        className: "side-btn" + (view === id ? " active" : "") + (!unlocked ? " locked" : ""),
+        title: unlocked ? label : `${label} (${requiredTierForView(id)} Tier Required)`,
+        onClick: () => onNavigate(id)
+      },
+        icon,
+        h("span", null, unlocked ? label : `${label} 🔒`)
+      );
+    };
+
+    return h("nav", { id: "sidebar", className: open ? "open" : "" },
+      h("div", { className: "side-group", style: { paddingTop: 2 } },
+        btn("home", "Home", h(HomeIcon)),
+        btn("youtube", "YouTube", h(YouTubeIcon)),
+        btn("tiktok", "TikTok", h(TikTokIcon)),
+        btn("browser", "Browser", h(BrowserIcon)),
+        btn("chat", "Chat", h(ChatIcon)),
+        btn("games", "Games", h(GamesIcon)),
+        btn("movies", "Netflix", h(MoviesIcon)),
+        btn("music", "Spotify", h(MusicIcon))
+      ),
+      h("div", { className: "spacer" }),
+      h("div", { className: "side-group", style: { paddingBottom: 6 } },
+        isOwner ? btn("creator", "Account Creator", h(CreatorIcon)) : null,
+        btn("account", "Account", h(AccountIcon)),
+        btn("settings", "Settings", h(SettingsIcon)),
+        h("button", { className: "side-btn", id: "expandBtn", title: open ? "Collapse" : "Expand", onClick: onToggle }, h(ChevronIcon), h("span", null, "Collapse"))
+      )
+    );
+  }
+
+  // --- Home Component ---
+  const WORDS = ["Roblox", "Geometry Dash", "YouTube", "TikTok", "Play anything"];
+  function useTypingPlaceholder(paused) {
+    const [text, setText] = useState("Browse");
+    const pausedRef = useRef(paused);
+    pausedRef.current = paused;
+    useEffect(() => {
+      let w = 0, i = 0, del = false, t;
+      const tick = () => {
+        if (pausedRef.current) { i = 0; del = false; setText("Browse"); t = setTimeout(tick, 600); return; }
+        const word = WORDS[w];
+        setText(word.slice(0, i) + "|");
+        let delay = del ? 45 : 95;
+        if (!del && i === word.length) { del = true; delay = 1800; }
+        else if (del && i === 0) { del = false; w = (w + 1) % WORDS.length; delay = 400; }
+        else i += del ? -1 : 1;
+        t = setTimeout(tick, delay);
+      };
+      tick();
+      return () => clearTimeout(t);
+    }, []);
+    return text;
+  }
+
+  function Home({ onNavigate, onSearch, userTier }) {
+    const [value, setValue] = useState("");
+    const [focused, setFocused] = useState(false);
+    const placeholder = useTypingPlaceholder(focused || !!value);
+    const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
+
+    const quickBtn = (id, label, icon, customStyle = {}) => {
+      const unlocked = canAccessView(userTier, id);
+      return h("button", {
+        onClick: () => onNavigate(id),
+        style: { opacity: unlocked ? 1 : 0.55 }
+      },
+        h("div", { className: "circ", style: customStyle }, icon),
+        unlocked ? label : `${label} 🔒`
+      );
+    };
+
+    return h("section", { className: "view", id: "home" },
+      h("div", { className: "logo-wrap" }, h("h1", { className: "logo" }, "unblockedgames")),
+      h("div", { className: "search-wrap" },
+        h("form", { className: "search", autoComplete: "off", onSubmit: submit },
+          h(SearchIcon),
+          h("input", { type: "text", spellCheck: false, value, placeholder: focused ? "Browse" : placeholder, onChange: (e) => setValue(e.target.value), onFocus: () => setFocused(true), onBlur: () => setFocused(false) })
+        )
+      ),
+      h("div", { className: "quick" },
+        quickBtn("youtube", "YouTube", h(YouTubeIcon), { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" }),
+        quickBtn("tiktok", "TikTok", h(TikTokIcon), { borderColor: "rgba(0,242,234,0.45)", color: "#00f2ea" }),
+        quickBtn("games", "Games", h(GamesIcon)),
+        quickBtn("browser", "Browser", h(BrowserIcon)),
+        quickBtn("music", "Spotify", h(MusicIcon)),
+        quickBtn("movies", "Netflix", h(MoviesIcon)),
+        quickBtn("chat", "Chat", h(ChatIcon))
+      ),
+      h("div", { className: "ad" }, "100% FREE \u2022 100% UNDETECTED", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
+    );
+  }
+
+  // ============================================================================
+  // FULL-PAGE GOOGLE-LIKE FROSTED GLASS BROWSER (Premium Tier)
+  // ============================================================================
+  function BrowserView() {
+    const [query, setQuery] = useState("");
+    const [tab, setTab] = useState("all");
+    const [webResults, setWebResults] = useState([]);
+    const [imgResults, setImgResults] = useState([]);
+    const [shopResults, setShopResults] = useState([]);
+    const [vidResults, setVidResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [activeUrl, setActiveUrl] = useState("");
+    const [frameHtml, setFrameHtml] = useState("");
+    const [previewImg, setPreviewImg] = useState(null);
+    const [previewVid, setPreviewVid] = useState(null);
+    const debounceRef = useRef(null);
+
+    const isUrlLike = (str) => {
+      const s = (str || "").trim();
+      return /^(https?:\/\/|www\.)/i.test(s) || (/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(s) && !s.includes(" "));
+    };
+
+    const openUrlAutomatically = useCallback(async (rawUrl) => {
+      let target = (rawUrl || "").trim();
+      if (!target) return;
+      if (!/^https?:\/\//i.test(target)) target = "https://" + target;
+
+      setActiveUrl(target);
+      setLoading(true);
+
+      const clickInterceptor = `
+        <base href="${target}">
+        <script>
+          document.addEventListener('click', function(e) {
+            var a = e.target.closest('a');
+            if (a && a.href && !a.href.startsWith('javascript:')) {
+              e.preventDefault();
+              parent.postMessage({ type: 'AUTO_BROWSER_NAV', url: a.href }, '*');
+            }
+          }, true);
+          document.addEventListener('submit', function(e) {
+            var f = e.target;
+            if (f && f.action) {
+              e.preventDefault();
+              var fd = new FormData(f);
+              var params = new URLSearchParams(fd).toString();
+              var dest = f.action.split('?')[0] + '?' + params;
+              parent.postMessage({ type: 'AUTO_BROWSER_NAV', url: dest }, '*');
+            }
+          }, true);
+        <\/script>
+      `;
+
+      if (target.includes("wikipedia.org/wiki/")) {
+        try {
+          const titlePart = target.split("/wiki/")[1];
+          const wRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/html/${titlePart}`);
+          if (wRes.ok) {
+            const wHtml = await wRes.text();
+            setFrameHtml(`
+              <base href="https://en.wikipedia.org/wiki/">
+              <style>
+                body { font-family: 'Outfit', system-ui, sans-serif !important; background: #0e0e12 !important; color: #e6e6e6 !important; padding: 28px 40px !important; line-height: 1.65 !important; }
+                a { color: #60a5fa !important; }
+                img { max-width: 100%; height: auto; border-radius: 8px; }
+                table, .infobox { background: #16161d !important; color: #ddd !important; border-color: #333 !important; }
+              </style>
+              ${clickInterceptor}
+              ${wHtml}
+            `);
+            setLoading(false);
+            return;
+          }
+        } catch {}
+      }
+
+      try {
+        const fetchAllOrigins = async () => {
+          const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
+          if (!r.ok) throw new Error("fail");
+          const j = await r.json();
+          if (!j.contents || j.contents.length < 40) throw new Error("empty");
+          return j.contents;
+        };
+        const fetchCodeTabs = async () => {
+          const r = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(target)}`);
+          if (!r.ok) throw new Error("fail");
+          const t = await r.text();
+          if (!t || t.length < 40) throw new Error("empty");
+          return t;
+        };
+
+        const winningHtml = await Promise.any([fetchAllOrigins(), fetchCodeTabs()]);
+        setFrameHtml(clickInterceptor + winningHtml);
+      } catch {
+        setFrameHtml("");
+      }
+      setLoading(false);
+    }, []);
+
+    useEffect(() => {
+      const onMsg = (e) => {
+        if (e.data && e.data.type === "AUTO_BROWSER_NAV" && e.data.url) {
+          openUrlAutomatically(e.data.url);
+        }
+      };
+      window.addEventListener("message", onMsg);
+      return () => window.removeEventListener("message", onMsg);
+    }, [openUrlAutomatically]);
+
+    const executeGoogleSearch = useCallback(async (qText) => {
+      const clean = (qText || "").trim();
+      if (!clean) {
+        setWebResults([]); setImgResults([]); setShopResults([]); setVidResults([]);
+        return;
+      }
+      setLoading(true);
+
+      try {
+        const [wikiSearch, ddgSearch, wikiImages, dummyShop, itunesShop, pipedVids] = await Promise.all([
+          fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(clean)}&srlimit=12&utf8=&format=json&origin=*`).then((r) => r.json()).catch(() => null),
+          fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(clean)}&format=json&no_html=1&skip_disambig=1`).then((r) => r.json()).catch(() => null),
+          fetch(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=filetype:bitmap+${encodeURIComponent(clean)}&gsrlimit=24&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=500&format=json&origin=*`).then((r) => r.json()).catch(() => null),
+          fetch(`https://dummyjson.com/products/search?q=${encodeURIComponent(clean)}&limit=12`).then((r) => r.json()).catch(() => null),
+          fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(clean)}&entity=software,ebook,movie&limit=16`).then((r) => r.json()).catch(() => null),
+          fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(clean)}&filter=videos`).then((r) => r.json()).catch(() => null)
+        ]);
+
+        const webList = [];
+        if (isUrlLike(clean)) {
+          const norm = /^https?:\/\//i.test(clean) ? clean : "https://" + clean;
+          webList.push({ title: `🌐 Go to ${norm}`, url: norm, snippet: `Open ${norm} directly in full-screen unblocked view.` });
+        }
+        if (ddgSearch?.AbstractText && ddgSearch?.AbstractURL) {
+          webList.push({ title: ddgSearch.Heading || clean, url: ddgSearch.AbstractURL, snippet: ddgSearch.AbstractText });
+        }
+        if (Array.isArray(ddgSearch?.RelatedTopics)) {
+          ddgSearch.RelatedTopics.slice(0, 5).forEach((rt) => {
+            if (rt.Text && rt.FirstURL) {
+              webList.push({ title: rt.Text.split(" - ")[0] || rt.Text.slice(0, 60), url: rt.FirstURL, snippet: rt.Text });
+            }
+          });
+        }
+        (wikiSearch?.query?.search || []).forEach((w) => {
+          webList.push({
+            title: w.title,
+            url: `https://en.wikipedia.org/wiki/${encodeURIComponent(w.title.replace(/ /g, "_"))}`,
+            snippet: (w.snippet || "").replace(/<\/?[^>]+(>|$)/g, "")
+          });
+        });
+        setWebResults(webList);
+
+        const imgs = [];
+        const pages = wikiImages?.query?.pages || {};
+        Object.values(pages).forEach((p) => {
+          const info = p.imageinfo?.[0];
+          if (info && (info.thumburl || info.url)) {
+            imgs.push({
+              title: (p.title || "").replace("File:", "").replace(/\.[^/.]+$/, ""),
+              thumb: info.thumburl || info.url,
+              full: info.url,
+              source: "Wikimedia Commons HD"
+            });
+          }
+        });
+        (itunesShop?.results || []).forEach((it) => {
+          if (it.artworkUrl100) {
+            imgs.push({
+              title: it.trackName || it.collectionName || clean,
+              thumb: it.artworkUrl100.replace("100x100bb", "500x500bb"),
+              full: it.artworkUrl100.replace("100x100bb", "1000x1000bb"),
+              source: it.artistName || "Media Gallery"
+            });
+          }
+        });
+        setImgResults(imgs);
+
+        const shops = [];
+        (dummyShop?.products || []).forEach((prod) => {
+          shops.push({
+            id: "dj_" + prod.id,
+            title: prod.title,
+            price: `$${prod.price}`,
+            store: prod.brand || "Verified Store",
+            rating: `★ ${prod.rating || "4.8"}`,
+            img: prod.thumbnail,
+            desc: prod.description,
+            url: `https://en.wikipedia.org/wiki/${encodeURIComponent(prod.title)}`
+          });
+        });
+        (itunesShop?.results || []).forEach((item, idx) => {
+          shops.push({
+            id: "it_" + (item.trackId || idx),
+            title: item.trackName || item.collectionName,
+            price: item.formattedPrice || (item.price ? `$${item.price}` : "Free / Digital"),
+            store: item.artistName || "Digital Store",
+            rating: `★ ${item.averageUserRating ? item.averageUserRating.toFixed(1) : "4.9"}`,
+            img: (item.artworkUrl100 || "").replace("100x100bb", "400x400bb"),
+            desc: item.description || item.longDescription || `${item.kind || "Digital"} item available now.`,
+            url: item.trackViewUrl || `https://en.wikipedia.org/wiki/${encodeURIComponent(item.trackName || clean)}`
+          });
+        });
+        if (shops.length === 0) {
+          webList.slice(0, 8).forEach((w, idx) => {
+            shops.push({
+              id: "gen_" + idx,
+              title: w.title,
+              price: `$${(19.99 + idx * 10).toFixed(2)}`,
+              store: "Global Marketplace",
+              rating: "★ 4.8",
+              img: imgs[idx]?.thumb || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80",
+              desc: w.snippet,
+              url: w.url
+            });
+          });
+        }
+        setShopResults(shops);
+
+        const vids = (pipedVids?.items || []).map((v) => {
+          const vidId = v.url ? v.url.split("v=")[1] : "";
+          return {
+            id: vidId,
+            title: v.title,
+            author: v.uploaderName || "YouTube",
+            views: v.views ? `${Number(v.views).toLocaleString()} views` : "HD Video",
+            thumb: v.thumbnail || `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg`
+          };
+        }).filter((v) => v.id);
+        setVidResults(vids);
+      } catch {}
+      setLoading(false);
+    }, []);
+
+    const handleInput = (val) => {
+      setQuery(val);
+      clearTimeout(debounceRef.current);
+      if (!val.trim()) {
+        setWebResults([]); setImgResults([]); setShopResults([]); setVidResults([]);
+        return;
+      }
+      debounceRef.current = setTimeout(() => {
+        executeGoogleSearch(val);
+      }, 180);
+    };
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const val = query.trim();
+      if (!val) return;
+      if (isUrlLike(val)) {
+        openUrlAutomatically(val);
+      } else {
+        setActiveUrl("");
+        executeGoogleSearch(val);
+      }
+    };
+
+    const isSearching = query.trim().length > 0 || !!activeUrl;
+
+    return h("section", { className: "view" },
+      h("div", { className: "gbrowser-root" },
+        !isSearching ? (
+          h("div", { className: "gbrowser-idle" },
+            h("h1", { style: { fontSize: "clamp(32px, 5vw, 54px)", fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 24, textAlign: "center", textShadow: "0 0 36px rgba(255,255,255,0.2)" } }, "What do you want to search?"),
+            h("form", { className: "glass-panel", onSubmit: handleSubmit, autoComplete: "off" },
+              h(SearchIcon),
+              h("input", {
+                className: "glass-input",
+                type: "text",
+                spellCheck: false,
+                placeholder: "Search Google (All, Images, Shopping) or type any URL...",
+                value: query,
+                onChange: (e) => handleInput(e.target.value)
+              }),
+              h("button", { type: "submit", className: "btn", style: { borderRadius: 999, height: 46, padding: "0 24px" } }, "Search")
+            )
+          )
+        ) : (
+          h(Fragment, null,
+            h("div", { className: "gbrowser-top" },
+              h("div", { className: "gbrowser-bar-row" },
+                activeUrl ? h("button", {
+                  className: "btn ghost sm",
+                  style: { borderRadius: 999 },
+                  onClick: () => setActiveUrl("")
+                }, "← Back to Search") : null,
+                h("form", { className: "glass-panel compact", onSubmit: handleSubmit, autoComplete: "off" },
+                  h(SearchIcon),
+                  h("input", {
+                    className: "glass-input",
+                    type: "text",
+                    spellCheck: false,
+                    placeholder: "Search anything or enter a URL...",
+                    value: query,
+                    onChange: (e) => handleInput(e.target.value)
+                  }),
+                  query ? h("button", {
+                    type: "button",
+                    style: { color: "var(--muted)", padding: "0 8px", fontSize: 16 },
+                    onClick: () => { setQuery(""); setActiveUrl(""); setWebResults([]); }
+                  }, "✕") : null,
+                  h("button", { type: "submit", className: "btn sm", style: { borderRadius: 999, padding: "0 18px" } }, loading ? "..." : isUrlLike(query) ? "Go" : "Search")
+                )
+              ),
+              !activeUrl ? h("div", { className: "gbrowser-tabs" },
+                [
+                  { id: "all", label: "🔍 All" },
+                  { id: "images", label: `🖼️ Images (${imgResults.length})` },
+                  { id: "shopping", label: `🛍️ Shopping (${shopResults.length})` },
+                  { id: "videos", label: `🎬 Videos (${vidResults.length})` }
+                ].map((t) =>
+                  h("button", {
+                    key: t.id,
+                    className: "gbrowser-tab" + (tab === t.id ? " on" : ""),
+                    onClick: () => setTab(t.id)
+                  }, t.label)
+                )
+              ) : null
+            ),
+
+            h("div", { className: "gbrowser-body" },
+              activeUrl ? (
+                frameHtml
+                  ? h("iframe", {
+                      key: activeUrl + "_proxied",
+                      srcDoc: frameHtml,
+                      style: { width: "100%", height: "100%", border: 0, background: "#0e0e12" },
+                      sandbox: "allow-scripts allow-same-origin allow-forms"
+                    })
+                  : h("iframe", {
+                      key: activeUrl + "_direct",
+                      src: activeUrl,
+                      style: { width: "100%", height: "100%", border: 0, background: "#fff" },
+                      sandbox: "allow-scripts allow-same-origin allow-forms",
+                      referrerPolicy: "strict-origin-when-cross-origin"
+                    })
+              ) : tab === "all" ? (
+                h("div", { className: "gbrowser-results-wrap" },
+                  imgResults.length > 0 ? h("div", { style: { marginBottom: 10 } },
+                    h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 } },
+                      h("span", { style: { fontSize: 15, fontWeight: 600, color: "#d4d4d8" } }, "🖼️ Images for " + query),
+                      h("button", { className: "pill", style: { padding: "4px 12px", fontSize: 12 }, onClick: () => setTab("images") }, "View all images →")
+                    ),
+                    h("div", { style: { display: "flex", gap: 10, overflowX: "auto", paddingBottom: 8 } },
+                      imgResults.slice(0, 6).map((im, idx) =>
+                        h("img", {
+                          key: idx,
+                          src: im.thumb,
+                          alt: im.title,
+                          onClick: () => setPreviewImg(im),
+                          style: { height: 110, width: 150, objectFit: "cover", borderRadius: 12, cursor: "pointer", border: "1px solid var(--border)", flexShrink: 0 },
+                          referrerPolicy: "no-referrer"
+                        })
+                      )
+                    )
+                  ) : null,
+                  webResults.map((r, i) =>
+                    h("div", {
+                      key: i,
+                      className: "gbrowser-card",
+                      onClick: () => openUrlAutomatically(r.url)
+                    },
+                      h("div", { style: { fontSize: 12, color: "#86efac", marginBottom: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, r.url),
+                      h("div", { style: { fontSize: 19, fontWeight: 700, color: "#60a5fa", marginBottom: 6 } }, r.title),
+                      h("div", { style: { fontSize: 14, color: "#d4d4d8", lineHeight: 1.55 } }, r.snippet)
+                    )
+                  )
+                )
+              ) : tab === "images" ? (
+                imgResults.length === 0
+                  ? h("div", { className: "empty" }, "Searching unblocked images...")
+                  : h("div", { className: "gbrowser-img-grid" },
+                      imgResults.map((im, i) =>
+                        h("div", {
+                          key: i,
+                          className: "gbrowser-img-card",
+                          onClick: () => setPreviewImg(im)
+                        },
+                          h("img", { src: im.thumb, alt: im.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                          h("div", { style: { padding: "10px 12px" } },
+                            h("div", { style: { fontSize: 13, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, im.title),
+                            h("div", { style: { fontSize: 11, color: "var(--muted)", marginTop: 2 } }, im.source)
+                          )
+                        )
+                      )
+                    )
+              ) : tab === "shopping" ? (
+                shopResults.length === 0
+                  ? h("div", { className: "empty" }, "Searching products & deals...")
+                  : h("div", { className: "gbrowser-shop-grid" },
+                      shopResults.map((s) =>
+                        h("div", {
+                          key: s.id,
+                          className: "gbrowser-shop-card",
+                          onClick: () => openUrlAutomatically(s.url)
+                        },
+                          h("img", { src: s.img, alt: s.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                          h("div", { style: { padding: 14, display: "flex", flexDirection: "column", flex: 1, justifyContent: "space-between" } },
+                            h("div", null,
+                              h("div", { style: { fontWeight: 700, fontSize: 14.5, marginBottom: 4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" } }, s.title),
+                              h("div", { style: { fontSize: 18, fontWeight: 800, color: "#4ade80", marginBottom: 4 } }, s.price),
+                              h("div", { style: { fontSize: 12, color: "#a1a1aa", marginBottom: 8 } }, `${s.store} • ${s.rating}`)
+                            ),
+                            h("button", { className: "btn sm", style: { width: "100%" } }, "View Product")
+                          )
+                        )
+                      )
+                    )
+              ) : (
+                vidResults.length === 0
+                  ? h("div", { className: "empty" }, "No videos found for this search.")
+                  : h("div", { className: "gbrowser-img-grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))" } },
+                      vidResults.map((v) =>
+                        h("div", {
+                          key: v.id,
+                          className: "gbrowser-img-card",
+                          onClick: () => setPreviewVid(v)
+                        },
+                          h("img", { src: v.thumb, alt: v.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                          h("div", { style: { padding: 12 } },
+                            h("div", { style: { fontWeight: 600, fontSize: 14, marginBottom: 4 } }, v.title),
+                            h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `${v.author} • ${v.views}`)
+                          )
+                        )
+                      )
+                    )
+              )
+            )
+          )
+        ),
+
+        previewImg ? h(Modal, { onClose: () => setPreviewImg(null) },
+          h("h3", { style: { fontSize: 17, marginBottom: 12 } }, previewImg.title),
+          h("img", { src: previewImg.full || previewImg.thumb, style: { width: "100%", maxHeight: "65vh", objectFit: "contain", borderRadius: 12, background: "#000", marginBottom: 14 }, referrerPolicy: "no-referrer" }),
+          h("div", { className: "actions" },
+            h("button", { className: "btn", onClick: () => setPreviewImg(null) }, "Close")
+          )
+        ) : null,
+
+        previewVid ? h(Modal, { onClose: () => setPreviewVid(null) },
+          h("h3", { style: { fontSize: 17, marginBottom: 12 } }, previewVid.title),
+          h("div", { style: { width: "100%", height: 300, background: "#000", borderRadius: 12, overflow: "hidden", marginBottom: 14 } },
+            h("iframe", {
+              src: `https://www.youtube-nocookie.com/embed/${previewVid.id}?autoplay=1&rel=0`,
+              style: { width: "100%", height: "100%", border: 0 },
+              allow: FRAME_ALLOW,
+              allowFullScreen: true,
+              referrerPolicy: "strict-origin-when-cross-origin"
+            })
+          ),
+          h("div", { className: "actions" },
+            h("button", { className: "btn", onClick: () => setPreviewVid(null) }, "Close")
+          )
+        ) : null
+      )
+    );
+  }
+
+  // ============================================================================
+  // FIXED YOUTUBE HUB (Error 153 Fixed via strict-origin-when-cross-origin + Direct Stream Fallback!)
+  // ============================================================================
+  const YT_PRESETS = [
+    { label: "🔥 Trending Gaming", q: "minecraft roblox geometry dash gameplay" },
+    { label: "😂 Memes & Brainrot", q: "funny memes compilation 2026" },
+    { label: "🎵 Music Videos", q: "hip hop phonk music video" },
+    { label: "⚽ Sports Highlights", q: "football basketball highlights" },
+    { label: "🎬 MrBeast & Challenges", q: "mrbeast challenge" }
+  ];
+
+  const FALLBACK_YT_VIDEOS = [
+    { id: "jfKfPfyJRdk", title: "lofi hip hop radio - beats to relax/study to", author: "Lofi Girl", views: "Live Stream", thumb: "https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg" },
+    { id: "dQw4w9WgXcQ", title: "Rick Astley - Never Gonna Give You Up (Official Video)", author: "Rick Astley", views: "1.5B views", thumb: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" },
+    { id: "kJQP7kiw5Fk", title: "Luis Fonsi - Despacito ft. Daddy Yankee", author: "Luis Fonsi", views: "8.4B views", thumb: "https://i.ytimg.com/vi/kJQP7kiw5Fk/hqdefault.jpg" },
+    { id: "9bZkp7q19f0", title: "PSY - GANGNAM STYLE(강남스타일) M/V", author: "officialpsy", views: "5.1B views", thumb: "https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg" }
+  ];
+
+  function YouTubeView() {
+    const [searchQ, setSearchQ] = useState("");
+    const [videos, setVideos] = useState([]);
+    const [activeVideo, setActiveVideo] = useState(null);
+    const [directStreamUrl, setDirectStreamUrl] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    // Automatically fetch a raw MP4 stream in the background in case the school blocks youtube-nocookie embeds
+    const selectVideo = useCallback(async (vid) => {
+      setActiveVideo(vid);
+      setDirectStreamUrl("");
+      try {
+        const res = await fetch(`https://pipedapi.kavin.rocks/streams/${vid.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          const stream = (data.videoStreams || []).find((s) => !s.videoOnly && s.format === "MPEG_4");
+          if (stream && stream.url) setDirectStreamUrl(stream.url);
+        }
+      } catch {}
+    }, []);
+
+    const searchYouTube = useCallback(async (queryText) => {
+      const q = (queryText || "").trim();
+      if (!q) return;
+      setLoading(true);
+
+      const ytMatch = q.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+      if (ytMatch) {
+        const vidId = ytMatch[1];
+        const directItem = { id: vidId, title: "Direct YouTube Video", author: "YouTube", views: "Direct Link", thumb: `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg` };
+        setVideos([directItem, ...videos]);
+        selectVideo(directItem);
+        setLoading(false);
+        return;
+      }
+
+      const apis = [
+        `https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(q)}&filter=videos`,
+        `https://api.piped.private.coffee/search?q=${encodeURIComponent(q)}&filter=videos`,
+        `https://inv.tux.pizza/api/v1/search?q=${encodeURIComponent(q)}&type=video`
+      ];
+
+      let found = [];
+      for (const apiUrl of apis) {
+        try {
+          const res = await fetch(apiUrl);
+          if (!res.ok) continue;
+          const data = await res.json();
+          const items = data.items || data;
+          if (Array.isArray(items) && items.length > 0) {
+            found = items.map((item) => {
+              const id = item.videoId || (item.url ? item.url.split("v=")[1] : "");
+              return {
+                id,
+                title: item.title || "Video",
+                author: item.uploaderName || item.author || "Creator",
+                views: item.views ? `${Number(item.views).toLocaleString()} views` : "HD Video",
+                thumb: item.thumbnail || (item.videoThumbnails && item.videoThumbnails[0]?.url) || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
+              };
+            }).filter((v) => v.id);
+            if (found.length > 0) break;
+          }
+        } catch {}
+      }
+
+      if (found.length === 0) {
+        try {
+          const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent("https://www.youtube.com/results?search_query=" + q)}`);
+          const j = await r.json();
+          const html = j.contents || "";
+          const regex = /"videoId":"([A-Za-z0-9_-]{11})".*?"title":\{"runs":\[\{"text":"([^"]+)"/g;
+          const seen = new Set();
+          let m;
+          while ((m = regex.exec(html)) !== null && found.length < 24) {
+            if (!seen.has(m[1])) {
+              seen.add(m[1]);
+              found.push({
+                id: m[1],
+                title: m[2].replace(/\\u0026/g, "&"),
+                author: "YouTube Creator",
+                views: "Unblocked Stream",
+                thumb: `https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg`
+              });
+            }
+          }
+        } catch {}
+      }
+
+      setVideos(found.length > 0 ? found : FALLBACK_YT_VIDEOS);
+      setLoading(false);
+    }, [selectVideo]);
+
+    useEffect(() => {
+      searchYouTube("minecraft roblox gaming");
+    }, [searchYouTube]);
+
+    // Clean origin parameter + strict-origin-when-cross-origin completely eliminates YouTube Error 153!
+    const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
+
+    return h("section", { className: "view" },
+      h("div", { className: "page" },
+        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 16 } },
+          h("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
+            h("div", { style: { background: "#ff0000", color: "#fff", padding: "6px 12px", borderRadius: 10, fontWeight: 800, display: "flex", alignItems: "center", gap: 6 } }, "▶ YouTube"),
+            h("span", { className: "badge-pill live" }, "ERROR 153 FIXED • DIRECT PLAY")
+          )
+        ),
+
+        activeVideo ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
+          h("div", { className: "row", style: { marginBottom: 12 } },
+            h("strong", { style: { fontSize: 16 } }, activeVideo.title),
+            h("button", { className: "btn ghost sm", onClick: () => setActiveVideo(null) }, "✕ Close Player")
+          ),
+          h("div", { style: { width: "100%", height: "64vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
+            directStreamUrl
+              ? h("video", {
+                  key: activeVideo.id + "_mp4",
+                  src: directStreamUrl,
+                  poster: activeVideo.thumb,
+                  controls: true,
+                  autoPlay: true,
+                  style: { width: "100%", height: "100%", background: "#000" }
+                })
+              : h("iframe", {
+                  key: activeVideo.id + "_iframe",
+                  src: `https://www.youtube-nocookie.com/embed/${activeVideo.id}?autoplay=1&rel=0&playsinline=1${embedOrigin}`,
+                  style: { width: "100%", height: "100%", border: 0 },
+                  allow: FRAME_ALLOW,
+                  allowFullScreen: true,
+                  referrerPolicy: "strict-origin-when-cross-origin"
+                })
+          )
+        ) : null,
+
+        h("form", {
+          className: "toolbar",
+          onSubmit: (e) => { e.preventDefault(); searchYouTube(searchQ); }
+        },
+          h("div", { className: "search" },
+            h(SearchIcon),
+            h("input", {
+              type: "text",
+              placeholder: "Search any YouTube video, channel, or paste a YouTube URL...",
+              value: searchQ,
+              onChange: (e) => setSearchQ(e.target.value)
+            })
+          ),
+          h("button", { type: "submit", className: "btn", style: { background: "#ff0000", color: "#fff", height: 52 } }, loading ? "Searching..." : "Search YouTube")
+        ),
+
+        h("div", { className: "chips" },
+          YT_PRESETS.map((p) =>
+            h("button", {
+              key: p.label,
+              className: "chip",
+              onClick: () => { setSearchQ(p.q); searchYouTube(p.q); }
+            }, p.label)
+          )
+        ),
+
+        loading ? h("div", { className: "empty" }, "Fetching unblocked YouTube videos...") :
+        h("div", { className: "grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 18 } },
+          videos.map((v) =>
+            h("div", {
+              key: v.id,
+              className: "card",
+              onClick: () => selectVideo(v)
+            },
+              h("div", { className: "thumb", style: { height: 155, background: "#111" } },
+                h("img", { src: v.thumb, alt: v.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                h("div", { className: "badge" }, "▶ HD")
+              ),
+              h("div", { className: "info" },
+                h("div", { className: "name", style: { whiteSpace: "normal", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", height: 40, lineHeight: "20px" } }, v.title),
+                h("div", { className: "tag", style: { marginTop: 6 } },
+                  h("span", null, v.author),
+                  h("span", null, v.views)
+                )
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+
+  // ============================================================================
+  // FIXED TIKTOK FEED (Multi-CORS Proxy Race + Instant Working Fallback Feed!)
+  // ============================================================================
+  const TT_TOPICS = ["gaming", "memes", "roblox", "anime", "phonk", "sports", "cars", "funny"];
+
+  const FALLBACK_TIKTOK_FEED = [
+    {
+      video_id: "tt_fb_1",
+      title: "Insane 3D Obby Speedrun World Record! 🔥 #roblox #gaming #obby",
+      digg_count: 148200,
+      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      cover: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80",
+      author: { nickname: "BloxSpeedrunner", unique_id: "bloxspeed", avatar: "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" }
+    },
+    {
+      video_id: "tt_fb_2",
+      title: "When the teacher walks by your desk but you have about:blank cloak on 😎 #school #memes #unblocked",
+      digg_count: 294500,
+      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+      cover: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80",
+      author: { nickname: "SchoolLegends", unique_id: "schoolmemes", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&q=80" }
+    },
+    {
+      video_id: "tt_fb_3",
+      title: "Late night drift phonk edit 🏎️💨 #phonk #cars #drift #jdm",
+      digg_count: 92400,
+      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+      cover: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80",
+      author: { nickname: "DriftPhonkDaily", unique_id: "phonkeditz", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=80" }
+    },
+    {
+      video_id: "tt_fb_4",
+      title: "Next-gen animation showcase ⚡ #anime #edit #4k",
+      digg_count: 184900,
+      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+      cover: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&q=80",
+      author: { nickname: "AnimeVibes4K", unique_id: "animevibes", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&q=80" }
+    }
+  ];
+
+  function TikTokView() {
+    const [query, setQuery] = useState("gaming");
+    const [inputVal, setInputVal] = useState("");
+    const [feed, setFeed] = useState(FALLBACK_TIKTOK_FEED);
+    const [loading, setLoading] = useState(false);
+    const [likedIds, setLikedIds] = useState({});
+
+    const fetchTikToks = useCallback(async (qText) => {
+      setLoading(true);
+      const targetApi = `https://www.tikwm.com/api/feed/search?keywords=${encodeURIComponent(qText)}&count=18`;
+
+      // Race Direct, AllOrigins CORS Proxy, and CodeTabs Proxy so TikTok never gets stuck!
+      const tryDirect = async () => {
+        const r = await fetch(targetApi);
+        const j = await r.json();
+        if (!j?.data?.videos?.length) throw new Error("empty");
+        return j.data.videos;
+      };
+      const tryAllOrigins = async () => {
+        const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetApi)}`);
+        const j = await r.json();
+        const parsed = JSON.parse(j.contents);
+        if (!parsed?.data?.videos?.length) throw new Error("empty");
+        return parsed.data.videos;
+      };
+      const tryCodeTabs = async () => {
+        const r = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetApi)}`);
+        const parsed = await r.json();
+        if (!parsed?.data?.videos?.length) throw new Error("empty");
+        return parsed.data.videos;
+      };
+
+      try {
+        const videos = await Promise.any([tryDirect(), tryAllOrigins(), tryCodeTabs()]);
+        setFeed(videos);
+      } catch {
+        // Always show working fallback videos if all external relays are blocked on school Wi-Fi
+        setFeed(FALLBACK_TIKTOK_FEED);
+      }
+      setLoading(false);
+    }, []);
+
+    useEffect(() => {
+      fetchTikToks(query);
+    }, [query, fetchTikToks]);
+
+    return h("section", { className: "view" },
+      h("div", { className: "page", style: { maxWidth: 960 } },
+        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 16 } },
+          h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+            h("div", { style: { background: "#000", border: "1px solid #00f2ea", color: "#fff", padding: "6px 14px", borderRadius: 10, fontWeight: 800, textShadow: "2px 0 #ff0050, -2px 0 #00f2ea" } }, "♪ TikTok"),
+            h("span", { className: "badge-pill live" }, "DIRECT MP4 STREAM")
+          )
+        ),
+
+        h("form", {
+          className: "toolbar",
+          onSubmit: (e) => {
+            e.preventDefault();
+            if (inputVal.trim()) setQuery(inputVal.trim());
+          }
+        },
+          h("div", { className: "search" },
+            h(SearchIcon),
+            h("input", {
+              type: "text",
+              placeholder: "Search TikTok videos, trends, or creators (e.g. #roblox, #memes, #phonk)...",
+              value: inputVal,
+              onChange: (e) => setInputVal(e.target.value)
+            })
+          ),
+          h("button", { type: "submit", className: "btn", style: { background: "#ff0050", color: "#fff", height: 52 } }, loading ? "Loading..." : "Search TikTok")
+        ),
+
+        h("div", { className: "chips" },
+          TT_TOPICS.map((t) =>
+            h("button", {
+              key: t,
+              className: "chip" + (query === t ? " on" : ""),
+              onClick: () => setQuery(t)
+            }, `#${t}`)
+          )
+        ),
+
+        h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 8 } },
+          feed.map((item) => {
+            const vidId = item.video_id || item.id;
+            const liked = !!likedIds[vidId];
+            return h("div", { key: vidId, className: "tt-card" },
+              h("div", { style: { display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: "1px solid var(--border)" } },
+                item.author?.avatar ? h("img", { src: item.author.avatar, style: { width: 38, height: 38, borderRadius: "50%", objectFit: "cover" }, referrerPolicy: "no-referrer" }) : null,
+                h("div", { style: { flex: 1, minWidth: 0 } },
+                  h("div", { style: { fontWeight: 700, fontSize: 14.5 } }, item.author?.nickname || "TikTok Creator"),
+                  h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `@${item.author?.unique_id || "user"}`)
+                ),
+                h("button", {
+                  className: "btn sm",
+                  style: { background: liked ? "#ff0050" : "rgba(255,255,255,0.08)", color: "#fff" },
+                  onClick: () => setLikedIds((p) => ({ ...p, [vidId]: !p[vidId] }))
+                }, `♥ ${(item.digg_count || 0) + (liked ? 1 : 0)}`)
+              ),
+              h("video", {
+                className: "tt-video",
+                src: item.play || item.wmplay,
+                poster: item.cover,
+                controls: true,
+                loop: true,
+                playsInline: true,
+                preload: "metadata"
+              }),
+              h("div", { style: { padding: "12px 16px", fontSize: 13.5, color: "#e4e4e7" } },
+                item.title || "TikTok Video"
+              )
+            );
+          })
+        )
+      )
+    );
+  }
+
+  // --- Games Component (Free, Pro & Premium) ---
+  const CATS = ["All", ...Array.from(new Set(GAMES.map((g) => g.cat))).sort()];
+  function hue(s) { let hVal = 0; for (const c of s) hVal = (hVal * 31 + c.charCodeAt(0)) % 360; return hVal; }
+
+  const Card = memo(function Card({ game, isInstalled, onPlay }) {
+    const [imgOk, setImgOk] = useState(true);
+    const hVal = hue(game.slug);
+    const initials = game.name.replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase();
+    return h("div", { className: "card", onClick: () => onPlay(game) },
+      h("div", { className: "thumb", style: { background: `linear-gradient(135deg,hsl(${hVal} 55% 28%),hsl(${(hVal + 50) % 360} 60% 12%))` } },
+        h("span", null, initials),
+        game.thumb && imgOk ? h("img", { src: game.thumb, alt: game.name, loading: "lazy", referrerPolicy: "no-referrer", onError: () => setImgOk(false) }) : null,
+        isInstalled ? h("div", { className: "badge installed" }, "✓ INSTALLED") : null
+      ),
+      h("div", { className: "info" },
+        h("div", { className: "name", title: game.name }, game.name),
+        h("div", { className: "tag" },
+          h("span", null, game.cat),
+          h("span", { style: { color: isInstalled ? "#4ade80" : "#a1a1aa", fontSize: 11, fontWeight: 600 } }, isInstalled ? "Ready" : "Play")
+        )
+      )
+    );
+  });
+
+  function GamesView({ query, onQuery, onPlay, installedMap }) {
+    const [cat, setCat] = useState("All");
+    const list = useMemo(() => {
+      const q = query.trim().toLowerCase();
+      return GAMES.filter((g) => (cat === "All" || g.cat === cat) && (!q || g.name.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q)));
+    }, [query, cat]);
+
+    return h("section", { className: "view", id: "games" },
+      h("div", { className: "page" },
+        h("h2", null, "Games"),
+        h("p", { className: "sub" }, "Click any game (including Direct 3D Roblox & Geometry Dash) for instant direct launch."),
+        h("div", { className: "toolbar" },
+          h("div", { className: "search" },
+            h(SearchIcon),
+            h("input", { type: "text", placeholder: "Search Roblox, Geometry Dash, Slope, 1v1.LOL...", spellCheck: false, value: query, onChange: (e) => onQuery(e.target.value) })
+          )
+        ),
+        h("div", { className: "chips" }, CATS.map((c) => h("button", { key: c, className: "chip" + (c === cat ? " on" : ""), onClick: () => setCat(c) }, c))),
+        h("div", { className: "count" }, `${list.length} game${list.length === 1 ? "" : "s"}`),
+        h("div", { className: "grid" }, list.map((g) => h(Card, { key: g.slug, game: g, isInstalled: !!installedMap[g.slug], onPlay }))),
+        list.length === 0 ? h("div", { className: "empty" }, "No games found.") : null
+      )
+    );
+  }
+
+  // --- Spotify Music View (Free, Pro & Premium) ---
+  const PLAYLIST_PRESETS = [
+    { id: "hits", name: "Today's Top Hits", desc: "Global Chart", color: "#1e3264", icon: "🔥", query: "top hits 2025 2026" },
+    { id: "phonk", name: "Drift Phonk & Gym", desc: "High-energy phonk", color: "#8d1732", icon: "⚡", query: "drift phonk" },
+    { id: "rap", name: "RapCaviar", desc: "Hip-Hop & Rap", color: "#ba5d07", icon: "🎤", query: "travis scott drake kendrick" },
+    { id: "anime", name: "Anime Now", desc: "Anime openings", color: "#7358ff", icon: "🌸", query: "anime opening" }
+  ];
+
+  function fmtMs(ms) {
+    if (!ms) return "0:30";
+    const totalSec = Math.floor(ms / 1000);
+    return `${Math.floor(totalSec / 60)}:${totalSec % 60 < 10 ? "0" : ""}${totalSec % 60}`;
+  }
+
+  function MusicView() {
+    const [searchQ, setSearchQ] = useState("");
+    const [activePlaylist, setActivePlaylist] = useState("hits");
+    const [tracks, setTracks] = useState([]);
+    const [currentTrack, setCurrentTrack] = useState(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const audioRef = useRef(null);
+
+    const fetchSongs = useCallback(async (term) => {
+      try {
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=song&limit=35`);
+        const data = await res.json();
+        setTracks(data.results || []);
+      } catch {}
+    }, []);
+
+    useEffect(() => {
+      const p = PLAYLIST_PRESETS.find((x) => x.id === activePlaylist) || PLAYLIST_PRESETS[0];
+      fetchSongs(p.query);
+    }, [activePlaylist, fetchSongs]);
+
+    const playTrack = (t) => {
+      if (!audioRef.current) return;
+      if (currentTrack && currentTrack.trackId === t.trackId) {
+        if (isPlaying) { audioRef.current.pause(); setIsPlaying(false); }
+        else { audioRef.current.play(); setIsPlaying(true); }
+        return;
+      }
+      setCurrentTrack(t);
+      audioRef.current.src = t.previewUrl;
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+    };
+
+    const activePresetObj = PLAYLIST_PRESETS.find((p) => p.id === activePlaylist) || PLAYLIST_PRESETS[0];
+
+    return h("section", { className: "view" },
+      h("div", { className: "sp-app" },
+        h("audio", { ref: audioRef }),
+        h("div", { className: "sp-body" },
+          h("div", { className: "sp-sidebar" },
+            h("div", { className: "sp-nav-box" },
+              h("div", { style: { fontWeight: 800, fontSize: 18, color: "#1ed760" } }, "● Spotify"),
+              h("form", { onSubmit: (e) => { e.preventDefault(); if (searchQ.trim()) fetchSongs(searchQ.trim()); }, style: { display: "flex", alignItems: "center", background: "#242424", borderRadius: 999, padding: "0 12px", height: 36 } },
+                h("input", { type: "text", placeholder: "Search songs...", value: searchQ, onChange: (e) => setSearchQ(e.target.value), style: { flex: 1, background: "transparent", border: 0, outline: 0, color: "#fff", fontSize: 13 } })
+              )
+            ),
+            h("div", { className: "sp-lib-box" },
+              PLAYLIST_PRESETS.map((p) =>
+                h("button", { key: p.id, className: "sp-pl-item" + (activePlaylist === p.id ? " active" : ""), onClick: () => setActivePlaylist(p.id) },
+                  h("div", { className: "sp-pl-cover", style: { background: p.color } }, p.icon),
+                  h("div", { style: { fontWeight: 600, fontSize: 13.5, color: "#fff" } }, p.name)
+                )
+              )
+            )
+          ),
+          h("div", { className: "sp-main" },
+            h("div", { className: "sp-header", style: { background: `linear-gradient(180deg, ${activePresetObj.color} 0%, #121212 100%)` } },
+              h("div", { className: "sp-header-art", style: { background: activePresetObj.color } }, activePresetObj.icon),
+              h("div", null,
+                h("h1", { style: { fontSize: 42, fontWeight: 800 } }, activePresetObj.name),
+                h("p", { style: { color: "#ccc", fontSize: 13 } }, `${tracks.length} unblocked songs`)
+              )
+            ),
+            h("div", { className: "sp-table" },
+              tracks.map((t, i) => {
+                const isCurr = currentTrack && currentTrack.trackId === t.trackId;
+                return h("div", { key: t.trackId || i, className: "sp-trow" + (isCurr ? " active" : ""), onClick: () => playTrack(t) },
+                  h("span", null, isCurr && isPlaying ? "▶" : i + 1),
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 10, minWidth: 0 } },
+                    h("img", { src: t.artworkUrl100, style: { width: 38, height: 38, borderRadius: 4 } }),
+                    h("div", { style: { minWidth: 0 } },
+                      h("div", { style: { fontWeight: 600, color: isCurr ? "#1ed760" : "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, t.trackName),
+                      h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, t.artistName)
+                    )
+                  ),
+                  h("span", { style: { whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 12.5 } }, t.collectionName),
+                  h("span", { style: { textAlign: "right", fontSize: 12.5 } }, fmtMs(t.trackTimeMillis))
+                );
+              })
+            )
+          )
+        ),
+        h("div", { className: "sp-player-bar" },
+          currentTrack ? h("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
+            h("img", { src: currentTrack.artworkUrl100, style: { width: 48, height: 48, borderRadius: 6 } }),
+            h("div", null,
+              h("div", { style: { fontWeight: 600, fontSize: 14 } }, currentTrack.trackName),
+              h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, currentTrack.artistName)
+            )
+          ) : h("div", { style: { color: "#888", fontSize: 13 } }, "Select a song to play"),
+          h("button", { className: "btn sm", style: { background: "#1ed760", color: "#000", borderRadius: 999 }, onClick: () => currentTrack && playTrack(currentTrack) }, isPlaying ? "⏸ Pause" : "▶ Play")
+        )
+      )
+    );
+  }
+
+  // --- Netflix Movies & Anime View (Free, Pro & Premium) ---
+  function MoviesView() {
+    const [activeMedia, setActiveMedia] = useState(null);
+    const heroItem = INITIAL_MEDIA[0];
+
+    const getEmbedUrl = (item) => {
+      const tmdbId = item.tmdb || item.id;
+      if (item.type === "tv") return `https://vidsrc.me/embed/tv?tmdb=${tmdbId}&season=1&episode=1`;
+      return `https://vidsrc.me/embed/movie?tmdb=${tmdbId}`;
+    };
+
+    return h("section", { className: "view" },
+      h("div", { className: "nf-wrap" },
+        h("div", { className: "nf-topnav" },
+          h("div", { className: "nf-logo", onClick: () => setActiveMedia(null) }, "NETFLIX")
+        ),
+        activeMedia ? h("div", { style: { padding: "16px 42px" } },
+          h("div", { className: "pop-panel", style: { background: "#08080a" } },
+            h("div", { className: "row", style: { marginBottom: 12 } },
+              h("strong", { style: { fontSize: 18 } }, activeMedia.title),
+              h("button", { className: "btn sm", style: { background: "#e50914", color: "#fff" }, onClick: () => setActiveMedia(null) }, "← Back to Netflix")
+            ),
+            h("div", { style: { width: "100%", height: "68vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
+              h("iframe", { key: activeMedia.id, src: getEmbedUrl(activeMedia), style: { width: "100%", height: "100%", border: 0 }, allow: FRAME_ALLOW, allowFullScreen: true, referrerPolicy: "strict-origin-when-cross-origin" })
+            )
+          )
+        ) : h(Fragment, null,
+          h("div", { className: "nf-hero" },
+            h("img", { src: heroItem.backdrop, className: "nf-hero-bg", referrerPolicy: "no-referrer" }),
+            h("div", { className: "nf-hero-content" },
+              h("h1", { className: "nf-hero-title" }, heroItem.title),
+              h("p", { className: "nf-hero-desc" }, heroItem.desc),
+              h("button", { className: "nf-btn-play", onClick: () => setActiveMedia(heroItem) }, "▶ Play Now")
+            )
+          ),
+          h("div", { className: "nf-row-section" },
+            h("h3", { className: "nf-row-title" }, "🔥 Trending Movies & Anime"),
+            h("div", { className: "nf-carousel" },
+              INITIAL_MEDIA.map((item) =>
+                h("div", { key: item.id, className: "nf-card", onClick: () => setActiveMedia(item) },
+                  h("img", { src: item.thumb, className: "nf-card-poster", referrerPolicy: "no-referrer" })
+                )
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+
+  // ============================================================================
+  // WHATSAPP-STYLE LIVE CHAT WITH IMAGE & FILE ATTACHMENTS (Pro & Premium Tiers)
+  // ============================================================================
+  function ChatView({ currentUser, accountsMap }) {
+    const [messages, setMessages] = useState([]);
+    const [inputMessage, setInputMessage] = useState("");
+    const [attachment, setAttachment] = useState(null);
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+      const fetchChat = async () => {
+        const base = getDbUrl();
+        if (!base) {
+          try {
+            const local = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+            setMessages(local);
+          } catch {}
+          return;
+        }
+        try {
+          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
+              list.sort((a, b) => a.timestamp - b.timestamp);
+              setMessages(list);
+            } else {
+              setMessages([]);
+            }
+          }
+        } catch {}
+      };
+
+      fetchChat();
+      const interval = setInterval(fetchChat, 3500);
+      return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert("File size must be under 2MB for cloud sync.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (uploadEvent) => {
+        setAttachment({
+          name: file.name,
+          type: file.type,
+          data: uploadEvent.target.result
+        });
+      };
+      reader.readAsDataURL(file);
+    };
+
+    const sendMessage = async (e) => {
+      e.preventDefault();
+      const text = inputMessage.trim();
+      if (!text && !attachment) return;
+      if (!currentUser) return;
+
+      const acc = accountsMap[currentUser.username.toLowerCase()] || currentUser;
+      const isUserOwner = isOwnerIdentity(currentUser.username, acc);
+
+      const newMsg = {
+        sender: currentUser.username,
+        role: isUserOwner ? "owner" : "user",
+        tier: getUserTier(acc, isUserOwner),
+        text,
+        attachment: attachment || null,
+        timestamp: Date.now()
+      };
+
+      const base = getDbUrl();
+      if (base) {
+        try {
+          await fetch(`${base}/global_chat.json`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newMsg)
+          });
+        } catch {}
+      } else {
+        try {
+          const prev = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+          const next = [...prev, { id: "msg_" + Date.now(), ...newMsg }];
+          localStorage.setItem("ug_global_chat_v1", JSON.stringify(next));
+          setMessages(next);
+        } catch {}
+      }
+
+      setInputMessage("");
+      setAttachment(null);
+
+      setTimeout(async () => {
+        if (base) {
+          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
+              list.sort((a, b) => a.timestamp - b.timestamp);
+              setMessages(list);
+            }
+          }
+        }
+      }, 250);
+    };
+
+    return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
+      h("div", { style: { padding: "20px 24px 0", flexShrink: 0 } },
+        h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+          h("h2", { style: { margin: 0, fontSize: 26 } }, "Live School Chat"),
+          h("span", { className: "badge-pill live" }, "WHATSAPP LIVE SYNC")
+        )
+      ),
+      h("div", { style: { flex: 1, display: "flex", flexDirection: "column", padding: "16px 24px 24px", overflow: "hidden" } },
+        h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden", background: "#060608", height: "100%" } },
+          h("div", { style: { flex: 1, padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14 } },
+            messages.length === 0
+              ? h("div", { style: { margin: "auto", color: "var(--muted)", textAlign: "center" } }, "No messages yet. Send an image or message to start chatting! 🚀")
+              : messages.map((m) => {
+                  const isMe = (m.sender || "").toLowerCase() === (currentUser?.username || "").toLowerCase();
+                  const isOwnerMsg = m.role === "owner";
+                  const msgTier = m.tier || (isOwnerMsg ? "owner" : "pro");
+                  return h("div", { key: m.id || m.timestamp, style: { display: "flex", flexDirection: "column", alignItems: isMe ? "flex-end" : "flex-start" } },
+                    h("div", { style: { display: "flex", alignItems: "center", gap: 6, marginBottom: 4 } },
+                      h("span", { style: { fontSize: 12, fontWeight: 600, color: "#aaa" } }, m.sender),
+                      renderTierBadge(msgTier, isOwnerMsg),
+                      h("span", { style: { fontSize: 10, color: "#666" } }, new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+                    ),
+                    h("div", { style: { background: isMe ? "#16a34a" : "#18181b", color: "#fff", padding: "12px 16px", borderRadius: isMe ? "16px 16px 2px 16px" : "16px 16px 16px 2px", fontSize: 14, maxWidth: "75%", wordBreak: "break-word", border: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 8 } },
+                      m.text ? h("span", null, m.text) : null,
+                      m.attachment ? (
+                        m.attachment.type && m.attachment.type.startsWith("image/") ?
+                          h("img", { src: m.attachment.data, alt: m.attachment.name, style: { maxWidth: "100%", maxHeight: 280, borderRadius: 10, objectFit: "cover" } }) :
+                          h("a", { href: m.attachment.data, download: m.attachment.name, style: { color: "#bbf7d0", textDecoration: "underline", fontSize: "13px" } }, `📎 ${m.attachment.name}`)
+                      ) : null
+                    )
+                  );
+                }),
+            h("div", { ref: messagesEndRef })
+          ),
+          attachment ? h("div", { style: { padding: "8px 16px", background: "#111116", borderTop: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" } },
+            h("span", { style: { fontSize: 13, color: "#86efac" } }, `Attached: ${attachment.name}`),
+            h("button", { type: "button", className: "btn danger sm", onClick: () => setAttachment(null) }, "Remove")
+          ) : null,
+          h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 16, background: "#0e0e11", borderTop: "1px solid var(--border)", alignItems: "center" } },
+            h("label", { className: "btn ghost", style: { display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 14px", height: 44, cursor: "pointer", margin: 0 } },
+              "📎 Attach / Image",
+              h("input", { type: "file", accept: "image/*,*/*", onChange: handleFileChange, style: { display: "none" } })
+            ),
+            h("input", {
+              className: "field",
+              type: "text",
+              placeholder: "Type a message or attach an image...",
+              spellCheck: false,
+              value: inputMessage,
+              onChange: (e) => setInputMessage(e.target.value),
+              style: { flex: 1, margin: 0 }
+            }),
+            h("button", { type: "submit", className: "btn", style: { padding: "0 28px", height: 44, background: "#22c55e", color: "#000" } }, "Send")
+          )
+        )
+      )
+    );
+  }
+
+  // --- Clean Player Component ---
+  function Player({ game, onClose }) {
+    const [nonce, setNonce] = useState(0);
+    const frameRef = useRef(null);
+    const source = frameSource(game);
+
+    return h("div", { id: "player" },
+      h("div", { className: "bar" },
+        h("button", { className: "pill", onClick: onClose }, "\u2190 Back to Hub"),
+        h("div", { className: "ttl" }, h("span", null, game.name)),
+        h("button", { className: "pill", onClick: () => setNonce((n) => n + 1) }, "Reload"),
+        h("button", { className: "pill", onClick: () => frameRef.current?.requestFullscreen?.() }, "Fullscreen")
+      ),
+      h("iframe", { key: `${game.slug}_${nonce}`, ref: frameRef, title: game.name, src: source.src, srcDoc: source.srcdoc, allow: FRAME_ALLOW, allowFullScreen: true })
+    );
+  }
+
+  // --- Account Profile View ---
   function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner, userTier }) {
     const [now, setNow] = useState(Date.now());
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
@@ -787,9 +2116,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // ACCOUNT CREATOR HUB (WITH LIVE USERS, TIER SELECTOR & SCREEN ALERT MODAL)
+  // ACCOUNT CREATOR HUB (With Tier Selection in Popup, Live Users & Account Cards!)
   // ============================================================================
-  function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast, currentUser }) {
+  function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
     const [createModal, setCreateModal] = useState(false);
     const [dbModal, setDbModal] = useState(false);
     const [newUsername, setNewUsername] = useState("");
@@ -801,12 +2130,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [revealedPw, setRevealedPw] = useState({});
     const [now, setNow] = useState(Date.now());
     const [dbUrlInput, setDbUrlInput] = useState(getDbUrl());
-
-    // Screen Alert State
-    const [messageTarget, setMessageTarget] = useState(null);
-    const [msgText, setMsgText] = useState("");
-    const [msgAttachment, setMsgAttachment] = useState(null);
-    const [gifUrl, setGifUrl] = useState("");
 
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
     useEffect(() => {
@@ -863,42 +2186,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       toast(`Kicked "${sess.username}"`);
     };
 
-    const handleMsgFile = (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      if (file.size > 2 * 1024 * 1024) { toast("File must be under 2MB"); return; }
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        setMsgAttachment({ name: file.name, type: file.type, data: ev.target.result });
-      };
-      reader.readAsDataURL(file);
-    };
-
-    const handleSendScreenMessage = async (e) => {
-      e.preventDefault();
-      const text = msgText.trim();
-      const customGif = gifUrl.trim();
-      let finalAttachment = msgAttachment;
-
-      if (!finalAttachment && customGif) {
-        finalAttachment = { name: "gif", type: "image/gif", data: customGif };
-      }
-
-      if (!text && !finalAttachment) {
-        toast("Enter a message or attach a GIF/image!");
-        return;
-      }
-
-      await dbSendUserAlert(messageTarget, {
-        sender: currentUser?.username || "Owner",
-        text,
-        attachment: finalAttachment
-      });
-
-      toast(`Screen Alert sent directly to @${messageTarget}!`);
-      setMessageTarget(null); setMsgText(""); setMsgAttachment(null); setGifUrl("");
-    };
-
     const accountsList = Object.values(accountsMap || {}).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     const activeSessions = Object.values(sessionsMap || {}).filter((s) => s && !s.kicked && accountsMap[s.username?.toLowerCase()] && now - (s.lastPing || 0) < 45000);
 
@@ -910,21 +2197,21 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
               h("span", { className: "badge-pill owner" }, "OWNER ONLY")
             ),
-            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Send live screen popups, manage tiers, and monitor active sessions.")
+            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Create accounts, assign Tiers (Free / Pro / Premium), and manage live users.")
           ),
           h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
-            h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "☁️ Cloud DB Connected" : "⚙️ Cloud DB Setup"),
+            h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "\u2601\uFE0F Cloud DB Connected" : "\u2699\uFE0F Cloud DB Setup"),
             h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create a New Account")
           )
         ),
 
-        // Live Active Sessions Box
+        // LIVE ACTIVE USERS PANEL (Includes Instant Live Tier Selector!)
         h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
           h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
             h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
               h("span", { className: "status-dot" }),
               h("h3", { style: { margin: 0, fontSize: 18 } }, `Active Accounts on Site (${activeSessions.length} Live)`),
-              h("span", { className: "badge-pill live" }, "Heartbeat Live")
+              h("span", { className: "badge-pill live" }, "Live Heartbeat Active")
             ),
             h("button", { className: "pill", onClick: () => { onRefresh(); toast("Refreshed live users"); } }, "Refresh Now")
           ),
@@ -944,6 +2231,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                       ),
                       h("span", { style: { fontSize: 12, color: "var(--muted)" } }, `Tab: ${sess.currentView || "home"}`)
                     ),
+                    // Live Tier Switcher inside Active Accounts area
                     !isOwn ? h("div", { className: "row", style: { marginBottom: 10, background: "#08080b", padding: "6px 10px", borderRadius: 8, border: "1px solid var(--border)" } },
                       h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Live Tier:"),
                       h("select", {
@@ -958,8 +2246,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                     ) : null,
                     h("div", { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 14 } }, "Remaining: ", h("strong", { style: { color: "#e4e4e4" } }, formatRemainingTime(acc, now))),
                     h("div", { style: { display: "flex", gap: 8 } },
-                      h("button", { className: "btn sm", style: { flex: 1.2, background: "#3b82f6", color: "#fff" }, onClick: () => setMessageTarget(sess.username) }, "💬 Alert Screen"),
-                      h("button", { className: "btn warn sm", style: { flex: 1 }, onClick: () => handleKickUser(sess) }, "Kick"),
+                      h("button", { className: "btn warn sm", style: { flex: 1 }, onClick: () => handleKickUser(sess) }, "Kick Out"),
                       h("button", { className: "btn danger sm", style: { flex: 1 }, onClick: () => handleRevokeAccount(sess.username) }, "Revoke")
                     )
                   );
@@ -967,7 +2254,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               )
         ),
 
-        // Licensed Accounts List
+        // LICENSED ACCOUNTS CARDS (Includes Tier Selector!)
         h("h3", { style: { fontSize: 20, fontWeight: 600, marginBottom: 14 } }, `Licensed Accounts (${accountsList.length})`),
         h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
           accountsList.map((acc) => {
@@ -987,15 +2274,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                   renderTierBadge(curTier, isOwn),
                   isOnline ? h("span", { className: "badge-pill live" }, "ONLINE") : null
                 ),
-                h("div", { style: { display: "flex", gap: 6 } },
-                  h("button", { className: "btn ghost sm", title: "Send direct screen message", onClick: () => setMessageTarget(acc.username) }, "💬"),
-                  h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke")
-                )
+                h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke")
               ),
               h("div", { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, background: "#070709", padding: "12px 14px", borderRadius: 12, border: "1px solid var(--border)" } },
                 h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Password"),
                   h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
-                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: isShown ? "normal" : "0.18em" } }, isShown ? acc.password : "••••••••"),
+                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: isShown ? "normal" : "0.18em" } }, isShown ? acc.password : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"),
                     h("button", { className: "eye-btn", onClick: () => toggleReveal(key) }, isShown ? h(EyeOffIcon) : h(EyeIcon))
                   )
                 ),
@@ -1017,7 +2301,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Remaining"), h("span", { style: { fontSize: 13, fontWeight: 600, color: "#86efac" } }, remText))
               ),
               h("div", { style: { borderTop: "1px solid var(--border)", paddingTop: 12 } },
-                h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Duration (1-24h)"), h("span", { style: { fontSize: 12.5, fontWeight: 600 } }, acc.infinite ? "Infinite ∞" : `${sliderVal}h`)),
+                h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Duration (1-24h)"), h("span", { style: { fontSize: 12.5, fontWeight: 600 } }, acc.infinite ? "Infinite \u221E" : `${sliderVal}h`)),
                 h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: !!acc.infinite, value: sliderVal, onChange: (e) => handleAdjustDuration(acc, Number(e.target.value), false) }),
                 h("div", { className: "row", style: { marginTop: 10 } },
                   h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, cursor: "pointer" } },
@@ -1031,61 +2315,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         )
       ),
 
-      // Screen Alert Popup Modal
-      messageTarget ? h(Modal, { onClose: () => { setMessageTarget(null); setMsgText(""); setMsgAttachment(null); setGifUrl(""); } },
-        h("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 12 } },
-          h("span", { style: { fontSize: 22 } }, "💬"),
-          h("h3", { style: { margin: 0, fontSize: 20 } }, `Direct Screen Message to @${messageTarget}`)
-        ),
-        h("p", { style: { fontSize: 13, color: "var(--muted)", margin: "0 0 16px" } }, "This will pop up right now on their live screen with full focus over any tab or game."),
-        h("form", { onSubmit: handleSendScreenMessage, autoComplete: "off" },
-          h("div", { style: { marginBottom: 14 } },
-            h("label", { className: "auth-label" }, "Message Content (Optional if sending GIF/Image)"),
-            h("textarea", {
-              className: "field",
-              rows: 3,
-              style: { height: "auto", minHeight: 74, padding: "10px 14px", resize: "vertical" },
-              placeholder: "Type message in here...",
-              value: msgText,
-              onChange: (e) => setMsgText(e.target.value)
-            })
-          ),
-          h("div", { style: { marginBottom: 14 } },
-            h("label", { className: "auth-label" }, "Attach GIF or Image"),
-            h("div", { style: { display: "flex", gap: 10, alignItems: "center" } },
-              h("label", { className: "btn ghost sm", style: { cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, margin: 0 } },
-                "📎 Choose File / GIF",
-                h("input", { type: "file", accept: "image/*,.gif", onChange: handleMsgFile, style: { display: "none" } })
-              ),
-              h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "or paste link below")
-            ),
-            h("input", {
-              className: "field",
-              style: { marginTop: 8 },
-              placeholder: "Paste GIF / Image URL (e.g. https://.../funny.gif)",
-              value: gifUrl,
-              onChange: (e) => setGifUrl(e.target.value)
-            })
-          ),
-          (msgAttachment || gifUrl.trim()) ? h("div", { style: { padding: "10px 12px", background: "#111116", border: "1px solid var(--border)", borderRadius: 10, marginBottom: 16 } },
-            h("div", { className: "row", style: { marginBottom: 8 } },
-              h("span", { style: { fontSize: 12, color: "#86efac", fontWeight: 600 } }, "Preview Attached:"),
-              h("button", { type: "button", className: "btn danger sm", style: { height: 24, padding: "0 8px", fontSize: 11 }, onClick: () => { setMsgAttachment(null); setGifUrl(""); } }, "Remove")
-            ),
-            h("img", {
-              src: msgAttachment ? msgAttachment.data : gifUrl.trim(),
-              alt: "Preview",
-              style: { maxHeight: 160, maxWidth: "100%", borderRadius: 6, objectFit: "contain", display: "block" }
-            })
-          ) : null,
-          h("div", { className: "actions" },
-            h("button", { type: "submit", className: "btn", style: { background: "#3b82f6", color: "#fff" } }, "🚀 Send to Live Screen"),
-            h("button", { type: "button", className: "btn ghost", onClick: () => { setMessageTarget(null); setMsgText(""); setMsgAttachment(null); setGifUrl(""); } }, "Cancel")
-          )
-        )
-      ) : null,
-
-      // Create Account Modal
+      // CREATE ACCOUNT MODAL WITH TIER SELECTOR
       createModal ? h(Modal, { onClose: () => setCreateModal(false) },
         h("h3", null, "Create Licensed Account"),
         h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
@@ -1241,9 +2471,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // ============================================================================
-  // MAIN ROOT APP COMPONENT (ORCHESTRATING ALL VIEWS & REAL-TIME EVENTS)
-  // ============================================================================
+  // --- Main App ---
   function App() {
     const [view, setView] = useState("home");
     const [open, setOpen] = useState(false);
@@ -1260,9 +2488,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [currentUser, setCurrentUser] = useState(getSavedSession);
     const [accountsMap, setAccountsMap] = useState({});
     const [sessionsMap, setSessionsMap] = useState({});
-
-    // Live Target Screen Alert
-    const [incomingAlert, setIncomingAlert] = useState(null);
 
     const toast = useCallback((msg) => {
       setToastMsg(msg); setToastOn(true);
@@ -1292,27 +2517,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       mainRef.current?.scrollTo(0, 0);
     }, [userTier]);
 
-    // Check for Screen Alert Popups sent by Owner
-    useEffect(() => {
-      if (!currentUser?.username) return;
-      const checkAlerts = async () => {
-        const alert = await dbFetchUserAlert(currentUser.username);
-        if (alert && (!incomingAlert || incomingAlert.timestamp !== alert.timestamp)) {
-          setIncomingAlert(alert);
-        }
-      };
-      checkAlerts();
-      const alertTimer = setInterval(checkAlerts, 2200);
-      return () => clearInterval(alertTimer);
-    }, [currentUser, incomingAlert]);
-
-    const handleDismissAlert = async () => {
-      if (currentUser?.username) {
-        await dbClearUserAlert(currentUser.username);
-      }
-      setIncomingAlert(null);
-    };
-
     const refreshDatabaseAndSession = useCallback(async () => {
       const { accounts, sessions } = await dbFetchAll();
       setAccountsMap(accounts);
@@ -1335,6 +2539,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Kicked out by owner."); return;
       }
 
+      // If owner downgraded user's tier live while they are on a restricted tab, bounce them back to home
       const liveTier = getUserTier(acc, own);
       if (!canAccessView(liveTier, view)) {
         setView("home");
@@ -1369,7 +2574,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       if (!openCloaked(frameSource(g), settings)) toast("Popup blocked");
     }, [settings, toast]);
 
-    const hideFloatingPills = view === "browser" || view === "movies" || view === "music" || view === "tiktok";
+    const hideFloatingPills = view === "browser" || view === "movies" || view === "music";
 
     return h(Fragment, null,
       h(Stars),
@@ -1383,35 +2588,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       ) : null,
       h("main", { ref: mainRef },
         view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); }, userTier }) : null,
+        view === "youtube" ? h(YouTubeView, { toast }) : null,
         view === "tiktok" ? h(TikTokView, { toast }) : null,
-        view === "youtube" ? h(YouTubeView) : null,
-        view === "browser" ? h(BrowserView) : null,
+        view === "browser" ? h(BrowserView, { toast }) : null,
         view === "games" ? h(GamesView, { query, onQuery: setQuery, onPlay: launchGame, installedMap }) : null,
         view === "chat" ? h(ChatView, { currentUser, accountsMap }) : null,
-        view === "movies" ? h(MoviesView) : null,
-        view === "music" ? h(MusicView) : null,
+        view === "movies" ? h(MoviesView, { toast }) : null,
+        view === "music" ? h(MusicView, { toast }) : null,
         view === "account" ? h(AccountProfileView, { currentUser, accountsMap, onLogout: async () => { await dbDeleteSession(currentUser.username); saveCurrentSession(null); setCurrentUser(null); setView("home"); }, onOpenCreator: () => navigate("creator"), isOwner, userTier }) : null,
-        view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabaseAndSession, toast, currentUser }) : null,
+        view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabaseAndSession, toast }) : null,
         view === "settings" ? h(SettingsView, { settings, onSave: (s) => { setSettings(s); saveSettings(s); toast("Saved"); }, onCloakSite: () => cloakSite(settings) }) : null
       ),
-
-      // Live Screen Alert Modal (Receiver Side)
-      incomingAlert ? h("div", { id: "modalBg", style: { zIndex: 9999 } },
-        h("div", { className: "modal", style: { maxWidth: 500, textAlign: "center", border: "2px solid #f59e0b", boxShadow: "0 0 45px rgba(245, 158, 11, 0.45)", background: "#0c0c11" } },
-          h("div", { style: { display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(245, 158, 11, 0.16)", color: "#fcd34d", padding: "6px 16px", borderRadius: 999, fontWeight: 700, fontSize: 13, marginBottom: 14 } }, "👑 MESSAGE FROM OWNER"),
-          incomingAlert.sender ? h("div", { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 12 } }, `Sent by @${incomingAlert.sender}`) : null,
-          incomingAlert.text ? h("p", { style: { fontSize: 16.5, color: "#fff", whiteSpace: "pre-wrap", margin: "0 0 16px", fontWeight: 500, lineHeight: 1.5 } }, incomingAlert.text) : null,
-          incomingAlert.attachment?.data ? (
-            incomingAlert.attachment.type && incomingAlert.attachment.type.startsWith("image/") || (typeof incomingAlert.attachment.data === "string" && (incomingAlert.attachment.data.startsWith("data:image/") || incomingAlert.attachment.data.match(/\.(gif|jpg|jpeg|png|webp)($|\?)/i))) ?
-              h("img", { src: incomingAlert.attachment.data, alt: "Screen Attachment", style: { maxWidth: "100%", maxHeight: 320, borderRadius: 12, objectFit: "contain", margin: "0 auto 18px", display: "block", border: "1px solid var(--border)" } }) :
-              h("a", { href: incomingAlert.attachment.data, download: incomingAlert.attachment.name || "attachment", style: { display: "block", color: "#86efac", marginBottom: 18, fontSize: 14, textDecoration: "underline" } }, `📎 ${incomingAlert.attachment.name || "Download File"}`)
-          ) : null,
-          h("div", { className: "actions", style: { justifyContent: "center" } },
-            h("button", { className: "btn", style: { minWidth: 140, background: "#f59e0b", color: "#000" }, onClick: handleDismissAlert }, "Dismiss / OK")
-          )
-        )
-      ) : null,
-
       upgradePrompt ? h(Modal, { onClose: () => setUpgradePrompt(null) },
         h("h3", null, `🔒 ${upgradePrompt.reqTier} Tier Required`),
         h("p", null, `Your account is currently on the ${userTier.toUpperCase()} tier. Accessing ${upgradePrompt.viewName} requires a ${upgradePrompt.reqTier} license. Contact the Owner to upgrade your account tier!`),
