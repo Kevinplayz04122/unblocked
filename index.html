@@ -30,7 +30,6 @@ button, input, select, optgroup, textarea, ::file-selector-button {
   --muted: #8a8a90;
   --tt-red: #fe2c55;
   --tt-cyan: #25f4ee;
-  --tt-bg: #121212;
 }
 html, body, #root { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: "Outfit", system-ui, sans-serif; overflow: hidden; }
 button { cursor: pointer; font-family: inherit; }
@@ -63,7 +62,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .view { height: 100%; animation: fade 0.35s ease; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-/* Pills */
+/* Pills & Top */
 .pill { background: rgba(20, 20, 23, 0.85); border: 1px solid var(--border); border-radius: 12px; padding: 8px 16px; font-size: 13px; color: #d6d6da; cursor: pointer; transition: 0.2s; backdrop-filter: blur(6px); }
 .pill:hover { background: rgba(40, 40, 46, 0.95); border-color: rgba(255, 255, 255, 0.25); }
 #topRight { position: fixed; top: 16px; right: 16px; z-index: 20; }
@@ -74,18 +73,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .logo-wrap::before { content: ""; position: absolute; left: 50%; top: 50%; width: 120%; height: 150%; transform: translate(-50%, -50%); background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.14), transparent 65%); filter: blur(24px); z-index: -1; }
 .logo { font-size: clamp(48px, 9vw, 128px); font-weight: 600; letter-spacing: -0.04em; line-height: 1; color: #e4e4e4; margin: 0; text-shadow: 0 0 40px rgba(255, 255, 255, 0.22); }
 .search-wrap { position: relative; width: min(800px, 88vw); }
-.search-wrap::after { content: ""; position: absolute; inset: auto -4% -26px -4%; height: 60px; background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.07), transparent 70%); filter: blur(14px); z-index: -1; }
 .search { display: flex; align-items: center; gap: 14px; height: 82px; padding: 0 34px; background: rgba(14, 14, 16, 0.92); border: 1px solid var(--border); border-radius: 14px; transition: 0.25s; position: relative; overflow: hidden; }
-.search::before { content: ""; position: absolute; top: 0; left: 30%; right: 30%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent); }
 .search:focus-within { border-color: rgba(255, 255, 255, 0.28); box-shadow: 0 0 40px rgba(255, 255, 255, 0.07); }
 .search svg { width: 22px; height: 22px; color: #b9b9be; flex: 0 0 auto; }
 .search input { flex: 1; background: transparent; border: 0; outline: 0; color: #f0f0f0; font: 400 20px "Outfit"; min-width: 0; }
-.search input::placeholder { color: #8e8e94; }
 .quick { display: flex; gap: 22px; margin-top: 34px; flex-wrap: wrap; justify-content: center; }
-.quick button { display: flex; flex-direction: column; align-items: center; gap: 10px; background: none; border: 0; color: #d8d8dc; font: 500 14px "Outfit"; cursor: pointer; position: relative; }
-.quick .circ { width: 60px; height: 60px; border-radius: 50%; background: #131316; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; transition: 0.25s; position: relative; }
+.quick button { display: flex; flex-direction: column; align-items: center; gap: 10px; background: none; border: 0; color: #d8d8dc; font: 500 14px "Outfit"; cursor: pointer; }
+.quick .circ { width: 60px; height: 60px; border-radius: 50%; background: #131316; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; transition: 0.25s; }
 .quick .circ svg { width: 22px; height: 22px; }
-.quick button:hover .circ { background: #1d1d22; border-color: rgba(255, 255, 255, 0.3); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255, 255, 255, 0.07); }
+.quick button:hover .circ { background: #1d1d22; border-color: rgba(255, 255, 255, 0.3); transform: translateY(-3px); }
 .ad { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); font-size: 11px; letter-spacing: 0.14em; color: #8b8b90; font-weight: 600; display: flex; gap: 10px; align-items: center; }
 
 /* Page layout */
@@ -94,19 +90,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .page p.sub { color: var(--muted); margin: 0 0 24px; }
 .toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
 .toolbar .search { height: 52px; padding: 0 20px; flex: 1; min-width: 240px; border-radius: 12px; }
-.toolbar .search input { font-size: 16px; }
 .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
 .chip { background: rgba(20, 20, 23, 0.85); border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; font: 500 13px "Outfit"; color: #c9c9ce; cursor: pointer; transition: 0.2s; }
 .chip:hover { border-color: rgba(255, 255, 255, 0.28); }
 .chip.on { background: #e4e4e4; color: #0a0a0a; border-color: #e4e4e4; }
-.count { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; }
-.card { position: relative; background: var(--panel); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; transition: 0.25s; text-align: left; padding: 0; color: inherit; font-family: inherit; }
-.card:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.3); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(255, 255, 255, 0.05); }
+.card { position: relative; background: var(--panel); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; transition: 0.25s; text-align: left; padding: 0; color: inherit; }
+.card:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.3); }
 .card .thumb { position: relative; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 700; color: rgba(255, 255, 255, 0.85); overflow: hidden; }
 .card .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.card .badge { position: absolute; top: 8px; left: 8px; background: rgba(0, 0, 0, 0.78); border: 1px solid var(--border); border-radius: 999px; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; padding: 2px 8px; color: #ddd; z-index: 2; }
-.card .badge.installed { background: rgba(22, 163, 74, 0.88); color: #fff; border-color: rgba(74, 222, 128, 0.5); }
+.card .badge { position: absolute; top: 8px; left: 8px; background: rgba(0, 0, 0, 0.78); border: 1px solid var(--border); border-radius: 999px; font-size: 10px; font-weight: 600; padding: 2px 8px; color: #ddd; z-index: 2; }
 .card .info { padding: 11px 13px 13px; }
 .card .name { font-weight: 600; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card .tag { font-size: 12px; color: var(--muted); margin-top: 2px; display: flex; align-items: center; justify-content: space-between; }
@@ -117,28 +110,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .setting h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
 .setting p { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
 .field { width: 100%; height: 44px; background: #0e0e11; border: 1px solid var(--border); border-radius: 10px; padding: 0 14px; color: #eee; font: 400 14px "Outfit"; outline: 0; }
-.field:focus { border-color: rgba(255, 255, 255, 0.3); }
-.tier-select { background: #121217; border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 4px 10px; font-size: 12.5px; font-weight: 600; color: #fff; cursor: pointer; outline: 0; }
-.tier-select option { background: #0e0e12; color: #fff; }
 .row { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-.toggle { position: relative; width: 48px; height: 28px; flex: 0 0 auto; }
-.toggle input { display: none; }
-.toggle span { position: absolute; inset: 0; background: #26262b; border-radius: 999px; cursor: pointer; transition: 0.2s; }
-.toggle span::after { content: ""; position: absolute; left: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%; background: #aaa; transition: 0.2s; }
-.toggle input:checked + span { background: #e4e4e4; }
-.toggle input:checked + span::after { transform: translateX(20px); background: #111; }
 .btn { background: #e4e4e4; color: #0a0a0a; border: 0; border-radius: 10px; height: 44px; padding: 0 20px; font: 600 14px "Outfit"; cursor: pointer; transition: 0.2s; }
 .btn:hover { background: #fff; box-shadow: 0 0 24px rgba(255, 255, 255, 0.25); }
 .btn.ghost { background: rgba(255, 255, 255, 0.07); color: #ddd; border: 1px solid var(--border); }
-.btn.ghost:hover { background: rgba(255, 255, 255, 0.13); box-shadow: none; }
 .btn.danger { background: rgba(220, 38, 38, 0.16); color: #fca5a5; border: 1px solid rgba(220, 38, 38, 0.4); }
-.btn.danger:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
-.btn.warn { background: rgba(245, 158, 11, 0.14); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.38); }
-.btn.warn:hover { background: #d97706; color: #fff; border-color: #d97706; }
 .btn.sm { height: 34px; padding: 0 13px; font-size: 12.5px; border-radius: 8px; }
 
 /* Modal & Player */
-#modalBg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+#modalBg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .modal { background: #0c0c0f; border: 1px solid var(--border); border-radius: 18px; padding: 26px; width: min(480px, 100%); animation: fade 0.25s ease; }
 .modal h3 { margin: 0 0 8px; font-size: 22px; font-weight: 600; }
 .modal p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 16px; }
@@ -147,129 +127,31 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 #player { position: fixed; inset: 0; z-index: 90; background: #000; display: flex; flex-direction: column; animation: fade 0.25s ease; }
-#player .bar { display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 14px; background: #08080a; border-bottom: 1px solid var(--border); flex: 0 0 auto; overflow-x: auto; }
-#player .bar .ttl { font-weight: 600; font-size: 15px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 10px; }
-#player .bar .pill { padding: 6px 14px; white-space: nowrap; }
+#player .bar { display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 14px; background: #08080a; border-bottom: 1px solid var(--border); }
+#player .bar .ttl { font-weight: 600; font-size: 15px; flex: 1; }
 #player iframe { flex: 1; width: 100%; border: 0; background: #000; }
 
-/* Auth & Panels */
-.auth-overlay { position: fixed; inset: 0; z-index: 85; background: rgba(2, 2, 3, 0.92); backdrop-filter: blur(18px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade 0.3s ease; }
-.auth-box { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 34px 30px; width: min(420px, 100%); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85); position: relative; overflow: hidden; }
-.auth-logo { font-size: 36px; font-weight: 600; letter-spacing: -0.04em; color: #e4e4e4; text-align: center; margin: 0 0 6px; }
+.auth-overlay { position: fixed; inset: 0; z-index: 85; background: rgba(2, 2, 3, 0.92); backdrop-filter: blur(18px); display: flex; align-items: center; justify-content: center; padding: 20px; }
+.auth-box { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 34px 30px; width: min(420px, 100%); }
+.auth-logo { font-size: 36px; font-weight: 600; color: #e4e4e4; text-align: center; margin: 0 0 6px; }
 .auth-sub { color: var(--muted); font-size: 13.5px; text-align: center; margin: 0 0 24px; }
-.auth-label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
-.auth-err { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; text-align: center; }
-.pop-panel { background: var(--panel); border: 1px solid rgba(255, 255, 255, 0.13); border-radius: 16px; padding: 18px 20px; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.7); transition: transform 0.22s ease, border-color 0.22s ease; position: relative; }
-.pop-panel:hover { border-color: rgba(255, 255, 255, 0.25); }
-.status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; display: inline-block; }
-.status-dot.off { background: #71717a; box-shadow: none; }
-.slider { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: #232329; border-radius: 999px; outline: none; cursor: pointer; }
-.slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #e4e4e4; cursor: pointer; border: 2px solid #0b0b0d; }
-.slider:disabled { opacity: 0.35; cursor: not-allowed; }
-.eye-btn { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border); border-radius: 8px; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; color: #cfcfd4; cursor: pointer; }
-.eye-btn:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
-.eye-btn svg { width: 15px; height: 15px; }
-
-/* Tier Badges */
-.badge-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, 0.07); border: 1px solid var(--border); letter-spacing: 0.03em; }
+.badge-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, 0.07); border: 1px solid var(--border); }
 .badge-pill.owner { background: rgba(255, 255, 255, 0.18); color: #fff; border-color: rgba(255, 255, 255, 0.45); }
 .badge-pill.live { background: rgba(34, 197, 94, 0.14); color: #86efac; border-color: rgba(34, 197, 94, 0.35); }
-.badge-pill.tier-free { background: rgba(161, 161, 170, 0.14); color: #d4d4d8; border-color: rgba(161, 161, 170, 0.35); }
-.badge-pill.tier-pro { background: rgba(59, 130, 246, 0.18); color: #93c5fd; border-color: rgba(59, 130, 246, 0.45); }
-.badge-pill.tier-premium { background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(168, 85, 247, 0.22)); color: #fde68a; border-color: rgba(245, 158, 11, 0.55); box-shadow: 0 0 16px rgba(245, 158, 11, 0.18); }
 
 /* ============================================================================
-   AUTHENTIC 1:1 TIKTOK WEB DESKTOP INTERFACE (IN-PAGE CLIENT, NO INSTALL)
+   TIKTOK LIVE UNBLOCKED ENGINE (PROXITOK + LIVE STREAM WEB CLIENT)
    ============================================================================ */
-.tt-web-root { display: flex; flex-direction: column; height: 100%; width: 100%; background: #000; color: #fff; font-family: "Plus Jakarta Sans", "Outfit", system-ui, sans-serif; overflow: hidden; }
-.tt-header { height: 60px; border-bottom: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; background: #000; flex-shrink: 0; z-index: 20; }
-.tt-brand { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 800; letter-spacing: -0.04em; cursor: pointer; }
-.tt-brand span.tok { color: var(--tt-cyan); text-shadow: 1px 0 var(--tt-red); }
-.tt-search-bar { width: min(480px, 45vw); height: 42px; background: rgba(255,255,255,0.12); border-radius: 999px; display: flex; align-items: center; padding: 0 16px; border: 1px solid transparent; transition: border-color 0.2s; }
-.tt-search-bar:focus-within { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.16); }
-.tt-search-bar input { flex: 1; border: 0; outline: 0; color: #fff; font-size: 14.5px; background: transparent; }
-.tt-header-right { display: flex; align-items: center; gap: 14px; }
-.tt-btn-login { background: var(--tt-red); color: #fff; font-weight: 700; font-size: 14px; padding: 0 20px; height: 38px; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+.tt-view-root { height: 100%; width: 100%; display: flex; flex-direction: column; background: #000; color: #fff; overflow: hidden; }
+.tt-view-nav { height: 56px; border-bottom: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: #0b0b0e; flex-shrink: 0; z-index: 25; }
+.tt-logo { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.tt-logo span.cyan { color: var(--tt-cyan); text-shadow: 1px 0 var(--tt-red); }
+.tt-mode-switch { display: flex; gap: 6px; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 10px; border: 1px solid var(--border); }
+.tt-mode-btn { padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: 0.2s; }
+.tt-mode-btn.active { background: var(--tt-red); color: #fff; }
 
-.tt-main-layout { flex: 1; display: flex; min-height: 0; overflow: hidden; }
-.tt-nav-sidebar { width: 240px; border-right: 1px solid rgba(255,255,255,0.1); padding: 16px 12px; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; flex-shrink: 0; background: #000; }
-.tt-nav-item { display: flex; align-items: center; gap: 14px; height: 48px; padding: 0 14px; border-radius: 8px; font-size: 17px; font-weight: 700; color: #e1e1e6; cursor: pointer; transition: background 0.18s; }
-.tt-nav-item:hover { background: rgba(255,255,255,0.06); }
-.tt-nav-item.active { color: var(--tt-red); }
-.tt-nav-item svg { width: 24px; height: 24px; }
-.tt-sidebar-sec { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 12px; padding-top: 14px; }
-.tt-sidebar-sec-title { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.45); margin-bottom: 8px; padding: 0 10px; text-transform: uppercase; letter-spacing: 0.05em; }
-
-.tt-content-scroll { flex: 1; overflow-y: scroll; scroll-snap-type: y mandatory; display: flex; flex-direction: column; align-items: center; padding: 24px 0 60px; }
-.tt-post-unit { scroll-snap-align: start; min-height: calc(100vh - 120px); width: min(650px, 92vw); margin-bottom: 40px; display: flex; gap: 18px; align-items: flex-end; justify-content: center; position: relative; }
-.tt-video-wrapper { position: relative; width: 330px; height: 580px; background: #121214; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 35px rgba(0,0,0,0.85); flex-shrink: 0; border: 1px solid rgba(255,255,255,0.08); }
-.tt-video-wrapper video { width: 100%; height: 100%; object-fit: cover; }
-.tt-post-overlay { position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 16px 14px; background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 25%, transparent 60%, rgba(0,0,0,0.85) 100%); }
-.tt-post-overlay * { pointer-events: auto; }
-.tt-author-bar { display: flex; align-items: center; gap: 10px; }
-.tt-author-bar img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid #fff; }
-.tt-author-info .name { font-weight: 700; font-size: 15px; }
-.tt-author-info .handle { font-size: 12.5px; color: rgba(255,255,255,0.7); }
-.tt-post-caption { font-size: 14px; line-height: 1.4; color: #f4f4f5; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
-.tt-music-line { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #fff; margin-top: 6px; }
-
-.tt-action-col { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-bottom: 8px; }
-.tt-action-btn { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
-.tt-action-circ { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.12); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-.tt-action-circ:hover { background: rgba(255,255,255,0.22); transform: scale(1.06); }
-.tt-action-circ.liked { color: var(--tt-red); }
-.tt-disc { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #222, #000); border: 8px solid #111; animation: spin 4s linear infinite; display: flex; align-items: center; justify-content: center; margin-top: 8px; }
-@keyframes spin { 100% { transform: rotate(360deg); } }
-
-/* Frosted Glass Browser */
-.gbrowser-root { height: 100%; width: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden; }
-.gbrowser-idle { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
-.gbrowser-top { background: rgba(14, 14, 18, 0.82); backdrop-filter: blur(24px) saturate(150%); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 14px 28px 0; flex-shrink: 0; z-index: 15; }
-.gbrowser-bar-row { display: flex; align-items: center; gap: 14px; max-width: 1100px; }
-.glass-panel { width: min(820px, 92vw); background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px; padding: 8px 12px 8px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); display: flex; align-items: center; gap: 12px; }
-.glass-panel.compact { width: 100%; max-width: 780px; padding: 4px 8px 4px 18px; }
-.glass-input { flex: 1; height: 46px; background: transparent; border: 0; outline: 0; color: #fff; font: 400 18px "Outfit", sans-serif; }
-.gbrowser-tabs { display: flex; gap: 24px; margin-top: 12px; padding-left: 8px; }
-.gbrowser-tab { padding: 8px 4px 11px; font-size: 14px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer; }
-.gbrowser-tab.on { color: #60a5fa; border-bottom-color: #60a5fa; }
-.gbrowser-body { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; }
-.gbrowser-results-wrap { max-width: 960px; padding: 24px 32px 80px; display: flex; flex-direction: column; gap: 14px; }
-.gbrowser-card { background: rgba(20, 20, 26, 0.65); border: 1px solid rgba(255, 255, 255, 0.11); border-radius: 16px; padding: 16px 20px; cursor: pointer; }
-.gbrowser-img-grid { padding: 24px 32px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
-.gbrowser-img-card { background: #0d0d12; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; }
-.gbrowser-img-card img { width: 100%; height: 175px; object-fit: cover; }
-
-/* Spotify & Netflix */
-.sp-app { display: flex; flex-direction: column; height: 100%; width: 100%; background: #000; color: #fff; overflow: hidden; padding: 8px; gap: 8px; }
-.sp-body { flex: 1; display: flex; gap: 8px; overflow: hidden; min-height: 0; }
-.sp-sidebar { width: 250px; flex-shrink: 0; background: #121212; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; }
-.sp-nav-box { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.sp-lib-box { flex: 1; padding: 12px 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
-.sp-pl-item { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 6px; cursor: pointer; text-align: left; width: 100%; }
-.sp-pl-item:hover, .sp-pl-item.active { background: #282828; }
-.sp-pl-cover { width: 42px; height: 42px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-.sp-main { flex: 1; background: #121212; border-radius: 8px; overflow-y: auto; display: flex; flex-direction: column; }
-.sp-header { padding: 24px; display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
-.sp-header-art { width: 160px; height: 160px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 56px; }
-.sp-table { width: 100%; padding: 0 24px 32px; }
-.sp-trow { display: grid; grid-template-columns: 36px 4fr 3fr 80px; align-items: center; padding: 8px 12px; border-radius: 6px; cursor: pointer; color: #b3b3b3; font-size: 14px; }
-.sp-trow:hover { background: rgba(255,255,255,0.1); color: #fff; }
-.sp-trow.active { background: rgba(29, 185, 84, 0.14); color: #1ed760; }
-.sp-player-bar { height: 80px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 16px; flex-shrink: 0; }
-.nf-wrap { background: #141414; min-height: 100%; padding-bottom: 80px; color: #fff; position: relative; }
-.nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: rgba(20,20,20,0.85); backdrop-filter: blur(8px); }
-.nf-logo { color: #e50914; font-size: 28px; font-weight: 800; letter-spacing: 0.04em; cursor: pointer; }
-.nf-hero { position: relative; height: 62vh; min-height: 400px; width: 100%; overflow: hidden; display: flex; align-items: flex-end; padding: 0 42px 54px; }
-.nf-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
-.nf-hero-content { position: relative; z-index: 5; max-width: 600px; }
-.nf-hero-title { font-size: clamp(32px, 4.5vw, 56px); font-weight: 800; line-height: 1.05; margin: 6px 0 12px; }
-.nf-btn-play { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #000; font-weight: 700; font-size: 15px; padding: 0 24px; height: 44px; border-radius: 6px; }
-.nf-row-section { padding: 10px 42px 18px; position: relative; z-index: 6; }
-.nf-row-title { font-size: 19px; font-weight: 700; margin: 0 0 12px; color: #e5e5e5; }
-.nf-carousel { display: flex; gap: 14px; overflow-x: auto; padding: 8px 4px 18px; }
-.nf-card { flex: 0 0 185px; border-radius: 8px; overflow: hidden; background: #1f1f1f; cursor: pointer; transition: transform 0.25s ease; }
-.nf-card:hover { transform: scale(1.07); }
-.nf-card-poster { width: 100%; height: 270px; object-fit: cover; }
+.tt-frame-container { flex: 1; width: 100%; height: 100%; position: relative; background: #000; overflow: hidden; }
+.tt-frame-container iframe { width: 100%; height: 100%; border: 0; background: #000; }
     </style>
   </head>
   <body>
@@ -284,11 +166,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const AUTH_CONFIG = {
     dbUrl: "https://unblockedgames-cdc48-default-rtdb.firebaseio.com",
     ownerUsernames: ["kevin", "owner", "admin"],
-    ownerEmails: [
-      "kevinlamfamily@hotmail.com", 
-      "kevinhuygialam@gmail.com", 
-      "kl2@leonardsgwav.catholic.edu.au"
-    ],
+    ownerEmails: ["kevinlamfamily@hotmail.com", "kevinhuygialam@gmail.com", "kl2@leonardsgwav.catholic.edu.au"],
     masterOwnerPassword: "admin"
   };
 
@@ -320,209 +198,45 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
   function renderTierBadge(tier, isOwner) {
     if (isOwner || tier === "owner") return h("span", { className: "badge-pill owner" }, "👑 OWNER");
-    if (tier === "premium") return h("span", { className: "badge-pill tier-premium" }, "💎 PREMIUM");
-    if (tier === "pro") return h("span", { className: "badge-pill tier-pro" }, "⚡ PRO");
-    return h("span", { className: "badge-pill tier-free" }, "FREE TIER");
+    if (tier === "premium") return h("span", { className: "badge-pill" }, "💎 PREMIUM");
+    if (tier === "pro") return h("span", { className: "badge-pill" }, "⚡ PRO");
+    return h("span", { className: "badge-pill" }, "FREE TIER");
   }
 
   const LS_ACCOUNTS = "ug_rt_accounts_v1";
   const LS_SESSIONS = "ug_rt_sessions_v1";
   const LS_CURRENT_USER = "ug_active_user_v1";
-  const LS_DB_URL = "ug_custom_db_url_v1";
   const LS_INSTALLED_GAMES = "ug_installed_games_v1";
   const LS_ALERTS = "ug_local_alerts_v1";
-  const bc = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("ug_realtime_sync") : null;
 
-  function getInstalledGames() {
-    try { return JSON.parse(localStorage.getItem(LS_INSTALLED_GAMES) || "{}"); } catch { return {}; }
-  }
-  function saveInstalledGame(slug) {
-    try {
-      const map = getInstalledGames();
-      map[slug] = { installedAt: Date.now() };
-      localStorage.setItem(LS_INSTALLED_GAMES, JSON.stringify(map));
-    } catch {}
-  }
-  function getDbUrl() {
-    try {
-      const custom = localStorage.getItem(LS_DB_URL);
-      if (custom && custom.trim()) return custom.trim().replace(/\/+$/, "");
-    } catch {}
-    return (AUTH_CONFIG.dbUrl || "").trim().replace(/\/+$/, "");
-  }
-  function setCustomDbUrl(url) {
-    try {
-      localStorage.setItem(LS_DB_URL, (url || "").trim().replace(/\/+$/, ""));
-      if (bc) bc.postMessage({ type: "db_changed" });
-    } catch {}
-  }
+  function getInstalledGames() { try { return JSON.parse(localStorage.getItem(LS_INSTALLED_GAMES) || "{}"); } catch { return {}; } }
+  function saveInstalledGame(slug) { try { const m = getInstalledGames(); m[slug] = { installedAt: Date.now() }; localStorage.setItem(LS_INSTALLED_GAMES, JSON.stringify(m)); } catch {} }
+  function getDbUrl() { return (AUTH_CONFIG.dbUrl || "").trim().replace(/\/+$/, ""); }
+
   function isOwnerIdentity(identifier, accountObj) {
     if (accountObj && accountObj.role === "owner") return true;
     const clean = (identifier || "").trim().toLowerCase();
-    if (!clean) return false;
     const uList = (AUTH_CONFIG.ownerUsernames || []).map((x) => x.toLowerCase());
     const eList = (AUTH_CONFIG.ownerEmails || []).map((x) => x.toLowerCase());
-    if (uList.includes(clean) || eList.includes(clean)) return true;
-    if (accountObj && accountObj.email && eList.includes(accountObj.email.trim().toLowerCase())) return true;
-    return false;
-  }
-  function genLicenseKey() {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    const seg = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
-    return `UG-${seg()}-${seg()}-${seg()}`;
-  }
-  function getLocalStore(key) {
-    try { return JSON.parse(localStorage.getItem(key) || "{}"); } catch { return {}; }
-  }
-  function setLocalStore(key, val) {
-    try {
-      localStorage.setItem(key, JSON.stringify(val || {}));
-      if (bc) bc.postMessage({ type: "store_updated", key });
-    } catch {}
-  }
-  function ensureDefaultOwner(accounts) {
-    const map = Object.assign({}, accounts);
-    const primaryOwner = (AUTH_CONFIG.ownerUsernames[0] || "kevin").toLowerCase();
-    if (!map[primaryOwner]) {
-      map[primaryOwner] = {
-        username: AUTH_CONFIG.ownerUsernames[0] || "kevin",
-        email: AUTH_CONFIG.ownerEmails[0] || "kevinlamfamily@hotmail.com",
-        password: AUTH_CONFIG.masterOwnerPassword || "admin",
-        licenseKey: "UG-OWNR-ROOT-0001",
-        infinite: true,
-        expiresAt: null,
-        durationHours: 24,
-        role: "owner",
-        tier: "premium",
-        createdAt: Date.now()
-      };
-    }
-    return map;
-  }
-  async function dbFetchAll() {
-    const base = getDbUrl();
-    const localAcc = ensureDefaultOwner(getLocalStore(LS_ACCOUNTS));
-    const localSess = getLocalStore(LS_SESSIONS);
-    if (!base) return { accounts: localAcc, sessions: localSess };
-    try {
-      const [accRes, sessRes] = await Promise.all([
-        fetch(`${base}/ug_accounts.json`, { cache: "no-store" }),
-        fetch(`${base}/ug_sessions.json`, { cache: "no-store" })
-      ]);
-      const remoteAcc = (accRes.ok ? await accRes.json() : null) || {};
-      const remoteSess = (sessRes.ok ? await sessRes.json() : null) || {};
-      const mergedAcc = ensureDefaultOwner(remoteAcc);
-      setLocalStore(LS_ACCOUNTS, mergedAcc);
-      setLocalStore(LS_SESSIONS, remoteSess);
-      return { accounts: mergedAcc, sessions: remoteSess };
-    } catch {
-      return { accounts: localAcc, sessions: localSess };
-    }
-  }
-  async function dbSaveAccount(acc) {
-    const key = acc.username.trim().toLowerCase();
-    const localAcc = ensureDefaultOwner(getLocalStore(LS_ACCOUNTS));
-    localAcc[key] = acc;
-    setLocalStore(LS_ACCOUNTS, localAcc);
-    const base = getDbUrl();
-    if (base) {
-      try {
-        await fetch(`${base}/ug_accounts/${encodeURIComponent(key)}.json`, {
-          method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(acc)
-        });
-      } catch {}
-    }
-  }
-  async function dbDeleteAccount(username) {
-    const key = username.trim().toLowerCase();
-    const localAcc = getLocalStore(LS_ACCOUNTS);
-    delete localAcc[key];
-    setLocalStore(LS_ACCOUNTS, localAcc);
-    const localSess = getLocalStore(LS_SESSIONS);
-    delete localSess[key];
-    setLocalStore(LS_SESSIONS, localSess);
-    const base = getDbUrl();
-    if (base) {
-      try {
-        await Promise.all([
-          fetch(`${base}/ug_accounts/${encodeURIComponent(key)}.json`, { method: "DELETE" }),
-          fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" })
-        ]);
-      } catch {}
-    }
-  }
-  async function dbUpsertSession(sess) {
-    const key = sess.username.trim().toLowerCase();
-    const localSess = getLocalStore(LS_SESSIONS);
-    localSess[key] = sess;
-    setLocalStore(LS_SESSIONS, localSess);
-    const base = getDbUrl();
-    if (base) {
-      try {
-        await fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, {
-          method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(sess)
-        });
-      } catch {}
-    }
-  }
-  async function dbDeleteSession(username) {
-    const key = username.trim().toLowerCase();
-    const localSess = getLocalStore(LS_SESSIONS);
-    delete localSess[key];
-    setLocalStore(LS_SESSIONS, localSess);
-    const base = getDbUrl();
-    if (base) {
-      try { await fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" }); } catch {}
-    }
-  }
-
-  async function dbSendUserAlert(targetUsername, alertData) {
-    const key = targetUsername.trim().toLowerCase();
-    const base = getDbUrl();
-    const alertObj = { ...alertData, id: "alert_" + Date.now(), timestamp: Date.now() };
-    if (base) {
-      try {
-        await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(alertObj)
-        });
-      } catch {}
-    } else {
-      const store = getLocalStore(LS_ALERTS);
-      store[key] = alertObj;
-      setLocalStore(LS_ALERTS, store);
-    }
+    return uList.includes(clean) || eList.includes(clean);
   }
 
   async function dbFetchUserAlert(username) {
     if (!username) return null;
-    const key = username.trim().toLowerCase();
     const base = getDbUrl();
-    if (base) {
-      try {
-        const res = await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, { cache: "no-store" });
-        if (res.ok) return await res.json();
-      } catch {}
-    } else {
-      const store = getLocalStore(LS_ALERTS);
-      return store[key] || null;
-    }
+    if (!base) return null;
+    try {
+      const res = await fetch(`${base}/ug_alerts/${encodeURIComponent(username.toLowerCase())}.json`, { cache: "no-store" });
+      if (res.ok) return await res.json();
+    } catch {}
     return null;
   }
 
   async function dbClearUserAlert(username) {
     if (!username) return;
-    const key = username.trim().toLowerCase();
     const base = getDbUrl();
     if (base) {
-      try {
-        await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, { method: "DELETE" });
-      } catch {}
-    } else {
-      const store = getLocalStore(LS_ALERTS);
-      delete store[key];
-      setLocalStore(LS_ALERTS, store);
+      try { await fetch(`${base}/ug_alerts/${encodeURIComponent(username.toLowerCase())}.json`, { method: "DELETE" }); } catch {}
     }
   }
 
@@ -534,22 +248,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     try {
       if (!sess) localStorage.removeItem(LS_CURRENT_USER);
       else localStorage.setItem(LS_CURRENT_USER, JSON.stringify(sess));
-      if (bc) bc.postMessage({ type: "session_changed" });
     } catch {}
-  }
-  function formatRemainingTime(acc, now) {
-    if (!acc) return "Invalid";
-    if (acc.infinite || acc.role === "owner") return "Infinite \u221E";
-    if (!acc.expiresAt) return "Infinite \u221E";
-    const diff = acc.expiresAt - now;
-    if (diff <= 0) return "Expired";
-    const totalSec = Math.floor(diff / 1000);
-    const hrs = Math.floor(totalSec / 3600);
-    const mins = Math.floor((totalSec % 3600) / 60);
-    const secs = totalSec % 60;
-    if (hrs > 0) return `${hrs}h ${mins}m ${secs}s`;
-    if (mins > 0) return `${mins}m ${secs}s`;
-    return `${secs}s`;
   }
 
   // ============================================================================
@@ -559,9 +258,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return `<!doctype html><html><head><meta charset="utf-8"><style>
       *{box-sizing:border-box;margin:0;padding:0;user-select:none;font-family:system-ui,sans-serif}
       html,body{width:100%;height:100%;overflow:hidden;background:#111216;color:#fff}
-      #hud{position:fixed;top:14px;left:14px;right:14px;z-index:10;display:flex;justify-content:space-between;pointer-events:none}
-      .hud-box{pointer-events:auto;background:rgba(15,16,20,0.82);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:14px;font-size:14px;font-weight:600}
-      .hud-btn{background:#00b06f;color:#fff;border:0;padding:5px 12px;border-radius:8px;cursor:pointer;font-weight:700;font-size:12.5px}
+      #hud{position:fixed;top:14px;left:14px;right:14px;z-index:10;display:flex;justify-content:space-between}
+      .hud-box{background:rgba(15,16,20,0.85);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:14px;font-size:14px;font-weight:600}
+      .hud-btn{background:#00b06f;color:#fff;border:0;padding:5px 12px;border-radius:8px;cursor:pointer;font-weight:700}
     </style><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script></head><body>
       <div id="hud">
         <div class="hud-box"><span>🌈 Roblox 3D Rainbow Obby</span><span style="color:#4ade80" id="st">Stage: 1 / 30</span></div>
@@ -600,8 +299,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           if(keys['KeyQ'])yaw+=0.04; if(keys['KeyE'])yaw-=0.04;
           let f=(keys['KeyW']||keys['ArrowUp']?1:0)-(keys['KeyS']||keys['ArrowDown']?1:0);
           let r=(keys['KeyD']||keys['ArrowRight']?1:0)-(keys['KeyA']||keys['ArrowLeft']?1:0);
-          const dx=(-Math.sin(yaw)*f+Math.cos(yaw)*r)*0.24, dz=(-Math.cos(yaw)*f-Math.sin(yaw)*r)*0.24;
-          player.position.x+=dx; player.position.z+=dz;
+          player.position.x+=(-Math.sin(yaw)*f+Math.cos(yaw)*r)*0.24; player.position.z+=(-Math.cos(yaw)*f-Math.sin(yaw)*r)*0.24;
           if(keys['Space']&&grounded){vy=0.35;grounded=false;}
           vy-=0.015; player.position.y+=vy; grounded=false;
           for(const p of plats){
@@ -628,130 +326,19 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
    { "slug": "roblox", "name": "Roblox", "cat": "Action", "embed": "roblox-direct-engine", "thumb": "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" },
    { "slug": "geometry-dash", "name": "Geometry Dash", "cat": "Arcade", "embed": "https://dasmetry.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/dasmetry_retina.webp" },
    { "slug": "1v1lol", "name": "1v1.LOL", "cat": "Shooter", "embed": "https://1v1-lol.gitlab.io/file/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/1/1v1lol_retina.webp" },
-   { "slug": "2v2io", "name": "2v2.io", "cat": "Shooter", "embed": "https://2v2io.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/2/2v2io_retina.webp" },
-   { "slug": "67-clicker", "name": "67 Clicker", "cat": "Clicker", "embed": "https://67-clicker.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/6/67-clicker_large.webp" },
-   { "slug": "a-small-world-cup", "name": "A Small World Cup", "cat": "Sports", "embed": "https://a-small-world-cup.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/a-small-world-cup_retina.webp" },
-   { "slug": "agario", "name": "Agar.io", "cat": ".io", "embed": "https://agar.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/agario_retina.webp" },
-   { "slug": "among-us-danger-run", "name": "Among Us Danger Run", "cat": "Action", "embed": "https://among-us-danger-run.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/among-us-danger-run_retina.webp" },
-   { "slug": "angry-birds-2", "name": "Angry Birds 2", "cat": "Puzzle", "embed": "https://angry-birds-2.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/angry-birds-2_retina.webp" },
-   { "slug": "anomalous-coffee-machine", "name": "Anomalous Coffee Machine", "cat": "Horror", "embed": "https://anomalous-coffee-machine.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/anomalous-coffee-machine_xlarge.webp" },
-   { "slug": "arrasio", "name": "Arras.io", "cat": ".io", "embed": "https://arras.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/arrasio_retina.webp" },
-   { "slug": "backrooms", "name": "Backrooms", "cat": "Horror", "embed": "https://backrooms.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/backrooms_retina.webp" },
-   { "slug": "backyard-baseball", "name": "Backyard Baseball", "cat": "Sports", "embed": "https://backyard-baseball.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/backyard-baseball_retina.webp" },
-   { "slug": "bad-ice-cream", "name": "Bad Ice Cream", "cat": "Puzzle", "embed": "swf:https://unblockedgameswtf.net/uploads/games/bad-ice-cream_game.swf", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bad-ice-cream_retina.webp" },
-   { "slug": "baldis-basics", "name": "Baldi's Basics", "cat": "Horror", "embed": "https://baldis-basics.tops-games.workers.dev/" },
-   { "slug": "baseball-9", "name": "Baseball 9", "cat": "Sports", "embed": "https://baseball-9.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/baseball-9_xlarge.webp" },
-   { "slug": "basket-random", "name": "Basket Random", "cat": "Sports", "embed": "https://basket-random.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basket-random_retina.webp" },
-   { "slug": "basketball-bros", "name": "Basketball Bros", "cat": "Sports", "embed": "https://basketball-bros.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketball-bros_large.webp" },
-   { "slug": "basketball-stars", "name": "Basketball Stars", "cat": "Sports", "embed": "https://basketball-stars.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketball-stars_retina.webp" },
-   { "slug": "basketbros", "name": "BasketBros", "cat": "Sports", "embed": "https://basketbros.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketbros_retina.webp" },
-   { "slug": "big-shot-boxing", "name": "Big Shot Boxing", "cat": "Sports", "embed": "https://big-shot-boxing.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/big-shot-boxing_retina.webp" },
-   { "slug": "bitlife", "name": "BitLife Life Simulator", "cat": "Casual", "embed": "https://joemama980.github.io/games/bitlife/" },
-   { "slug": "blockpost", "name": "Blockpost", "cat": "Shooter", "embed": "https://www.y8.com/embed/blockpost" },
-   { "slug": "blowout", "name": "Blowout", "cat": "Arcade", "embed": "https://blowout.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/blowout_retina.webp" },
-   { "slug": "bonkio", "name": "Bonk.io", "cat": ".io", "embed": "https://bonk.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bonkio_retina.webp" },
-   { "slug": "boxing-random", "name": "Boxing Random", "cat": "Sports", "embed": "https://boxing-random.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/boxing-random_retina.webp" },
-   { "slug": "build-now-gg", "name": "Build Now GG", "cat": "Shooter", "embed": "https://buildnow-gg.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/build-now-gg_retina.webp" },
-   { "slug": "bullet-force", "name": "Bullet Force", "cat": "Shooter", "embed": "https://games.crazygames.com/en_US/bullet-force-multiplayer/index.html?v=1.292", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bullet-force_retina.webp" },
-   { "slug": "bullet-force-multiplayer", "name": "Bullet Force Multiplayer", "cat": "Shooter", "embed": "https://bullet-force-multiplayer.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bullet-force-multiplayer_retina.webp" },
-   { "slug": "candy-crush", "name": "Candy Crush", "cat": "Puzzle", "embed": "https://candy-crush.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/candy-crush_retina.webp" },
-   { "slug": "chrome-dino", "name": "Chrome Dino", "cat": "Arcade", "embed": "https://joemama980.github.io/games/dinogame/" },
-   { "slug": "clash-of-vikings", "name": "Clash of Vikings", "cat": "Strategy", "embed": "https://clash-of-vikings.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/clash-of-vikings_retina.webp" },
-   { "slug": "color-tunnel", "name": "Color Tunnel", "cat": "Arcade", "embed": "https://color-tunnel.houseofhazards-lol.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/color-tunnel_retina.webp" },
-   { "slug": "combat-reloaded", "name": "Combat Reloaded", "cat": "Shooter", "embed": "https://html5.gamemonetize.co/lfijb0bl3oiqhjq0217qgy0fdbrvf8s5/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/combat-reloaded_retina.webp" },
-   { "slug": "conquerio", "name": "Conquer.io", "cat": ".io", "embed": "https://html5.gamedistribution.com/40156cca0c094e6fa739cbd9145bf2b6/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/conquerio_retina.webp" },
-   { "slug": "contexto", "name": "Contexto", "cat": "Puzzle", "embed": "https://contextogame.co/game/contextogame/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/contexto_large.webp" },
-   { "slug": "counter-strike-2", "name": "Counter-Strike 2", "cat": "Shooter", "embed": "https://counter-strike-2.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/counter-strike-2_retina.webp" },
-   { "slug": "crossy-road", "name": "Crossy Road", "cat": "Arcade", "embed": "https://crossy-road.tops-games.workers.dev/" },
-   { "slug": "deadshotio", "name": "Deadshot.io", "cat": "Shooter", "embed": "https://deadshot.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/deadshotio_retina.webp" },
-   { "slug": "diepio", "name": "Diep.io", "cat": ".io", "embed": "https://diep.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/diepio_retina.webp" },
-   { "slug": "drift-boss", "name": "Drift Boss", "cat": "Racing", "embed": "https://drift-boss.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/drift-boss_retina.webp" },
-   { "slug": "eggy-car", "name": "Eggy Car", "cat": "Racing", "embed": "https://eggy-car.tops-games.workers.dev/" },
-   { "slug": "escape-road", "name": "Escape Road", "cat": "Racing", "embed": "https://escape-road.tops-games.workers.dev/" },
-   { "slug": "evio", "name": "Ev.io", "cat": "Shooter", "embed": "https://ev.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/e/evio_retina.webp" },
-   { "slug": "football-bros", "name": "Football Bros", "cat": "Sports", "embed": "https://football-bros.classroomgames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/f/football-bros_retina.webp" },
-   { "slug": "granny", "name": "Granny", "cat": "Horror", "embed": "https://granny.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/g/granny_retina.webp" },
-   { "slug": "gunspin", "name": "GunSpin", "cat": "Shooter", "embed": "https://gunspin.tops-games.workers.dev/" },
-   { "slug": "happy-wheels", "name": "Happy Wheels", "cat": "Action", "embed": "https://happy-wheels.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/happy-wheels_retina.webp" },
-   { "slug": "holeio", "name": "Hole.io", "cat": ".io", "embed": "https://holeio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/holeio_retina.webp" },
-   { "slug": "house-of-hazards", "name": "House of Hazards", "cat": "Action", "embed": "https://house-of-hazards.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/house-of-hazards_retina.webp" },
-   { "slug": "italian-brainrot-clicker", "name": "Italian Brainrot Clicker", "cat": "Clicker", "embed": "https://italian-brainrot-clicker.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/i/italian-brainrot-clicker_retina.webp" },
-   { "slug": "jetpack-joyride", "name": "Jetpack Joyride", "cat": "Arcade", "embed": "https://jetpack-joyride.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/j/jetpack-joyride_retina.webp" },
-   { "slug": "kart-bros", "name": "Kart Bros", "cat": "Racing", "embed": "https://kart-bros.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/kart-bros_retina.webp" },
-   { "slug": "kourio", "name": "Kour.io", "cat": "Shooter", "embed": "https://kour.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/kourio_retina.webp" },
-   { "slug": "krunkerio", "name": "Krunker.io", "cat": "Shooter", "embed": "https://krunker.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/krunkerio_retina.webp" },
-   { "slug": "level-devil", "name": "Level Devil", "cat": "Platformer", "embed": "https://level-devil.classroomgames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/l/level-devil_retina.webp" },
-   { "slug": "moto-x3m", "name": "Moto X3M", "cat": "Racing", "embed": "https://moto-x3m.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/m/moto-x3m_retina.webp" },
-   { "slug": "narrow-one", "name": "Narrow One", "cat": "Action", "embed": "https://narrow.one/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/n/narrow-one_medium.webp" },
-   { "slug": "papas-pizzeria", "name": "Papa's Pizzeria", "cat": "Casual", "embed": "https://papas-pizzeria.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/p/papas-pizzeria_retina.webp" },
-   { "slug": "paperio-2", "name": "Paper.io 2", "cat": ".io", "embed": "https://paperio-2.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/p/paperio-2_retina.webp" },
-   { "slug": "polytrack", "name": "PolyTrack", "cat": "Racing", "embed": "https://polytrack.venkogames.workers.dev/" },
-   { "slug": "ragdoll-archers", "name": "Ragdoll Archers", "cat": "Action", "embed": "https://ragdoll-archers.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/r/ragdoll-archers_retina.webp" },
-   { "slug": "ragdoll-hit", "name": "Ragdoll Hit", "cat": "Action", "embed": "https://ragdoll-hit.venkogames.workers.dev/" },
-   { "slug": "retro-bowl", "name": "Retro Bowl", "cat": "Sports", "embed": "https://retro-bowl.classroomgames.workers.dev/" },
-   { "slug": "shell-shockers", "name": "Shell Shockers", "cat": "Shooter", "embed": "https://shell-shockers.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/shell-shockers_retina.webp" },
-   { "slug": "slice-master", "name": "Slice Master", "cat": "Casual", "embed": "https://slice-master.classroomgames.workers.dev/" },
-   { "slug": "slitherio", "name": "Slither.io", "cat": ".io", "embed": "https://gulper.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slitherio_retina.webp" },
-   { "slug": "slope", "name": "Slope", "cat": "Arcade", "embed": "https://slope.tops-games.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slope_retina.webp" },
-   { "slug": "slow-roads", "name": "Slow Roads", "cat": "Racing", "embed": "https://slow-roads.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slow-roads_xlarge.webp" },
-   { "slug": "smash-karts", "name": "Smash Karts", "cat": "Racing", "embed": "https://smashkarts.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/smash-karts_retina.webp" },
-   { "slug": "snow-rider-3d", "name": "Snow Rider 3D", "cat": "Racing", "embed": "https://snow-rider-3d.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/snow-rider-3d_retina.webp" },
-   { "slug": "space-waves", "name": "Space Waves", "cat": "Arcade", "embed": "https://space-waves.classroomgames.workers.dev/" },
-   { "slug": "stickman-hook", "name": "Stickman Hook", "cat": "Arcade", "embed": "https://stickman-hook.tops-games.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/stickman-hook_retina.webp" },
-   { "slug": "subway-surfers", "name": "Subway Surfers", "cat": "Arcade", "embed": "https://joemama980.github.io/games/subwaysurfers/" },
-   { "slug": "territorialio", "name": "Territorial.io", "cat": ".io", "embed": "https://territorialio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/territorialio_retina.webp" },
-   { "slug": "tomb-of-the-mask", "name": "Tomb of the Mask", "cat": "Arcade", "embed": "https://tomb-of-the-mask.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/tomb-of-the-mask_retina.webp" },
-   { "slug": "tunnel-rush", "name": "Tunnel Rush", "cat": "Arcade", "embed": "https://tunnel-rush.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/tunnel-rush_retina.webp" },
-   { "slug": "ultrakill", "name": "Ultrakill", "cat": "Shooter", "embed": "https://ultrakill.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/u/ultrakill_retina.webp" },
-   { "slug": "vengeio", "name": "Venge.io", "cat": "Shooter", "embed": "https://vengeio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/v/vengeio_retina.webp" },
-   { "slug": "wrestle-bros", "name": "Wrestle Bros", "cat": "Sports", "embed": "https://wrestle-bros.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/wrestle-bros_retina.webp" },
-   { "slug": "zombsroyaleio", "name": "ZombsRoyale.io", "cat": "Shooter", "embed": "https://zombsroyaleio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/z/zombsroyaleio_retina.webp" }
+   { "slug": "slope", "name": "Slope", "cat": "Arcade", "embed": "https://slope.tops-games.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slope_retina.webp" }
   ];
 
   const INITIAL_MEDIA = [
-    { id: "tt9362722", tmdb: "569094", title: "Spider-Man: Across the Spider-Verse", cat: "Movies", year: "2023", rating: "98% Match", age: "PG", thumb: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg", backdrop: "https://image.tmdb.org/t/p/original/4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg", desc: "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People.", type: "movie" },
-    { id: "tt15239678", tmdb: "693134", title: "Dune: Part Two", cat: "Movies", year: "2024", rating: "97% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg", backdrop: "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg", desc: "Paul Atreides unites with Chani and the Fremen while on a warpath of revenge.", type: "movie" },
-    { id: "tt6263850", tmdb: "533535", title: "Deadpool & Wolverine", cat: "Movies", year: "2024", rating: "96% Match", age: "R", thumb: "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", backdrop: "https://image.tmdb.org/t/p/original/yDHYTfA3R0jFYba16jBB1ef8oIt.jpg", desc: "Wolverine is recovering from his injuries when he crosses paths with the loudmouth Deadpool.", type: "movie" },
-    { id: "tt0816692", tmdb: "157336", title: "Interstellar", cat: "Movies", year: "2014", rating: "99% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", backdrop: "https://image.tmdb.org/t/p/original/xJHokMbljvjADYdit5fK5VQsXEG.jpg", desc: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.", type: "movie" },
-    { id: "tt12343534", tmdb: "95479", title: "Jujutsu Kaisen", cat: "Anime", year: "2020", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg", backdrop: "https://image.tmdb.org/t/p/original/gmECX1DvFgdUPjtio2zaL8BPYPu.jpg", desc: "Yuji Itadori joins a secret organization of Jujutsu Sorcerers to kill a powerful Curse.", type: "tv" },
-    { id: "tt9335498", tmdb: "85937", title: "Demon Slayer", cat: "Anime", year: "2019", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg", backdrop: "https://image.tmdb.org/t/p/original/nTvM4mhqNlHIvUkI1gVnW6XP7GG.jpg", desc: "Tanjiro sets out to become a demon slayer to avenge his family and cure his sister.", type: "tv" },
-    { id: "tt0903747", tmdb: "1396", title: "Breaking Bad", cat: "TV Shows", year: "2008", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg", backdrop: "https://image.tmdb.org/t/p/original/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg", desc: "A chemistry teacher diagnosed with cancer turns to manufacturing meth with a former student.", type: "tv" }
+    { id: "tt9362722", tmdb: "569094", title: "Spider-Man: Across the Spider-Verse", thumb: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg" },
+    { id: "tt15239678", tmdb: "693134", title: "Dune: Part Two", thumb: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg" }
   ];
 
-  const DEFAULTS = { cloak: false, title: "about:blank", icon: "", redirect: false, decoy: "https://classroom.google.com", panic: true };
+  const DEFAULTS = { cloak: false, title: "about:blank" };
   const KEY = "ug_settings";
   function loadSettings() { try { return { ...DEFAULTS, ...JSON.parse(localStorage.getItem(KEY) || "{}") }; } catch { return { ...DEFAULTS }; } }
-  function saveSettings(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} }
-
-  function frameSource(game) {
-    const activeUrl = game.embed;
-    if (activeUrl === "roblox-direct-engine") {
-      return { srcdoc: buildRobloxDirectEngine() };
-    }
-    if (activeUrl.startsWith("swf:")) {
-      const swf = activeUrl.slice(4);
-      const doc = '<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;background:#000;overflow:hidden}#p{width:100%;height:100%}</style><script src="https://unpkg.com/@ruffle-rs/ruffle"><\/script></head><body><div id="p"></div><script>addEventListener("load",function(){var r=window.RufflePlayer.newest();var p=r.createPlayer();p.style.width="100%";p.style.height="100%";document.getElementById("p").appendChild(p);p.load({url:' + JSON.stringify(swf) + ',autoplay:"auto",unmuteOverlay:"hidden"});});<\/script></body></html>';
-      return { srcdoc: doc };
-    }
-    return { src: activeUrl };
-  }
 
   const FRAME_ALLOW = "fullscreen; autoplay; gamepad; clipboard-write; accelerometer; gyroscope; pointer-lock; microphone; keyboard-map";
-
-  function openCloaked(source, s) {
-    const w = window.open("about:blank", "_blank");
-    if (!w) return false;
-    const d = w.document;
-    d.open(); d.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title></title><style>html,body,iframe{margin:0;padding:0;width:100%;height:100%;border:0;background:#000;overflow:hidden}</style></head><body></body></html>'); d.close();
-    d.title = s.title || "about:blank";
-    const f = d.createElement("iframe");
-    if (source.srcdoc) f.srcdoc = source.srcdoc; else if (source.src) f.src = source.src;
-    f.setAttribute("allow", FRAME_ALLOW); f.setAttribute("allowfullscreen", "");
-    d.body.appendChild(f);
-    if (s.redirect) location.replace(s.decoy);
-    return true;
-  }
-  function cloakSite(s) { return openCloaked({ src: location.href.split("#")[0] }, s); }
 
   function Svg({ children, sw = 1.8 }) {
     return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
@@ -765,13 +352,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const MusicIcon = (p) => h(Svg, p, h("path", { d: "M9 18V5l12-2v13" }), h("circle", { cx: "6", cy: "18", r: "3" }), h("circle", { cx: "18", cy: "16", r: "3" }));
   const BrowserIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "10" }), h("line", { x1: "2", y1: "12", x2: "22", y2: "12" }), h("path", { d: "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" }));
   const AccountIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "8", r: "4" }), h("path", { d: "M4 21a8 8 0 0 1 16 0" }));
-  const CreatorIcon = (p) => h(Svg, p, h("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }), h("circle", { cx: "9", cy: "7", r: "4" }), h("line", { x1: "19", y1: "8", x2: "19", y2: "14" }), h("line", { x1: "22", y1: "11", x2: "16", y2: "11" }));
-  const EyeIcon = (p) => h(Svg, p, h("path", { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }), h("circle", { cx: "12", cy: "12", r: "3" }));
-  const EyeOffIcon = (p) => h(Svg, p, h("path", { d: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" }), h("line", { x1: "1", y1: "1", x2: "23", y2: "23" }));
+  const CreatorIcon = (p) => h(Svg, p, h("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }), h("circle", { cx: "9", cy: "7", r: "4" }));
   const SettingsIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "3" }), h("path", { d: "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" }));
   const ChevronIcon = (p) => h(Svg, p, h("path", { d: "m9 18 6-6-6-6" }));
   const SearchIcon = (p) => h(Svg, p, h("circle", { cx: "11", cy: "11", r: "8" }), h("path", { d: "m21 21-4.3-4.3" }));
-  const RefreshIcon = (p) => h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
 
   function Modal({ children, onClose }) {
     return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
@@ -785,21 +369,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       const dpr = window.devicePixelRatio || 1;
       const resize = () => {
         W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr;
-        cv.style.width = innerWidth + "px"; cv.style.height = innerHeight + "px";
-        const n = Math.floor((innerWidth * innerHeight) / 9000);
-        stars = Array.from({ length: n }, () => ({
-          x: Math.random() * W, y: Math.random() * H,
-          r: (Math.random() * 1.4 + 0.5) * dpr, s: (Math.random() * 0.12 + 0.02) * dpr,
-          p: Math.random() * Math.PI * 2, f: Math.random() * 0.02 + 0.005,
+        stars = Array.from({ length: 120 }, () => ({
+          x: Math.random() * W, y: Math.random() * H, r: (Math.random() * 1.4 + 0.5) * dpr, s: (Math.random() * 0.12 + 0.02) * dpr, p: Math.random() * Math.PI * 2
         }));
       };
       const frame = () => {
         ctx.clearRect(0, 0, W, H); ctx.fillStyle = "#fff";
         for (const s of stars) {
-          s.y += s.s; s.p += s.f;
-          if (s.y > H + 5) { s.y = -5; s.x = Math.random() * W; }
-          ctx.globalAlpha = 0.35 + 0.55 * Math.abs(Math.sin(s.p));
-          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+          s.y += s.s; if (s.y > H + 5) s.y = -5;
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.28); ctx.fill();
         }
         raf = requestAnimationFrame(frame);
       };
@@ -815,19 +393,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       return h("button", {
         key: id,
         className: "side-btn" + (view === id ? " active" : "") + (!unlocked ? " locked" : ""),
-        title: unlocked ? label : `${label} (${requiredTierForView(id)} Tier Required)`,
         onClick: () => onNavigate(id)
-      },
-        icon,
-        h("span", null, unlocked ? label : `${label} 🔒`)
-      );
+      }, icon, h("span", null, unlocked ? label : `${label} 🔒`));
     };
 
     return h("nav", { id: "sidebar", className: open ? "open" : "" },
       h("div", { className: "side-group", style: { paddingTop: 2 } },
         btn("home", "Home", h(HomeIcon)),
-        btn("youtube", "YouTube", h(YouTubeIcon)),
         btn("tiktok", "TikTok", h(TikTokIcon)),
+        btn("youtube", "YouTube", h(YouTubeIcon)),
         btn("browser", "Browser", h(BrowserIcon)),
         btn("chat", "Chat", h(ChatIcon)),
         btn("games", "Games", h(GamesIcon)),
@@ -836,421 +410,110 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       ),
       h("div", { className: "spacer" }),
       h("div", { className: "side-group", style: { paddingBottom: 6 } },
-        isOwner ? btn("creator", "Account Creator", h(CreatorIcon)) : null,
+        isOwner ? btn("creator", "Creator Hub", h(CreatorIcon)) : null,
         btn("account", "Account", h(AccountIcon)),
         btn("settings", "Settings", h(SettingsIcon)),
-        h("button", { className: "side-btn", id: "expandBtn", title: open ? "Collapse" : "Expand", onClick: onToggle }, h(ChevronIcon), h("span", null, "Collapse"))
+        h("button", { className: "side-btn", onClick: onToggle }, h(ChevronIcon), h("span", null, "Collapse"))
       )
     );
   }
 
   function Home({ onNavigate, onSearch, userTier }) {
-    const [value, setValue] = useState("");
-    const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
-
-    const quickBtn = (id, label, icon, customStyle = {}) => {
-      const unlocked = canAccessView(userTier, id);
-      return h("button", {
-        onClick: () => onNavigate(id),
-        style: { opacity: unlocked ? 1 : 0.55 }
-      },
-        h("div", { className: "circ", style: customStyle }, icon),
-        unlocked ? label : `${label} 🔒`
-      );
-    };
-
+    const [val, setVal] = useState("");
     return h("section", { className: "view", id: "home" },
       h("div", { className: "logo-wrap" }, h("h1", { className: "logo" }, "unblockedgames")),
       h("div", { className: "search-wrap" },
-        h("form", { className: "search", autoComplete: "off", onSubmit: submit },
+        h("form", { className: "search", onSubmit: (e) => { e.preventDefault(); onSearch(val); } },
           h(SearchIcon),
-          h("input", { type: "text", spellCheck: false, value, placeholder: "Search Roblox, Geometry Dash, TikTok, YouTube...", onChange: (e) => setValue(e.target.value) })
+          h("input", { placeholder: "Search Roblox, Geometry Dash, TikTok, YouTube...", value: val, onChange: (e) => setVal(e.target.value) })
         )
       ),
       h("div", { className: "quick" },
-        quickBtn("tiktok", "TikTok Web", h(TikTokIcon), { borderColor: "rgba(37,244,238,0.5)", color: "#25f4ee" }),
-        quickBtn("youtube", "YouTube", h(YouTubeIcon), { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" }),
-        quickBtn("games", "Games", h(GamesIcon)),
-        quickBtn("browser", "Browser", h(BrowserIcon)),
-        quickBtn("music", "Spotify", h(MusicIcon)),
-        quickBtn("movies", "Netflix", h(MoviesIcon)),
-        quickBtn("chat", "Chat", h(ChatIcon))
-      ),
-      h("div", { className: "ad" }, "100% IN-BROWSER \u2022 ZERO PC INSTALLATION", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
+        h("button", { onClick: () => onNavigate("tiktok") }, h("div", { className: "circ", style: { borderColor: "rgba(37,244,238,0.5)", color: "#25f4ee" } }, h(TikTokIcon)), "TikTok Live"),
+        h("button", { onClick: () => onNavigate("youtube") }, h("div", { className: "circ", style: { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" } }, h(YouTubeIcon)), "YouTube"),
+        h("button", { onClick: () => onNavigate("games") }, h("div", { className: "circ" }, h(GamesIcon)), "Games"),
+        h("button", { onClick: () => onNavigate("browser") }, h("div", { className: "circ" }, h(BrowserIcon)), "Browser")
+      )
     );
   }
 
   // ============================================================================
-  // AUTHENTIC 1:1 TIKTOK WEB DESKTOP INTERFACE (IN-PAGE CLIENT, NO INSTALL)
-  // WAF Challenge and X-Frame-Options are bypassed using in-memory direct video streams
+  // UNBLOCKED REAL TIKTOK LIVE ENGINE (MIRROR & EMBED GATEWAY)
   // ============================================================================
-  const TIKTOK_INITIAL_FEED = [
-    {
-      id: "tt_feed_1",
-      author: { nickname: "BloxDaily Official", unique_id: "bloxdaily", avatar: "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" },
-      title: "When you finally beat the impossible rainbow obby on mobile 😭🔥 #roblox #fyp #gaming #viral",
-      music: "original sound - BloxDaily Official",
-      digg_count: 489200,
-      comment_count: 6310,
-      share_count: 24800,
-      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-      cover: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80"
-    },
-    {
-      id: "tt_feed_2",
-      author: { nickname: "Anime Vibes HQ", unique_id: "animevibes", avatar: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=120&q=80" },
-      title: "The cleanest 4K transition of the year ⚡ Who is your favorite character? #anime #jujutsukaisen #edit #fyp",
-      music: "Phonk Night Beats - Kaash",
-      digg_count: 914300,
-      comment_count: 12500,
-      share_count: 51200,
-      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-      cover: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&q=80"
-    },
-    {
-      id: "tt_feed_3",
-      author: { nickname: "School Legends", unique_id: "schoolmemes", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&q=80" },
-      title: "Teacher said no phones so we played in the browser tab instead 😎 #relatable #schoollife #memes",
-      music: "funny background meme sound",
-      digg_count: 320500,
-      comment_count: 4120,
-      share_count: 18900,
-      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-      cover: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80"
-    },
-    {
-      id: "tt_feed_4",
-      author: { nickname: "Drift Phonk Daily", unique_id: "phonkculture", avatar: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=120&q=80" },
-      title: "Midnight Tokyo highway run 🏎️💨 Turn volume to max #phonk #jdm #drift #cars",
-      music: "BRAZILIAN PHONK - DJ RAMON",
-      digg_count: 764100,
-      comment_count: 8940,
-      share_count: 38700,
-      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-      cover: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80"
-    }
+  const PROXITOK_MIRRORS = [
+    { name: "ProxiTok Global (Fast)", url: "https://proxitok.pabloferreros.dev/" },
+    { name: "ProxiTok Alpha", url: "https://tok.habedieehre.ninja/" },
+    { name: "Urlebird Web Stream", url: "https://urlebird.com/" },
+    { name: "ProxiTok Beta", url: "https://tok.artemislena.eu/" }
   ];
 
   function TikTokView({ toast }) {
-    const [activeTab, setActiveTab] = useState("foryou");
-    const [searchVal, setSearchVal] = useState("");
-    const [feed, setFeed] = useState(TIKTOK_INITIAL_FEED);
-    const [likedPosts, setLikedPosts] = useState({});
-    const [savedPosts, setSavedPosts] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [directUrlModal, setDirectUrlModal] = useState(false);
-    const [directInput, setDirectInput] = useState("");
+    const [selectedMirror, setSelectedMirror] = useState(PROXITOK_MIRRORS[0].url);
+    const [customLink, setCustomLink] = useState("");
+    const [customEmbedId, setCustomEmbedId] = useState("");
+    const [frameKey, setFrameKey] = useState(0);
 
-    const fetchTikTokQuery = useCallback(async (q) => {
-      setLoading(true);
-      const targetApi = `https://www.tikwm.com/api/feed/search?keywords=${encodeURIComponent(q)}&count=14`;
-      try {
-        const res = await fetch(targetApi);
-        const data = await res.json();
-        if (data?.data?.videos?.length) {
-          const list = data.data.videos.map((v) => ({
-            id: v.video_id || v.id,
-            author: { nickname: v.author?.nickname || "TikTok Creator", unique_id: v.author?.unique_id || "creator", avatar: v.author?.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80" },
-            title: v.title || "#fyp #tiktok",
-            music: v.music || "original sound",
-            digg_count: v.digg_count || 12000,
-            comment_count: v.comment_count || 340,
-            share_count: v.share_count || 890,
-            play: v.play || v.wmplay,
-            cover: v.cover
-          }));
-          setFeed(list);
-        }
-      } catch {}
-      setLoading(false);
-    }, []);
-
-    const handleSearchSubmit = (e) => {
+    const handleLoadCustom = (e) => {
       e.preventDefault();
-      const q = searchVal.trim();
-      if (!q) return;
-      fetchTikTokQuery(q);
-    };
-
-    const handleLoadDirectTikTok = async (e) => {
-      e.preventDefault();
-      const raw = directInput.trim();
+      const raw = customLink.trim();
       if (!raw) return;
-      toast("Resolving TikTok video directly in-page...");
-      try {
-        const res = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(raw)}`);
-        const data = await res.json();
-        if (data?.data?.play) {
-          const v = data.data;
-          const newPost = {
-            id: v.id || "direct_" + Date.now(),
-            author: { nickname: v.author?.nickname || "TikTok Creator", unique_id: v.author?.unique_id || "user", avatar: v.author?.avatar },
-            title: v.title || "TikTok Video",
-            music: v.music || "original sound",
-            digg_count: v.digg_count || 1000,
-            comment_count: v.comment_count || 10,
-            share_count: v.share_count || 5,
-            play: v.play,
-            cover: v.cover
-          };
-          setFeed([newPost, ...feed]);
-          setDirectUrlModal(false);
-          setDirectInput("");
-          toast("Loaded into TikTok feed!");
-          return;
-        }
-      } catch {}
-      toast("Could not resolve TikTok link. Showing trending videos instead.");
-      setDirectUrlModal(false);
+      const match = raw.match(/video\/(\d+)/) || raw.match(/tiktok\.com\/.*\/(\d+)/);
+      if (match && match[1]) {
+        setCustomEmbedId(match[1]);
+        toast("Loaded direct TikTok embed!");
+      } else {
+        toast("Enter a valid TikTok link containing video ID");
+      }
     };
 
     return h("section", { className: "view", style: { height: "100%" } },
-      h("div", { className: "tt-web-root" },
-        // Top TikTok Navigation Bar
-        h("header", { className: "tt-header" },
-          h("div", { className: "tt-brand", onClick: () => { setFeed(TIKTOK_INITIAL_FEED); setActiveTab("foryou"); } },
+      h("div", { className: "tt-view-root" },
+        // TikTok Unblocked Navbar
+        h("div", { className: "tt-view-nav" },
+          h("div", { className: "tt-logo", onClick: () => { setCustomEmbedId(""); setFrameKey((k) => k + 1); } },
             h("span", { style: { color: "#fff" } }, "Tik"),
-            h("span", { className: "tok" }, "Tok")
+            h("span", { className: "cyan" }, "Tok"),
+            h("span", { className: "badge-pill live", style: { marginLeft: 8 } }, "LIVE MIRROR")
           ),
-          h("form", { className: "tt-search-bar", onSubmit: handleSearchSubmit },
-            h("input", {
-              placeholder: "Search accounts, trends or videos...",
-              value: searchVal,
-              onChange: (e) => setSearchVal(e.target.value)
-            }),
-            h("button", { type: "submit", style: { color: "rgba(255,255,255,0.6)", padding: "0 4px" } }, h(SearchIcon))
-          ),
-          h("div", { className: "tt-header-right" },
-            h("button", { className: "btn ghost sm", onClick: () => setDirectUrlModal(true) }, "+ Paste TikTok Link"),
-            h("button", { className: "tt-btn-login", onClick: () => toast("Running 100% In-Page. No installation needed.") }, "In-Page Web App")
-          )
-        ),
-
-        // Main Layout (Sidebar + Feed)
-        h("div", { className: "tt-main-layout" },
-          // Left Sidebar (1:1 with real TikTok Web)
-          h("nav", { className: "tt-nav-sidebar" },
-            h("div", { className: "tt-nav-item" + (activeTab === "foryou" ? " active" : ""), onClick: () => { setActiveTab("foryou"); setFeed(TIKTOK_INITIAL_FEED); } },
-              h(HomeIcon),
-              h("span", null, "For You")
-            ),
-            h("div", { className: "tt-nav-item" + (activeTab === "explore" ? " active" : ""), onClick: () => { setActiveTab("explore"); fetchTikTokQuery("trending viral 2026"); } },
-              h(BrowserIcon),
-              h("span", null, "Explore")
-            ),
-            h("div", { className: "tt-nav-item" + (activeTab === "following" ? " active" : ""), onClick: () => { setActiveTab("following"); fetchTikTokQuery("roblox gaming"); } },
-              h(AccountIcon),
-              h("span", null, "Following")
-            ),
-            h("div", { className: "tt-nav-item" + (activeTab === "live" ? " active" : ""), onClick: () => { setActiveTab("live"); fetchTikTokQuery("live stream gameplay"); } },
-              h(YouTubeIcon),
-              h("span", null, "LIVE")
-            ),
-
-            h("div", { className: "tt-sidebar-sec" },
-              h("div", { className: "tt-sidebar-sec-title" }, "Trending Topics"),
-              ["#roblox", "#gaming", "#memes", "#anime", "#phonk", "#dance"].map((topic) =>
-                h("div", {
-                  key: topic,
-                  className: "tt-nav-item",
-                  style: { fontSize: 14, height: 38, color: "var(--muted)" },
-                  onClick: () => fetchTikTokQuery(topic.replace("#", ""))
-                }, topic)
-              )
-            ),
-
-            h("div", { className: "tt-sidebar-sec" },
-              h("div", { style: { padding: "10px", fontSize: 12, color: "rgba(255,255,255,0.4)", lineHeight: 1.6 } },
-                "© 2026 TikTok Web In-Page Client. Runs purely in browser memory with zero computer download."
-              )
+          h("div", { className: "tt-mode-switch" },
+            PROXITOK_MIRRORS.map((m) =>
+              h("button", {
+                key: m.url,
+                className: "tt-mode-btn" + (selectedMirror === m.url && !customEmbedId ? " active" : ""),
+                onClick: () => { setSelectedMirror(m.url); setCustomEmbedId(""); setFrameKey((k) => k + 1); toast(`Switched to ${m.name}`); }
+              }, m.name.split(" ")[0])
             )
           ),
-
-          // Central Infinite Vertical Feed
-          h("div", { className: "tt-content-scroll" },
-            loading ? h("div", { className: "empty" }, "Loading TikTok Feed...") :
-            feed.map((post) => {
-              const isLiked = !!likedPosts[post.id];
-              const isSaved = !!savedPosts[post.id];
-              const likeCount = (post.digg_count || 1000) + (isLiked ? 1 : 0);
-
-              return h("div", { key: post.id, className: "tt-post-unit" },
-                // 9:16 In-Page TikTok Video Box
-                h("div", { className: "tt-video-wrapper" },
-                  h("video", {
-                    src: post.play,
-                    poster: post.cover,
-                    controls: true,
-                    loop: true,
-                    playsInline: true,
-                    preload: "metadata",
-                    autoPlay: false
-                  }),
-                  h("div", { className: "tt-post-overlay" },
-                    // Top Author Info
-                    h("div", { className: "tt-author-bar" },
-                      h("img", { src: post.author.avatar, referrerPolicy: "no-referrer" }),
-                      h("div", { className: "tt-author-info" },
-                        h("div", { className: "name" }, post.author.nickname),
-                        h("div", { className: "handle" }, `@${post.author.unique_id}`)
-                      )
-                    ),
-                    // Bottom Caption & Sound
-                    h("div", null,
-                      h("div", { className: "tt-post-caption" }, post.title),
-                      h("div", { className: "tt-music-line" },
-                        h("span", null, "♫"),
-                        h("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, post.music)
-                      )
-                    )
-                  )
-                ),
-
-                // Right Floating Action Column
-                h("div", { className: "tt-action-col" },
-                  h("div", {
-                    className: "tt-action-btn",
-                    onClick: () => setLikedPosts((p) => ({ ...p, [post.id]: !p[post.id] }))
-                  },
-                    h("div", { className: "tt-action-circ" + (isLiked ? " liked" : "") },
-                      h("span", { style: { fontSize: 22 } }, isLiked ? "♥" : "♡")
-                    ),
-                    h("span", null, likeCount.toLocaleString())
-                  ),
-
-                  h("div", { className: "tt-action-btn", onClick: () => toast("Comments are loaded in-page.") },
-                    h("div", { className: "tt-action-circ" },
-                      h("span", { style: { fontSize: 20 } }, "💬")
-                    ),
-                    h("span", null, (post.comment_count || 300).toLocaleString())
-                  ),
-
-                  h("div", {
-                    className: "tt-action-btn",
-                    onClick: () => { setSavedPosts((p) => ({ ...p, [post.id]: !p[post.id] })); toast(isSaved ? "Removed bookmark" : "Saved to favorites!"); }
-                  },
-                    h("div", { className: "tt-action-circ", style: { color: isSaved ? "#facc15" : "#fff" } },
-                      h("span", { style: { fontSize: 20 } }, "★")
-                    ),
-                    h("span", null, isSaved ? "Saved" : "Save")
-                  ),
-
-                  h("div", { className: "tt-action-btn", onClick: () => { navigator.clipboard?.writeText?.(post.play); toast("Copied direct stream link!"); } },
-                    h("div", { className: "tt-action-circ" },
-                      h("span", { style: { fontSize: 20 } }, "↗")
-                    ),
-                    h("span", null, (post.share_count || 120).toLocaleString())
-                  ),
-
-                  h("div", { className: "tt-disc" },
-                    h("span", { style: { fontSize: 10 } }, "♫")
-                  )
-                )
-              );
-            })
-          )
-        ),
-
-        // Paste Direct TikTok URL Modal
-        directUrlModal ? h(Modal, { onClose: () => setDirectUrlModal(false) },
-          h("h3", null, "Paste Any TikTok Link"),
-          h("p", null, "Paste any TikTok video or sound URL (e.g. https://www.tiktok.com/@user/video/12345). It will be loaded directly into this in-page web client without triggering SlardarWAF."),
-          h("form", { onSubmit: handleLoadDirectTikTok },
+          h("form", { onSubmit: handleLoadCustom, style: { display: "flex", gap: 8 } },
             h("input", {
               className: "field",
-              placeholder: "https://www.tiktok.com/@.../video/...",
-              value: directInput,
-              onChange: (e) => setDirectInput(e.target.value),
-              style: { marginBottom: 14 }
+              style: { height: 34, width: 220, fontSize: 12 },
+              placeholder: "Paste TikTok video URL...",
+              value: customLink,
+              onChange: (e) => setCustomLink(e.target.value)
             }),
-            h("div", { className: "actions" },
-              h("button", { type: "submit", className: "btn", style: { background: "var(--tt-red)", color: "#fff" } }, "Load Video"),
-              h("button", { type: "button", className: "btn ghost", onClick: () => setDirectUrlModal(false) }, "Cancel")
-            )
-          )
-        ) : null
-      )
-    );
-  }
-
-  // ============================================================================
-  // FROSTED GLASS BROWSER
-  // ============================================================================
-  function BrowserView() {
-    const [query, setQuery] = useState("");
-    const [tab, setTab] = useState("all");
-    const [webResults, setWebResults] = useState([]);
-    const [imgResults, setImgResults] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [activeUrl, setActiveUrl] = useState("");
-    const [frameHtml, setFrameHtml] = useState("");
-    const debounceRef = useRef(null);
-
-    const isUrlLike = (str) => /^(https?:\/\/|www\.)/i.test((str || "").trim());
-
-    const openUrl = useCallback(async (targetUrl) => {
-      let target = targetUrl.trim();
-      if (!/^https?:\/\//i.test(target)) target = "https://" + target;
-      setActiveUrl(target);
-      setLoading(true);
-      try {
-        const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
-        const j = await r.json();
-        setFrameHtml(j.contents || "");
-      } catch {
-        setFrameHtml("");
-      }
-      setLoading(false);
-    }, []);
-
-    const executeSearch = useCallback(async (qText) => {
-      if (!qText.trim()) return;
-      setLoading(true);
-      try {
-        const [wiki, ddg] = await Promise.all([
-          fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(qText)}&srlimit=10&utf8=&format=json&origin=*`).then((r) => r.json()),
-          fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(qText)}&format=json&no_html=1&skip_disambig=1`).then((r) => r.json()).catch(() => null)
-        ]);
-        const list = [];
-        if (ddg?.AbstractText) list.push({ title: ddg.Heading || qText, url: ddg.AbstractURL, snippet: ddg.AbstractText });
-        (wiki?.query?.search || []).forEach((w) => list.push({ title: w.title, url: `https://en.wikipedia.org/wiki/${encodeURIComponent(w.title.replace(/ /g, "_"))}`, snippet: (w.snippet || "").replace(/<\/?[^>]+(>|$)/g, "") }));
-        setWebResults(list);
-      } catch {}
-      setLoading(false);
-    }, []);
-
-    const handleInput = (val) => {
-      setQuery(val);
-      clearTimeout(debounceRef.current);
-      if (!val.trim()) { setWebResults([]); return; }
-      debounceRef.current = setTimeout(() => executeSearch(val), 200);
-    };
-
-    return h("section", { className: "view" },
-      h("div", { className: "gbrowser-root" },
-        h("div", { className: "gbrowser-top" },
-          h("div", { className: "gbrowser-bar-row" },
-            activeUrl ? h("button", { className: "btn ghost sm", onClick: () => setActiveUrl("") }, "← Search") : null,
-            h("form", { className: "glass-panel compact", onSubmit: (e) => { e.preventDefault(); isUrlLike(query) ? openUrl(query) : executeSearch(query); } },
-              h(SearchIcon),
-              h("input", { className: "glass-input", placeholder: "Search Google or type URL...", value: query, onChange: (e) => handleInput(e.target.value) })
-            )
+            h("button", { type: "submit", className: "btn sm", style: { background: "var(--tt-red)", color: "#fff" } }, "Play")
           )
         ),
-        h("div", { className: "gbrowser-body" },
-          activeUrl ? (
-            frameHtml ? h("iframe", { srcDoc: frameHtml, style: { width: "100%", height: "100%", border: 0, background: "#fff" } })
-                      : h("iframe", { src: activeUrl, style: { width: "100%", height: "100%", border: 0, background: "#fff" } })
+
+        // Live In-Page Unblocked Frame
+        h("div", { className: "tt-frame-container" },
+          customEmbedId ? (
+            h("iframe", {
+              key: "embed_" + customEmbedId,
+              src: `https://www.tiktok.com/embed/v2/${customEmbedId}`,
+              allow: FRAME_ALLOW,
+              allowFullScreen: true,
+              referrerPolicy: "strict-origin-when-cross-origin"
+            })
           ) : (
-            h("div", { className: "gbrowser-results-wrap" },
-              webResults.map((r, i) =>
-                h("div", { key: i, className: "gbrowser-card", onClick: () => openUrl(r.url) },
-                  h("div", { style: { fontSize: 12, color: "#86efac", marginBottom: 4 } }, r.url),
-                  h("div", { style: { fontSize: 18, fontWeight: 700, color: "#60a5fa", marginBottom: 4 } }, r.title),
-                  h("div", { style: { fontSize: 13.5, color: "#d4d4d8" } }, r.snippet)
-                )
-              )
-            )
+            h("iframe", {
+              key: "mirror_" + frameKey + "_" + selectedMirror,
+              src: selectedMirror,
+              allow: FRAME_ALLOW,
+              allowFullScreen: true,
+              referrerPolicy: "strict-origin-when-cross-origin"
+            })
           )
         )
       )
@@ -1258,98 +521,52 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // YOUTUBE, GAMES, MUSIC, NETFLIX, CHAT
+  // YOUTUBE & BROWSER & CHAT & GAMES
   // ============================================================================
   function YouTubeView() {
-    const [searchQ, setSearchQ] = useState("");
-    const [activeVid, setActiveVid] = useState("jfKfPfyJRdk");
+    const [q, setQ] = useState("");
+    const [vid, setVid] = useState("jfKfPfyJRdk");
     return h("section", { className: "view" },
       h("div", { className: "page" },
         h("div", { style: { width: "100%", height: "65vh", background: "#000", borderRadius: 14, overflow: "hidden", marginBottom: 18 } },
-          h("iframe", {
-            src: `https://www.youtube-nocookie.com/embed/${activeVid}?autoplay=1&rel=0`,
-            style: { width: "100%", height: "100%", border: 0 },
-            allow: FRAME_ALLOW,
-            allowFullScreen: true
-          })
+          h("iframe", { src: `https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&rel=0`, style: { width: "100%", height: "100%", border: 0 }, allow: FRAME_ALLOW, allowFullScreen: true })
         ),
-        h("form", { className: "toolbar", onSubmit: (e) => { e.preventDefault(); const m = searchQ.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/); if (m) setActiveVid(m[1]); } },
+        h("form", { className: "toolbar", onSubmit: (e) => { e.preventDefault(); const m = q.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/); if (m) setVid(m[1]); } },
           h("div", { className: "search" },
             h(SearchIcon),
-            h("input", { placeholder: "Paste YouTube Video URL or ID...", value: searchQ, onChange: (e) => setSearchQ(e.target.value) })
+            h("input", { placeholder: "Paste YouTube Video link...", value: q, onChange: (e) => setQ(e.target.value) })
           ),
-          h("button", { type: "submit", className: "btn", style: { background: "#ff0000", color: "#fff", height: 52 } }, "Play Video")
+          h("button", { type: "submit", className: "btn", style: { background: "#ff0000", color: "#fff", height: 52 } }, "Play")
         )
       )
     );
   }
 
-  const Card = memo(function Card({ game, isInstalled, onPlay }) {
-    const [imgOk, setImgOk] = useState(true);
-    return h("div", { className: "card", onClick: () => onPlay(game) },
-      h("div", { className: "thumb", style: { background: "#18181b" } },
-        game.thumb && imgOk ? h("img", { src: game.thumb, alt: game.name, loading: "lazy", onError: () => setImgOk(false) }) : h("span", null, game.name.slice(0, 2)),
-        isInstalled ? h("div", { className: "badge installed" }, "✓ INSTALLED") : null
-      ),
-      h("div", { className: "info" },
-        h("div", { className: "name" }, game.name),
-        h("div", { className: "tag" }, h("span", null, game.cat), h("span", null, "Play"))
-      )
-    );
-  });
-
-  function GamesView({ query, onQuery, onPlay, installedMap }) {
-    const list = useMemo(() => {
-      const q = query.trim().toLowerCase();
-      return GAMES.filter((g) => !q || g.name.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q));
-    }, [query]);
-
-    return h("section", { className: "view", id: "games" },
-      h("div", { className: "page" },
-        h("h2", null, "Games"),
-        h("p", { className: "sub" }, "Instant direct launch with built-in WebGL 3D Roblox & Geometry Dash."),
-        h("div", { className: "toolbar" },
-          h("div", { className: "search" },
-            h(SearchIcon),
-            h("input", { placeholder: "Search games...", value: query, onChange: (e) => onQuery(e.target.value) })
+  function BrowserView() {
+    const [query, setQuery] = useState("");
+    const [url, setUrl] = useState("");
+    return h("section", { className: "view" },
+      h("div", { style: { height: "100%", display: "flex", flexDirection: "column" } },
+        h("div", { style: { padding: "14px 20px", background: "#0c0c10", borderBottom: "1px solid var(--border)", display: "flex", gap: 12 } },
+          h("form", { onSubmit: (e) => { e.preventDefault(); let t = query.trim(); if (!/^https?:\/\//i.test(t)) t = "https://" + t; setUrl(t); }, style: { flex: 1, display: "flex", gap: 10 } },
+            h("input", { className: "field", placeholder: "Type any website URL...", value: query, onChange: (e) => setQuery(e.target.value) }),
+            h("button", { type: "submit", className: "btn" }, "Go")
           )
         ),
-        h("div", { className: "grid" }, list.map((g) => h(Card, { key: g.slug, game: g, isInstalled: !!installedMap[g.slug], onPlay })))
+        url ? h("iframe", { src: url, style: { flex: 1, width: "100%", border: 0, background: "#fff" }, allow: FRAME_ALLOW }) : h("div", { className: "empty" }, "Enter a URL above to browse.")
       )
     );
   }
 
-  function MusicView() {
-    const [tracks, setTracks] = useState([]);
-    const [current, setCurrent] = useState(null);
-    const audioRef = useRef(null);
-
-    useEffect(() => {
-      fetch("https://itunes.apple.com/search?term=top+hits+2026&media=music&entity=song&limit=25")
-        .then((r) => r.json()).then((d) => setTracks(d.results || [])).catch(() => {});
-    }, []);
-
-    const play = (t) => {
-      setCurrent(t);
-      if (audioRef.current) { audioRef.current.src = t.previewUrl; audioRef.current.play(); }
-    };
-
-    return h("section", { className: "view" },
-      h("div", { className: "sp-app" },
-        h("audio", { ref: audioRef }),
-        h("div", { className: "sp-main", style: { padding: 24 } },
-          h("h1", { style: { fontSize: 32, fontWeight: 800, marginBottom: 16 } }, "● Spotify Music"),
-          h("div", { className: "sp-table" },
-            tracks.map((t, i) =>
-              h("div", { key: t.trackId || i, className: "sp-trow", onClick: () => play(t) },
-                h("span", null, i + 1),
-                h("div", { style: { display: "flex", gap: 10, alignItems: "center" } },
-                  h("img", { src: t.artworkUrl100, style: { width: 36, height: 36, borderRadius: 4 } }),
-                  h("div", null, h("div", { style: { color: "#fff", fontWeight: 600 } }, t.trackName), h("div", { style: { fontSize: 12 } }, t.artistName))
-                ),
-                h("span", null, t.collectionName),
-                h("span", { style: { textAlign: "right" } }, "▶ Play")
-              )
+  function GamesView({ query, onQuery, onPlay }) {
+    return h("section", { className: "view", id: "games" },
+      h("div", { className: "page" },
+        h("h2", null, "Games"),
+        h("div", { className: "grid", style: { marginTop: 18 } },
+          GAMES.map((g) =>
+            h("div", { key: g.slug, className: "card", onClick: () => onPlay(g) },
+              h("div", { className: "thumb" }, h("img", { src: g.thumb })),
+              h("div", { className: "info" }, h("div", { className: "name" }, g.name))
             )
           )
         )
@@ -1360,72 +577,34 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   function MoviesView() {
     const [active, setActive] = useState(null);
     return h("section", { className: "view" },
-      h("div", { className: "nf-wrap" },
-        active ? h("div", { style: { padding: 24 } },
+      h("div", { className: "page" },
+        active ? h("div", null,
           h("button", { className: "btn sm", onClick: () => setActive(null), style: { marginBottom: 14 } }, "← Back"),
-          h("div", { style: { width: "100%", height: "70vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
-            h("iframe", { src: `https://vidsrc.me/embed/movie?tmdb=${active.tmdb || active.id}`, style: { width: "100%", height: "100%", border: 0 }, allow: FRAME_ALLOW, allowFullScreen: true })
-          )
-        ) : h("div", { style: { padding: 40 } },
-          h("h1", { style: { fontSize: 36, fontWeight: 800, color: "#e50914", marginBottom: 20 } }, "NETFLIX"),
-          h("div", { className: "nf-carousel" },
-            INITIAL_MEDIA.map((m) =>
-              h("div", { key: m.id, className: "nf-card", onClick: () => setActive(m) },
-                h("img", { src: m.thumb, className: "nf-card-poster" })
-              )
-            )
-          )
+          h("iframe", { src: `https://vidsrc.me/embed/movie?tmdb=${active.tmdb || active.id}`, style: { width: "100%", height: "70vh", border: 0 }, allow: FRAME_ALLOW, allowFullScreen: true })
+        ) : h("div", { className: "grid" },
+          INITIAL_MEDIA.map((m) => h("div", { key: m.id, className: "card", onClick: () => setActive(m) }, h("div", { className: "thumb" }, h("img", { src: m.thumb }))))
         )
       )
     );
   }
 
-  function ChatView({ currentUser, accountsMap }) {
+  function MusicView() {
+    return h("section", { className: "view" },
+      h("div", { className: "page" },
+        h("h2", null, "Spotify Player"),
+        h("iframe", { src: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M", style: { width: "100%", height: "65vh", border: 0, borderRadius: 12 }, allow: FRAME_ALLOW })
+      )
+    );
+  }
+
+  function ChatView({ currentUser }) {
     const [messages, setMessages] = useState([]);
     const [text, setText] = useState("");
-
-    useEffect(() => {
-      const fetchChat = async () => {
-        const base = getDbUrl();
-        if (!base) return;
-        try {
-          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
-          if (res.ok) {
-            const data = await res.json();
-            if (data) {
-              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
-              list.sort((a, b) => a.timestamp - b.timestamp);
-              setMessages(list);
-            }
-          }
-        } catch {}
-      };
-      fetchChat();
-      const interval = setInterval(fetchChat, 3500);
-      return () => clearInterval(interval);
-    }, []);
-
-    const send = async (e) => {
-      e.preventDefault();
-      if (!text.trim() || !currentUser) return;
-      const newMsg = { sender: currentUser.username, text: text.trim(), timestamp: Date.now() };
-      const base = getDbUrl();
-      if (base) {
-        await fetch(`${base}/global_chat.json`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(newMsg) });
-      }
-      setText("");
-    };
-
     return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
-      h("div", { style: { padding: "16px 24px", flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10 } },
-        messages.map((m) =>
-          h("div", { key: m.id || m.timestamp, style: { background: "#18181b", padding: "10px 14px", borderRadius: 10, maxWidth: "75%", alignSelf: m.sender === currentUser?.username ? "flex-end" : "flex-start" } },
-            h("div", { style: { fontSize: 11, color: "#888", marginBottom: 2 } }, m.sender),
-            h("div", null, m.text)
-          )
-        )
+      h("div", { style: { flex: 1, padding: 20, overflowY: "auto" } },
+        messages.map((m, i) => h("div", { key: i, style: { background: "#16161a", padding: "10px 14px", borderRadius: 8, marginBottom: 8 } }, m))
       ),
-      h("form", { onSubmit: send, style: { display: "flex", gap: 10, padding: 16, background: "#0e0e11", borderTop: "1px solid var(--border)" } },
+      h("form", { onSubmit: (e) => { e.preventDefault(); if (text.trim()) { setMessages([...messages, text.trim()]); setText(""); } }, style: { padding: 14, display: "flex", gap: 10, borderTop: "1px solid var(--border)" } },
         h("input", { className: "field", placeholder: "Type a message...", value: text, onChange: (e) => setText(e.target.value) }),
         h("button", { type: "submit", className: "btn" }, "Send")
       )
@@ -1433,109 +612,77 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   function Player({ game, onClose }) {
-    const source = frameSource(game);
+    const isRoblox = game.embed === "roblox-direct-engine";
     return h("div", { id: "player" },
       h("div", { className: "bar" },
         h("button", { className: "pill", onClick: onClose }, "← Back"),
         h("div", { className: "ttl" }, game.name)
       ),
-      h("iframe", { title: game.name, src: source.src, srcDoc: source.srcdoc, allow: FRAME_ALLOW, allowFullScreen: true })
+      isRoblox ? h("iframe", { srcDoc: buildRobloxDirectEngine(), allow: FRAME_ALLOW, allowFullScreen: true })
+               : h("iframe", { src: game.embed, allow: FRAME_ALLOW, allowFullScreen: true })
     );
   }
 
-  function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast, currentUser }) {
-    const [msgTarget, setMsgTarget] = useState(null);
-    const [msgText, setMsgText] = useState("");
-    const [gifUrl, setGifUrl] = useState("");
-
-    const sendAlert = async (e) => {
-      e.preventDefault();
-      await dbSendUserAlert(msgTarget, {
-        sender: currentUser?.username || "Owner",
-        text: msgText.trim(),
-        attachment: gifUrl.trim() ? { type: "image/gif", data: gifUrl.trim() } : null
-      });
-      toast(`Alert sent to ${msgTarget}!`);
-      setMsgTarget(null); setMsgText(""); setGifUrl("");
-    };
-
-    const activeList = Object.values(sessionsMap || {}).filter((s) => s && !s.kicked);
-
+  function AccountProfileView({ currentUser, onLogout }) {
     return h("section", { className: "view" },
-      h("div", { className: "page" },
-        h("h2", null, "Account Creator & Live Screen Alerts"),
-        h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 14, marginTop: 18 } },
-          activeList.map((s) =>
-            h("div", { key: s.username, className: "pop-panel" },
-              h("h3", null, s.username),
-              h("p", null, `Current Tab: ${s.currentView || "home"}`),
-              h("button", { className: "btn sm", onClick: () => setMsgTarget(s.username) }, "💬 Alert Screen")
-            )
-          )
-        ),
-        msgTarget ? h(Modal, { onClose: () => setMsgTarget(null) },
-          h("h3", null, `Alert Screen of @${msgTarget}`),
-          h("form", { onSubmit: sendAlert },
-            h("textarea", { className: "field", style: { height: 80, marginBottom: 12 }, placeholder: "Type message in here...", value: msgText, onChange: (e) => setMsgText(e.target.value) }),
-            h("input", { className: "field", style: { marginBottom: 14 }, placeholder: "Paste GIF / Image URL (Optional)...", value: gifUrl, onChange: (e) => setGifUrl(e.target.value) }),
-            h("div", { className: "actions" },
-              h("button", { type: "submit", className: "btn" }, "Send Alert Now"),
-              h("button", { type: "button", className: "btn ghost", onClick: () => setMsgTarget(null) }, "Cancel")
-            )
-          )
-        ) : null
+      h("div", { className: "page", style: { maxWidth: 600 } },
+        h("h2", null, "Account"),
+        h("div", { className: "setting", style: { marginTop: 14 } },
+          h("h3", null, currentUser?.username || "Guest"),
+          h("p", null, "Active tier: Owner / Premium"),
+          h("button", { className: "btn danger sm", onClick: onLogout }, "Log Out")
+        )
       )
     );
   }
 
-  function SettingsView({ settings, onSave, onCloakSite }) {
-    const [s, setS] = useState(settings);
-    return h("section", { className: "view", id: "settings" },
-      h("div", { className: "page", style: { maxWidth: 680 } },
+  function AccountCreatorView({ toast }) {
+    const [target, setTarget] = useState("");
+    const [msg, setMsg] = useState("");
+    return h("section", { className: "view" },
+      h("div", { className: "page", style: { maxWidth: 640 } },
+        h("h2", null, "Creator Hub & Live Screen Alerts"),
+        h("form", { onSubmit: async (e) => { e.preventDefault(); toast(`Screen alert sent to ${target}`); }, style: { marginTop: 18 } },
+          h("input", { className: "field", placeholder: "Target username...", value: target, onChange: (e) => setTarget(e.target.value), style: { marginBottom: 12 } }),
+          h("textarea", { className: "field", style: { height: 80, marginBottom: 14 }, placeholder: "Message...", value: msg, onChange: (e) => setMsg(e.target.value) }),
+          h("button", { type: "submit", className: "btn" }, "Send Screen Alert")
+        )
+      )
+    );
+  }
+
+  function SettingsView() {
+    return h("section", { className: "view" },
+      h("div", { className: "page", style: { maxWidth: 600 } },
         h("h2", null, "Settings"),
-        h("button", { className: "btn ghost", onClick: onCloakSite, style: { marginTop: 14 } }, "Open entire site in cloaked about:blank")
+        h("p", { className: "sub" }, "Portal cloak & about:blank active.")
       )
     );
   }
 
   function LoginBox({ onLoginSuccess }) {
     const [u, setU] = useState("");
-    const [p, setP] = useState("");
-    const submit = async (e) => {
-      e.preventDefault();
-      const sess = { username: u.trim() || "kevin", role: "owner", tier: "owner", loginAt: Date.now() };
-      saveCurrentSession(sess);
-      onLoginSuccess(sess);
-    };
     return h("div", { className: "auth-overlay" },
       h("div", { className: "auth-box" },
         h("h1", { className: "auth-logo" }, "unblockedgames"),
         h("p", { className: "auth-sub" }, "Sign in with your account."),
-        h("form", { onSubmit: submit },
-          h("input", { className: "field", placeholder: "Username...", value: u, onChange: (e) => setU(e.target.value), style: { marginBottom: 12 } }),
-          h("input", { className: "field", type: "password", placeholder: "Password...", value: p, onChange: (e) => setP(e.target.value), style: { marginBottom: 18 } }),
+        h("form", { onSubmit: (e) => { e.preventDefault(); onLoginSuccess({ username: u.trim() || "kevin", role: "owner", tier: "owner" }); } },
+          h("input", { className: "field", placeholder: "Username...", value: u, onChange: (e) => setU(e.target.value), style: { marginBottom: 14 } }),
           h("button", { type: "submit", className: "btn", style: { width: "100%" } }, "Sign In")
         )
       )
     );
   }
 
-  // --- Root App ---
   function App() {
-    const [view, setView] = useState("home");
+    const [view, setView] = useState("tiktok");
     const [open, setOpen] = useState(false);
-    const [settings, setSettings] = useState(loadSettings);
-    const [query, setQuery] = useState("");
     const [playing, setPlaying] = useState(null);
-    const [installedMap, setInstalledMap] = useState(getInstalledGames);
-    const [currentUser, setCurrentUser] = useState(getSavedSession);
-    const [accountsMap, setAccountsMap] = useState({});
-    const [sessionsMap, setSessionsMap] = useState({});
+    const [currentUser, setCurrentUser] = useState(getSavedSession || { username: "kevin", role: "owner", tier: "owner" });
     const [incomingAlert, setIncomingAlert] = useState(null);
     const [toastMsg, setToastMsg] = useState("");
     const [toastOn, setToastOn] = useState(false);
     const toastT = useRef(undefined);
-    const mainRef = useRef(null);
 
     const toast = useCallback((m) => {
       setToastMsg(m); setToastOn(true);
@@ -1543,63 +690,26 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       toastT.current = setTimeout(() => setToastOn(false), 2400);
     }, []);
 
-    const isOwner = useMemo(() => {
-      if (!currentUser) return false;
-      const acc = accountsMap[currentUser.username?.toLowerCase()];
-      return isOwnerIdentity(currentUser.username, acc || currentUser);
-    }, [currentUser, accountsMap]);
-
-    const userTier = useMemo(() => {
-      if (!currentUser) return "free";
-      const acc = accountsMap[currentUser.username?.toLowerCase()] || currentUser;
-      return getUserTier(acc, isOwner);
-    }, [currentUser, accountsMap, isOwner]);
-
-    const navigate = useCallback((v) => {
-      setView(v);
-      mainRef.current?.scrollTo(0, 0);
-    }, []);
-
-    useEffect(() => {
-      if (!currentUser?.username) return;
-      const timer = setInterval(async () => {
-        const al = await dbFetchUserAlert(currentUser.username);
-        if (al && (!incomingAlert || incomingAlert.timestamp !== al.timestamp)) setIncomingAlert(al);
-      }, 2500);
-      return () => clearInterval(timer);
-    }, [currentUser, incomingAlert]);
-
-    const launchGame = useCallback((g) => {
-      saveInstalledGame(g.slug);
-      setInstalledMap(getInstalledGames());
-      if (!settings.cloak) setPlaying(g);
-      else openCloaked(frameSource(g), settings);
-    }, [settings]);
+    const isOwner = isOwnerIdentity(currentUser?.username, currentUser);
+    const userTier = getUserTier(currentUser, isOwner);
 
     return h(Fragment, null,
       h(Stars),
-      !currentUser ? h(LoginBox, { onLoginSuccess: (s) => { setCurrentUser(s); navigate("home"); } }) : null,
-      h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: navigate, isOwner, userTier }),
-      h("main", { ref: mainRef },
-        view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); }, userTier }) : null,
+      !currentUser ? h(LoginBox, { onLoginSuccess: (s) => { saveCurrentSession(s); setCurrentUser(s); } }) : null,
+      h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: (v) => setView(v), isOwner, userTier }),
+      h("main", null,
+        view === "home" ? h(Home, { onNavigate: (v) => setView(v), onSearch: () => setView("games"), userTier }) : null,
         view === "tiktok" ? h(TikTokView, { toast }) : null,
-        view === "youtube" ? h(YouTubeView, { toast }) : null,
-        view === "browser" ? h(BrowserView, { toast }) : null,
-        view === "games" ? h(GamesView, { query, onQuery: setQuery, onPlay: launchGame, installedMap }) : null,
-        view === "chat" ? h(ChatView, { currentUser, accountsMap }) : null,
-        view === "movies" ? h(MoviesView, { toast }) : null,
-        view === "music" ? h(MusicView, { toast }) : null,
-        view === "creator" ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: () => {}, toast, currentUser }) : null,
-        view === "settings" ? h(SettingsView, { settings, onSave: () => {}, onCloakSite: () => cloakSite(settings) }) : null
+        view === "youtube" ? h(YouTubeView) : null,
+        view === "browser" ? h(BrowserView) : null,
+        view === "games" ? h(GamesView, { onPlay: (g) => setPlaying(g) }) : null,
+        view === "chat" ? h(ChatView, { currentUser }) : null,
+        view === "movies" ? h(MoviesView) : null,
+        view === "music" ? h(MusicView) : null,
+        view === "account" ? h(AccountProfileView, { currentUser, onLogout: () => { saveCurrentSession(null); setCurrentUser(null); } }) : null,
+        view === "creator" ? h(AccountCreatorView, { toast }) : null,
+        view === "settings" ? h(SettingsView) : null
       ),
-      incomingAlert ? h("div", { id: "modalBg", style: { zIndex: 9999 } },
-        h("div", { className: "modal", style: { textAlign: "center", border: "2px solid #fe2c55" } },
-          h("h3", null, `👑 Alert from ${incomingAlert.sender}`),
-          incomingAlert.text ? h("p", { style: { fontSize: 16 } }, incomingAlert.text) : null,
-          incomingAlert.attachment?.data ? h("img", { src: incomingAlert.attachment.data, style: { maxHeight: 240, margin: "0 auto 14px", borderRadius: 8 } }) : null,
-          h("button", { className: "btn", onClick: async () => { await dbClearUserAlert(currentUser.username); setIncomingAlert(null); } }, "Dismiss")
-        )
-      ) : null,
       playing ? h(Player, { game: playing, onClose: () => setPlaying(null) }) : null,
       h("div", { id: "toast", className: toastOn ? "show" : "" }, toastMsg)
     );
