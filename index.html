@@ -31,14 +31,11 @@ button, input, select, optgroup, textarea, ::file-selector-button {
 }
 html, body, #root { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: "Outfit", system-ui, sans-serif; overflow: hidden; }
 button { cursor: pointer; font-family: inherit; }
-
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.16); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.28); }
-
 #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-
 /* Sidebar */
 #sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 64px; background: #08080a; border-right: 1px solid var(--border); z-index: 30; display: flex; flex-direction: column; align-items: stretch; transition: width 0.25s ease; }
 #sidebar.open { width: 196px; }
@@ -53,19 +50,16 @@ button { cursor: pointer; font-family: inherit; }
 #sidebar .spacer { flex: 1; }
 #expandBtn svg { transition: transform 0.25s; }
 #sidebar.open #expandBtn svg { transform: rotate(180deg); }
-
 /* Main */
 main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; overflow-y: auto; overflow-x: hidden; transition: left 0.25s ease; }
 #sidebar.open ~ main { left: 196px; }
 .view { height: 100%; animation: fade 0.35s ease; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-
 /* Pills */
 .pill { background: rgba(20, 20, 23, 0.85); border: 1px solid var(--border); border-radius: 12px; padding: 8px 16px; font-size: 13px; color: #d6d6da; cursor: pointer; transition: 0.2s; backdrop-filter: blur(6px); }
 .pill:hover { background: rgba(40, 40, 46, 0.95); border-color: rgba(255, 255, 255, 0.25); }
 #topRight { position: fixed; top: 16px; right: 16px; z-index: 20; }
 #footerLinks { position: fixed; bottom: 16px; right: 16px; z-index: 20; display: flex; gap: 10px; }
-
 /* Home */
 #home { display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100%; padding-bottom: 40px; position: relative; }
 .logo-wrap { position: relative; margin-bottom: 30px; text-align: center; }
@@ -85,7 +79,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .quick .circ svg { width: 22px; height: 22px; }
 .quick button:hover .circ { background: #1d1d22; border-color: rgba(255, 255, 255, 0.3); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255, 255, 255, 0.07); }
 .ad { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); font-size: 11px; letter-spacing: 0.14em; color: #8b8b90; font-weight: 600; display: flex; gap: 10px; align-items: center; }
-
 /* Page layout */
 .page { padding: 36px 40px 90px; max-width: 1400px; margin: 0 auto; }
 .page h2 { font-size: 34px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.02em; }
@@ -110,7 +103,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .card .name { font-weight: 600; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card .tag { font-size: 12px; color: var(--muted); margin-top: 2px; display: flex; align-items: center; justify-content: space-between; }
 .empty { padding: 60px 0; text-align: center; color: var(--muted); }
-
 /* Settings & Buttons */
 .setting { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; }
 .setting h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
@@ -135,7 +127,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .btn.warn { background: rgba(245, 158, 11, 0.14); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.38); }
 .btn.warn:hover { background: #d97706; color: #fff; border-color: #d97706; }
 .btn.sm { height: 34px; padding: 0 13px; font-size: 12.5px; border-radius: 8px; }
-
 /* Modal & Player */
 #modalBg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .modal { background: #0c0c0f; border: 1px solid var(--border); border-radius: 18px; padding: 26px; width: min(480px, 100%); animation: fade 0.25s ease; }
@@ -144,13 +135,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .modal .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
 #toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 30px); background: #e4e4e4; color: #111; padding: 10px 18px; border-radius: 999px; font-weight: 500; font-size: 14px; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; }
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
-
 #player { position: fixed; inset: 0; z-index: 90; background: #000; display: flex; flex-direction: column; animation: fade 0.25s ease; }
 #player .bar { display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 14px; background: #08080a; border-bottom: 1px solid var(--border); flex: 0 0 auto; overflow-x: auto; }
 #player .bar .ttl { font-weight: 600; font-size: 15px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 10px; }
 #player .bar .pill { padding: 6px 14px; white-space: nowrap; }
 #player iframe { flex: 1; width: 100%; border: 0; background: #000; }
-
 /* Auth & Panels */
 .auth-overlay { position: fixed; inset: 0; z-index: 85; background: rgba(2, 2, 3, 0.92); backdrop-filter: blur(18px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade 0.3s ease; }
 .auth-box { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 34px 30px; width: min(420px, 100%); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85); position: relative; overflow: hidden; }
@@ -170,7 +159,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .eye-btn:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
 .eye-btn svg { width: 15px; height: 15px; }
 .mono-box { font-family: monospace; background: #070709; border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; font-size: 13px; color: #e4e4e4; display: inline-flex; align-items: center; gap: 8px; }
-
 /* Tier Badges */
 .badge-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, 0.07); border: 1px solid var(--border); letter-spacing: 0.03em; }
 .badge-pill.owner { background: rgba(255, 255, 255, 0.18); color: #fff; border-color: rgba(255, 255, 255, 0.45); }
@@ -178,10 +166,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .badge-pill.tier-free { background: rgba(161, 161, 170, 0.14); color: #d4d4d8; border-color: rgba(161, 161, 170, 0.35); }
 .badge-pill.tier-pro { background: rgba(59, 130, 246, 0.18); color: #93c5fd; border-color: rgba(59, 130, 246, 0.45); }
 .badge-pill.tier-premium { background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(168, 85, 247, 0.22)); color: #fde68a; border-color: rgba(245, 158, 11, 0.55); box-shadow: 0 0 16px rgba(245, 158, 11, 0.18); }
-
-/* ============================================================================
-   FULL-SCREEN GOOGLE-STYLE FROSTED GLASS BROWSER
-   ============================================================================ */
+/* Full-Screen Frosted Glass Browser */
 .gbrowser-root { height: 100%; width: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden; }
 .gbrowser-idle { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
 .gbrowser-top { background: rgba(14, 14, 18, 0.82); backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 14px 28px 0; flex-shrink: 0; z-index: 15; }
@@ -209,7 +194,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .gbrowser-shop-card { background: rgba(20, 20, 26, 0.75); backdrop-filter: blur(14px); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: 0.22s; }
 .gbrowser-shop-card:hover { transform: translateY(-4px); border-color: rgba(74, 222, 128, 0.45); box-shadow: 0 14px 30px rgba(0,0,0,0.65); }
 .gbrowser-shop-card img { width: 100%; height: 190px; object-fit: contain; background: #fff; padding: 12px; }
-
 /* Netflix UI */
 .nf-wrap { background: #141414; min-height: 100%; padding-bottom: 80px; color: #fff; position: relative; }
 .nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: rgba(20,20,20,0.85); backdrop-filter: blur(8px); gap: 20px; flex-wrap: wrap; }
@@ -227,7 +211,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .nf-card { flex: 0 0 185px; border-radius: 8px; overflow: hidden; background: #1f1f1f; position: relative; cursor: pointer; transition: transform 0.25s ease; border: 1px solid rgba(255,255,255,0.06); }
 .nf-card:hover { transform: scale(1.07); z-index: 15; }
 .nf-card-poster { width: 100%; height: 270px; object-fit: cover; display: block; }
-
 /* Spotify UI */
 .sp-app { display: flex; flex-direction: column; height: 100%; width: 100%; background: #000; color: #fff; overflow: hidden; padding: 8px; gap: 8px; }
 .sp-body { flex: 1; display: flex; gap: 8px; overflow: hidden; min-height: 0; }
@@ -245,7 +228,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .sp-trow:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .sp-trow.active { background: rgba(29, 185, 84, 0.14); color: #1ed760; }
 .sp-player-bar { height: 80px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 16px; flex-shrink: 0; }
-
 /* TikTok Feed UI */
 .tt-card { background: #0d0d11; border: 1px solid var(--border); border-radius: 18px; overflow: hidden; max-width: 420px; width: 100%; margin: 0 auto 24px; box-shadow: 0 18px 40px rgba(0,0,0,0.8); }
 .tt-video { width: 100%; max-height: 620px; background: #000; display: block; object-fit: contain; }
@@ -259,7 +241,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 (function () {
   const { useState, useEffect, useRef, useCallback, useMemo, memo, StrictMode, createElement: h, Fragment } = window.React;
   const { createRoot } = window.ReactDOM;
-
   // ============================================================================
   // OWNER & REAL-TIME DATABASE CONFIGURATION + TIER PERMISSIONS
   // ============================================================================
@@ -273,51 +254,41 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     ],
     masterOwnerPassword: "admin"
   };
-
-  // Tier Access Matrix:
-  // Free -> Games, Movies, Music
-  // Pro -> Chat, Games, Movies, Music
-  // Premium -> YouTube, TikTok, Browser, Chat, Movies, Games, Music
   const TIER_PERMISSIONS = {
     free: ["home", "games", "movies", "music", "account", "settings"],
     pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
     premium: ["home", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings"],
     owner: ["home", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
   };
-
   function getUserTier(acc, isOwner) {
     if (isOwner || (acc && acc.role === "owner")) return "owner";
     const t = (acc && acc.tier ? acc.tier : "free").toLowerCase();
     if (t === "premium" || t === "pro" || t === "free") return t;
     return "free";
   }
-
   function canAccessView(tier, viewId) {
     const allowed = TIER_PERMISSIONS[tier] || TIER_PERMISSIONS.free;
     return allowed.includes(viewId);
   }
-
   function requiredTierForView(viewId) {
     if (viewId === "chat") return "Pro";
     if (viewId === "youtube" || viewId === "tiktok" || viewId === "browser") return "Premium";
     if (viewId === "creator") return "Owner";
     return "Free";
   }
-
   function renderTierBadge(tier, isOwner) {
     if (isOwner || tier === "owner") return h("span", { className: "badge-pill owner" }, "👑 OWNER");
     if (tier === "premium") return h("span", { className: "badge-pill tier-premium" }, "💎 PREMIUM");
     if (tier === "pro") return h("span", { className: "badge-pill tier-pro" }, "⚡ PRO");
     return h("span", { className: "badge-pill tier-free" }, "FREE TIER");
   }
-
   const LS_ACCOUNTS = "ug_rt_accounts_v1";
   const LS_SESSIONS = "ug_rt_sessions_v1";
   const LS_CURRENT_USER = "ug_active_user_v1";
   const LS_DB_URL = "ug_custom_db_url_v1";
   const LS_INSTALLED_GAMES = "ug_installed_games_v1";
+  const LS_ALERTS = "ug_local_alerts_v1";
   const bc = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("ug_realtime_sync") : null;
-
   function getInstalledGames() {
     try { return JSON.parse(localStorage.getItem(LS_INSTALLED_GAMES) || "{}"); } catch { return {}; }
   }
@@ -460,6 +431,56 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       try { await fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" }); } catch {}
     }
   }
+  // ============================================================================
+  // OWNER SCREEN ALERTS & POPUP MESSAGING
+  // ============================================================================
+  async function dbSendUserAlert(targetUsername, alertData) {
+    const key = targetUsername.trim().toLowerCase();
+    const base = getDbUrl();
+    const alertObj = { ...alertData, id: "alert_" + Date.now(), timestamp: Date.now() };
+    if (base) {
+      try {
+        await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(alertObj)
+        });
+      } catch {}
+    } else {
+      const store = getLocalStore(LS_ALERTS);
+      store[key] = alertObj;
+      setLocalStore(LS_ALERTS, store);
+    }
+  }
+  async function dbFetchUserAlert(username) {
+    if (!username) return null;
+    const key = username.trim().toLowerCase();
+    const base = getDbUrl();
+    if (base) {
+      try {
+        const res = await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, { cache: "no-store" });
+        if (res.ok) return await res.json();
+      } catch {}
+    } else {
+      const store = getLocalStore(LS_ALERTS);
+      return store[key] || null;
+    }
+    return null;
+  }
+  async function dbClearUserAlert(username) {
+    if (!username) return;
+    const key = username.trim().toLowerCase();
+    const base = getDbUrl();
+    if (base) {
+      try {
+        await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, { method: "DELETE" });
+      } catch {}
+    } else {
+      const store = getLocalStore(LS_ALERTS);
+      delete store[key];
+      setLocalStore(LS_ALERTS, store);
+    }
+  }
   function getSavedSession() {
     try { const raw = localStorage.getItem(LS_CURRENT_USER); if (raw) return JSON.parse(raw); } catch {}
     return null;
@@ -485,9 +506,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     if (mins > 0) return `${mins}m ${secs}s`;
     return `${secs}s`;
   }
-
   // ============================================================================
-  // BUILT-IN 3D WEBGL ROBLOX ENGINE (100% LOCAL IN-HTML, FORTIGUARD SAFE)
+  // BUILT-IN 3D WEBGL ROBLOX ENGINE
   // ============================================================================
   function buildRobloxDirectEngine() {
     return `<!doctype html><html><head><meta charset="utf-8"><style>
@@ -557,9 +577,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         loop();
       <\/script></body></html>`;
   }
-
   // ============================================================================
-  // FULL GAMES CATALOG
+  // GAMES CATALOG
   // ============================================================================
   const GAMES = [
    { "slug": "roblox", "name": "Roblox", "cat": "Action", "embed": "roblox-direct-engine", "thumb": "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" },
@@ -644,7 +663,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
    { "slug": "wrestle-bros", "name": "Wrestle Bros", "cat": "Sports", "embed": "https://wrestle-bros.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/wrestle-bros_retina.webp" },
    { "slug": "zombsroyaleio", "name": "ZombsRoyale.io", "cat": "Shooter", "embed": "https://zombsroyaleio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/z/zombsroyaleio_retina.webp" }
   ];
-
   const INITIAL_MEDIA = [
     { id: "tt9362722", tmdb: "569094", title: "Spider-Man: Across the Spider-Verse", cat: "Movies", year: "2023", rating: "98% Match", age: "PG", thumb: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg", backdrop: "https://image.tmdb.org/t/p/original/4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg", desc: "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People.", type: "movie" },
     { id: "tt15239678", tmdb: "693134", title: "Dune: Part Two", cat: "Movies", year: "2024", rating: "97% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg", backdrop: "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg", desc: "Paul Atreides unites with Chani and the Fremen while on a warpath of revenge.", type: "movie" },
@@ -654,12 +672,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     { id: "tt9335498", tmdb: "85937", title: "Demon Slayer", cat: "Anime", year: "2019", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg", backdrop: "https://image.tmdb.org/t/p/original/nTvM4mhqNlHIvUkI1gVnW6XP7GG.jpg", desc: "Tanjiro sets out to become a demon slayer to avenge his family and cure his sister.", type: "tv" },
     { id: "tt0903747", tmdb: "1396", title: "Breaking Bad", cat: "TV Shows", year: "2008", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg", backdrop: "https://image.tmdb.org/t/p/original/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg", desc: "A chemistry teacher diagnosed with cancer turns to manufacturing meth with a former student.", type: "tv" }
   ];
-
   const DEFAULTS = { cloak: false, title: "about:blank", icon: "", redirect: false, decoy: "https://classroom.google.com", panic: true };
   const KEY = "ug_settings";
   function loadSettings() { try { return { ...DEFAULTS, ...JSON.parse(localStorage.getItem(KEY) || "{}") }; } catch { return { ...DEFAULTS }; } }
   function saveSettings(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} }
-
   function frameSource(game) {
     const activeUrl = game.embed;
     if (activeUrl === "roblox-direct-engine") {
@@ -672,9 +688,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     }
     return { src: activeUrl };
   }
-
   const FRAME_ALLOW = "fullscreen; autoplay; gamepad; clipboard-write; accelerometer; gyroscope; pointer-lock; microphone; keyboard-map";
-
   function openCloaked(source, s) {
     const w = window.open("about:blank", "_blank");
     if (!w) return false;
@@ -689,10 +703,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return true;
   }
   function cloakSite(s) { return openCloaked({ src: location.href.split("#")[0] }, s); }
-
-  // ============================================================================
-  // ICONS
-  // ============================================================================
   function Svg({ children, sw = 1.8 }) {
     return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
   }
@@ -712,12 +722,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const ChevronIcon = (p) => h(Svg, p, h("path", { d: "m9 18 6-6-6-6" }));
   const SearchIcon = (p) => h(Svg, p, h("circle", { cx: "11", cy: "11", r: "8" }), h("path", { d: "m21 21-4.3-4.3" }));
   const RefreshIcon = (p) => h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
-
   function Modal({ children, onClose }) {
     return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
   }
-
-  // --- Stars Background ---
   function Stars() {
     const ref = useRef(null);
     useEffect(() => {
@@ -749,8 +756,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     }, []);
     return h("canvas", { id: "stars", ref });
   }
-
-  // --- Sidebar Component (Shows Lock Indicator for Restricted Tier Tabs) ---
   function Sidebar({ view, open, onToggle, onNavigate, isOwner, userTier }) {
     const btn = (id, label, icon) => {
       const unlocked = canAccessView(userTier, id);
@@ -764,7 +769,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         h("span", null, unlocked ? label : `${label} 🔒`)
       );
     };
-
     return h("nav", { id: "sidebar", className: open ? "open" : "" },
       h("div", { className: "side-group", style: { paddingTop: 2 } },
         btn("home", "Home", h(HomeIcon)),
@@ -785,8 +789,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
-  // --- Home Component ---
   const WORDS = ["Roblox", "Geometry Dash", "YouTube", "TikTok", "Play anything"];
   function useTypingPlaceholder(paused) {
     const [text, setText] = useState("Browse");
@@ -809,13 +811,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     }, []);
     return text;
   }
-
   function Home({ onNavigate, onSearch, userTier }) {
     const [value, setValue] = useState("");
     const [focused, setFocused] = useState(false);
     const placeholder = useTypingPlaceholder(focused || !!value);
     const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
-
     const quickBtn = (id, label, icon, customStyle = {}) => {
       const unlocked = canAccessView(userTier, id);
       return h("button", {
@@ -826,7 +826,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         unlocked ? label : `${label} 🔒`
       );
     };
-
     return h("section", { className: "view", id: "home" },
       h("div", { className: "logo-wrap" }, h("h1", { className: "logo" }, "unblockedgames")),
       h("div", { className: "search-wrap" },
@@ -847,9 +846,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       h("div", { className: "ad" }, "100% FREE \u2022 100% UNDETECTED", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
     );
   }
-
   // ============================================================================
-  // FULL-PAGE GOOGLE-LIKE FROSTED GLASS BROWSER (Premium Tier)
+  // FULL-PAGE GOOGLE-LIKE FROSTED GLASS BROWSER
   // ============================================================================
   function BrowserView() {
     const [query, setQuery] = useState("");
@@ -864,20 +862,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [previewImg, setPreviewImg] = useState(null);
     const [previewVid, setPreviewVid] = useState(null);
     const debounceRef = useRef(null);
-
     const isUrlLike = (str) => {
       const s = (str || "").trim();
       return /^(https?:\/\/|www\.)/i.test(s) || (/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(s) && !s.includes(" "));
     };
-
     const openUrlAutomatically = useCallback(async (rawUrl) => {
       let target = (rawUrl || "").trim();
       if (!target) return;
       if (!/^https?:\/\//i.test(target)) target = "https://" + target;
-
       setActiveUrl(target);
       setLoading(true);
-
       const clickInterceptor = `
         <base href="${target}">
         <script>
@@ -900,7 +894,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           }, true);
         <\/script>
       `;
-
       if (target.includes("wikipedia.org/wiki/")) {
         try {
           const titlePart = target.split("/wiki/")[1];
@@ -923,7 +916,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           }
         } catch {}
       }
-
       try {
         const fetchAllOrigins = async () => {
           const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
@@ -939,7 +931,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           if (!t || t.length < 40) throw new Error("empty");
           return t;
         };
-
         const winningHtml = await Promise.any([fetchAllOrigins(), fetchCodeTabs()]);
         setFrameHtml(clickInterceptor + winningHtml);
       } catch {
@@ -947,7 +938,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       }
       setLoading(false);
     }, []);
-
     useEffect(() => {
       const onMsg = (e) => {
         if (e.data && e.data.type === "AUTO_BROWSER_NAV" && e.data.url) {
@@ -957,7 +947,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       window.addEventListener("message", onMsg);
       return () => window.removeEventListener("message", onMsg);
     }, [openUrlAutomatically]);
-
     const executeGoogleSearch = useCallback(async (qText) => {
       const clean = (qText || "").trim();
       if (!clean) {
@@ -965,7 +954,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         return;
       }
       setLoading(true);
-
       try {
         const [wikiSearch, ddgSearch, wikiImages, dummyShop, itunesShop, pipedVids] = await Promise.all([
           fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(clean)}&srlimit=12&utf8=&format=json&origin=*`).then((r) => r.json()).catch(() => null),
@@ -975,7 +963,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(clean)}&entity=software,ebook,movie&limit=16`).then((r) => r.json()).catch(() => null),
           fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(clean)}&filter=videos`).then((r) => r.json()).catch(() => null)
         ]);
-
         const webList = [];
         if (isUrlLike(clean)) {
           const norm = /^https?:\/\//i.test(clean) ? clean : "https://" + clean;
@@ -999,7 +986,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           });
         });
         setWebResults(webList);
-
         const imgs = [];
         const pages = wikiImages?.query?.pages || {};
         Object.values(pages).forEach((p) => {
@@ -1024,7 +1010,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           }
         });
         setImgResults(imgs);
-
         const shops = [];
         (dummyShop?.products || []).forEach((prod) => {
           shops.push({
@@ -1050,22 +1035,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             url: item.trackViewUrl || `https://en.wikipedia.org/wiki/${encodeURIComponent(item.trackName || clean)}`
           });
         });
-        if (shops.length === 0) {
-          webList.slice(0, 8).forEach((w, idx) => {
-            shops.push({
-              id: "gen_" + idx,
-              title: w.title,
-              price: `$${(19.99 + idx * 10).toFixed(2)}`,
-              store: "Global Marketplace",
-              rating: "★ 4.8",
-              img: imgs[idx]?.thumb || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80",
-              desc: w.snippet,
-              url: w.url
-            });
-          });
-        }
         setShopResults(shops);
-
         const vids = (pipedVids?.items || []).map((v) => {
           const vidId = v.url ? v.url.split("v=")[1] : "";
           return {
@@ -1080,7 +1050,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       } catch {}
       setLoading(false);
     }, []);
-
     const handleInput = (val) => {
       setQuery(val);
       clearTimeout(debounceRef.current);
@@ -1092,7 +1061,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         executeGoogleSearch(val);
       }, 180);
     };
-
     const handleSubmit = (e) => {
       e.preventDefault();
       const val = query.trim();
@@ -1104,9 +1072,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         executeGoogleSearch(val);
       }
     };
-
     const isSearching = query.trim().length > 0 || !!activeUrl;
-
     return h("section", { className: "view" },
       h("div", { className: "gbrowser-root" },
         !isSearching ? (
@@ -1167,7 +1133,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 )
               ) : null
             ),
-
             h("div", { className: "gbrowser-body" },
               activeUrl ? (
                 frameHtml
@@ -1278,7 +1243,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             )
           )
         ),
-
         previewImg ? h(Modal, { onClose: () => setPreviewImg(null) },
           h("h3", { style: { fontSize: 17, marginBottom: 12 } }, previewImg.title),
           h("img", { src: previewImg.full || previewImg.thumb, style: { width: "100%", maxHeight: "65vh", objectFit: "contain", borderRadius: 12, background: "#000", marginBottom: 14 }, referrerPolicy: "no-referrer" }),
@@ -1286,7 +1250,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             h("button", { className: "btn", onClick: () => setPreviewImg(null) }, "Close")
           )
         ) : null,
-
         previewVid ? h(Modal, { onClose: () => setPreviewVid(null) },
           h("h3", { style: { fontSize: 17, marginBottom: 12 } }, previewVid.title),
           h("div", { style: { width: "100%", height: 300, background: "#000", borderRadius: 12, overflow: "hidden", marginBottom: 14 } },
@@ -1305,9 +1268,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
   // ============================================================================
-  // FIXED YOUTUBE HUB (Error 153 Fixed via strict-origin-when-cross-origin + Direct Stream Fallback!)
+  // YOUTUBE HUB
   // ============================================================================
   const YT_PRESETS = [
     { label: "🔥 Trending Gaming", q: "minecraft roblox geometry dash gameplay" },
@@ -1316,22 +1278,18 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     { label: "⚽ Sports Highlights", q: "football basketball highlights" },
     { label: "🎬 MrBeast & Challenges", q: "mrbeast challenge" }
   ];
-
   const FALLBACK_YT_VIDEOS = [
     { id: "jfKfPfyJRdk", title: "lofi hip hop radio - beats to relax/study to", author: "Lofi Girl", views: "Live Stream", thumb: "https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg" },
     { id: "dQw4w9WgXcQ", title: "Rick Astley - Never Gonna Give You Up (Official Video)", author: "Rick Astley", views: "1.5B views", thumb: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" },
     { id: "kJQP7kiw5Fk", title: "Luis Fonsi - Despacito ft. Daddy Yankee", author: "Luis Fonsi", views: "8.4B views", thumb: "https://i.ytimg.com/vi/kJQP7kiw5Fk/hqdefault.jpg" },
     { id: "9bZkp7q19f0", title: "PSY - GANGNAM STYLE(강남스타일) M/V", author: "officialpsy", views: "5.1B views", thumb: "https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg" }
   ];
-
   function YouTubeView() {
     const [searchQ, setSearchQ] = useState("");
     const [videos, setVideos] = useState([]);
     const [activeVideo, setActiveVideo] = useState(null);
     const [directStreamUrl, setDirectStreamUrl] = useState("");
     const [loading, setLoading] = useState(false);
-
-    // Automatically fetch a raw MP4 stream in the background in case the school blocks youtube-nocookie embeds
     const selectVideo = useCallback(async (vid) => {
       setActiveVideo(vid);
       setDirectStreamUrl("");
@@ -1344,12 +1302,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         }
       } catch {}
     }, []);
-
     const searchYouTube = useCallback(async (queryText) => {
       const q = (queryText || "").trim();
       if (!q) return;
       setLoading(true);
-
       const ytMatch = q.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
       if (ytMatch) {
         const vidId = ytMatch[1];
@@ -1359,13 +1315,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         setLoading(false);
         return;
       }
-
       const apis = [
         `https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(q)}&filter=videos`,
         `https://api.piped.private.coffee/search?q=${encodeURIComponent(q)}&filter=videos`,
         `https://inv.tux.pizza/api/v1/search?q=${encodeURIComponent(q)}&type=video`
       ];
-
       let found = [];
       for (const apiUrl of apis) {
         try {
@@ -1388,41 +1342,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           }
         } catch {}
       }
-
-      if (found.length === 0) {
-        try {
-          const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent("https://www.youtube.com/results?search_query=" + q)}`);
-          const j = await r.json();
-          const html = j.contents || "";
-          const regex = /"videoId":"([A-Za-z0-9_-]{11})".*?"title":\{"runs":\[\{"text":"([^"]+)"/g;
-          const seen = new Set();
-          let m;
-          while ((m = regex.exec(html)) !== null && found.length < 24) {
-            if (!seen.has(m[1])) {
-              seen.add(m[1]);
-              found.push({
-                id: m[1],
-                title: m[2].replace(/\\u0026/g, "&"),
-                author: "YouTube Creator",
-                views: "Unblocked Stream",
-                thumb: `https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg`
-              });
-            }
-          }
-        } catch {}
-      }
-
       setVideos(found.length > 0 ? found : FALLBACK_YT_VIDEOS);
       setLoading(false);
     }, [selectVideo]);
-
     useEffect(() => {
       searchYouTube("minecraft roblox gaming");
     }, [searchYouTube]);
-
-    // Clean origin parameter + strict-origin-when-cross-origin completely eliminates YouTube Error 153!
     const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
-
     return h("section", { className: "view" },
       h("div", { className: "page" },
         h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 16 } },
@@ -1431,7 +1357,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             h("span", { className: "badge-pill live" }, "ERROR 153 FIXED • DIRECT PLAY")
           )
         ),
-
         activeVideo ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
           h("div", { className: "row", style: { marginBottom: 12 } },
             h("strong", { style: { fontSize: 16 } }, activeVideo.title),
@@ -1457,7 +1382,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 })
           )
         ) : null,
-
         h("form", {
           className: "toolbar",
           onSubmit: (e) => { e.preventDefault(); searchYouTube(searchQ); }
@@ -1473,7 +1397,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           ),
           h("button", { type: "submit", className: "btn", style: { background: "#ff0000", color: "#fff", height: 52 } }, loading ? "Searching..." : "Search YouTube")
         ),
-
         h("div", { className: "chips" },
           YT_PRESETS.map((p) =>
             h("button", {
@@ -1483,7 +1406,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             }, p.label)
           )
         ),
-
         loading ? h("div", { className: "empty" }, "Fetching unblocked YouTube videos...") :
         h("div", { className: "grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 18 } },
           videos.map((v) =>
@@ -1509,12 +1431,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
   // ============================================================================
-  // FIXED TIKTOK FEED (Multi-CORS Proxy Race + Instant Working Fallback Feed!)
+  // TIKTOK FEED
   // ============================================================================
   const TT_TOPICS = ["gaming", "memes", "roblox", "anime", "phonk", "sports", "cars", "funny"];
-
   const FALLBACK_TIKTOK_FEED = [
     {
       video_id: "tt_fb_1",
@@ -1549,19 +1469,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       author: { nickname: "AnimeVibes4K", unique_id: "animevibes", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&q=80" }
     }
   ];
-
   function TikTokView() {
     const [query, setQuery] = useState("gaming");
     const [inputVal, setInputVal] = useState("");
     const [feed, setFeed] = useState(FALLBACK_TIKTOK_FEED);
     const [loading, setLoading] = useState(false);
     const [likedIds, setLikedIds] = useState({});
-
     const fetchTikToks = useCallback(async (qText) => {
       setLoading(true);
       const targetApi = `https://www.tikwm.com/api/feed/search?keywords=${encodeURIComponent(qText)}&count=18`;
-
-      // Race Direct, AllOrigins CORS Proxy, and CodeTabs Proxy so TikTok never gets stuck!
       const tryDirect = async () => {
         const r = await fetch(targetApi);
         const j = await r.json();
@@ -1581,21 +1497,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         if (!parsed?.data?.videos?.length) throw new Error("empty");
         return parsed.data.videos;
       };
-
       try {
         const videos = await Promise.any([tryDirect(), tryAllOrigins(), tryCodeTabs()]);
         setFeed(videos);
       } catch {
-        // Always show working fallback videos if all external relays are blocked on school Wi-Fi
         setFeed(FALLBACK_TIKTOK_FEED);
       }
       setLoading(false);
     }, []);
-
     useEffect(() => {
       fetchTikToks(query);
     }, [query, fetchTikToks]);
-
     return h("section", { className: "view" },
       h("div", { className: "page", style: { maxWidth: 960 } },
         h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 16 } },
@@ -1604,7 +1516,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             h("span", { className: "badge-pill live" }, "DIRECT MP4 STREAM")
           )
         ),
-
         h("form", {
           className: "toolbar",
           onSubmit: (e) => {
@@ -1623,7 +1534,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           ),
           h("button", { type: "submit", className: "btn", style: { background: "#ff0050", color: "#fff", height: 52 } }, loading ? "Loading..." : "Search TikTok")
         ),
-
         h("div", { className: "chips" },
           TT_TOPICS.map((t) =>
             h("button", {
@@ -1633,7 +1543,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             }, `#${t}`)
           )
         ),
-
         h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 8 } },
           feed.map((item) => {
             const vidId = item.video_id || item.id;
@@ -1669,11 +1578,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
-  // --- Games Component (Free, Pro & Premium) ---
+  // ============================================================================
+  // GAMES HUB
+  // ============================================================================
   const CATS = ["All", ...Array.from(new Set(GAMES.map((g) => g.cat))).sort()];
   function hue(s) { let hVal = 0; for (const c of s) hVal = (hVal * 31 + c.charCodeAt(0)) % 360; return hVal; }
-
   const Card = memo(function Card({ game, isInstalled, onPlay }) {
     const [imgOk, setImgOk] = useState(true);
     const hVal = hue(game.slug);
@@ -1693,14 +1602,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   });
-
   function GamesView({ query, onQuery, onPlay, installedMap }) {
     const [cat, setCat] = useState("All");
     const list = useMemo(() => {
       const q = query.trim().toLowerCase();
       return GAMES.filter((g) => (cat === "All" || g.cat === cat) && (!q || g.name.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q)));
     }, [query, cat]);
-
     return h("section", { className: "view", id: "games" },
       h("div", { className: "page" },
         h("h2", null, "Games"),
@@ -1718,21 +1625,20 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
-  // --- Spotify Music View (Free, Pro & Premium) ---
+  // ============================================================================
+  // SPOTIFY & NETFLIX
+  // ============================================================================
   const PLAYLIST_PRESETS = [
     { id: "hits", name: "Today's Top Hits", desc: "Global Chart", color: "#1e3264", icon: "🔥", query: "top hits 2025 2026" },
     { id: "phonk", name: "Drift Phonk & Gym", desc: "High-energy phonk", color: "#8d1732", icon: "⚡", query: "drift phonk" },
     { id: "rap", name: "RapCaviar", desc: "Hip-Hop & Rap", color: "#ba5d07", icon: "🎤", query: "travis scott drake kendrick" },
     { id: "anime", name: "Anime Now", desc: "Anime openings", color: "#7358ff", icon: "🌸", query: "anime opening" }
   ];
-
   function fmtMs(ms) {
     if (!ms) return "0:30";
     const totalSec = Math.floor(ms / 1000);
     return `${Math.floor(totalSec / 60)}:${totalSec % 60 < 10 ? "0" : ""}${totalSec % 60}`;
   }
-
   function MusicView() {
     const [searchQ, setSearchQ] = useState("");
     const [activePlaylist, setActivePlaylist] = useState("hits");
@@ -1740,7 +1646,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [currentTrack, setCurrentTrack] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
-
     const fetchSongs = useCallback(async (term) => {
       try {
         const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=song&limit=35`);
@@ -1748,12 +1653,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         setTracks(data.results || []);
       } catch {}
     }, []);
-
     useEffect(() => {
       const p = PLAYLIST_PRESETS.find((x) => x.id === activePlaylist) || PLAYLIST_PRESETS[0];
       fetchSongs(p.query);
     }, [activePlaylist, fetchSongs]);
-
     const playTrack = (t) => {
       if (!audioRef.current) return;
       if (currentTrack && currentTrack.trackId === t.trackId) {
@@ -1765,9 +1668,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       audioRef.current.src = t.previewUrl;
       audioRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
     };
-
     const activePresetObj = PLAYLIST_PRESETS.find((p) => p.id === activePlaylist) || PLAYLIST_PRESETS[0];
-
     return h("section", { className: "view" },
       h("div", { className: "sp-app" },
         h("audio", { ref: audioRef }),
@@ -1828,18 +1729,14 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
-  // --- Netflix Movies & Anime View (Free, Pro & Premium) ---
   function MoviesView() {
     const [activeMedia, setActiveMedia] = useState(null);
     const heroItem = INITIAL_MEDIA[0];
-
     const getEmbedUrl = (item) => {
       const tmdbId = item.tmdb || item.id;
       if (item.type === "tv") return `https://vidsrc.me/embed/tv?tmdb=${tmdbId}&season=1&episode=1`;
       return `https://vidsrc.me/embed/movie?tmdb=${tmdbId}`;
     };
-
     return h("section", { className: "view" },
       h("div", { className: "nf-wrap" },
         h("div", { className: "nf-topnav" },
@@ -1878,16 +1775,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
   // ============================================================================
-  // WHATSAPP-STYLE LIVE CHAT WITH IMAGE & FILE ATTACHMENTS (Pro & Premium Tiers)
+  // LIVE CHAT (AUTO-SCROLL COMPLETELY REMOVED - STAYS WHERE YOU ARE SCROLLED)
   // ============================================================================
   function ChatView({ currentUser, accountsMap }) {
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
     const [attachment, setAttachment] = useState(null);
-    const messagesEndRef = useRef(null);
-
     useEffect(() => {
       const fetchChat = async () => {
         const base = getDbUrl();
@@ -1912,16 +1806,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           }
         } catch {}
       };
-
       fetchChat();
       const interval = setInterval(fetchChat, 3500);
       return () => clearInterval(interval);
     }, []);
-
-    useEffect(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
-
     const handleFileChange = (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -1939,16 +1827,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       };
       reader.readAsDataURL(file);
     };
-
     const sendMessage = async (e) => {
       e.preventDefault();
       const text = inputMessage.trim();
       if (!text && !attachment) return;
       if (!currentUser) return;
-
       const acc = accountsMap[currentUser.username.toLowerCase()] || currentUser;
       const isUserOwner = isOwnerIdentity(currentUser.username, acc);
-
       const newMsg = {
         sender: currentUser.username,
         role: isUserOwner ? "owner" : "user",
@@ -1957,7 +1842,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         attachment: attachment || null,
         timestamp: Date.now()
       };
-
       const base = getDbUrl();
       if (base) {
         try {
@@ -1975,10 +1859,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           setMessages(next);
         } catch {}
       }
-
       setInputMessage("");
       setAttachment(null);
-
       setTimeout(async () => {
         if (base) {
           const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
@@ -1993,7 +1875,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         }
       }, 250);
     };
-
     return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
       h("div", { style: { padding: "20px 24px 0", flexShrink: 0 } },
         h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
@@ -2025,8 +1906,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                       ) : null
                     )
                   );
-                }),
-            h("div", { ref: messagesEndRef })
+                })
           ),
           attachment ? h("div", { style: { padding: "8px 16px", background: "#111116", borderTop: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" } },
             h("span", { style: { fontSize: 13, color: "#86efac" } }, `Attached: ${attachment.name}`),
@@ -2052,13 +1932,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
   // --- Clean Player Component ---
   function Player({ game, onClose }) {
     const [nonce, setNonce] = useState(0);
     const frameRef = useRef(null);
     const source = frameSource(game);
-
     return h("div", { id: "player" },
       h("div", { className: "bar" },
         h("button", { className: "pill", onClick: onClose }, "\u2190 Back to Hub"),
@@ -2069,13 +1947,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       h("iframe", { key: `${game.slug}_${nonce}`, ref: frameRef, title: game.name, src: source.src, srcDoc: source.srcdoc, allow: FRAME_ALLOW, allowFullScreen: true })
     );
   }
-
   // --- Account Profile View ---
   function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner, userTier }) {
     const [now, setNow] = useState(Date.now());
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
     const acc = currentUser ? accountsMap[currentUser.username.toLowerCase()] || currentUser : null;
-
     return h("section", { className: "view" },
       h("div", { className: "page", style: { maxWidth: 680 } },
         h("h2", null, "Account"),
@@ -2114,11 +1990,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
   // ============================================================================
-  // ACCOUNT CREATOR HUB (With Tier Selection in Popup, Live Users & Account Cards!)
+  // ACCOUNT CREATOR HUB + LIVE POPUP SCREEN MESSAGING (GIFS & ATTACHMENTS)
   // ============================================================================
-  function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
+  function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast, currentUser }) {
     const [createModal, setCreateModal] = useState(false);
     const [dbModal, setDbModal] = useState(false);
     const [newUsername, setNewUsername] = useState("");
@@ -2130,15 +2005,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [revealedPw, setRevealedPw] = useState({});
     const [now, setNow] = useState(Date.now());
     const [dbUrlInput, setDbUrlInput] = useState(getDbUrl());
-
+    // Screen Messaging State
+    const [messageTarget, setMessageTarget] = useState(null);
+    const [msgText, setMsgText] = useState("");
+    const [msgAttachment, setMsgAttachment] = useState(null);
+    const [gifUrl, setGifUrl] = useState("");
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
     useEffect(() => {
       const poll = setInterval(() => { onRefresh(); }, 6000);
       return () => clearInterval(poll);
     }, [onRefresh]);
-
     const toggleReveal = (uname) => setRevealedPw((p) => ({ ...p, [uname]: !p[uname] }));
-
     const handleCreateAccount = async (e) => {
       e.preventDefault();
       const u = newUsername.trim();
@@ -2163,14 +2040,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       setNewUsername(""); setNewPassword(""); setNewEmail(""); setNewTier("free"); setNewHours(12); setNewInfinite(false); setCreateModal(false);
       toast(`Account "${u}" created with ${acc.tier.toUpperCase()} Tier!`);
     };
-
     const handleAdjustDuration = async (acc, hoursVal, infVal) => {
       const hrs = Math.max(1, Math.min(24, Number(hoursVal) || 1));
       const updated = { ...acc, durationHours: hrs, infinite: !!infVal, expiresAt: infVal ? null : Date.now() + hrs * 3600 * 1000 };
       await dbSaveAccount(updated);
       await onRefresh();
     };
-
     const handleChangeTier = async (acc, nextTier) => {
       if (!acc) return;
       const updated = { ...acc, tier: nextTier };
@@ -2178,17 +2053,58 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       await onRefresh();
       toast(`Updated "${acc.username}" to ${nextTier.toUpperCase()} Tier!`);
     };
-
     const handleRevokeAccount = async (username) => { await dbDeleteAccount(username); await onRefresh(); toast(`Revoked "${username}"`); };
     const handleKickUser = async (sess) => {
       await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
       await onRefresh();
       toast(`Kicked "${sess.username}"`);
     };
-
+    const handleMsgFile = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        toast("File must be under 2MB");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setMsgAttachment({
+          name: file.name,
+          type: file.type,
+          data: ev.target.result
+        });
+      };
+      reader.readAsDataURL(file);
+    };
+    const handleSendScreenMessage = async (e) => {
+      e.preventDefault();
+      const text = msgText.trim();
+      const customGif = gifUrl.trim();
+      let finalAttachment = msgAttachment;
+      if (!finalAttachment && customGif) {
+        finalAttachment = {
+          name: "gif",
+          type: "image/gif",
+          data: customGif
+        };
+      }
+      if (!text && !finalAttachment) {
+        toast("Enter a message or attach a GIF/image!");
+        return;
+      }
+      await dbSendUserAlert(messageTarget, {
+        sender: currentUser?.username || "Owner",
+        text,
+        attachment: finalAttachment
+      });
+      toast(`Screen Alert sent directly to ${messageTarget}!`);
+      setMessageTarget(null);
+      setMsgText("");
+      setMsgAttachment(null);
+      setGifUrl("");
+    };
     const accountsList = Object.values(accountsMap || {}).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     const activeSessions = Object.values(sessionsMap || {}).filter((s) => s && !s.kicked && accountsMap[s.username?.toLowerCase()] && now - (s.lastPing || 0) < 45000);
-
     return h("section", { className: "view", id: "creator" },
       h("div", { className: "page", style: { maxWidth: 1180 } },
         h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 24 } },
@@ -2197,15 +2113,14 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
               h("span", { className: "badge-pill owner" }, "OWNER ONLY")
             ),
-            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Create accounts, assign Tiers (Free / Pro / Premium), and manage live users.")
+            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Send live screen popups, create accounts, and manage active users.")
           ),
           h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
             h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "\u2601\uFE0F Cloud DB Connected" : "\u2699\uFE0F Cloud DB Setup"),
             h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create a New Account")
           )
         ),
-
-        // LIVE ACTIVE USERS PANEL (Includes Instant Live Tier Selector!)
+        // LIVE ACTIVE USERS PANEL WITH "MESSAGE" POPUP BUTTON
         h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
           h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
             h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
@@ -2231,7 +2146,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                       ),
                       h("span", { style: { fontSize: 12, color: "var(--muted)" } }, `Tab: ${sess.currentView || "home"}`)
                     ),
-                    // Live Tier Switcher inside Active Accounts area
                     !isOwn ? h("div", { className: "row", style: { marginBottom: 10, background: "#08080b", padding: "6px 10px", borderRadius: 8, border: "1px solid var(--border)" } },
                       h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Live Tier:"),
                       h("select", {
@@ -2246,15 +2160,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                     ) : null,
                     h("div", { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 14 } }, "Remaining: ", h("strong", { style: { color: "#e4e4e4" } }, formatRemainingTime(acc, now))),
                     h("div", { style: { display: "flex", gap: 8 } },
-                      h("button", { className: "btn warn sm", style: { flex: 1 }, onClick: () => handleKickUser(sess) }, "Kick Out"),
+                      h("button", { className: "btn sm", style: { flex: 1.2, background: "#3b82f6", color: "#fff" }, onClick: () => setMessageTarget(sess.username) }, "💬 Message Screen"),
+                      h("button", { className: "btn warn sm", style: { flex: 1 }, onClick: () => handleKickUser(sess) }, "Kick"),
                       h("button", { className: "btn danger sm", style: { flex: 1 }, onClick: () => handleRevokeAccount(sess.username) }, "Revoke")
                     )
                   );
                 })
               )
         ),
-
-        // LICENSED ACCOUNTS CARDS (Includes Tier Selector!)
+        // LICENSED ACCOUNTS CARDS
         h("h3", { style: { fontSize: 20, fontWeight: 600, marginBottom: 14 } }, `Licensed Accounts (${accountsList.length})`),
         h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
           accountsList.map((acc) => {
@@ -2265,7 +2179,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             const sliderVal = acc.durationHours || 12;
             const isOwn = acc.role === "owner";
             const curTier = acc.tier || "free";
-
             return h("div", { key: acc.username, className: "pop-panel" },
               h("div", { className: "row", style: { marginBottom: 14 } },
                 h("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
@@ -2274,7 +2187,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                   renderTierBadge(curTier, isOwn),
                   isOnline ? h("span", { className: "badge-pill live" }, "ONLINE") : null
                 ),
-                h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke")
+                h("div", { style: { display: "flex", gap: 6 } },
+                  h("button", { className: "btn ghost sm", title: "Send direct screen message", onClick: () => setMessageTarget(acc.username) }, "💬"),
+                  h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke")
+                )
               ),
               h("div", { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, background: "#070709", padding: "12px 14px", borderRadius: 12, border: "1px solid var(--border)" } },
                 h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Password"),
@@ -2314,8 +2230,60 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           })
         )
       ),
-
-      // CREATE ACCOUNT MODAL WITH TIER SELECTOR
+      // OWNER DIRECT SCREEN MESSAGE POPUP MODAL
+      messageTarget ? h(Modal, { onClose: () => { setMessageTarget(null); setMsgText(""); setMsgAttachment(null); setGifUrl(""); } },
+        h("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 12 } },
+          h("span", { style: { fontSize: 22 } }, "💬"),
+          h("h3", { style: { margin: 0, fontSize: 20 } }, `Direct Screen Message to @${messageTarget}`)
+        ),
+        h("p", { style: { fontSize: 13, color: "var(--muted)", margin: "0 0 16px" } }, "This will pop up right now on their live screen with full focus over any tab or game."),
+        h("form", { onSubmit: handleSendScreenMessage, autoComplete: "off" },
+          h("div", { style: { marginBottom: 14 } },
+            h("label", { className: "auth-label" }, "Message Content (Optional if sending GIF/Image)"),
+            h("textarea", {
+              className: "field",
+              rows: 3,
+              style: { height: "auto", minHeight: 74, padding: "10px 14px", resize: "vertical" },
+              placeholder: "Type message in here...",
+              value: msgText,
+              onChange: (e) => setMsgText(e.target.value)
+            })
+          ),
+          h("div", { style: { marginBottom: 14 } },
+            h("label", { className: "auth-label" }, "Attach GIF or Image"),
+            h("div", { style: { display: "flex", gap: 10, alignItems: "center" } },
+              h("label", { className: "btn ghost sm", style: { cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, margin: 0 } },
+                "📎 Choose File / GIF",
+                h("input", { type: "file", accept: "image/*,.gif", onChange: handleMsgFile, style: { display: "none" } })
+              ),
+              h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "or paste link below")
+            ),
+            h("input", {
+              className: "field",
+              style: { marginTop: 8 },
+              placeholder: "Paste GIF / Image URL (e.g. https://.../funny.gif)",
+              value: gifUrl,
+              onChange: (e) => setGifUrl(e.target.value)
+            })
+          ),
+          (msgAttachment || gifUrl.trim()) ? h("div", { style: { padding: "10px 12px", background: "#111116", border: "1px solid var(--border)", borderRadius: 10, marginBottom: 16 } },
+            h("div", { className: "row", style: { marginBottom: 8 } },
+              h("span", { style: { fontSize: 12, color: "#86efac", fontWeight: 600 } }, "Preview Attached:"),
+              h("button", { type: "button", className: "btn danger sm", style: { height: 24, padding: "0 8px", fontSize: 11 }, onClick: () => { setMsgAttachment(null); setGifUrl(""); } }, "Remove")
+            ),
+            h("img", {
+              src: msgAttachment ? msgAttachment.data : gifUrl.trim(),
+              alt: "Preview",
+              style: { maxHeight: 160, maxWidth: "100%", borderRadius: 6, objectFit: "contain", display: "block" }
+            })
+          ) : null,
+          h("div", { className: "actions" },
+            h("button", { type: "submit", className: "btn", style: { background: "#3b82f6", color: "#fff" } }, "🚀 Send to Live Screen"),
+            h("button", { type: "button", className: "btn ghost", onClick: () => { setMessageTarget(null); setMsgText(""); setMsgAttachment(null); setGifUrl(""); } }, "Cancel")
+          )
+        )
+      ) : null,
+      // CREATE ACCOUNT MODAL
       createModal ? h(Modal, { onClose: () => setCreateModal(false) },
         h("h3", null, "Create Licensed Account"),
         h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
@@ -2369,11 +2337,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       ) : null
     );
   }
-
   function Toggle({ checked, onChange }) {
     return h("label", { className: "toggle" }, h("input", { type: "checkbox", checked, onChange: (e) => onChange(e.target.checked) }), h("span"));
   }
-
   function SettingsView({ settings, onSave, onCloakSite }) {
     const [s, setS] = useState(settings);
     const set = (k, v) => setS((p) => ({ ...p, [k]: v }));
@@ -2398,14 +2364,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
   function LoginBox({ onLoginSuccess }) {
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
     const [showPw, setShowPw] = useState(false);
     const [err, setErr] = useState("");
     const [loading, setLoading] = useState(false);
-
     const handleSubmit = async (e) => {
       e.preventDefault();
       setErr("");
@@ -2416,7 +2380,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       const { accounts } = await dbFetchAll();
       const lower = idClean.toLowerCase();
       let matched = accounts[lower] || Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === lower);
-
       if (!matched && isOwnerIdentity(lower, null) && pwClean === AUTH_CONFIG.masterOwnerPassword) {
         matched = {
           username: idClean.includes("@") ? (AUTH_CONFIG.ownerUsernames[0] || "kevin") : idClean,
@@ -2451,7 +2414,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       setLoading(false);
       onLoginSuccess(sess);
     };
-
     return h("div", { className: "auth-overlay" },
       h("div", { className: "auth-box" },
         h("h1", { className: "auth-logo" }, "unblockedgames"),
@@ -2470,7 +2432,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
   // --- Main App ---
   function App() {
     const [view, setView] = useState("home");
@@ -2484,29 +2445,26 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [toastOn, setToastOn] = useState(false);
     const toastT = useRef(undefined);
     const mainRef = useRef(null);
-
     const [currentUser, setCurrentUser] = useState(getSavedSession);
     const [accountsMap, setAccountsMap] = useState({});
     const [sessionsMap, setSessionsMap] = useState({});
-
+    // Live Target Screen Alert
+    const [incomingAlert, setIncomingAlert] = useState(null);
     const toast = useCallback((msg) => {
       setToastMsg(msg); setToastOn(true);
       clearTimeout(toastT.current);
       toastT.current = setTimeout(() => setToastOn(false), 2400);
     }, []);
-
     const isOwner = useMemo(() => {
       if (!currentUser) return false;
       const acc = accountsMap[currentUser.username?.toLowerCase()];
       return isOwnerIdentity(currentUser.username, acc || currentUser);
     }, [currentUser, accountsMap]);
-
     const userTier = useMemo(() => {
       if (!currentUser) return "free";
       const acc = accountsMap[currentUser.username?.toLowerCase()] || currentUser;
       return getUserTier(acc, isOwner);
     }, [currentUser, accountsMap, isOwner]);
-
     const navigate = useCallback((v) => {
       if (!canAccessView(userTier, v)) {
         const req = requiredTierForView(v);
@@ -2516,35 +2474,46 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       setView(v);
       mainRef.current?.scrollTo(0, 0);
     }, [userTier]);
-
+    // Check for Screen Alert Popups sent by Owner
+    useEffect(() => {
+      if (!currentUser?.username) return;
+      const checkAlerts = async () => {
+        const alert = await dbFetchUserAlert(currentUser.username);
+        if (alert && (!incomingAlert || incomingAlert.timestamp !== alert.timestamp)) {
+          setIncomingAlert(alert);
+        }
+      };
+      checkAlerts();
+      const alertTimer = setInterval(checkAlerts, 2200);
+      return () => clearInterval(alertTimer);
+    }, [currentUser, incomingAlert]);
+    const handleDismissAlert = async () => {
+      if (currentUser?.username) {
+        await dbClearUserAlert(currentUser.username);
+      }
+      setIncomingAlert(null);
+    };
     const refreshDatabaseAndSession = useCallback(async () => {
       const { accounts, sessions } = await dbFetchAll();
       setAccountsMap(accounts);
       setSessionsMap(sessions);
-
       const saved = getSavedSession();
       if (!saved || !saved.username) { setCurrentUser(null); return; }
-
       const key = saved.username.trim().toLowerCase();
       const acc = accounts[key];
       if (!acc) { saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Account revoked."); return; }
-
       const own = isOwnerIdentity(acc.username, acc);
       if (!own && !acc.infinite && acc.expiresAt && Date.now() >= acc.expiresAt) {
         await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("License expired."); return;
       }
-
       const remoteSess = sessions[key];
       if (remoteSess && remoteSess.kicked && (!saved.loginAt || (remoteSess.kickedAt || 0) >= saved.loginAt)) {
         await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Kicked out by owner."); return;
       }
-
-      // If owner downgraded user's tier live while they are on a restricted tab, bounce them back to home
       const liveTier = getUserTier(acc, own);
       if (!canAccessView(liveTier, view)) {
         setView("home");
       }
-
       await dbUpsertSession({
         username: acc.username,
         email: acc.email || "",
@@ -2557,13 +2526,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       });
       setSessionsMap(getLocalStore(LS_SESSIONS));
     }, [view, toast]);
-
     useEffect(() => {
       refreshDatabaseAndSession();
       const interval = setInterval(refreshDatabaseAndSession, 5000);
       return () => clearInterval(interval);
     }, [refreshDatabaseAndSession]);
-
     const launchGame = useCallback((g) => {
       saveInstalledGame(g.slug);
       setInstalledMap(getInstalledGames());
@@ -2573,9 +2540,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       }
       if (!openCloaked(frameSource(g), settings)) toast("Popup blocked");
     }, [settings, toast]);
-
     const hideFloatingPills = view === "browser" || view === "movies" || view === "music";
-
     return h(Fragment, null,
       h(Stars),
       !currentUser ? h(LoginBox, { onLoginSuccess: (sess) => { setCurrentUser(sess); refreshDatabaseAndSession(); toast(`Welcome, ${sess.username}!`); } }) : null,
@@ -2596,9 +2561,25 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         view === "movies" ? h(MoviesView, { toast }) : null,
         view === "music" ? h(MusicView, { toast }) : null,
         view === "account" ? h(AccountProfileView, { currentUser, accountsMap, onLogout: async () => { await dbDeleteSession(currentUser.username); saveCurrentSession(null); setCurrentUser(null); setView("home"); }, onOpenCreator: () => navigate("creator"), isOwner, userTier }) : null,
-        view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabaseAndSession, toast }) : null,
+        view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabaseAndSession, toast, currentUser }) : null,
         view === "settings" ? h(SettingsView, { settings, onSave: (s) => { setSettings(s); saveSettings(s); toast("Saved"); }, onCloakSite: () => cloakSite(settings) }) : null
       ),
+      // LIVE SCREEN ALERT POPUP (Displays directly on target's screen)
+      incomingAlert ? h("div", { id: "modalBg", style: { zIndex: 9999 } },
+        h("div", { className: "modal", style: { maxWidth: 500, textAlign: "center", border: "2px solid #f59e0b", boxShadow: "0 0 45px rgba(245, 158, 11, 0.45)", background: "#0c0c11" } },
+          h("div", { style: { display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(245, 158, 11, 0.16)", color: "#fcd34d", padding: "6px 16px", borderRadius: 999, fontWeight: 700, fontSize: 13, marginBottom: 14 } }, "👑 MESSAGE FROM OWNER"),
+          incomingAlert.sender ? h("div", { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 12 } }, `Sent by @${incomingAlert.sender}`) : null,
+          incomingAlert.text ? h("p", { style: { fontSize: 16.5, color: "#fff", whiteSpace: "pre-wrap", margin: "0 0 16px", fontWeight: 500, lineHeight: 1.5 } }, incomingAlert.text) : null,
+          incomingAlert.attachment ? (
+            incomingAlert.attachment.type && incomingAlert.attachment.type.startsWith("image/") || (typeof incomingAlert.attachment.data === "string" && (incomingAlert.attachment.data.startsWith("data:image/") || incomingAlert.attachment.data.match(/\.(gif|jpg|jpeg|png|webp)($|\?)/i))) ?
+              h("img", { src: incomingAlert.attachment.data, alt: "Screen Attachment", style: { maxWidth: "100%", maxHeight: 320, borderRadius: 12, objectFit: "contain", margin: "0 auto 18px", display: "block", border: "1px solid var(--border)" } }) :
+              h("a", { href: incomingAlert.attachment.data, download: incomingAlert.attachment.name || "attachment", style: { display: "block", color: "#86efac", marginBottom: 18, fontSize: 14, textDecoration: "underline" } }, `📎 ${incomingAlert.attachment.name || "Download File"}`)
+          ) : null,
+          h("div", { className: "actions", style: { justifyContent: "center" } },
+            h("button", { className: "btn", style: { minWidth: 140, background: "#f59e0b", color: "#000" }, onClick: handleDismissAlert }, "Dismiss / OK")
+          )
+        )
+      ) : null,
       upgradePrompt ? h(Modal, { onClose: () => setUpgradePrompt(null) },
         h("h3", null, `🔒 ${upgradePrompt.reqTier} Tier Required`),
         h("p", null, `Your account is currently on the ${userTier.toUpperCase()} tier. Accessing ${upgradePrompt.viewName} requires a ${upgradePrompt.reqTier} license. Contact the Owner to upgrade your account tier!`),
@@ -2610,7 +2591,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       h("div", { id: "toast", className: toastOn ? "show" : "" }, toastMsg)
     );
   }
-
   createRoot(document.getElementById("root")).render(h(StrictMode, null, h(App)));
 })();
     </script>
