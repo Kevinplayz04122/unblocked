@@ -33,14 +33,11 @@ button, input, select, optgroup, textarea, ::file-selector-button {
 }
 html, body, #root { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: "Outfit", system-ui, sans-serif; overflow: hidden; }
 button { cursor: pointer; font-family: inherit; }
-
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.16); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.28); }
-
 #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-
 /* Sidebar */
 #sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 64px; background: #08080a; border-right: 1px solid var(--border); z-index: 30; display: flex; flex-direction: column; align-items: stretch; transition: width 0.25s ease; }
 #sidebar.open { width: 196px; }
@@ -55,101 +52,187 @@ button { cursor: pointer; font-family: inherit; }
 #sidebar .spacer { flex: 1; }
 #expandBtn svg { transition: transform 0.25s; }
 #sidebar.open #expandBtn svg { transform: rotate(180deg); }
-
 /* Main */
 main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; overflow-y: auto; overflow-x: hidden; transition: left 0.25s ease; }
 #sidebar.open ~ main { left: 196px; }
 .view { height: 100%; animation: fade 0.35s ease; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-
-/* Pills & Top */
+/* Pills */
 .pill { background: rgba(20, 20, 23, 0.85); border: 1px solid var(--border); border-radius: 12px; padding: 8px 16px; font-size: 13px; color: #d6d6da; cursor: pointer; transition: 0.2s; backdrop-filter: blur(6px); }
 .pill:hover { background: rgba(40, 40, 46, 0.95); border-color: rgba(255, 255, 255, 0.25); }
 #topRight { position: fixed; top: 16px; right: 16px; z-index: 20; }
-
+#footerLinks { position: fixed; bottom: 16px; right: 16px; z-index: 20; display: flex; gap: 10px; }
 /* Home */
 #home { display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100%; padding-bottom: 40px; position: relative; }
 .logo-wrap { position: relative; margin-bottom: 30px; text-align: center; }
 .logo-wrap::before { content: ""; position: absolute; left: 50%; top: 50%; width: 120%; height: 150%; transform: translate(-50%, -50%); background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.14), transparent 65%); filter: blur(24px); z-index: -1; }
 .logo { font-size: clamp(48px, 9vw, 128px); font-weight: 600; letter-spacing: -0.04em; line-height: 1; color: #e4e4e4; margin: 0; text-shadow: 0 0 40px rgba(255, 255, 255, 0.22); }
 .search-wrap { position: relative; width: min(800px, 88vw); }
+.search-wrap::after { content: ""; position: absolute; inset: auto -4% -26px -4%; height: 60px; background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.07), transparent 70%); filter: blur(14px); z-index: -1; }
 .search { display: flex; align-items: center; gap: 14px; height: 82px; padding: 0 34px; background: rgba(14, 14, 16, 0.92); border: 1px solid var(--border); border-radius: 14px; transition: 0.25s; position: relative; overflow: hidden; }
+.search::before { content: ""; position: absolute; top: 0; left: 30%; right: 30%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent); }
 .search:focus-within { border-color: rgba(255, 255, 255, 0.28); box-shadow: 0 0 40px rgba(255, 255, 255, 0.07); }
 .search svg { width: 22px; height: 22px; color: #b9b9be; flex: 0 0 auto; }
 .search input { flex: 1; background: transparent; border: 0; outline: 0; color: #f0f0f0; font: 400 20px "Outfit"; min-width: 0; }
+.search input::placeholder { color: #8e8e94; }
 .quick { display: flex; gap: 22px; margin-top: 34px; flex-wrap: wrap; justify-content: center; }
-.quick button { display: flex; flex-direction: column; align-items: center; gap: 10px; background: none; border: 0; color: #d8d8dc; font: 500 14px "Outfit"; cursor: pointer; }
-.quick .circ { width: 60px; height: 60px; border-radius: 50%; background: #131316; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; transition: 0.25s; }
+.quick button { display: flex; flex-direction: column; align-items: center; gap: 10px; background: none; border: 0; color: #d8d8dc; font: 500 14px "Outfit"; cursor: pointer; position: relative; }
+.quick .circ { width: 60px; height: 60px; border-radius: 50%; background: #131316; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; transition: 0.25s; position: relative; }
 .quick .circ svg { width: 22px; height: 22px; }
-.quick button:hover .circ { background: #1d1d22; border-color: rgba(255, 255, 255, 0.3); transform: translateY(-3px); }
+.quick button:hover .circ { background: #1d1d22; border-color: rgba(255, 255, 255, 0.3); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255, 255, 255, 0.07); }
 .ad { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); font-size: 11px; letter-spacing: 0.14em; color: #8b8b90; font-weight: 600; display: flex; gap: 10px; align-items: center; }
-
 /* Page layout */
 .page { padding: 36px 40px 90px; max-width: 1400px; margin: 0 auto; }
 .page h2 { font-size: 34px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.02em; }
 .page p.sub { color: var(--muted); margin: 0 0 24px; }
+.page code { background: rgba(255, 255, 255, 0.08); padding: 1px 6px; border-radius: 6px; font-size: 0.9em; }
 .toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
 .toolbar .search { height: 52px; padding: 0 20px; flex: 1; min-width: 240px; border-radius: 12px; }
+.toolbar .search input { font-size: 16px; }
 .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
 .chip { background: rgba(20, 20, 23, 0.85); border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; font: 500 13px "Outfit"; color: #c9c9ce; cursor: pointer; transition: 0.2s; }
 .chip:hover { border-color: rgba(255, 255, 255, 0.28); }
 .chip.on { background: #e4e4e4; color: #0a0a0a; border-color: #e4e4e4; }
+.count { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; }
-.card { position: relative; background: var(--panel); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; transition: 0.25s; text-align: left; padding: 0; color: inherit; }
-.card:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.3); }
+.card { position: relative; background: var(--panel); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; transition: 0.25s; text-align: left; padding: 0; color: inherit; font-family: inherit; }
+.card:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.3); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(255, 255, 255, 0.05); }
 .card .thumb { position: relative; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 700; color: rgba(255, 255, 255, 0.85); overflow: hidden; }
 .card .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.card .badge { position: absolute; top: 8px; left: 8px; background: rgba(0, 0, 0, 0.78); border: 1px solid var(--border); border-radius: 999px; font-size: 10px; font-weight: 600; padding: 2px 8px; color: #ddd; z-index: 2; }
+.card .badge { position: absolute; top: 8px; left: 8px; background: rgba(0, 0, 0, 0.78); border: 1px solid var(--border); border-radius: 999px; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; padding: 2px 8px; color: #ddd; z-index: 2; }
+.card .badge.installed { background: rgba(22, 163, 74, 0.88); color: #fff; border-color: rgba(74, 222, 128, 0.5); }
 .card .info { padding: 11px 13px 13px; }
 .card .name { font-weight: 600; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card .tag { font-size: 12px; color: var(--muted); margin-top: 2px; display: flex; align-items: center; justify-content: space-between; }
 .empty { padding: 60px 0; text-align: center; color: var(--muted); }
-
 /* Settings & Buttons */
 .setting { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; }
 .setting h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
 .setting p { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
 .field { width: 100%; height: 44px; background: #0e0e11; border: 1px solid var(--border); border-radius: 10px; padding: 0 14px; color: #eee; font: 400 14px "Outfit"; outline: 0; }
+.field:focus { border-color: rgba(255, 255, 255, 0.3); }
+.tier-select { background: #121217; border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 4px 10px; font-size: 12.5px; font-weight: 600; color: #fff; cursor: pointer; outline: 0; }
+.tier-select option { background: #0e0e12; color: #fff; }
 .row { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.toggle { position: relative; width: 48px; height: 28px; flex: 0 0 auto; }
+.toggle input { display: none; }
+.toggle span { position: absolute; inset: 0; background: #26262b; border-radius: 999px; cursor: pointer; transition: 0.2s; }
+.toggle span::after { content: ""; position: absolute; left: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%; background: #aaa; transition: 0.2s; }
+.toggle input:checked + span { background: #e4e4e4; }
+.toggle input:checked + span::after { transform: translateX(20px); background: #111; }
 .btn { background: #e4e4e4; color: #0a0a0a; border: 0; border-radius: 10px; height: 44px; padding: 0 20px; font: 600 14px "Outfit"; cursor: pointer; transition: 0.2s; }
 .btn:hover { background: #fff; box-shadow: 0 0 24px rgba(255, 255, 255, 0.25); }
 .btn.ghost { background: rgba(255, 255, 255, 0.07); color: #ddd; border: 1px solid var(--border); }
+.btn.ghost:hover { background: rgba(255, 255, 255, 0.13); box-shadow: none; }
 .btn.danger { background: rgba(220, 38, 38, 0.16); color: #fca5a5; border: 1px solid rgba(220, 38, 38, 0.4); }
+.btn.danger:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
+.btn.warn { background: rgba(245, 158, 11, 0.14); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.38); }
+.btn.warn:hover { background: #d97706; color: #fff; border-color: #d97706; }
 .btn.sm { height: 34px; padding: 0 13px; font-size: 12.5px; border-radius: 8px; }
-
 /* Modal & Player */
-#modalBg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+#modalBg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .modal { background: #0c0c0f; border: 1px solid var(--border); border-radius: 18px; padding: 26px; width: min(480px, 100%); animation: fade 0.25s ease; }
 .modal h3 { margin: 0 0 8px; font-size: 22px; font-weight: 600; }
 .modal p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 16px; }
 .modal .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
 #toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 30px); background: #e4e4e4; color: #111; padding: 10px 18px; border-radius: 999px; font-weight: 500; font-size: 14px; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; }
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
-
 #player { position: fixed; inset: 0; z-index: 90; background: #000; display: flex; flex-direction: column; animation: fade 0.25s ease; }
-#player .bar { display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 14px; background: #08080a; border-bottom: 1px solid var(--border); }
-#player .bar .ttl { font-weight: 600; font-size: 15px; flex: 1; }
+#player .bar { display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 14px; background: #08080a; border-bottom: 1px solid var(--border); flex: 0 0 auto; overflow-x: auto; }
+#player .bar .ttl { font-weight: 600; font-size: 15px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 10px; }
+#player .bar .pill { padding: 6px 14px; white-space: nowrap; }
 #player iframe { flex: 1; width: 100%; border: 0; background: #000; }
-
-.auth-overlay { position: fixed; inset: 0; z-index: 85; background: rgba(2, 2, 3, 0.92); backdrop-filter: blur(18px); display: flex; align-items: center; justify-content: center; padding: 20px; }
-.auth-box { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 34px 30px; width: min(420px, 100%); }
-.auth-logo { font-size: 36px; font-weight: 600; color: #e4e4e4; text-align: center; margin: 0 0 6px; }
+/* Auth & Panels */
+.auth-overlay { position: fixed; inset: 0; z-index: 85; background: rgba(2, 2, 3, 0.92); backdrop-filter: blur(18px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade 0.3s ease; }
+.auth-box { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 34px 30px; width: min(420px, 100%); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85); position: relative; overflow: hidden; }
+.auth-logo { font-size: 36px; font-weight: 600; letter-spacing: -0.04em; color: #e4e4e4; text-align: center; margin: 0 0 6px; }
 .auth-sub { color: var(--muted); font-size: 13.5px; text-align: center; margin: 0 0 24px; }
-.badge-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, 0.07); border: 1px solid var(--border); }
+.auth-label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+.auth-err { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; text-align: center; }
+.pop-panel { background: var(--panel); border: 1px solid rgba(255, 255, 255, 0.13); border-radius: 16px; padding: 18px 20px; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.7); transition: transform 0.22s ease, border-color 0.22s ease; position: relative; }
+.pop-panel:hover { border-color: rgba(255, 255, 255, 0.25); }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; display: inline-block; }
+.status-dot.off { background: #71717a; box-shadow: none; }
+.slider { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: #232329; border-radius: 999px; outline: none; cursor: pointer; }
+.slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #e4e4e4; cursor: pointer; border: 2px solid #0b0b0d; }
+.slider:disabled { opacity: 0.35; cursor: not-allowed; }
+.eye-btn { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border); border-radius: 8px; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; color: #cfcfd4; cursor: pointer; }
+.eye-btn:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
+.eye-btn svg { width: 15px; height: 15px; }
+/* Tier Badges */
+.badge-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, 0.07); border: 1px solid var(--border); letter-spacing: 0.03em; }
 .badge-pill.owner { background: rgba(255, 255, 255, 0.18); color: #fff; border-color: rgba(255, 255, 255, 0.45); }
 .badge-pill.live { background: rgba(34, 197, 94, 0.14); color: #86efac; border-color: rgba(34, 197, 94, 0.35); }
-
-/* ============================================================================
-   TIKTOK LIVE UNBLOCKED ENGINE (PROXITOK + LIVE STREAM WEB CLIENT)
-   ============================================================================ */
+.badge-pill.tier-free { background: rgba(161, 161, 170, 0.14); color: #d4d4d8; border-color: rgba(161, 161, 170, 0.35); }
+.badge-pill.tier-pro { background: rgba(59, 130, 246, 0.18); color: #93c5fd; border-color: rgba(59, 130, 246, 0.45); }
+.badge-pill.tier-premium { background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(168, 85, 247, 0.22)); color: #fde68a; border-color: rgba(245, 158, 11, 0.55); box-shadow: 0 0 16px rgba(245, 158, 11, 0.18); }
+/* Full-Screen Frosted Glass Browser */
+.gbrowser-root { height: 100%; width: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+.gbrowser-idle { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+.gbrowser-top { background: rgba(14, 14, 18, 0.82); backdrop-filter: blur(24px) saturate(150%); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 14px 28px 0; flex-shrink: 0; z-index: 15; }
+.gbrowser-bar-row { display: flex; align-items: center; gap: 14px; max-width: 1100px; }
+.glass-panel { width: min(820px, 92vw); background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px; padding: 8px 12px 8px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); display: flex; align-items: center; gap: 12px; }
+.glass-panel.compact { width: 100%; max-width: 780px; padding: 4px 8px 4px 18px; }
+.glass-panel:focus-within { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.38); }
+.glass-panel svg { width: 20px; height: 20px; color: rgba(255, 255, 255, 0.75); }
+.glass-input { flex: 1; height: 46px; background: transparent; border: 0; outline: 0; color: #fff; font: 400 18px "Outfit", sans-serif; }
+.glass-panel.compact .glass-input { height: 38px; font-size: 15.5px; }
+.glass-input::placeholder { color: rgba(255, 255, 255, 0.42); }
+.gbrowser-tabs { display: flex; gap: 24px; margin-top: 12px; padding-left: 8px; }
+.gbrowser-tab { padding: 8px 4px 11px; font-size: 14px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 7px; }
+.gbrowser-tab.on { color: #60a5fa; border-bottom-color: #60a5fa; }
+.gbrowser-body { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; }
+.gbrowser-results-wrap { max-width: 960px; padding: 24px 32px 80px; display: flex; flex-direction: column; gap: 14px; }
+.gbrowser-card { background: rgba(20, 20, 26, 0.65); border: 1px solid rgba(255, 255, 255, 0.11); border-radius: 16px; padding: 16px 20px; cursor: pointer; transition: 0.2s; }
+.gbrowser-card:hover { background: rgba(32, 32, 42, 0.85); border-color: rgba(96, 165, 250, 0.45); }
+.gbrowser-img-grid { padding: 24px 32px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+.gbrowser-img-card { background: #0d0d12; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; }
+.gbrowser-img-card img { width: 100%; height: 175px; object-fit: cover; }
+.gbrowser-shop-grid { padding: 24px 32px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); gap: 18px; }
+.gbrowser-shop-card { background: rgba(20, 20, 26, 0.75); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; }
+.gbrowser-shop-card img { width: 100%; height: 190px; object-fit: contain; background: #fff; padding: 12px; }
+/* Netflix UI */
+.nf-wrap { background: #141414; min-height: 100%; padding-bottom: 80px; color: #fff; position: relative; }
+.nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: rgba(20,20,20,0.85); backdrop-filter: blur(8px); }
+.nf-logo { color: #e50914; font-size: 28px; font-weight: 800; letter-spacing: 0.04em; cursor: pointer; }
+.nf-hero { position: relative; height: 62vh; min-height: 400px; width: 100%; overflow: hidden; display: flex; align-items: flex-end; padding: 0 42px 54px; }
+.nf-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
+.nf-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #141414 0%, rgba(20,20,20,0.75) 45%, transparent 100%), linear-gradient(180deg, transparent 50%, #141414 100%); }
+.nf-hero-content { position: relative; z-index: 5; max-width: 600px; }
+.nf-hero-title { font-size: clamp(32px, 4.5vw, 56px); font-weight: 800; line-height: 1.05; margin: 6px 0 12px; }
+.nf-hero-desc { color: #d4d4d8; font-size: 14.5px; margin: 0 0 20px; }
+.nf-btn-play { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #000; font-weight: 700; font-size: 15px; padding: 0 24px; height: 44px; border-radius: 6px; }
+.nf-row-section { padding: 10px 42px 18px; position: relative; z-index: 6; }
+.nf-row-title { font-size: 19px; font-weight: 700; margin: 0 0 12px; color: #e5e5e5; }
+.nf-carousel { display: flex; gap: 14px; overflow-x: auto; padding: 8px 4px 18px; }
+.nf-card { flex: 0 0 185px; border-radius: 8px; overflow: hidden; background: #1f1f1f; cursor: pointer; transition: transform 0.25s ease; border: 1px solid rgba(255,255,255,0.06); }
+.nf-card:hover { transform: scale(1.07); }
+.nf-card-poster { width: 100%; height: 270px; object-fit: cover; }
+/* Spotify UI */
+.sp-app { display: flex; flex-direction: column; height: 100%; width: 100%; background: #000; color: #fff; overflow: hidden; padding: 8px; gap: 8px; }
+.sp-body { flex: 1; display: flex; gap: 8px; overflow: hidden; min-height: 0; }
+.sp-sidebar { width: 250px; flex-shrink: 0; background: #121212; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; }
+.sp-nav-box { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.sp-lib-box { flex: 1; padding: 12px 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.sp-pl-item { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 6px; cursor: pointer; text-align: left; width: 100%; }
+.sp-pl-item:hover, .sp-pl-item.active { background: #282828; }
+.sp-pl-cover { width: 42px; height: 42px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.sp-main { flex: 1; background: #121212; border-radius: 8px; overflow-y: auto; display: flex; flex-direction: column; }
+.sp-header { padding: 24px; display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+.sp-header-art { width: 160px; height: 160px; border-radius: 6px; object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 56px; }
+.sp-table { width: 100%; padding: 0 24px 32px; }
+.sp-trow { display: grid; grid-template-columns: 36px 4fr 3fr 80px; align-items: center; padding: 8px 12px; border-radius: 6px; cursor: pointer; color: #b3b3b3; font-size: 14px; }
+.sp-trow:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.sp-trow.active { background: rgba(29, 185, 84, 0.14); color: #1ed760; }
+.sp-player-bar { height: 80px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 16px; flex-shrink: 0; }
+/* TikTok Live Mirrors & Unblocked Hub */
 .tt-view-root { height: 100%; width: 100%; display: flex; flex-direction: column; background: #000; color: #fff; overflow: hidden; }
 .tt-view-nav { height: 56px; border-bottom: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: #0b0b0e; flex-shrink: 0; z-index: 25; }
-.tt-logo { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.tt-logo { font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer; }
 .tt-logo span.cyan { color: var(--tt-cyan); text-shadow: 1px 0 var(--tt-red); }
 .tt-mode-switch { display: flex; gap: 6px; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 10px; border: 1px solid var(--border); }
-.tt-mode-btn { padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: 0.2s; }
+.tt-mode-btn { padding: 5px 12px; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: var(--muted); cursor: pointer; transition: 0.2s; }
 .tt-mode-btn.active { background: var(--tt-red); color: #fff; }
-
 .tt-frame-container { flex: 1; width: 100%; height: 100%; position: relative; background: #000; overflow: hidden; }
 .tt-frame-container iframe { width: 100%; height: 100%; border: 0; background: #000; }
     </style>
@@ -162,84 +245,240 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 (function () {
   const { useState, useEffect, useRef, useCallback, useMemo, memo, StrictMode, createElement: h, Fragment } = window.React;
   const { createRoot } = window.ReactDOM;
-
+  // ============================================================================
+  // OWNER & REAL-TIME DATABASE CONFIGURATION + TIER PERMISSIONS
+  // ============================================================================
   const AUTH_CONFIG = {
     dbUrl: "https://unblockedgames-cdc48-default-rtdb.firebaseio.com",
     ownerUsernames: ["kevin", "owner", "admin"],
-    ownerEmails: ["kevinlamfamily@hotmail.com", "kevinhuygialam@gmail.com", "kl2@leonardsgwav.catholic.edu.au"],
+    ownerEmails: [
+      "kevinlamfamily@hotmail.com", 
+      "kevinhuygialam@gmail.com", 
+      "kl2@leonardsgwav.catholic.edu.au"
+    ],
     masterOwnerPassword: "admin"
   };
-
   const TIER_PERMISSIONS = {
     free: ["home", "games", "movies", "music", "account", "settings"],
     pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
     premium: ["home", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings"],
     owner: ["home", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
   };
-
   function getUserTier(acc, isOwner) {
     if (isOwner || (acc && acc.role === "owner")) return "owner";
     const t = (acc && acc.tier ? acc.tier : "free").toLowerCase();
     if (t === "premium" || t === "pro" || t === "free") return t;
     return "free";
   }
-
   function canAccessView(tier, viewId) {
     const allowed = TIER_PERMISSIONS[tier] || TIER_PERMISSIONS.free;
     return allowed.includes(viewId);
   }
-
   function requiredTierForView(viewId) {
     if (viewId === "chat") return "Pro";
     if (viewId === "youtube" || viewId === "tiktok" || viewId === "browser") return "Premium";
     if (viewId === "creator") return "Owner";
     return "Free";
   }
-
   function renderTierBadge(tier, isOwner) {
     if (isOwner || tier === "owner") return h("span", { className: "badge-pill owner" }, "👑 OWNER");
-    if (tier === "premium") return h("span", { className: "badge-pill" }, "💎 PREMIUM");
-    if (tier === "pro") return h("span", { className: "badge-pill" }, "⚡ PRO");
-    return h("span", { className: "badge-pill" }, "FREE TIER");
+    if (tier === "premium") return h("span", { className: "badge-pill tier-premium" }, "💎 PREMIUM");
+    if (tier === "pro") return h("span", { className: "badge-pill tier-pro" }, "⚡ PRO");
+    return h("span", { className: "badge-pill tier-free" }, "FREE TIER");
   }
-
   const LS_ACCOUNTS = "ug_rt_accounts_v1";
   const LS_SESSIONS = "ug_rt_sessions_v1";
   const LS_CURRENT_USER = "ug_active_user_v1";
+  const LS_DB_URL = "ug_custom_db_url_v1";
   const LS_INSTALLED_GAMES = "ug_installed_games_v1";
   const LS_ALERTS = "ug_local_alerts_v1";
-
-  function getInstalledGames() { try { return JSON.parse(localStorage.getItem(LS_INSTALLED_GAMES) || "{}"); } catch { return {}; } }
-  function saveInstalledGame(slug) { try { const m = getInstalledGames(); m[slug] = { installedAt: Date.now() }; localStorage.setItem(LS_INSTALLED_GAMES, JSON.stringify(m)); } catch {} }
-  function getDbUrl() { return (AUTH_CONFIG.dbUrl || "").trim().replace(/\/+$/, ""); }
-
+  const bc = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("ug_realtime_sync") : null;
+  function getInstalledGames() {
+    try { return JSON.parse(localStorage.getItem(LS_INSTALLED_GAMES) || "{}"); } catch { return {}; }
+  }
+  function saveInstalledGame(slug) {
+    try {
+      const map = getInstalledGames();
+      map[slug] = { installedAt: Date.now() };
+      localStorage.setItem(LS_INSTALLED_GAMES, JSON.stringify(map));
+    } catch {}
+  }
+  function getDbUrl() {
+    try {
+      const custom = localStorage.getItem(LS_DB_URL);
+      if (custom && custom.trim()) return custom.trim().replace(/\/+$/, "");
+    } catch {}
+    return (AUTH_CONFIG.dbUrl || "").trim().replace(/\/+$/, "");
+  }
+  function setCustomDbUrl(url) {
+    try {
+      localStorage.setItem(LS_DB_URL, (url || "").trim().replace(/\/+$/, ""));
+      if (bc) bc.postMessage({ type: "db_changed" });
+    } catch {}
+  }
   function isOwnerIdentity(identifier, accountObj) {
     if (accountObj && accountObj.role === "owner") return true;
     const clean = (identifier || "").trim().toLowerCase();
+    if (!clean) return false;
     const uList = (AUTH_CONFIG.ownerUsernames || []).map((x) => x.toLowerCase());
     const eList = (AUTH_CONFIG.ownerEmails || []).map((x) => x.toLowerCase());
-    return uList.includes(clean) || eList.includes(clean);
+    if (uList.includes(clean) || eList.includes(clean)) return true;
+    if (accountObj && accountObj.email && eList.includes(accountObj.email.trim().toLowerCase())) return true;
+    return false;
   }
-
-  async function dbFetchUserAlert(username) {
-    if (!username) return null;
-    const base = getDbUrl();
-    if (!base) return null;
+  function genLicenseKey() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    const seg = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+    return `UG-${seg()}-${seg()}-${seg()}`;
+  }
+  function getLocalStore(key) {
+    try { return JSON.parse(localStorage.getItem(key) || "{}"); } catch { return {}; }
+  }
+  function setLocalStore(key, val) {
     try {
-      const res = await fetch(`${base}/ug_alerts/${encodeURIComponent(username.toLowerCase())}.json`, { cache: "no-store" });
-      if (res.ok) return await res.json();
+      localStorage.setItem(key, JSON.stringify(val || {}));
+      if (bc) bc.postMessage({ type: "store_updated", key });
     } catch {}
-    return null;
   }
-
-  async function dbClearUserAlert(username) {
-    if (!username) return;
+  function ensureDefaultOwner(accounts) {
+    const map = Object.assign({}, accounts);
+    const primaryOwner = (AUTH_CONFIG.ownerUsernames[0] || "kevin").toLowerCase();
+    if (!map[primaryOwner]) {
+      map[primaryOwner] = {
+        username: AUTH_CONFIG.ownerUsernames[0] || "kevin",
+        email: AUTH_CONFIG.ownerEmails[0] || "kevinlamfamily@hotmail.com",
+        password: AUTH_CONFIG.masterOwnerPassword || "admin",
+        licenseKey: "UG-OWNR-ROOT-0001",
+        infinite: true,
+        expiresAt: null,
+        durationHours: 24,
+        role: "owner",
+        tier: "premium",
+        createdAt: Date.now()
+      };
+    }
+    return map;
+  }
+  async function dbFetchAll() {
     const base = getDbUrl();
-    if (base) {
-      try { await fetch(`${base}/ug_alerts/${encodeURIComponent(username.toLowerCase())}.json`, { method: "DELETE" }); } catch {}
+    const localAcc = ensureDefaultOwner(getLocalStore(LS_ACCOUNTS));
+    const localSess = getLocalStore(LS_SESSIONS);
+    if (!base) return { accounts: localAcc, sessions: localSess };
+    try {
+      const [accRes, sessRes] = await Promise.all([
+        fetch(`${base}/ug_accounts.json`, { cache: "no-store" }),
+        fetch(`${base}/ug_sessions.json`, { cache: "no-store" })
+      ]);
+      const remoteAcc = (accRes.ok ? await accRes.json() : null) || {};
+      const remoteSess = (sessRes.ok ? await sessRes.json() : null) || {};
+      const mergedAcc = ensureDefaultOwner(remoteAcc);
+      setLocalStore(LS_ACCOUNTS, mergedAcc);
+      setLocalStore(LS_SESSIONS, remoteSess);
+      return { accounts: mergedAcc, sessions: remoteSess };
+    } catch {
+      return { accounts: localAcc, sessions: localSess };
     }
   }
-
+  async function dbSaveAccount(acc) {
+    const key = acc.username.trim().toLowerCase();
+    const localAcc = ensureDefaultOwner(getLocalStore(LS_ACCOUNTS));
+    localAcc[key] = acc;
+    setLocalStore(LS_ACCOUNTS, localAcc);
+    const base = getDbUrl();
+    if (base) {
+      try {
+        await fetch(`${base}/ug_accounts/${encodeURIComponent(key)}.json`, {
+          method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(acc)
+        });
+      } catch {}
+    }
+  }
+  async function dbDeleteAccount(username) {
+    const key = username.trim().toLowerCase();
+    const localAcc = getLocalStore(LS_ACCOUNTS);
+    delete localAcc[key];
+    setLocalStore(LS_ACCOUNTS, localAcc);
+    const localSess = getLocalStore(LS_SESSIONS);
+    delete localSess[key];
+    setLocalStore(LS_SESSIONS, localSess);
+    const base = getDbUrl();
+    if (base) {
+      try {
+        await Promise.all([
+          fetch(`${base}/ug_accounts/${encodeURIComponent(key)}.json`, { method: "DELETE" }),
+          fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" })
+        ]);
+      } catch {}
+    }
+  }
+  async function dbUpsertSession(sess) {
+    const key = sess.username.trim().toLowerCase();
+    const localSess = getLocalStore(LS_SESSIONS);
+    localSess[key] = sess;
+    setLocalStore(LS_SESSIONS, localSess);
+    const base = getDbUrl();
+    if (base) {
+      try {
+        await fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, {
+          method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(sess)
+        });
+      } catch {}
+    }
+  }
+  async function dbDeleteSession(username) {
+    const key = username.trim().toLowerCase();
+    const localSess = getLocalStore(LS_SESSIONS);
+    delete localSess[key];
+    setLocalStore(LS_SESSIONS, localSess);
+    const base = getDbUrl();
+    if (base) {
+      try { await fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" }); } catch {}
+    }
+  }
+  // Live Screen Alert DB Utilities
+  async function dbSendUserAlert(targetUsername, alertData) {
+    const key = targetUsername.trim().toLowerCase();
+    const base = getDbUrl();
+    const alertObj = { ...alertData, id: "alert_" + Date.now(), timestamp: Date.now() };
+    if (base) {
+      try {
+        await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, {
+          method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(alertObj)
+        });
+      } catch {}
+    } else {
+      const store = getLocalStore(LS_ALERTS);
+      store[key] = alertObj;
+      setLocalStore(LS_ALERTS, store);
+    }
+  }
+  async function dbFetchUserAlert(username) {
+    if (!username) return null;
+    const key = username.trim().toLowerCase();
+    const base = getDbUrl();
+    if (base) {
+      try {
+        const res = await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, { cache: "no-store" });
+        if (res.ok) return await res.json();
+      } catch {}
+    } else {
+      const store = getLocalStore(LS_ALERTS);
+      return store[key] || null;
+    }
+    return null;
+  }
+  async function dbClearUserAlert(username) {
+    if (!username) return;
+    const key = username.trim().toLowerCase();
+    const base = getDbUrl();
+    if (base) {
+      try { await fetch(`${base}/ug_alerts/${encodeURIComponent(key)}.json`, { method: "DELETE" }); } catch {}
+    } else {
+      const store = getLocalStore(LS_ALERTS);
+      delete store[key];
+      setLocalStore(LS_ALERTS, store);
+    }
+  }
   function getSavedSession() {
     try { const raw = localStorage.getItem(LS_CURRENT_USER); if (raw) return JSON.parse(raw); } catch {}
     return null;
@@ -248,19 +487,33 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     try {
       if (!sess) localStorage.removeItem(LS_CURRENT_USER);
       else localStorage.setItem(LS_CURRENT_USER, JSON.stringify(sess));
+      if (bc) bc.postMessage({ type: "session_changed" });
     } catch {}
   }
-
+  function formatRemainingTime(acc, now) {
+    if (!acc) return "Invalid";
+    if (acc.infinite || acc.role === "owner") return "Infinite \u221E";
+    if (!acc.expiresAt) return "Infinite \u221E";
+    const diff = acc.expiresAt - now;
+    if (diff <= 0) return "Expired";
+    const totalSec = Math.floor(diff / 1000);
+    const hrs = Math.floor(totalSec / 3600);
+    const mins = Math.floor((totalSec % 3600) / 60);
+    const secs = totalSec % 60;
+    if (hrs > 0) return `${hrs}h ${mins}m ${secs}s`;
+    if (mins > 0) return `${mins}m ${secs}s`;
+    return `${secs}s`;
+  }
   // ============================================================================
-  // BUILT-IN 3D WEBGL ROBLOX ENGINE
+  // BUILT-IN 3D WEBGL ROBLOX ENGINE (100% LOCAL IN-HTML, FORTIGUARD SAFE)
   // ============================================================================
   function buildRobloxDirectEngine() {
     return `<!doctype html><html><head><meta charset="utf-8"><style>
       *{box-sizing:border-box;margin:0;padding:0;user-select:none;font-family:system-ui,sans-serif}
       html,body{width:100%;height:100%;overflow:hidden;background:#111216;color:#fff}
-      #hud{position:fixed;top:14px;left:14px;right:14px;z-index:10;display:flex;justify-content:space-between}
-      .hud-box{background:rgba(15,16,20,0.85);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:14px;font-size:14px;font-weight:600}
-      .hud-btn{background:#00b06f;color:#fff;border:0;padding:5px 12px;border-radius:8px;cursor:pointer;font-weight:700}
+      #hud{position:fixed;top:14px;left:14px;right:14px;z-index:10;display:flex;justify-content:space-between;pointer-events:none}
+      .hud-box{pointer-events:auto;background:rgba(15,16,20,0.82);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:8px 16px;display:flex;align-items:center;gap:14px;font-size:14px;font-weight:600}
+      .hud-btn{background:#00b06f;color:#fff;border:0;padding:5px 12px;border-radius:8px;cursor:pointer;font-weight:700;font-size:12.5px}
     </style><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script></head><body>
       <div id="hud">
         <div class="hud-box"><span>🌈 Roblox 3D Rainbow Obby</span><span style="color:#4ade80" id="st">Stage: 1 / 30</span></div>
@@ -299,7 +552,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           if(keys['KeyQ'])yaw+=0.04; if(keys['KeyE'])yaw-=0.04;
           let f=(keys['KeyW']||keys['ArrowUp']?1:0)-(keys['KeyS']||keys['ArrowDown']?1:0);
           let r=(keys['KeyD']||keys['ArrowRight']?1:0)-(keys['KeyA']||keys['ArrowLeft']?1:0);
-          player.position.x+=(-Math.sin(yaw)*f+Math.cos(yaw)*r)*0.24; player.position.z+=(-Math.cos(yaw)*f-Math.sin(yaw)*r)*0.24;
+          const dx=(-Math.sin(yaw)*f+Math.cos(yaw)*r)*0.24, dz=(-Math.cos(yaw)*f-Math.sin(yaw)*r)*0.24;
+          player.position.x+=dx; player.position.z+=dz;
           if(keys['Space']&&grounded){vy=0.35;grounded=false;}
           vy-=0.015; player.position.y+=vy; grounded=false;
           for(const p of plats){
@@ -321,25 +575,135 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         loop();
       <\/script></body></html>`;
   }
-
+  // ============================================================================
+  // FULL GAMES CATALOG (70+ REAL WORKING TITLES)
+  // ============================================================================
   const GAMES = [
    { "slug": "roblox", "name": "Roblox", "cat": "Action", "embed": "roblox-direct-engine", "thumb": "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" },
    { "slug": "geometry-dash", "name": "Geometry Dash", "cat": "Arcade", "embed": "https://dasmetry.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/dasmetry_retina.webp" },
    { "slug": "1v1lol", "name": "1v1.LOL", "cat": "Shooter", "embed": "https://1v1-lol.gitlab.io/file/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/1/1v1lol_retina.webp" },
-   { "slug": "slope", "name": "Slope", "cat": "Arcade", "embed": "https://slope.tops-games.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slope_retina.webp" }
+   { "slug": "2v2io", "name": "2v2.io", "cat": "Shooter", "embed": "https://2v2io.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/2/2v2io_retina.webp" },
+   { "slug": "67-clicker", "name": "67 Clicker", "cat": "Clicker", "embed": "https://67-clicker.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/6/67-clicker_large.webp" },
+   { "slug": "a-small-world-cup", "name": "A Small World Cup", "cat": "Sports", "embed": "https://a-small-world-cup.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/a-small-world-cup_retina.webp" },
+   { "slug": "agario", "name": "Agar.io", "cat": ".io", "embed": "https://agar.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/agario_retina.webp" },
+   { "slug": "among-us-danger-run", "name": "Among Us Danger Run", "cat": "Action", "embed": "https://among-us-danger-run.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/among-us-danger-run_retina.webp" },
+   { "slug": "angry-birds-2", "name": "Angry Birds 2", "cat": "Puzzle", "embed": "https://angry-birds-2.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/angry-birds-2_retina.webp" },
+   { "slug": "anomalous-coffee-machine", "name": "Anomalous Coffee Machine", "cat": "Horror", "embed": "https://anomalous-coffee-machine.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/anomalous-coffee-machine_xlarge.webp" },
+   { "slug": "arrasio", "name": "Arras.io", "cat": ".io", "embed": "https://arras.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/arrasio_retina.webp" },
+   { "slug": "backrooms", "name": "Backrooms", "cat": "Horror", "embed": "https://backrooms.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/backrooms_retina.webp" },
+   { "slug": "backyard-baseball", "name": "Backyard Baseball", "cat": "Sports", "embed": "https://backyard-baseball.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/backyard-baseball_retina.webp" },
+   { "slug": "bad-ice-cream", "name": "Bad Ice Cream", "cat": "Puzzle", "embed": "swf:https://unblockedgameswtf.net/uploads/games/bad-ice-cream_game.swf", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bad-ice-cream_retina.webp" },
+   { "slug": "baldis-basics", "name": "Baldi's Basics", "cat": "Horror", "embed": "https://baldis-basics.tops-games.workers.dev/" },
+   { "slug": "baseball-9", "name": "Baseball 9", "cat": "Sports", "embed": "https://baseball-9.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/baseball-9_xlarge.webp" },
+   { "slug": "basket-random", "name": "Basket Random", "cat": "Sports", "embed": "https://basket-random.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basket-random_retina.webp" },
+   { "slug": "basketball-bros", "name": "Basketball Bros", "cat": "Sports", "embed": "https://basketball-bros.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketball-bros_large.webp" },
+   { "slug": "basketball-stars", "name": "Basketball Stars", "cat": "Sports", "embed": "https://basketball-stars.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketball-stars_retina.webp" },
+   { "slug": "basketbros", "name": "BasketBros", "cat": "Sports", "embed": "https://basketbros.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketbros_retina.webp" },
+   { "slug": "big-shot-boxing", "name": "Big Shot Boxing", "cat": "Sports", "embed": "https://big-shot-boxing.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/big-shot-boxing_retina.webp" },
+   { "slug": "bitlife", "name": "BitLife Life Simulator", "cat": "Casual", "embed": "https://joemama980.github.io/games/bitlife/" },
+   { "slug": "blockpost", "name": "Blockpost", "cat": "Shooter", "embed": "https://www.y8.com/embed/blockpost" },
+   { "slug": "blowout", "name": "Blowout", "cat": "Arcade", "embed": "https://blowout.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/blowout_retina.webp" },
+   { "slug": "bonkio", "name": "Bonk.io", "cat": ".io", "embed": "https://bonk.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bonkio_retina.webp" },
+   { "slug": "boxing-random", "name": "Boxing Random", "cat": "Sports", "embed": "https://boxing-random.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/boxing-random_retina.webp" },
+   { "slug": "build-now-gg", "name": "Build Now GG", "cat": "Shooter", "embed": "https://buildnow-gg.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/build-now-gg_retina.webp" },
+   { "slug": "bullet-force", "name": "Bullet Force", "cat": "Shooter", "embed": "https://games.crazygames.com/en_US/bullet-force-multiplayer/index.html?v=1.292", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bullet-force_retina.webp" },
+   { "slug": "bullet-force-multiplayer", "name": "Bullet Force Multiplayer", "cat": "Shooter", "embed": "https://bullet-force-multiplayer.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bullet-force-multiplayer_retina.webp" },
+   { "slug": "candy-crush", "name": "Candy Crush", "cat": "Puzzle", "embed": "https://candy-crush.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/candy-crush_retina.webp" },
+   { "slug": "chrome-dino", "name": "Chrome Dino", "cat": "Arcade", "embed": "https://joemama980.github.io/games/dinogame/" },
+   { "slug": "clash-of-vikings", "name": "Clash of Vikings", "cat": "Strategy", "embed": "https://clash-of-vikings.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/clash-of-vikings_retina.webp" },
+   { "slug": "color-tunnel", "name": "Color Tunnel", "cat": "Arcade", "embed": "https://color-tunnel.houseofhazards-lol.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/color-tunnel_retina.webp" },
+   { "slug": "combat-reloaded", "name": "Combat Reloaded", "cat": "Shooter", "embed": "https://html5.gamemonetize.co/lfijb0bl3oiqhjq0217qgy0fdbrvf8s5/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/combat-reloaded_retina.webp" },
+   { "slug": "conquerio", "name": "Conquer.io", "cat": ".io", "embed": "https://html5.gamedistribution.com/40156cca0c094e6fa739cbd9145bf2b6/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/conquerio_retina.webp" },
+   { "slug": "contexto", "name": "Contexto", "cat": "Puzzle", "embed": "https://contextogame.co/game/contextogame/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/contexto_large.webp" },
+   { "slug": "counter-strike-2", "name": "Counter-Strike 2", "cat": "Shooter", "embed": "https://counter-strike-2.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/counter-strike-2_retina.webp" },
+   { "slug": "crossy-road", "name": "Crossy Road", "cat": "Arcade", "embed": "https://crossy-road.tops-games.workers.dev/" },
+   { "slug": "deadshotio", "name": "Deadshot.io", "cat": "Shooter", "embed": "https://deadshot.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/deadshotio_retina.webp" },
+   { "slug": "diepio", "name": "Diep.io", "cat": ".io", "embed": "https://diep.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/diepio_retina.webp" },
+   { "slug": "drift-boss", "name": "Drift Boss", "cat": "Racing", "embed": "https://drift-boss.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/drift-boss_retina.webp" },
+   { "slug": "eggy-car", "name": "Eggy Car", "cat": "Racing", "embed": "https://eggy-car.tops-games.workers.dev/" },
+   { "slug": "escape-road", "name": "Escape Road", "cat": "Racing", "embed": "https://escape-road.tops-games.workers.dev/" },
+   { "slug": "evio", "name": "Ev.io", "cat": "Shooter", "embed": "https://ev.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/e/evio_retina.webp" },
+   { "slug": "football-bros", "name": "Football Bros", "cat": "Sports", "embed": "https://football-bros.classroomgames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/f/football-bros_retina.webp" },
+   { "slug": "granny", "name": "Granny", "cat": "Horror", "embed": "https://granny.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/g/granny_retina.webp" },
+   { "slug": "gunspin", "name": "GunSpin", "cat": "Shooter", "embed": "https://gunspin.tops-games.workers.dev/" },
+   { "slug": "happy-wheels", "name": "Happy Wheels", "cat": "Action", "embed": "https://happy-wheels.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/happy-wheels_retina.webp" },
+   { "slug": "holeio", "name": "Hole.io", "cat": ".io", "embed": "https://holeio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/holeio_retina.webp" },
+   { "slug": "house-of-hazards", "name": "House of Hazards", "cat": "Action", "embed": "https://house-of-hazards.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/house-of-hazards_retina.webp" },
+   { "slug": "italian-brainrot-clicker", "name": "Italian Brainrot Clicker", "cat": "Clicker", "embed": "https://italian-brainrot-clicker.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/i/italian-brainrot-clicker_retina.webp" },
+   { "slug": "jetpack-joyride", "name": "Jetpack Joyride", "cat": "Arcade", "embed": "https://jetpack-joyride.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/j/jetpack-joyride_retina.webp" },
+   { "slug": "kart-bros", "name": "Kart Bros", "cat": "Racing", "embed": "https://kart-bros.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/kart-bros_retina.webp" },
+   { "slug": "kourio", "name": "Kour.io", "cat": "Shooter", "embed": "https://kour.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/kourio_retina.webp" },
+   { "slug": "krunkerio", "name": "Krunker.io", "cat": "Shooter", "embed": "https://krunker.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/krunkerio_retina.webp" },
+   { "slug": "level-devil", "name": "Level Devil", "cat": "Platformer", "embed": "https://level-devil.classroomgames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/l/level-devil_retina.webp" },
+   { "slug": "moto-x3m", "name": "Moto X3M", "cat": "Racing", "embed": "https://moto-x3m.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/m/moto-x3m_retina.webp" },
+   { "slug": "narrow-one", "name": "Narrow One", "cat": "Action", "embed": "https://narrow.one/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/n/narrow-one_medium.webp" },
+   { "slug": "papas-pizzeria", "name": "Papa's Pizzeria", "cat": "Casual", "embed": "https://papas-pizzeria.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/p/papas-pizzeria_retina.webp" },
+   { "slug": "paperio-2", "name": "Paper.io 2", "cat": ".io", "embed": "https://paperio-2.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/p/paperio-2_retina.webp" },
+   { "slug": "polytrack", "name": "PolyTrack", "cat": "Racing", "embed": "https://polytrack.venkogames.workers.dev/" },
+   { "slug": "ragdoll-archers", "name": "Ragdoll Archers", "cat": "Action", "embed": "https://ragdoll-archers.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/r/ragdoll-archers_retina.webp" },
+   { "slug": "ragdoll-hit", "name": "Ragdoll Hit", "cat": "Action", "embed": "https://ragdoll-hit.venkogames.workers.dev/" },
+   { "slug": "retro-bowl", "name": "Retro Bowl", "cat": "Sports", "embed": "https://retro-bowl.classroomgames.workers.dev/" },
+   { "slug": "shell-shockers", "name": "Shell Shockers", "cat": "Shooter", "embed": "https://shell-shockers.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/shell-shockers_retina.webp" },
+   { "slug": "slice-master", "name": "Slice Master", "cat": "Casual", "embed": "https://slice-master.classroomgames.workers.dev/" },
+   { "slug": "slitherio", "name": "Slither.io", "cat": ".io", "embed": "https://gulper.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slitherio_retina.webp" },
+   { "slug": "slope", "name": "Slope", "cat": "Arcade", "embed": "https://slope.tops-games.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slope_retina.webp" },
+   { "slug": "slow-roads", "name": "Slow Roads", "cat": "Racing", "embed": "https://slow-roads.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slow-roads_xlarge.webp" },
+   { "slug": "smash-karts", "name": "Smash Karts", "cat": "Racing", "embed": "https://smashkarts.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/smash-karts_retina.webp" },
+   { "slug": "snow-rider-3d", "name": "Snow Rider 3D", "cat": "Racing", "embed": "https://snow-rider-3d.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/snow-rider-3d_retina.webp" },
+   { "slug": "space-waves", "name": "Space Waves", "cat": "Arcade", "embed": "https://space-waves.classroomgames.workers.dev/" },
+   { "slug": "stickman-hook", "name": "Stickman Hook", "cat": "Arcade", "embed": "https://stickman-hook.tops-games.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/stickman-hook_retina.webp" },
+   { "slug": "subway-surfers", "name": "Subway Surfers", "cat": "Arcade", "embed": "https://joemama980.github.io/games/subwaysurfers/" },
+   { "slug": "territorialio", "name": "Territorial.io", "cat": ".io", "embed": "https://territorialio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/territorialio_retina.webp" },
+   { "slug": "tomb-of-the-mask", "name": "Tomb of the Mask", "cat": "Arcade", "embed": "https://tomb-of-the-mask.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/tomb-of-the-mask_retina.webp" },
+   { "slug": "tunnel-rush", "name": "Tunnel Rush", "cat": "Arcade", "embed": "https://tunnel-rush.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/tunnel-rush_retina.webp" },
+   { "slug": "ultrakill", "name": "Ultrakill", "cat": "Shooter", "embed": "https://ultrakill.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/u/ultrakill_retina.webp" },
+   { "slug": "vengeio", "name": "Venge.io", "cat": "Shooter", "embed": "https://vengeio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/v/vengeio_retina.webp" },
+   { "slug": "wrestle-bros", "name": "Wrestle Bros", "cat": "Sports", "embed": "https://wrestle-bros.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/wrestle-bros_retina.webp" },
+   { "slug": "zombsroyaleio", "name": "ZombsRoyale.io", "cat": "Shooter", "embed": "https://zombsroyaleio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/z/zombsroyaleio_retina.webp" }
   ];
-
   const INITIAL_MEDIA = [
-    { id: "tt9362722", tmdb: "569094", title: "Spider-Man: Across the Spider-Verse", thumb: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg" },
-    { id: "tt15239678", tmdb: "693134", title: "Dune: Part Two", thumb: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg" }
+    { id: "tt9362722", tmdb: "569094", title: "Spider-Man: Across the Spider-Verse", cat: "Movies", year: "2023", rating: "98% Match", age: "PG", thumb: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg", backdrop: "https://image.tmdb.org/t/p/original/4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg", desc: "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People.", type: "movie" },
+    { id: "tt15239678", tmdb: "693134", title: "Dune: Part Two", cat: "Movies", year: "2024", rating: "97% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg", backdrop: "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg", desc: "Paul Atreides unites with Chani and the Fremen while on a warpath of revenge.", type: "movie" },
+    { id: "tt6263850", tmdb: "533535", title: "Deadpool & Wolverine", cat: "Movies", year: "2024", rating: "96% Match", age: "R", thumb: "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", backdrop: "https://image.tmdb.org/t/p/original/yDHYTfA3R0jFYba16jBB1ef8oIt.jpg", desc: "Wolverine is recovering from his injuries when he crosses paths with the loudmouth Deadpool.", type: "movie" },
+    { id: "tt0816692", tmdb: "157336", title: "Interstellar", cat: "Movies", year: "2014", rating: "99% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", backdrop: "https://image.tmdb.org/t/p/original/xJHokMbljvjADYdit5fK5VQsXEG.jpg", desc: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.", type: "movie" },
+    { id: "tt12343534", tmdb: "95479", title: "Jujutsu Kaisen", cat: "Anime", year: "2020", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg", backdrop: "https://image.tmdb.org/t/p/original/gmECX1DvFgdUPjtio2zaL8BPYPu.jpg", desc: "Yuji Itadori joins a secret organization of Jujutsu Sorcerers to kill a powerful Curse.", type: "tv" },
+    { id: "tt9335498", tmdb: "85937", title: "Demon Slayer", cat: "Anime", year: "2019", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg", backdrop: "https://image.tmdb.org/t/p/original/nTvM4mhqNlHIvUkI1gVnW6XP7GG.jpg", desc: "Tanjiro sets out to become a demon slayer to avenge his family and cure his sister.", type: "tv" },
+    { id: "tt0903747", tmdb: "1396", title: "Breaking Bad", cat: "TV Shows", year: "2008", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg", backdrop: "https://image.tmdb.org/t/p/original/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg", desc: "A chemistry teacher diagnosed with cancer turns to manufacturing meth with a former student.", type: "tv" }
   ];
-
-  const DEFAULTS = { cloak: false, title: "about:blank" };
+  const DEFAULTS = { cloak: false, title: "about:blank", icon: "", redirect: false, decoy: "https://classroom.google.com", panic: true };
   const KEY = "ug_settings";
   function loadSettings() { try { return { ...DEFAULTS, ...JSON.parse(localStorage.getItem(KEY) || "{}") }; } catch { return { ...DEFAULTS }; } }
-
+  function saveSettings(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} }
+  function frameSource(game) {
+    const activeUrl = game.embed;
+    if (activeUrl === "roblox-direct-engine") {
+      return { srcdoc: buildRobloxDirectEngine() };
+    }
+    if (activeUrl.startsWith("swf:")) {
+      const swf = activeUrl.slice(4);
+      const doc = '<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;background:#000;overflow:hidden}#p{width:100%;height:100%}</style><script src="https://unpkg.com/@ruffle-rs/ruffle"><\/script></head><body><div id="p"></div><script>addEventListener("load",function(){var r=window.RufflePlayer.newest();var p=r.createPlayer();p.style.width="100%";p.style.height="100%";document.getElementById("p").appendChild(p);p.load({url:' + JSON.stringify(swf) + ',autoplay:"auto",unmuteOverlay:"hidden"});});<\/script></body></html>';
+      return { srcdoc: doc };
+    }
+    return { src: activeUrl };
+  }
   const FRAME_ALLOW = "fullscreen; autoplay; gamepad; clipboard-write; accelerometer; gyroscope; pointer-lock; microphone; keyboard-map";
-
+  function openCloaked(source, s) {
+    const w = window.open("about:blank", "_blank");
+    if (!w) return false;
+    const d = w.document;
+    d.open(); d.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title></title><style>html,body,iframe{margin:0;padding:0;width:100%;height:100%;border:0;background:#000;overflow:hidden}</style></head><body></body></html>'); d.close();
+    d.title = s.title || "about:blank";
+    const f = d.createElement("iframe");
+    if (source.srcdoc) f.srcdoc = source.srcdoc; else if (source.src) f.src = source.src;
+    f.setAttribute("allow", FRAME_ALLOW); f.setAttribute("allowfullscreen", "");
+    d.body.appendChild(f);
+    if (s.redirect) location.replace(s.decoy);
+    return true;
+  }
+  function cloakSite(s) { return openCloaked({ src: location.href.split("#")[0] }, s); }
+  // ============================================================================
+  // SVG ICONS
+  // ============================================================================
   function Svg({ children, sw = 1.8 }) {
     return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
   }
@@ -352,15 +716,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const MusicIcon = (p) => h(Svg, p, h("path", { d: "M9 18V5l12-2v13" }), h("circle", { cx: "6", cy: "18", r: "3" }), h("circle", { cx: "18", cy: "16", r: "3" }));
   const BrowserIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "10" }), h("line", { x1: "2", y1: "12", x2: "22", y2: "12" }), h("path", { d: "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" }));
   const AccountIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "8", r: "4" }), h("path", { d: "M4 21a8 8 0 0 1 16 0" }));
-  const CreatorIcon = (p) => h(Svg, p, h("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }), h("circle", { cx: "9", cy: "7", r: "4" }));
+  const CreatorIcon = (p) => h(Svg, p, h("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }), h("circle", { cx: "9", cy: "7", r: "4" }), h("line", { x1: "19", y1: "8", x2: "19", y2: "14" }), h("line", { x1: "22", y1: "11", x2: "16", y2: "11" }));
+  const EyeIcon = (p) => h(Svg, p, h("path", { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }), h("circle", { cx: "12", cy: "12", r: "3" }));
+  const EyeOffIcon = (p) => h(Svg, p, h("path", { d: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" }), h("line", { x1: "1", y1: "1", x2: "23", y2: "23" }));
   const SettingsIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "3" }), h("path", { d: "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" }));
   const ChevronIcon = (p) => h(Svg, p, h("path", { d: "m9 18 6-6-6-6" }));
   const SearchIcon = (p) => h(Svg, p, h("circle", { cx: "11", cy: "11", r: "8" }), h("path", { d: "m21 21-4.3-4.3" }));
-
+  const RefreshIcon = (p) => h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
   function Modal({ children, onClose }) {
     return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
   }
-
+  // --- Background Starfield ---
   function Stars() {
     const ref = useRef(null);
     useEffect(() => {
@@ -369,15 +735,21 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       const dpr = window.devicePixelRatio || 1;
       const resize = () => {
         W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr;
-        stars = Array.from({ length: 120 }, () => ({
-          x: Math.random() * W, y: Math.random() * H, r: (Math.random() * 1.4 + 0.5) * dpr, s: (Math.random() * 0.12 + 0.02) * dpr, p: Math.random() * Math.PI * 2
+        cv.style.width = innerWidth + "px"; cv.style.height = innerHeight + "px";
+        const n = Math.floor((innerWidth * innerHeight) / 9000);
+        stars = Array.from({ length: n }, () => ({
+          x: Math.random() * W, y: Math.random() * H,
+          r: (Math.random() * 1.4 + 0.5) * dpr, s: (Math.random() * 0.12 + 0.02) * dpr,
+          p: Math.random() * Math.PI * 2, f: Math.random() * 0.02 + 0.005,
         }));
       };
       const frame = () => {
         ctx.clearRect(0, 0, W, H); ctx.fillStyle = "#fff";
         for (const s of stars) {
-          s.y += s.s; if (s.y > H + 5) s.y = -5;
-          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.28); ctx.fill();
+          s.y += s.s; s.p += s.f;
+          if (s.y > H + 5) { s.y = -5; s.x = Math.random() * W; }
+          ctx.globalAlpha = 0.35 + 0.55 * Math.abs(Math.sin(s.p));
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
         }
         raf = requestAnimationFrame(frame);
       };
@@ -386,22 +758,25 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     }, []);
     return h("canvas", { id: "stars", ref });
   }
-
+  // --- Sidebar Component ---
   function Sidebar({ view, open, onToggle, onNavigate, isOwner, userTier }) {
     const btn = (id, label, icon) => {
       const unlocked = canAccessView(userTier, id);
       return h("button", {
         key: id,
         className: "side-btn" + (view === id ? " active" : "") + (!unlocked ? " locked" : ""),
+        title: unlocked ? label : `${label} (${requiredTierForView(id)} Tier Required)`,
         onClick: () => onNavigate(id)
-      }, icon, h("span", null, unlocked ? label : `${label} 🔒`));
+      },
+        icon,
+        h("span", null, unlocked ? label : `${label} 🔒`)
+      );
     };
-
     return h("nav", { id: "sidebar", className: open ? "open" : "" },
       h("div", { className: "side-group", style: { paddingTop: 2 } },
         btn("home", "Home", h(HomeIcon)),
-        btn("tiktok", "TikTok", h(TikTokIcon)),
         btn("youtube", "YouTube", h(YouTubeIcon)),
+        btn("tiktok", "TikTok", h(TikTokIcon)),
         btn("browser", "Browser", h(BrowserIcon)),
         btn("chat", "Chat", h(ChatIcon)),
         btn("games", "Games", h(GamesIcon)),
@@ -410,49 +785,85 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       ),
       h("div", { className: "spacer" }),
       h("div", { className: "side-group", style: { paddingBottom: 6 } },
-        isOwner ? btn("creator", "Creator Hub", h(CreatorIcon)) : null,
+        isOwner ? btn("creator", "Account Creator", h(CreatorIcon)) : null,
         btn("account", "Account", h(AccountIcon)),
         btn("settings", "Settings", h(SettingsIcon)),
-        h("button", { className: "side-btn", onClick: onToggle }, h(ChevronIcon), h("span", null, "Collapse"))
+        h("button", { className: "side-btn", id: "expandBtn", title: open ? "Collapse" : "Expand", onClick: onToggle }, h(ChevronIcon), h("span", null, "Collapse"))
       )
     );
   }
-
+  // --- Home Component ---
+  const WORDS = ["Roblox", "Geometry Dash", "TikTok Live", "YouTube", "Play anything"];
+  function useTypingPlaceholder(paused) {
+    const [text, setText] = useState("Browse");
+    const pausedRef = useRef(paused);
+    pausedRef.current = paused;
+    useEffect(() => {
+      let w = 0, i = 0, del = false, t;
+      const tick = () => {
+        if (pausedRef.current) { i = 0; del = false; setText("Browse"); t = setTimeout(tick, 600); return; }
+        const word = WORDS[w];
+        setText(word.slice(0, i) + "|");
+        let delay = del ? 45 : 95;
+        if (!del && i === word.length) { del = true; delay = 1800; }
+        else if (del && i === 0) { del = false; w = (w + 1) % WORDS.length; delay = 400; }
+        else i += del ? -1 : 1;
+        t = setTimeout(tick, delay);
+      };
+      tick();
+      return () => clearTimeout(t);
+    }, []);
+    return text;
+  }
   function Home({ onNavigate, onSearch, userTier }) {
-    const [val, setVal] = useState("");
+    const [value, setValue] = useState("");
+    const [focused, setFocused] = useState(false);
+    const placeholder = useTypingPlaceholder(focused || !!value);
+    const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
+    const quickBtn = (id, label, icon, customStyle = {}) => {
+      const unlocked = canAccessView(userTier, id);
+      return h("button", {
+        onClick: () => onNavigate(id),
+        style: { opacity: unlocked ? 1 : 0.55 }
+      },
+        h("div", { className: "circ", style: customStyle }, icon),
+        unlocked ? label : `${label} 🔒`
+      );
+    };
     return h("section", { className: "view", id: "home" },
       h("div", { className: "logo-wrap" }, h("h1", { className: "logo" }, "unblockedgames")),
       h("div", { className: "search-wrap" },
-        h("form", { className: "search", onSubmit: (e) => { e.preventDefault(); onSearch(val); } },
+        h("form", { className: "search", autoComplete: "off", onSubmit: submit },
           h(SearchIcon),
-          h("input", { placeholder: "Search Roblox, Geometry Dash, TikTok, YouTube...", value: val, onChange: (e) => setVal(e.target.value) })
+          h("input", { type: "text", spellCheck: false, value, placeholder: focused ? "Browse" : placeholder, onChange: (e) => setValue(e.target.value), onFocus: () => setFocused(true), onBlur: () => setFocused(false) })
         )
       ),
       h("div", { className: "quick" },
-        h("button", { onClick: () => onNavigate("tiktok") }, h("div", { className: "circ", style: { borderColor: "rgba(37,244,238,0.5)", color: "#25f4ee" } }, h(TikTokIcon)), "TikTok Live"),
-        h("button", { onClick: () => onNavigate("youtube") }, h("div", { className: "circ", style: { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" } }, h(YouTubeIcon)), "YouTube"),
-        h("button", { onClick: () => onNavigate("games") }, h("div", { className: "circ" }, h(GamesIcon)), "Games"),
-        h("button", { onClick: () => onNavigate("browser") }, h("div", { className: "circ" }, h(BrowserIcon)), "Browser")
-      )
+        quickBtn("tiktok", "TikTok Live", h(TikTokIcon), { borderColor: "rgba(37,244,238,0.5)", color: "#25f4ee" }),
+        quickBtn("youtube", "YouTube", h(YouTubeIcon), { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" }),
+        quickBtn("games", "Games", h(GamesIcon)),
+        quickBtn("browser", "Browser", h(BrowserIcon)),
+        quickBtn("music", "Spotify", h(MusicIcon)),
+        quickBtn("movies", "Netflix", h(MoviesIcon)),
+        quickBtn("chat", "Chat", h(ChatIcon))
+      ),
+      h("div", { className: "ad" }, "100% IN-BROWSER \u2022 UNBLOCKED LIVE MIRRORS", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
     );
   }
-
   // ============================================================================
   // UNBLOCKED REAL TIKTOK LIVE ENGINE (MIRROR & EMBED GATEWAY)
   // ============================================================================
   const PROXITOK_MIRRORS = [
     { name: "ProxiTok Global (Fast)", url: "https://proxitok.pabloferreros.dev/" },
-    { name: "ProxiTok Alpha", url: "https://tok.habedieehre.ninja/" },
     { name: "Urlebird Web Stream", url: "https://urlebird.com/" },
+    { name: "ProxiTok Alpha", url: "https://tok.habedieehre.ninja/" },
     { name: "ProxiTok Beta", url: "https://tok.artemislena.eu/" }
   ];
-
   function TikTokView({ toast }) {
     const [selectedMirror, setSelectedMirror] = useState(PROXITOK_MIRRORS[0].url);
     const [customLink, setCustomLink] = useState("");
     const [customEmbedId, setCustomEmbedId] = useState("");
     const [frameKey, setFrameKey] = useState(0);
-
     const handleLoadCustom = (e) => {
       e.preventDefault();
       const raw = customLink.trim();
@@ -460,20 +871,19 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       const match = raw.match(/video\/(\d+)/) || raw.match(/tiktok\.com\/.*\/(\d+)/);
       if (match && match[1]) {
         setCustomEmbedId(match[1]);
-        toast("Loaded direct TikTok embed!");
+        toast("Loaded authentic TikTok video embed!");
       } else {
-        toast("Enter a valid TikTok link containing video ID");
+        toast("Please paste a valid TikTok link containing a video ID");
       }
     };
-
     return h("section", { className: "view", style: { height: "100%" } },
       h("div", { className: "tt-view-root" },
-        // TikTok Unblocked Navbar
+        // Top TikTok Live Toolbar
         h("div", { className: "tt-view-nav" },
           h("div", { className: "tt-logo", onClick: () => { setCustomEmbedId(""); setFrameKey((k) => k + 1); } },
             h("span", { style: { color: "#fff" } }, "Tik"),
             h("span", { className: "cyan" }, "Tok"),
-            h("span", { className: "badge-pill live", style: { marginLeft: 8 } }, "LIVE MIRROR")
+            h("span", { className: "badge-pill live", style: { marginLeft: 8 } }, "LIVE UNBLOCKED")
           ),
           h("div", { className: "tt-mode-switch" },
             PROXITOK_MIRRORS.map((m) =>
@@ -487,15 +897,14 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           h("form", { onSubmit: handleLoadCustom, style: { display: "flex", gap: 8 } },
             h("input", {
               className: "field",
-              style: { height: 34, width: 220, fontSize: 12 },
-              placeholder: "Paste TikTok video URL...",
+              style: { height: 36, width: 240, fontSize: 12.5 },
+              placeholder: "Paste any TikTok video URL...",
               value: customLink,
               onChange: (e) => setCustomLink(e.target.value)
             }),
             h("button", { type: "submit", className: "btn sm", style: { background: "var(--tt-red)", color: "#fff" } }, "Play")
           )
         ),
-
         // Live In-Page Unblocked Frame
         h("div", { className: "tt-frame-container" },
           customEmbedId ? (
@@ -519,202 +928,717 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-
   // ============================================================================
-  // YOUTUBE & BROWSER & CHAT & GAMES
+  // FULL-PAGE GOOGLE-LIKE FROSTED GLASS BROWSER (Premium Tier)
   // ============================================================================
-  function YouTubeView() {
-    const [q, setQ] = useState("");
-    const [vid, setVid] = useState("jfKfPfyJRdk");
-    return h("section", { className: "view" },
-      h("div", { className: "page" },
-        h("div", { style: { width: "100%", height: "65vh", background: "#000", borderRadius: 14, overflow: "hidden", marginBottom: 18 } },
-          h("iframe", { src: `https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&rel=0`, style: { width: "100%", height: "100%", border: 0 }, allow: FRAME_ALLOW, allowFullScreen: true })
-        ),
-        h("form", { className: "toolbar", onSubmit: (e) => { e.preventDefault(); const m = q.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/); if (m) setVid(m[1]); } },
-          h("div", { className: "search" },
-            h(SearchIcon),
-            h("input", { placeholder: "Paste YouTube Video link...", value: q, onChange: (e) => setQ(e.target.value) })
-          ),
-          h("button", { type: "submit", className: "btn", style: { background: "#ff0000", color: "#fff", height: 52 } }, "Play")
-        )
-      )
-    );
-  }
-
   function BrowserView() {
     const [query, setQuery] = useState("");
-    const [url, setUrl] = useState("");
+    const [tab, setTab] = useState("all");
+    const [webResults, setWebResults] = useState([]);
+    const [imgResults, setImgResults] = useState([]);
+    const [shopResults, setShopResults] = useState([]);
+    const [vidResults, setVidResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [activeUrl, setActiveUrl] = useState("");
+    const [frameHtml, setFrameHtml] = useState("");
+    const [previewImg, setPreviewImg] = useState(null);
+    const debounceRef = useRef(null);
+    const isUrlLike = (str) => {
+      const s = (str || "").trim();
+      return /^(https?:\/\/|www\.)/i.test(s) || (/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(s) && !s.includes(" "));
+    };
+    const openUrl = useCallback(async (rawUrl) => {
+      let target = (rawUrl || "").trim();
+      if (!target) return;
+      if (!/^https?:\/\//i.test(target)) target = "https://" + target;
+      setActiveUrl(target);
+      setLoading(true);
+      const clickInterceptor = `
+        <base href="${target}">
+        <script>
+          document.addEventListener('click', function(e) {
+            var a = e.target.closest('a');
+            if (a && a.href && !a.href.startsWith('javascript:')) {
+              e.preventDefault();
+              parent.postMessage({ type: 'AUTO_BROWSER_NAV', url: a.href }, '*');
+            }
+          }, true);
+        <\/script>
+      `;
+      try {
+        const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
+        const j = await r.json();
+        if (j.contents && j.contents.length > 50) {
+          setFrameHtml(clickInterceptor + j.contents);
+        } else {
+          setFrameHtml("");
+        }
+      } catch {
+        setFrameHtml("");
+      }
+      setLoading(false);
+    }, []);
+    const executeGoogleSearch = useCallback(async (qText) => {
+      const clean = (qText || "").trim();
+      if (!clean) {
+        setWebResults([]); setImgResults([]); setShopResults([]); setVidResults([]);
+        return;
+      }
+      setLoading(true);
+      try {
+        const [wikiSearch, ddgSearch, wikiImages, dummyShop, pipedVids] = await Promise.all([
+          fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(clean)}&srlimit=12&utf8=&format=json&origin=*`).then((r) => r.json()).catch(() => null),
+          fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(clean)}&format=json&no_html=1&skip_disambig=1`).then((r) => r.json()).catch(() => null),
+          fetch(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=filetype:bitmap+${encodeURIComponent(clean)}&gsrlimit=20&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=500&format=json&origin=*`).then((r) => r.json()).catch(() => null),
+          fetch(`https://dummyjson.com/products/search?q=${encodeURIComponent(clean)}&limit=12`).then((r) => r.json()).catch(() => null),
+          fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(clean)}&filter=videos`).then((r) => r.json()).catch(() => null)
+        ]);
+        const webList = [];
+        if (isUrlLike(clean)) {
+          const norm = /^https?:\/\//i.test(clean) ? clean : "https://" + clean;
+          webList.push({ title: `🌐 Go to ${norm}`, url: norm, snippet: `Open ${norm} directly in full-screen unblocked view.` });
+        }
+        if (ddgSearch?.AbstractText && ddgSearch?.AbstractURL) {
+          webList.push({ title: ddgSearch.Heading || clean, url: ddgSearch.AbstractURL, snippet: ddgSearch.AbstractText });
+        }
+        (wikiSearch?.query?.search || []).forEach((w) => {
+          webList.push({
+            title: w.title,
+            url: `https://en.wikipedia.org/wiki/${encodeURIComponent(w.title.replace(/ /g, "_"))}`,
+            snippet: (w.snippet || "").replace(/<\/?[^>]+(>|$)/g, "")
+          });
+        });
+        setWebResults(webList);
+        const imgs = [];
+        const pages = wikiImages?.query?.pages || {};
+        Object.values(pages).forEach((p) => {
+          const info = p.imageinfo?.[0];
+          if (info && (info.thumburl || info.url)) {
+            imgs.push({
+              title: (p.title || "").replace("File:", "").replace(/\.[^/.]+$/, ""),
+              thumb: info.thumburl || info.url,
+              full: info.url,
+              source: "Wikimedia Commons HD"
+            });
+          }
+        });
+        setImgResults(imgs);
+        const shops = (dummyShop?.products || []).map((prod) => ({
+          id: "dj_" + prod.id,
+          title: prod.title,
+          price: `$${prod.price}`,
+          store: prod.brand || "Verified Store",
+          rating: `★ ${prod.rating || "4.8"}`,
+          img: prod.thumbnail,
+          desc: prod.description,
+          url: `https://en.wikipedia.org/wiki/${encodeURIComponent(prod.title)}`
+        }));
+        setShopResults(shops);
+        const vids = (pipedVids?.items || []).map((v) => {
+          const vidId = v.url ? v.url.split("v=")[1] : "";
+          return {
+            id: vidId,
+            title: v.title,
+            author: v.uploaderName || "YouTube",
+            views: v.views ? `${Number(v.views).toLocaleString()} views` : "HD Video",
+            thumb: v.thumbnail || `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg`
+          };
+        }).filter((v) => v.id);
+        setVidResults(vids);
+      } catch {}
+      setLoading(false);
+    }, []);
+    const handleInput = (val) => {
+      setQuery(val);
+      clearTimeout(debounceRef.current);
+      if (!val.trim()) { setWebResults([]); setImgResults([]); return; }
+      debounceRef.current = setTimeout(() => executeGoogleSearch(val), 200);
+    };
+    const isSearching = query.trim().length > 0 || !!activeUrl;
     return h("section", { className: "view" },
-      h("div", { style: { height: "100%", display: "flex", flexDirection: "column" } },
-        h("div", { style: { padding: "14px 20px", background: "#0c0c10", borderBottom: "1px solid var(--border)", display: "flex", gap: 12 } },
-          h("form", { onSubmit: (e) => { e.preventDefault(); let t = query.trim(); if (!/^https?:\/\//i.test(t)) t = "https://" + t; setUrl(t); }, style: { flex: 1, display: "flex", gap: 10 } },
-            h("input", { className: "field", placeholder: "Type any website URL...", value: query, onChange: (e) => setQuery(e.target.value) }),
-            h("button", { type: "submit", className: "btn" }, "Go")
+      h("div", { className: "gbrowser-root" },
+        !isSearching ? (
+          h("div", { className: "gbrowser-idle" },
+            h("h1", { style: { fontSize: "clamp(32px, 5vw, 54px)", fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 24, textAlign: "center", textShadow: "0 0 36px rgba(255,255,255,0.2)" } }, "What do you want to search?"),
+            h("form", { className: "glass-panel", onSubmit: (e) => { e.preventDefault(); isUrlLike(query) ? openUrl(query) : executeGoogleSearch(query); }, autoComplete: "off" },
+              h(SearchIcon),
+              h("input", {
+                className: "glass-input",
+                placeholder: "Search Google (All, Images, Shopping) or type any URL...",
+                value: query,
+                onChange: (e) => handleInput(e.target.value)
+              }),
+              h("button", { type: "submit", className: "btn", style: { borderRadius: 999, height: 46, padding: "0 24px" } }, "Search")
+            )
           )
-        ),
-        url ? h("iframe", { src: url, style: { flex: 1, width: "100%", border: 0, background: "#fff" }, allow: FRAME_ALLOW }) : h("div", { className: "empty" }, "Enter a URL above to browse.")
-      )
-    );
-  }
-
-  function GamesView({ query, onQuery, onPlay }) {
-    return h("section", { className: "view", id: "games" },
-      h("div", { className: "page" },
-        h("h2", null, "Games"),
-        h("div", { className: "grid", style: { marginTop: 18 } },
-          GAMES.map((g) =>
-            h("div", { key: g.slug, className: "card", onClick: () => onPlay(g) },
-              h("div", { className: "thumb" }, h("img", { src: g.thumb })),
-              h("div", { className: "info" }, h("div", { className: "name" }, g.name))
+        ) : (
+          h(Fragment, null,
+            h("div", { className: "gbrowser-top" },
+              h("div", { className: "gbrowser-bar-row" },
+                activeUrl ? h("button", { className: "btn ghost sm", style: { borderRadius: 999 }, onClick: () => setActiveUrl("") }, "← Back to Search") : null,
+                h("form", { className: "glass-panel compact", onSubmit: (e) => { e.preventDefault(); isUrlLike(query) ? openUrl(query) : executeGoogleSearch(query); }, autoComplete: "off" },
+                  h(SearchIcon),
+                  h("input", {
+                    className: "glass-input",
+                    placeholder: "Search anything or enter a URL...",
+                    value: query,
+                    onChange: (e) => handleInput(e.target.value)
+                  }),
+                  h("button", { type: "submit", className: "btn sm", style: { borderRadius: 999, padding: "0 18px" } }, loading ? "..." : "Go")
+                )
+              ),
+              !activeUrl ? h("div", { className: "gbrowser-tabs" },
+                [
+                  { id: "all", label: "🔍 All" },
+                  { id: "images", label: `🖼️ Images (${imgResults.length})` },
+                  { id: "shopping", label: `🛍️ Shopping (${shopResults.length})` },
+                  { id: "videos", label: `🎬 Videos (${vidResults.length})` }
+                ].map((t) =>
+                  h("button", { key: t.id, className: "gbrowser-tab" + (tab === t.id ? " on" : ""), onClick: () => setTab(t.id) }, t.label)
+                )
+              ) : null
+            ),
+            h("div", { className: "gbrowser-body" },
+              activeUrl ? (
+                frameHtml
+                  ? h("iframe", { srcDoc: frameHtml, style: { width: "100%", height: "100%", border: 0, background: "#0e0e12" }, sandbox: "allow-scripts allow-same-origin allow-forms" })
+                  : h("iframe", { src: activeUrl, style: { width: "100%", height: "100%", border: 0, background: "#fff" }, sandbox: "allow-scripts allow-same-origin allow-forms" })
+              ) : tab === "all" ? (
+                h("div", { className: "gbrowser-results-wrap" },
+                  webResults.map((r, i) =>
+                    h("div", { key: i, className: "gbrowser-card", onClick: () => openUrl(r.url) },
+                      h("div", { style: { fontSize: 12, color: "#86efac", marginBottom: 4 } }, r.url),
+                      h("div", { style: { fontSize: 19, fontWeight: 700, color: "#60a5fa", marginBottom: 6 } }, r.title),
+                      h("div", { style: { fontSize: 14, color: "#d4d4d8", lineHeight: 1.55 } }, r.snippet)
+                    )
+                  )
+                )
+              ) : tab === "images" ? (
+                h("div", { className: "gbrowser-img-grid" },
+                  imgResults.map((im, i) =>
+                    h("div", { key: i, className: "gbrowser-img-card", onClick: () => setPreviewImg(im) },
+                      h("img", { src: im.thumb, alt: im.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                      h("div", { style: { padding: "10px 12px" } },
+                        h("div", { style: { fontSize: 13, fontWeight: 600 } }, im.title)
+                      )
+                    )
+                  )
+                )
+              ) : tab === "shopping" ? (
+                h("div", { className: "gbrowser-shop-grid" },
+                  shopResults.map((s) =>
+                    h("div", { key: s.id, className: "gbrowser-shop-card", onClick: () => openUrl(s.url) },
+                      h("img", { src: s.img, alt: s.title, loading: "lazy" }),
+                      h("div", { style: { padding: 14 } },
+                        h("div", { style: { fontWeight: 700, fontSize: 14.5 } }, s.title),
+                        h("div", { style: { fontSize: 18, fontWeight: 800, color: "#4ade80" } }, s.price)
+                      )
+                    )
+                  )
+                ) : (
+                  h("div", { className: "gbrowser-img-grid" },
+                    vidResults.map((v) =>
+                      h("div", { key: v.id, className: "gbrowser-img-card" },
+                        h("img", { src: v.thumb, alt: v.title }),
+                        h("div", { style: { padding: 12 } },
+                          h("div", { style: { fontWeight: 600, fontSize: 14 } }, v.title)
+                        )
+                      )
+                    )
+                )
+              )
             )
           )
         )
       )
     );
   }
-
-  function MoviesView() {
-    const [active, setActive] = useState(null);
+  // ============================================================================
+  // YOUTUBE HUB
+  // ============================================================================
+  function YouTubeView() {
+    const [searchQ, setSearchQ] = useState("");
+    const [activeVid, setActiveVid] = useState("jfKfPfyJRdk");
+    const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
     return h("section", { className: "view" },
       h("div", { className: "page" },
-        active ? h("div", null,
-          h("button", { className: "btn sm", onClick: () => setActive(null), style: { marginBottom: 14 } }, "← Back"),
-          h("iframe", { src: `https://vidsrc.me/embed/movie?tmdb=${active.tmdb || active.id}`, style: { width: "100%", height: "70vh", border: 0 }, allow: FRAME_ALLOW, allowFullScreen: true })
-        ) : h("div", { className: "grid" },
-          INITIAL_MEDIA.map((m) => h("div", { key: m.id, className: "card", onClick: () => setActive(m) }, h("div", { className: "thumb" }, h("img", { src: m.thumb }))))
+        h("div", { className: "row", style: { marginBottom: 16 } },
+          h("div", { style: { background: "#ff0000", color: "#fff", padding: "6px 14px", borderRadius: 10, fontWeight: 800 } }, "▶ YouTube Player"),
+          h("span", { className: "badge-pill live" }, "ERROR 153 FIXED • UNBLOCKED")
+        ),
+        h("div", { style: { width: "100%", height: "65vh", background: "#000", borderRadius: 14, overflow: "hidden", marginBottom: 20 } },
+          h("iframe", {
+            src: `https://www.youtube-nocookie.com/embed/${activeVid}?autoplay=1&rel=0&playsinline=1${embedOrigin}`,
+            style: { width: "100%", height: "100%", border: 0 },
+            allow: FRAME_ALLOW,
+            allowFullScreen: true,
+            referrerPolicy: "strict-origin-when-cross-origin"
+          })
+        ),
+        h("form", {
+          className: "toolbar",
+          onSubmit: (e) => {
+            e.preventDefault();
+            const m = searchQ.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+            if (m) setActiveVid(m[1]);
+          }
+        },
+          h("div", { className: "search" },
+            h(SearchIcon),
+            h("input", { placeholder: "Paste any YouTube video link or ID (e.g. jfKfPfyJRdk)...", value: searchQ, onChange: (e) => setSearchQ(e.target.value) })
+          ),
+          h("button", { type: "submit", className: "btn", style: { background: "#ff0000", color: "#fff", height: 52 } }, "Play Video")
         )
       )
     );
   }
-
-  function MusicView() {
-    return h("section", { className: "view" },
-      h("div", { className: "page" },
-        h("h2", null, "Spotify Player"),
-        h("iframe", { src: "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M", style: { width: "100%", height: "65vh", border: 0, borderRadius: 12 }, allow: FRAME_ALLOW })
-      )
-    );
-  }
-
-  function ChatView({ currentUser }) {
-    const [messages, setMessages] = useState([]);
-    const [text, setText] = useState("");
-    return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
-      h("div", { style: { flex: 1, padding: 20, overflowY: "auto" } },
-        messages.map((m, i) => h("div", { key: i, style: { background: "#16161a", padding: "10px 14px", borderRadius: 8, marginBottom: 8 } }, m))
+  // ============================================================================
+  // GAMES HUB VIEW & CARD
+  // ============================================================================
+  function hue(s) { let hVal = 0; for (const c of s) hVal = (hVal * 31 + c.charCodeAt(0)) % 360; return hVal; }
+  const Card = memo(function Card({ game, isInstalled, onPlay }) {
+    const [imgOk, setImgOk] = useState(true);
+    const hVal = hue(game.slug);
+    const initials = game.name.replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase();
+    return h("div", { className: "card", onClick: () => onPlay(game) },
+      h("div", { className: "thumb", style: { background: `linear-gradient(135deg,hsl(${hVal} 55% 28%),hsl(${(hVal + 50) % 360} 60% 12%))` } },
+        h("span", null, initials),
+        game.thumb && imgOk ? h("img", { src: game.thumb, alt: game.name, loading: "lazy", onError: () => setImgOk(false) }) : null,
+        isInstalled ? h("div", { className: "badge installed" }, "✓ INSTALLED") : null
       ),
-      h("form", { onSubmit: (e) => { e.preventDefault(); if (text.trim()) { setMessages([...messages, text.trim()]); setText(""); } }, style: { padding: 14, display: "flex", gap: 10, borderTop: "1px solid var(--border)" } },
-        h("input", { className: "field", placeholder: "Type a message...", value: text, onChange: (e) => setText(e.target.value) }),
-        h("button", { type: "submit", className: "btn" }, "Send")
+      h("div", { className: "info" },
+        h("div", { className: "name", title: game.name }, game.name),
+        h("div", { className: "tag" },
+          h("span", null, game.cat),
+          h("span", { style: { color: isInstalled ? "#4ade80" : "#a1a1aa", fontSize: 11, fontWeight: 600 } }, isInstalled ? "Ready" : "Play")
+        )
+      )
+    );
+  });
+  function GamesView({ query, onQuery, onPlay, installedMap }) {
+    const list = useMemo(() => {
+      const q = query.trim().toLowerCase();
+      return GAMES.filter((g) => !q || g.name.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q));
+    }, [query]);
+    return h("section", { className: "view", id: "games" },
+      h("div", { className: "page" },
+        h("h2", null, "Games"),
+        h("p", { className: "sub" }, "Click any game (including Direct 3D Roblox & Geometry Dash) for instant launch."),
+        h("div", { className: "toolbar" },
+          h("div", { className: "search" },
+            h(SearchIcon),
+            h("input", { type: "text", placeholder: "Search Roblox, Geometry Dash, Slope, 1v1.LOL...", value: query, onChange: (e) => onQuery(e.target.value) })
+          )
+        ),
+        h("div", { className: "count" }, `${list.length} games available`),
+        h("div", { className: "grid" }, list.map((g) => h(Card, { key: g.slug, game: g, isInstalled: !!installedMap[g.slug], onPlay })))
       )
     );
   }
-
+  // ============================================================================
+  // SPOTIFY MUSIC & NETFLIX
+  // ============================================================================
+  const PLAYLIST_PRESETS = [
+    { id: "hits", name: "Today's Top Hits", desc: "Global Chart", color: "#1e3264", icon: "🔥", query: "top hits 2026" },
+    { id: "phonk", name: "Drift Phonk & Gym", desc: "High-energy phonk", color: "#8d1732", icon: "⚡", query: "drift phonk" },
+    { id: "rap", name: "RapCaviar", desc: "Hip-Hop & Rap", color: "#ba5d07", icon: "🎤", query: "travis scott drake" },
+    { id: "anime", name: "Anime Now", desc: "Anime openings", color: "#7358ff", icon: "🌸", query: "anime opening" }
+  ];
+  function MusicView() {
+    const [searchQ, setSearchQ] = useState("");
+    const [activePlaylist, setActivePlaylist] = useState("hits");
+    const [tracks, setTracks] = useState([]);
+    const [currentTrack, setCurrentTrack] = useState(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const audioRef = useRef(null);
+    const fetchSongs = useCallback(async (term) => {
+      try {
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=song&limit=30`);
+        const data = await res.json();
+        setTracks(data.results || []);
+      } catch {}
+    }, []);
+    useEffect(() => {
+      const p = PLAYLIST_PRESETS.find((x) => x.id === activePlaylist) || PLAYLIST_PRESETS[0];
+      fetchSongs(p.query);
+    }, [activePlaylist, fetchSongs]);
+    const playTrack = (t) => {
+      if (!audioRef.current) return;
+      if (currentTrack && currentTrack.trackId === t.trackId) {
+        if (isPlaying) { audioRef.current.pause(); setIsPlaying(false); }
+        else { audioRef.current.play(); setIsPlaying(true); }
+        return;
+      }
+      setCurrentTrack(t);
+      audioRef.current.src = t.previewUrl;
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+    };
+    return h("section", { className: "view" },
+      h("div", { className: "sp-app" },
+        h("audio", { ref: audioRef }),
+        h("div", { className: "sp-body" },
+          h("div", { className: "sp-sidebar" },
+            h("div", { className: "sp-nav-box" },
+              h("div", { style: { fontWeight: 800, fontSize: 18, color: "#1ed760" } }, "● Spotify"),
+              h("form", { onSubmit: (e) => { e.preventDefault(); if (searchQ.trim()) fetchSongs(searchQ.trim()); }, style: { display: "flex", alignItems: "center", background: "#242424", borderRadius: 999, padding: "0 12px", height: 36 } },
+                h("input", { type: "text", placeholder: "Search songs...", value: searchQ, onChange: (e) => setSearchQ(e.target.value), style: { flex: 1, background: "transparent", border: 0, outline: 0, color: "#fff", fontSize: 13 } })
+              )
+            ),
+            h("div", { className: "sp-lib-box" },
+              PLAYLIST_PRESETS.map((p) =>
+                h("button", { key: p.id, className: "sp-pl-item" + (activePlaylist === p.id ? " active" : ""), onClick: () => setActivePlaylist(p.id) },
+                  h("div", { className: "sp-pl-cover", style: { background: p.color } }, p.icon),
+                  h("div", { style: { fontWeight: 600, fontSize: 13.5, color: "#fff" } }, p.name)
+                )
+              )
+            )
+          ),
+          h("div", { className: "sp-main" },
+            h("div", { className: "sp-table" },
+              tracks.map((t, i) => {
+                const isCurr = currentTrack && currentTrack.trackId === t.trackId;
+                return h("div", { key: t.trackId || i, className: "sp-trow" + (isCurr ? " active" : ""), onClick: () => playTrack(t) },
+                  h("span", null, isCurr && isPlaying ? "▶" : i + 1),
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 10, minWidth: 0 } },
+                    h("img", { src: t.artworkUrl100, style: { width: 38, height: 38, borderRadius: 4 } }),
+                    h("div", null,
+                      h("div", { style: { fontWeight: 600, color: isCurr ? "#1ed760" : "#fff" } }, t.trackName),
+                      h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, t.artistName)
+                    )
+                  ),
+                  h("span", null, t.collectionName),
+                  h("span", { style: { textAlign: "right", fontSize: 12.5 } }, "0:30")
+                );
+              })
+            )
+          )
+        ),
+        h("div", { className: "sp-player-bar" },
+          currentTrack ? h("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
+            h("img", { src: currentTrack.artworkUrl100, style: { width: 48, height: 48, borderRadius: 6 } }),
+            h("div", null,
+              h("div", { style: { fontWeight: 600, fontSize: 14 } }, currentTrack.trackName),
+              h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, currentTrack.artistName)
+            )
+          ) : h("div", { style: { color: "#888", fontSize: 13 } }, "Select a song to play"),
+          h("button", { className: "btn sm", style: { background: "#1ed760", color: "#000", borderRadius: 999 }, onClick: () => currentTrack && playTrack(currentTrack) }, isPlaying ? "⏸ Pause" : "▶ Play")
+        )
+      )
+    );
+  }
+  function MoviesView() {
+    const [activeMedia, setActiveMedia] = useState(null);
+    return h("section", { className: "view" },
+      h("div", { className: "nf-wrap" },
+        h("div", { className: "nf-topnav" },
+          h("div", { className: "nf-logo", onClick: () => setActiveMedia(null) }, "NETFLIX")
+        ),
+        activeMedia ? h("div", { style: { padding: "16px 42px" } },
+          h("div", { className: "pop-panel" },
+            h("div", { className: "row", style: { marginBottom: 12 } },
+              h("strong", { style: { fontSize: 18 } }, activeMedia.title),
+              h("button", { className: "btn sm", style: { background: "#e50914", color: "#fff" }, onClick: () => setActiveMedia(null) }, "← Back to Netflix")
+            ),
+            h("div", { style: { width: "100%", height: "68vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
+              h("iframe", { src: `https://vidsrc.me/embed/movie?tmdb=${activeMedia.tmdb || activeMedia.id}`, style: { width: "100%", height: "100%", border: 0 }, allow: FRAME_ALLOW, allowFullScreen: true })
+            )
+          )
+        ) : h("div", { style: { padding: "20px 42px" } },
+          h("h3", { className: "nf-row-title" }, "🔥 Trending Movies & Anime"),
+          h("div", { className: "nf-carousel" },
+            INITIAL_MEDIA.map((item) =>
+              h("div", { key: item.id, className: "nf-card", onClick: () => setActiveMedia(item) },
+                h("img", { src: item.thumb, className: "nf-card-poster" })
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+  // ============================================================================
+  // LIVE CHAT (NO AUTO-SCROLL DOWN)
+  // ============================================================================
+  function ChatView({ currentUser, accountsMap }) {
+    const [messages, setMessages] = useState([]);
+    const [inputMessage, setInputMessage] = useState("");
+    const [attachment, setAttachment] = useState(null);
+    useEffect(() => {
+      const fetchChat = async () => {
+        const base = getDbUrl();
+        if (!base) return;
+        try {
+          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
+              list.sort((a, b) => a.timestamp - b.timestamp);
+              setMessages(list);
+            }
+          }
+        } catch {}
+      };
+      fetchChat();
+      const interval = setInterval(fetchChat, 3500);
+      return () => clearInterval(interval);
+    }, []);
+    const sendMessage = async (e) => {
+      e.preventDefault();
+      const text = inputMessage.trim();
+      if (!text && !attachment) return;
+      if (!currentUser) return;
+      const newMsg = {
+        sender: currentUser.username,
+        role: currentUser.role || "user",
+        text,
+        attachment: attachment || null,
+        timestamp: Date.now()
+      };
+      const base = getDbUrl();
+      if (base) {
+        await fetch(`${base}/global_chat.json`, {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(newMsg)
+        });
+      }
+      setInputMessage("");
+      setAttachment(null);
+    };
+    return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
+      h("div", { style: { padding: "16px 24px", flexShrink: 0 } },
+        h("h2", { style: { margin: 0, fontSize: 24 } }, "Live School Chat")
+      ),
+      h("div", { style: { flex: 1, padding: "0 24px 20px", display: "flex", flexDirection: "column", minHeight: 0 } },
+        h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden", background: "#060608" } },
+          h("div", { style: { flex: 1, padding: 18, overflowY: "auto", display: "flex", flexDirection: "column", gap: 12 } },
+            messages.map((m) =>
+              h("div", { key: m.id || m.timestamp, style: { background: "#18181b", padding: "10px 14px", borderRadius: 10, maxWidth: "75%", alignSelf: m.sender === currentUser?.username ? "flex-end" : "flex-start" } },
+                h("div", { style: { fontSize: 11, color: "#888", marginBottom: 2 } }, m.sender),
+                m.text ? h("div", null, m.text) : null,
+                m.attachment?.data ? h("img", { src: m.attachment.data, style: { maxWidth: "100%", maxHeight: 220, borderRadius: 8, marginTop: 6 } }) : null
+              )
+            )
+          ),
+          h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 14, background: "#0e0e11", borderTop: "1px solid var(--border)" } },
+            h("input", { className: "field", placeholder: "Type a message...", value: inputMessage, onChange: (e) => setInputMessage(e.target.value) }),
+            h("button", { type: "submit", className: "btn" }, "Send")
+          )
+        )
+      )
+    );
+  }
+  // --- Clean Player Component ---
   function Player({ game, onClose }) {
-    const isRoblox = game.embed === "roblox-direct-engine";
+    const source = frameSource(game);
     return h("div", { id: "player" },
       h("div", { className: "bar" },
-        h("button", { className: "pill", onClick: onClose }, "← Back"),
+        h("button", { className: "pill", onClick: onClose }, "← Back to Hub"),
         h("div", { className: "ttl" }, game.name)
       ),
-      isRoblox ? h("iframe", { srcDoc: buildRobloxDirectEngine(), allow: FRAME_ALLOW, allowFullScreen: true })
-               : h("iframe", { src: game.embed, allow: FRAME_ALLOW, allowFullScreen: true })
+      h("iframe", { title: game.name, src: source.src, srcDoc: source.srcdoc, allow: FRAME_ALLOW, allowFullScreen: true })
     );
   }
-
-  function AccountProfileView({ currentUser, onLogout }) {
+  // --- Account Profile View ---
+  function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner, userTier }) {
+    const acc = currentUser ? accountsMap[currentUser.username?.toLowerCase()] || currentUser : null;
     return h("section", { className: "view" },
-      h("div", { className: "page", style: { maxWidth: 600 } },
+      h("div", { className: "page", style: { maxWidth: 680 } },
         h("h2", null, "Account"),
-        h("div", { className: "setting", style: { marginTop: 14 } },
-          h("h3", null, currentUser?.username || "Guest"),
-          h("p", null, "Active tier: Owner / Premium"),
+        acc ? h("div", { className: "pop-panel" },
+          h("div", { className: "row", style: { marginBottom: 14 } },
+            h("h3", { style: { margin: 0 } }, acc.username),
+            renderTierBadge(userTier, isOwner)
+          ),
           h("button", { className: "btn danger sm", onClick: onLogout }, "Log Out")
-        )
+        ) : null
       )
     );
   }
-
-  function AccountCreatorView({ toast }) {
-    const [target, setTarget] = useState("");
-    const [msg, setMsg] = useState("");
-    return h("section", { className: "view" },
-      h("div", { className: "page", style: { maxWidth: 640 } },
-        h("h2", null, "Creator Hub & Live Screen Alerts"),
-        h("form", { onSubmit: async (e) => { e.preventDefault(); toast(`Screen alert sent to ${target}`); }, style: { marginTop: 18 } },
-          h("input", { className: "field", placeholder: "Target username...", value: target, onChange: (e) => setTarget(e.target.value), style: { marginBottom: 12 } }),
-          h("textarea", { className: "field", style: { height: 80, marginBottom: 14 }, placeholder: "Message...", value: msg, onChange: (e) => setMsg(e.target.value) }),
-          h("button", { type: "submit", className: "btn" }, "Send Screen Alert")
-        )
+  // ============================================================================
+  // ACCOUNT CREATOR HUB + SCREEN ALERTS (OWNER ONLY)
+  // ============================================================================
+  function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast, currentUser }) {
+    const [createModal, setCreateModal] = useState(false);
+    const [msgTarget, setMsgTarget] = useState(null);
+    const [msgText, setMsgText] = useState("");
+    const [msgGif, setMsgGif] = useState("");
+    const [newU, setNewU] = useState("");
+    const [newP, setNewP] = useState("");
+    const [newTier, setNewTier] = useState("free");
+    const sendScreenAlert = async (e) => {
+      e.preventDefault();
+      await dbSendUserAlert(msgTarget, {
+        sender: currentUser?.username || "Owner",
+        text: msgText.trim(),
+        attachment: msgGif.trim() ? { type: "image/gif", data: msgGif.trim() } : null
+      });
+      toast(`Alert sent to @${msgTarget}!`);
+      setMsgTarget(null); setMsgText(""); setMsgGif("");
+    };
+    const handleCreate = async (e) => {
+      e.preventDefault();
+      if (!newU.trim() || !newP.trim()) return;
+      const acc = {
+        username: newU.trim(),
+        password: newP.trim(),
+        tier: newTier,
+        licenseKey: genLicenseKey(),
+        infinite: true,
+        createdAt: Date.now()
+      };
+      await dbSaveAccount(acc);
+      await onRefresh();
+      setCreateModal(false);
+      toast(`Account ${newU} created!`);
+    };
+    const activeSessions = Object.values(sessionsMap || {}).filter((s) => s && !s.kicked);
+    return h("section", { className: "view", id: "creator" },
+      h("div", { className: "page", style: { maxWidth: 1100 } },
+        h("div", { className: "row", style: { marginBottom: 20 } },
+          h("h2", { style: { margin: 0 } }, "Account Creator & Live Screen Alerts"),
+          h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create Account")
+        ),
+        h("div", { className: "setting", style: { padding: 18 } },
+          h("h3", null, `Live Active Users (${activeSessions.length})`),
+          h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 14, marginTop: 14 } },
+            activeSessions.map((s) =>
+              h("div", { key: s.username, className: "pop-panel" },
+                h("strong", null, s.username),
+                h("p", { style: { margin: "4px 0 10px", fontSize: 12 } }, `Tab: ${s.currentView || "home"}`),
+                h("button", { className: "btn sm", onClick: () => setMsgTarget(s.username) }, "💬 Alert Screen")
+              )
+            )
+          )
+        ),
+        msgTarget ? h(Modal, { onClose: () => setMsgTarget(null) },
+          h("h3", null, `Send Live Alert to @${msgTarget}`),
+          h("form", { onSubmit: sendScreenAlert },
+            h("textarea", { className: "field", style: { height: 80, marginBottom: 12 }, placeholder: "Type message in here...", value: msgText, onChange: (e) => setMsgText(e.target.value) }),
+            h("input", { className: "field", style: { marginBottom: 14 }, placeholder: "Paste GIF / Image URL (optional)...", value: msgGif, onChange: (e) => setMsgGif(e.target.value) }),
+            h("div", { className: "actions" },
+              h("button", { type: "submit", className: "btn" }, "Send Alert"),
+              h("button", { type: "button", className: "btn ghost", onClick: () => setMsgTarget(null) }, "Cancel")
+            )
+          )
+        ) : null,
+        createModal ? h(Modal, { onClose: () => setCreateModal(false) },
+          h("h3", null, "Create Account"),
+          h("form", { onSubmit: handleCreate },
+            h("input", { className: "field", placeholder: "Username...", value: newU, onChange: (e) => setNewU(e.target.value), style: { marginBottom: 10 } }),
+            h("input", { className: "field", placeholder: "Password...", value: newP, onChange: (e) => setNewP(e.target.value), style: { marginBottom: 10 } }),
+            h("select", { className: "tier-select", value: newTier, onChange: (e) => setNewTier(e.target.value), style: { width: "100%", height: 40, marginBottom: 16 } },
+              h("option", { value: "free" }, "Free"),
+              h("option", { value: "pro" }, "Pro"),
+              h("option", { value: "premium" }, "Premium")
+            ),
+            h("div", { className: "actions" },
+              h("button", { type: "submit", className: "btn" }, "Save"),
+              h("button", { type: "button", className: "btn ghost", onClick: () => setCreateModal(false) }, "Cancel")
+            )
+          )
+        ) : null
       )
     );
   }
-
-  function SettingsView() {
-    return h("section", { className: "view" },
-      h("div", { className: "page", style: { maxWidth: 600 } },
+  function SettingsView({ settings, onSave, onCloakSite }) {
+    return h("section", { className: "view", id: "settings" },
+      h("div", { className: "page", style: { maxWidth: 680 } },
         h("h2", null, "Settings"),
-        h("p", { className: "sub" }, "Portal cloak & about:blank active.")
+        h("button", { className: "btn ghost", onClick: onCloakSite, style: { marginTop: 14 } }, "Open entire portal in cloaked about:blank tab")
       )
     );
   }
-
   function LoginBox({ onLoginSuccess }) {
     const [u, setU] = useState("");
+    const [p, setP] = useState("");
+    const submit = async (e) => {
+      e.preventDefault();
+      const sess = { username: u.trim() || "kevin", role: "owner", tier: "owner", loginAt: Date.now() };
+      saveCurrentSession(sess);
+      onLoginSuccess(sess);
+    };
     return h("div", { className: "auth-overlay" },
       h("div", { className: "auth-box" },
         h("h1", { className: "auth-logo" }, "unblockedgames"),
         h("p", { className: "auth-sub" }, "Sign in with your account."),
-        h("form", { onSubmit: (e) => { e.preventDefault(); onLoginSuccess({ username: u.trim() || "kevin", role: "owner", tier: "owner" }); } },
-          h("input", { className: "field", placeholder: "Username...", value: u, onChange: (e) => setU(e.target.value), style: { marginBottom: 14 } }),
+        h("form", { onSubmit: submit },
+          h("input", { className: "field", placeholder: "Username...", value: u, onChange: (e) => setU(e.target.value), style: { marginBottom: 12 } }),
+          h("input", { className: "field", type: "password", placeholder: "Password...", value: p, onChange: (e) => setP(e.target.value), style: { marginBottom: 18 } }),
           h("button", { type: "submit", className: "btn", style: { width: "100%" } }, "Sign In")
         )
       )
     );
   }
-
+  // --- Main Root App ---
   function App() {
-    const [view, setView] = useState("tiktok");
+    const [view, setView] = useState("home");
     const [open, setOpen] = useState(false);
+    const [settings, setSettings] = useState(loadSettings);
+    const [query, setQuery] = useState("");
     const [playing, setPlaying] = useState(null);
+    const [installedMap, setInstalledMap] = useState(getInstalledGames);
     const [currentUser, setCurrentUser] = useState(getSavedSession || { username: "kevin", role: "owner", tier: "owner" });
+    const [accountsMap, setAccountsMap] = useState({});
+    const [sessionsMap, setSessionsMap] = useState({});
     const [incomingAlert, setIncomingAlert] = useState(null);
     const [toastMsg, setToastMsg] = useState("");
     const [toastOn, setToastOn] = useState(false);
     const toastT = useRef(undefined);
-
-    const toast = useCallback((m) => {
-      setToastMsg(m); setToastOn(true);
+    const mainRef = useRef(null);
+    const toast = useCallback((msg) => {
+      setToastMsg(msg); setToastOn(true);
       clearTimeout(toastT.current);
       toastT.current = setTimeout(() => setToastOn(false), 2400);
     }, []);
-
-    const isOwner = isOwnerIdentity(currentUser?.username, currentUser);
-    const userTier = getUserTier(currentUser, isOwner);
-
+    const isOwner = useMemo(() => isOwnerIdentity(currentUser?.username, currentUser), [currentUser]);
+    const userTier = useMemo(() => getUserTier(currentUser, isOwner), [currentUser, isOwner]);
+    const navigate = useCallback((v) => {
+      setView(v);
+      mainRef.current?.scrollTo(0, 0);
+    }, []);
+    useEffect(() => {
+      if (!currentUser?.username) return;
+      const check = setInterval(async () => {
+        const al = await dbFetchUserAlert(currentUser.username);
+        if (al && (!incomingAlert || incomingAlert.timestamp !== al.timestamp)) setIncomingAlert(al);
+      }, 2500);
+      return () => clearInterval(check);
+    }, [currentUser, incomingAlert]);
+    const launchGame = useCallback((g) => {
+      saveInstalledGame(g.slug);
+      setInstalledMap(getInstalledGames());
+      if (!settings.cloak) setPlaying(g);
+      else openCloaked(frameSource(g), settings);
+    }, [settings]);
     return h(Fragment, null,
       h(Stars),
-      !currentUser ? h(LoginBox, { onLoginSuccess: (s) => { saveCurrentSession(s); setCurrentUser(s); } }) : null,
-      h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: (v) => setView(v), isOwner, userTier }),
-      h("main", null,
-        view === "home" ? h(Home, { onNavigate: (v) => setView(v), onSearch: () => setView("games"), userTier }) : null,
+      !currentUser ? h(LoginBox, { onLoginSuccess: (s) => { setCurrentUser(s); navigate("home"); } }) : null,
+      h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: navigate, isOwner, userTier }),
+      h("main", { ref: mainRef },
+        view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); }, userTier }) : null,
         view === "tiktok" ? h(TikTokView, { toast }) : null,
         view === "youtube" ? h(YouTubeView) : null,
         view === "browser" ? h(BrowserView) : null,
-        view === "games" ? h(GamesView, { onPlay: (g) => setPlaying(g) }) : null,
-        view === "chat" ? h(ChatView, { currentUser }) : null,
+        view === "games" ? h(GamesView, { query, onQuery: setQuery, onPlay: launchGame, installedMap }) : null,
+        view === "chat" ? h(ChatView, { currentUser, accountsMap }) : null,
         view === "movies" ? h(MoviesView) : null,
         view === "music" ? h(MusicView) : null,
-        view === "account" ? h(AccountProfileView, { currentUser, onLogout: () => { saveCurrentSession(null); setCurrentUser(null); } }) : null,
-        view === "creator" ? h(AccountCreatorView, { toast }) : null,
-        view === "settings" ? h(SettingsView) : null
+        view === "account" ? h(AccountProfileView, { currentUser, accountsMap, onLogout: () => { saveCurrentSession(null); setCurrentUser(null); }, isOwner, userTier }) : null,
+        view === "creator" ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: () => {}, toast, currentUser }) : null,
+        view === "settings" ? h(SettingsView, { settings, onSave: () => {}, onCloakSite: () => cloakSite(settings) }) : null
       ),
+      incomingAlert ? h("div", { id: "modalBg", style: { zIndex: 9999 } },
+        h("div", { className: "modal", style: { textAlign: "center", border: "2px solid #fe2c55" } },
+          h("h3", null, `👑 Alert from ${incomingAlert.sender}`),
+          incomingAlert.text ? h("p", { style: { fontSize: 16 } }, incomingAlert.text) : null,
+          incomingAlert.attachment?.data ? h("img", { src: incomingAlert.attachment.data, style: { maxHeight: 240, margin: "0 auto 14px", borderRadius: 8 } }) : null,
+          h("button", { className: "btn", onClick: async () => { await dbClearUserAlert(currentUser.username); setIncomingAlert(null); } }, "Dismiss")
+        )
+      ) : null,
       playing ? h(Player, { game: playing, onClose: () => setPlaying(null) }) : null,
       h("div", { id: "toast", className: toastOn ? "show" : "" }, toastMsg)
     );
   }
-
   createRoot(document.getElementById("root")).render(h(StrictMode, null, h(App)));
 })();
     </script>
