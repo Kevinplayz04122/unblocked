@@ -290,14 +290,14 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   // Free -> Games, Movies, Music
   // Pro -> Chat, Games, Movies, Music
   // Premium -> YouTube, Browser, Chat, Movies, Games, Music
-  // Max -> ESPN Sports + Live Screen Broadcast + YouTube, Browser, Chat, Movies, Games, Music
+  // Max -> ESPN Sports + Screen Broadcast + YouTube, Browser, Chat, Movies, Games, Music
   // Note: TikTok is locked under maintenance for everybody!
   const TIER_PERMISSIONS = {
     free: ["home", "games", "movies", "music", "account", "settings"],
     pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
     premium: ["home", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
-    max: ["home", "sports", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
-    owner: ["home", "sports", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
+    max: ["home", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
+    owner: ["home", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
   };
 
   function getUserTier(acc, isOwner) {
@@ -315,7 +315,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
   function requiredTierForView(viewId) {
     if (viewId === "tiktok") return "Under Maintenance";
-    if (viewId === "sports") return "MAX";
+    if (viewId === "sports" || viewId === "broadcast") return "MAX";
     if (viewId === "chat") return "Pro";
     if (viewId === "youtube" || viewId === "browser") return "Premium";
     if (viewId === "creator") return "Owner";
@@ -730,12 +730,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   function cloakSite(s) { return openCloaked({ src: location.href.split("#")[0] }, s); }
 
   // ============================================================================
-  // ICONS
+  // ICONS (Including New BroadcastIcon!)
   // ============================================================================
   function Svg({ children, sw = 1.8 }) {
     return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
   }
   const HomeIcon = (p) => h(Svg, p, h("path", { d: "M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" }));
+  const BroadcastIcon = (p) => h(Svg, p, h("path", { d: "m3 11 18-5v12L3 14v-3z" }), h("path", { d: "M11.6 16.8a3 3 0 1 1-5.8-1.6" }));
   const YouTubeIcon = (p) => h(Svg, p, h("rect", { x: "2", y: "5", width: "20", height: "14", rx: "4" }), h("polygon", { points: "10 9 15 12 10 15 10 9", fill: "currentColor" }));
   const TikTokIcon = (p) => h(Svg, p, h("path", { d: "M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" }));
   const SportsIcon = (p) => h(Svg, p, h("path", { d: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6" }), h("path", { d: "M18 9h1.5a2.5 2.5 0 0 0 0-5H18" }), h("path", { d: "M4 22h16" }), h("path", { d: "M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" }), h("path", { d: "M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" }), h("path", { d: "M18 2H6v7a6 6 0 0 0 12 0V2Z" }));
@@ -790,9 +791,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("canvas", { id: "stars", ref });
   }
 
-  // --- Sidebar Component (Shows Lock Indicator for Restricted Tier Tabs + TikTok Maintenance) ---
+  // --- Sidebar Component (Includes Screen Broadcast Icon with Exact Hover Text!) ---
   function Sidebar({ view, open, onToggle, onNavigate, isOwner, userTier }) {
-    const btn = (id, label, icon) => {
+    const btn = (id, label, icon, customHoverText) => {
       if (id === "tiktok") {
         return h("button", {
           key: id,
@@ -805,10 +806,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         );
       }
       const unlocked = canAccessView(userTier, id);
+      const hoverTitle = customHoverText
+        ? (unlocked ? customHoverText : `${customHoverText} (${requiredTierForView(id)} Tier Required)`)
+        : (unlocked ? label : `${label} (${requiredTierForView(id)} Tier Required)`);
       return h("button", {
         key: id,
         className: "side-btn" + (view === id ? " active" : "") + (!unlocked ? " locked" : ""),
-        title: unlocked ? label : `${label} (${requiredTierForView(id)} Tier Required)`,
+        title: hoverTitle,
         onClick: () => onNavigate(id)
       },
         icon,
@@ -820,6 +824,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       h("div", { className: "side-group", style: { paddingTop: 2 } },
         btn("home", "Home", h(HomeIcon)),
         btn("sports", "ESPN Sports", h(SportsIcon)),
+        btn("broadcast", "Screen Broadcast", h(BroadcastIcon), "screen broadcast to selected person"),
         btn("youtube", "YouTube", h(YouTubeIcon)),
         btn("tiktok", "TikTok", h(TikTokIcon)),
         btn("browser", "Browser", h(BrowserIcon)),
@@ -868,10 +873,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const placeholder = useTypingPlaceholder(focused || !!value);
     const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
 
-    const quickBtn = (id, label, icon, customStyle = {}) => {
+    const quickBtn = (id, label, icon, customStyle = {}, customTitle = "") => {
       if (id === "tiktok") {
         return h("button", {
           onClick: () => onNavigate("tiktok"),
+          title: "TikTok (Under Maintenance 🔧)",
           style: { opacity: 0.5 }
         },
           h("div", { className: "circ", style: customStyle }, icon),
@@ -881,6 +887,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       const unlocked = canAccessView(userTier, id);
       return h("button", {
         onClick: () => onNavigate(id),
+        title: customTitle || label,
         style: { opacity: unlocked ? 1 : 0.55 }
       },
         h("div", { className: "circ", style: customStyle }, icon),
@@ -898,6 +905,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       ),
       h("div", { className: "quick" },
         quickBtn("sports", "ESPN", h(SportsIcon), { borderColor: "rgba(239,68,68,0.6)", color: "#ef4444" }),
+        quickBtn("broadcast", "Broadcast", h(BroadcastIcon), { borderColor: "rgba(249,115,22,0.6)", color: "#f97316" }, "screen broadcast to selected person"),
         quickBtn("youtube", "YouTube", h(YouTubeIcon), { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" }),
         quickBtn("tiktok", "TikTok", h(TikTokIcon), { borderColor: "rgba(0,242,234,0.45)", color: "#00f2ea" }),
         quickBtn("games", "Games", h(GamesIcon)),
@@ -911,7 +919,133 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // NEW: ESPN SPORTS + LIVE SCREEN BROADCAST HUB (MAX & OWNER EXCLUSIVE)
+  // NEW: DEDICATED SIDEBAR SCREEN BROADCAST VIEW (Select Person & Send Live Popup!)
+  // ============================================================================
+  function BroadcastView({ currentUser, userTier, isOwner, sessionsMap, accountsMap, toast }) {
+    const [selectedTarget, setSelectedTarget] = useState("all");
+    const [messageText, setMessageText] = useState("");
+    const [sending, setSending] = useState(false);
+
+    const onlineSessions = Object.values(sessionsMap || {}).filter(
+      (s) => s && !s.kicked && Date.now() - (s.lastPing || 0) < 45000
+    );
+
+    const handleSend = async (e) => {
+      e.preventDefault();
+      const msg = messageText.trim();
+      if (!msg) {
+        toast("Please type a message to broadcast!");
+        return;
+      }
+      setSending(true);
+      const payload = {
+        id: "bc_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        sender: currentUser?.username || "MAX User",
+        tier: isOwner ? "owner" : userTier,
+        target: selectedTarget,
+        message: msg,
+        timestamp: Date.now()
+      };
+      await dbSendBroadcast(payload);
+      setSending(false);
+      setMessageText("");
+      toast(`📢 Screen broadcast sent to ${selectedTarget === "all" ? "Everyone Online" : selectedTarget}!`);
+    };
+
+    return h("section", { className: "view", id: "broadcast" },
+      h("div", { className: "page", style: { maxWidth: 960 } },
+        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 18 } },
+          h("div", null,
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+              h("h2", { style: { margin: 0 } }, "Screen Broadcast to Selected Person"),
+              h("span", { className: "badge-pill tier-max" }, "🔥 MAX & OWNER EXCLUSIVE")
+            ),
+            h("p", { className: "sub", style: { margin: "6px 0 0" } },
+              "Select any online person below (or Everyone Online) and send a live popup directly onto their screen no matter what they are doing. They just click Close to dismiss it."
+            )
+          )
+        ),
+
+        // Step 1: Select Person (Clickable Cards for Everyone or Specific Online Users)
+        h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 20 } },
+          h("h3", { style: { marginBottom: 12, fontSize: 17 } }, `1. Select Person to Broadcast To (${onlineSessions.length} Online Now)`),
+          h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 } },
+            // Everyone Online Card
+            h("div", {
+              className: "pop-panel",
+              onClick: () => setSelectedTarget("all"),
+              style: {
+                cursor: "pointer",
+                background: selectedTarget === "all" ? "rgba(239, 68, 68, 0.18)" : "#0e0e12",
+                borderColor: selectedTarget === "all" ? "#ef4444" : "var(--border)"
+              }
+            },
+              h("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 6 } },
+                h("span", { style: { fontSize: 20 } }, "🌎"),
+                h("strong", { style: { fontSize: 15.5 } }, "Everyone Online")
+              ),
+              h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `Pops up on all ${onlineSessions.length} active screens`)
+            ),
+
+            // Individual Online Users Cards
+            onlineSessions.map((sess) => {
+              const isSelected = selectedTarget.toLowerCase() === sess.username.toLowerCase();
+              const acc = accountsMap?.[sess.username.toLowerCase()];
+              const t = acc?.tier || sess.tier || "free";
+              const isOwn = acc?.role === "owner" || sess.role === "owner";
+              return h("div", {
+                key: sess.username,
+                className: "pop-panel",
+                onClick: () => setSelectedTarget(sess.username),
+                style: {
+                  cursor: "pointer",
+                  background: isSelected ? "rgba(239, 68, 68, 0.18)" : "#0e0e12",
+                  borderColor: isSelected ? "#ef4444" : "var(--border)"
+                }
+              },
+                h("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 6 } },
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+                    h("span", { className: "status-dot" }),
+                    h("strong", { style: { fontSize: 15.5 } }, sess.username)
+                  ),
+                  renderTierBadge(t, isOwn)
+                ),
+                h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `Currently on: ${sess.currentView || "home"}`)
+              );
+            })
+          )
+        ),
+
+        // Step 2: Type Message & Send Live Popup
+        h("div", { className: "pop-panel", style: { background: "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,15,20,0.95))", borderColor: "rgba(239,68,68,0.45)", padding: "22px 24px" } },
+          h("h3", { style: { margin: "0 0 12px", fontSize: 17 } },
+            `2. Message to Pop Up on ${selectedTarget === "all" ? "Everyone's" : selectedTarget + "'s"} Screen`
+          ),
+          h("form", { onSubmit: handleSend, style: { display: "flex", flexDirection: "column", gap: 14 } },
+            h("input", {
+              className: "field",
+              style: { height: 52, fontSize: 16 },
+              placeholder: `Type message for ${selectedTarget === "all" ? "everyone online" : selectedTarget}...`,
+              value: messageText,
+              onChange: (e) => setMessageText(e.target.value)
+            }),
+            h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 } },
+              h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Appears immediately over games, movies, YouTube, or browser. Recipient clicks Close to dismiss."),
+              h("button", {
+                type: "submit",
+                className: "btn",
+                disabled: sending,
+                style: { background: "#ef4444", color: "#fff", padding: "0 28px", height: 48, fontSize: 15 }
+              }, sending ? "Broadcasting..." : `📢 Broadcast to ${selectedTarget === "all" ? "Everyone" : selectedTarget}`)
+            )
+          )
+        )
+      )
+    );
+  }
+
+  // ============================================================================
+  // ESPN SPORTS + LIVE SCREEN BROADCAST HUB (MAX & OWNER EXCLUSIVE)
   // ============================================================================
   const ESPN_LEAGUES = [
     { id: "nba", name: "🏀 NBA", path: "basketball/nba", streamQ: "NBA live game highlights ESPN" },
@@ -971,7 +1105,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
     return h("section", { className: "view" },
       h("div", { className: "page" },
-        // Top ESPN Banner
         h("div", { className: "espn-banner" },
           h("div", null,
             h("div", { style: { display: "flex", alignItems: "center", gap: 12, marginBottom: 6 } },
@@ -983,7 +1116,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           )
         ),
 
-        // MAX TIER EXCLUSIVE: LIVE SCREEN BROADCASTER (Sends popup onto anyone's screen!)
         h("div", { className: "pop-panel", style: { marginBottom: 26, background: "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,15,20,0.95))", borderColor: "rgba(239,68,68,0.45)" } },
           h("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 } },
             h("span", { style: { fontSize: 18 } }, "📢"),
@@ -1014,7 +1146,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           )
         ),
 
-        // Active Sports Stream Player
         activeStream ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
           h("div", { className: "row", style: { marginBottom: 12 } },
             h("strong", { style: { fontSize: 17 } }, `📺 ESPN Live Coverage: ${activeStream.name}`),
@@ -1032,7 +1163,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           )
         ) : null,
 
-        // League Selector Chips
         h("div", { className: "chips" },
           ESPN_LEAGUES.map((lg) =>
             h("button", {
@@ -1044,7 +1174,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           )
         ),
 
-        // Live Scoreboard Cards Grid
         loading && events.length === 0 ? h("div", { className: "empty" }, "Loading live ESPN scoreboard...") :
         events.length === 0 ? h("div", { className: "empty" }, "No scheduled games right now for this league.") :
         h("div", { className: "espn-score-grid" },
@@ -1065,7 +1194,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 h("span", { style: { fontSize: 12, fontWeight: 700, color: isLive ? "#4ade80" : "var(--muted)" } }, isLive ? `🔴 LIVE • ${statusText}` : statusText),
                 h("span", { className: "badge-pill", style: { fontSize: 10.5 } }, "▶ Watch Stream")
               ),
-              // Away Team Row
               awayTeam ? h("div", { className: "row", style: { marginBottom: 10 } },
                 h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
                   awayTeam.team?.logo ? h("img", { src: awayTeam.team.logo, style: { width: 32, height: 32, objectFit: "contain" }, referrerPolicy: "no-referrer" }) : null,
@@ -1076,7 +1204,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 ),
                 h("div", { style: { fontSize: 22, fontWeight: 800 } }, awayTeam.score ?? "0")
               ) : null,
-              // Home Team Row
               homeTeam ? h("div", { className: "row" },
                 h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
                   homeTeam.team?.logo ? h("img", { src: homeTeam.team.logo, style: { width: 32, height: 32, objectFit: "contain" }, referrerPolicy: "no-referrer" }) : null,
@@ -2582,9 +2709,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [upgradePrompt, setUpgradePrompt] = useState(null);
     const [maintenanceModal, setMaintenanceModal] = useState(false);
     const [activeBroadcast, setActiveBroadcast] = useState(null);
-    const [quickBcModal, setQuickBcModal] = useState(false);
-    const [quickBcText, setQuickBcText] = useState("");
-    const [quickBcTarget, setQuickBcTarget] = useState("all");
     const [toastMsg, setToastMsg] = useState("");
     const [toastOn, setToastOn] = useState(false);
     const toastT = useRef(undefined);
@@ -2612,8 +2736,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       return getUserTier(acc, isOwner);
     }, [currentUser, accountsMap, isOwner]);
 
-    const canSendScreenBroadcast = isOwner || userTier === "max";
-
     const navigate = useCallback((v) => {
       if (v === "tiktok") {
         setMaintenanceModal(true);
@@ -2630,7 +2752,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
     const checkIncomingBroadcast = useCallback((bcObj, uname) => {
       if (!bcObj || !bcObj.id || !uname) return;
-      // Only show broadcasts sent in the last 10 minutes
       if (Date.now() - (bcObj.timestamp || 0) > 600000) return;
       const targetClean = (bcObj.target || "all").toLowerCase();
       if (targetClean !== "all" && targetClean !== uname.toLowerCase()) return;
@@ -2672,7 +2793,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Kicked out by owner."); return;
       }
 
-      // Check if a MAX or Owner user sent a live screen broadcast!
       if (broadcast && broadcast.id) {
         checkIncomingBroadcast(broadcast, acc.username);
       }
@@ -2722,22 +2842,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       if (!openCloaked(frameSource(g), settings)) toast("Popup blocked");
     }, [settings, toast]);
 
-    const handleQuickBroadcastSubmit = async (e) => {
-      e.preventDefault();
-      if (!quickBcText.trim()) return;
-      await dbSendBroadcast({
-        id: "bc_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
-        sender: currentUser?.username || "MAX User",
-        tier: isOwner ? "owner" : userTier,
-        target: quickBcTarget,
-        message: quickBcText.trim(),
-        timestamp: Date.now()
-      });
-      setQuickBcText("");
-      setQuickBcModal(false);
-      toast("📢 Live screen message broadcasted!");
-    };
-
     const hideFloatingPills = view === "browser" || view === "movies" || view === "music";
 
     return h(Fragment, null,
@@ -2745,11 +2849,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       !currentUser ? h(LoginBox, { onLoginSuccess: (sess) => { setCurrentUser(sess); refreshDatabaseAndSession(); toast(`Welcome, ${sess.username}!`); } }) : null,
       h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: navigate, isOwner, userTier }),
       !hideFloatingPills ? h("div", { id: "topRight", style: { display: "flex", gap: 8, alignItems: "center" } },
-        canSendScreenBroadcast ? h("button", {
-          className: "pill",
-          style: { borderColor: "rgba(239,68,68,0.5)", color: "#fca5a5", fontWeight: 700 },
-          onClick: () => setQuickBcModal(true)
-        }, "📢 Screen Broadcast") : null,
         currentUser ? h("button", { className: "pill", style: { display: "flex", alignItems: "center", gap: 8 }, onClick: () => navigate(isOwner ? "creator" : "account") },
           h("span", null, currentUser.username),
           renderTierBadge(userTier, isOwner)
@@ -2758,6 +2857,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       h("main", { ref: mainRef },
         view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); }, userTier }) : null,
         view === "sports" ? h(SportsView, { currentUser, userTier, isOwner, sessionsMap, toast }) : null,
+        view === "broadcast" ? h(BroadcastView, { currentUser, userTier, isOwner, sessionsMap, accountsMap, toast }) : null,
         view === "youtube" ? h(YouTubeView, { toast }) : null,
         view === "tiktok" ? h(TikTokView, { toast }) : null,
         view === "browser" ? h(BrowserView, { toast }) : null,
@@ -2785,40 +2885,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         h("p", null, `Your account is currently on the ${userTier.toUpperCase()} tier. Accessing ${upgradePrompt.viewName} requires a ${upgradePrompt.reqTier} license. Contact the Owner to upgrade your account tier!`),
         h("div", { className: "actions" },
           h("button", { className: "btn", onClick: () => setUpgradePrompt(null) }, "Got It")
-        )
-      ) : null,
-
-      // QUICK SCREEN BROADCAST SENDER MODAL (For MAX & Owner)
-      quickBcModal ? h(Modal, { onClose: () => setQuickBcModal(false) },
-        h("h3", null, "📢 Send Live Screen Broadcast"),
-        h("p", null, "Pop a message directly onto everyone's screen (even while they are playing a game or watching a movie)."),
-        h("form", { onSubmit: handleQuickBroadcastSubmit },
-          h("div", { style: { marginBottom: 12 } },
-            h("label", { className: "auth-label" }, "Target"),
-            h("select", {
-              className: "field",
-              value: quickBcTarget,
-              onChange: (e) => setQuickBcTarget(e.target.value)
-            },
-              h("option", { value: "all" }, "🌎 Everyone Online"),
-              Object.values(sessionsMap || {})
-                .filter((s) => s && !s.kicked && Date.now() - (s.lastPing || 0) < 45000)
-                .map((s) => h("option", { key: s.username, value: s.username }, `👤 ${s.username}`))
-            )
-          ),
-          h("div", { style: { marginBottom: 16 } },
-            h("label", { className: "auth-label" }, "Message"),
-            h("input", {
-              className: "field",
-              placeholder: "Type your live screen announcement...",
-              value: quickBcText,
-              onChange: (e) => setQuickBcText(e.target.value)
-            })
-          ),
-          h("div", { className: "actions" },
-            h("button", { type: "submit", className: "btn", style: { background: "#ef4444", color: "#fff" } }, "Broadcast Now"),
-            h("button", { type: "button", className: "btn ghost", onClick: () => setQuickBcModal(false) }, "Cancel")
-          )
         )
       ) : null,
 
