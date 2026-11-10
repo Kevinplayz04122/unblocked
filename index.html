@@ -178,6 +178,18 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .badge-pill.tier-free { background: rgba(161, 161, 170, 0.14); color: #d4d4d8; border-color: rgba(161, 161, 170, 0.35); }
 .badge-pill.tier-pro { background: rgba(59, 130, 246, 0.18); color: #93c5fd; border-color: rgba(59, 130, 246, 0.45); }
 .badge-pill.tier-premium { background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(168, 85, 247, 0.22)); color: #fde68a; border-color: rgba(245, 158, 11, 0.55); box-shadow: 0 0 16px rgba(245, 158, 11, 0.18); }
+.badge-pill.tier-max { background: linear-gradient(135deg, rgba(239, 68, 68, 0.32), rgba(249, 115, 22, 0.32)); color: #fecaca; border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.38); }
+
+/* Live Screen Broadcast Overlay (MAX & Owner) */
+.screen-broadcast-bg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(12px); z-index: 250; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade 0.25s ease; }
+.screen-broadcast-box { background: linear-gradient(180deg, #1a0b0e 0%, #0b0b0f 100%); border: 2px solid #ef4444; border-radius: 22px; padding: 30px; width: min(520px, 100%); box-shadow: 0 28px 75px rgba(239, 68, 68, 0.35), 0 0 40px rgba(0, 0, 0, 0.9); text-align: center; }
+
+/* ESPN Sports Hub Styles */
+.espn-banner { background: linear-gradient(135deg, #b91c1c 0%, #111115 70%); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 18px; padding: 22px 26px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.espn-logo { font-size: 30px; font-weight: 900; font-style: italic; letter-spacing: -0.03em; color: #fff; background: #dc2626; padding: 2px 14px; border-radius: 6px; display: inline-block; }
+.espn-score-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.espn-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px 18px; transition: 0.2s; cursor: pointer; }
+.espn-card:hover { border-color: #ef4444; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.65); }
 
 /* ============================================================================
    FULL-SCREEN GOOGLE-STYLE FROSTED GLASS BROWSER
@@ -277,35 +289,42 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   // Tier Access Matrix:
   // Free -> Games, Movies, Music
   // Pro -> Chat, Games, Movies, Music
-  // Premium -> YouTube, TikTok, Browser, Chat, Movies, Games, Music
+  // Premium -> YouTube, Browser, Chat, Movies, Games, Music
+  // Max -> ESPN Sports + Live Screen Broadcast + YouTube, Browser, Chat, Movies, Games, Music
+  // Note: TikTok is locked under maintenance for everybody!
   const TIER_PERMISSIONS = {
     free: ["home", "games", "movies", "music", "account", "settings"],
     pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
-    premium: ["home", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings"],
-    owner: ["home", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
+    premium: ["home", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
+    max: ["home", "sports", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
+    owner: ["home", "sports", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
   };
 
   function getUserTier(acc, isOwner) {
     if (isOwner || (acc && acc.role === "owner")) return "owner";
     const t = (acc && acc.tier ? acc.tier : "free").toLowerCase();
-    if (t === "premium" || t === "pro" || t === "free") return t;
+    if (t === "max" || t === "premium" || t === "pro" || t === "free") return t;
     return "free";
   }
 
   function canAccessView(tier, viewId) {
+    if (viewId === "tiktok") return false; // Locked under maintenance for everybody
     const allowed = TIER_PERMISSIONS[tier] || TIER_PERMISSIONS.free;
     return allowed.includes(viewId);
   }
 
   function requiredTierForView(viewId) {
+    if (viewId === "tiktok") return "Under Maintenance";
+    if (viewId === "sports") return "MAX";
     if (viewId === "chat") return "Pro";
-    if (viewId === "youtube" || viewId === "tiktok" || viewId === "browser") return "Premium";
+    if (viewId === "youtube" || viewId === "browser") return "Premium";
     if (viewId === "creator") return "Owner";
     return "Free";
   }
 
   function renderTierBadge(tier, isOwner) {
     if (isOwner || tier === "owner") return h("span", { className: "badge-pill owner" }, "👑 OWNER");
+    if (tier === "max") return h("span", { className: "badge-pill tier-max" }, "🔥 MAX");
     if (tier === "premium") return h("span", { className: "badge-pill tier-premium" }, "💎 PREMIUM");
     if (tier === "pro") return h("span", { className: "badge-pill tier-pro" }, "⚡ PRO");
     return h("span", { className: "badge-pill tier-free" }, "FREE TIER");
@@ -316,6 +335,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const LS_CURRENT_USER = "ug_active_user_v1";
   const LS_DB_URL = "ug_custom_db_url_v1";
   const LS_INSTALLED_GAMES = "ug_installed_games_v1";
+  const LS_BROADCAST = "ug_live_broadcast_v1";
+  const LS_DISMISSED_BC = "ug_dismissed_bc_v1";
   const bc = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("ug_realtime_sync") : null;
 
   function getInstalledGames() {
@@ -378,7 +399,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         expiresAt: null,
         durationHours: 24,
         role: "owner",
-        tier: "premium",
+        tier: "max",
         createdAt: Date.now()
       };
     }
@@ -388,20 +409,38 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const base = getDbUrl();
     const localAcc = ensureDefaultOwner(getLocalStore(LS_ACCOUNTS));
     const localSess = getLocalStore(LS_SESSIONS);
-    if (!base) return { accounts: localAcc, sessions: localSess };
+    const localBc = getLocalStore(LS_BROADCAST);
+    if (!base) return { accounts: localAcc, sessions: localSess, broadcast: localBc };
     try {
-      const [accRes, sessRes] = await Promise.all([
+      const [accRes, sessRes, bcRes] = await Promise.all([
         fetch(`${base}/ug_accounts.json`, { cache: "no-store" }),
-        fetch(`${base}/ug_sessions.json`, { cache: "no-store" })
+        fetch(`${base}/ug_sessions.json`, { cache: "no-store" }),
+        fetch(`${base}/ug_broadcast.json`, { cache: "no-store" })
       ]);
       const remoteAcc = (accRes.ok ? await accRes.json() : null) || {};
       const remoteSess = (sessRes.ok ? await sessRes.json() : null) || {};
+      const remoteBc = (bcRes.ok ? await bcRes.json() : null) || null;
       const mergedAcc = ensureDefaultOwner(remoteAcc);
       setLocalStore(LS_ACCOUNTS, mergedAcc);
       setLocalStore(LS_SESSIONS, remoteSess);
-      return { accounts: mergedAcc, sessions: remoteSess };
+      if (remoteBc) setLocalStore(LS_BROADCAST, remoteBc);
+      return { accounts: mergedAcc, sessions: remoteSess, broadcast: remoteBc };
     } catch {
-      return { accounts: localAcc, sessions: localSess };
+      return { accounts: localAcc, sessions: localSess, broadcast: localBc };
+    }
+  }
+  async function dbSendBroadcast(payload) {
+    setLocalStore(LS_BROADCAST, payload);
+    if (bc) bc.postMessage({ type: "live_broadcast", payload });
+    const base = getDbUrl();
+    if (base) {
+      try {
+        await fetch(`${base}/ug_broadcast.json`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch {}
     }
   }
   async function dbSaveAccount(acc) {
@@ -699,6 +738,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const HomeIcon = (p) => h(Svg, p, h("path", { d: "M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" }));
   const YouTubeIcon = (p) => h(Svg, p, h("rect", { x: "2", y: "5", width: "20", height: "14", rx: "4" }), h("polygon", { points: "10 9 15 12 10 15 10 9", fill: "currentColor" }));
   const TikTokIcon = (p) => h(Svg, p, h("path", { d: "M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" }));
+  const SportsIcon = (p) => h(Svg, p, h("path", { d: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6" }), h("path", { d: "M18 9h1.5a2.5 2.5 0 0 0 0-5H18" }), h("path", { d: "M4 22h16" }), h("path", { d: "M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" }), h("path", { d: "M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" }), h("path", { d: "M18 2H6v7a6 6 0 0 0 12 0V2Z" }));
   const ChatIcon = (p) => h(Svg, p, h("path", { d: "M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" }));
   const GamesIcon = (p) => h(Svg, p, h("path", { d: "M6 12h4M8 10v4M15 13h.01M18 11h.01" }), h("path", { d: "M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.7 8A3 3 0 0 0 6 18.5L8 16h8l2 2.5a3 3 0 0 0 4.9-2.3l-1.7-8A4 4 0 0 0 17.3 5z" }));
   const MoviesIcon = (p) => h(Svg, p, h("rect", { x: "3", y: "4", width: "18", height: "16", rx: "2" }), h("path", { d: "M8 4v16M16 4v16M3 12h18" }));
@@ -750,9 +790,20 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("canvas", { id: "stars", ref });
   }
 
-  // --- Sidebar Component (Shows Lock Indicator for Restricted Tier Tabs) ---
+  // --- Sidebar Component (Shows Lock Indicator for Restricted Tier Tabs + TikTok Maintenance) ---
   function Sidebar({ view, open, onToggle, onNavigate, isOwner, userTier }) {
     const btn = (id, label, icon) => {
+      if (id === "tiktok") {
+        return h("button", {
+          key: id,
+          className: "side-btn locked",
+          title: "TikTok (Under Maintenance 🔧)",
+          onClick: () => onNavigate("tiktok")
+        },
+          icon,
+          h("span", null, "TikTok 🔧")
+        );
+      }
       const unlocked = canAccessView(userTier, id);
       return h("button", {
         key: id,
@@ -768,6 +819,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("nav", { id: "sidebar", className: open ? "open" : "" },
       h("div", { className: "side-group", style: { paddingTop: 2 } },
         btn("home", "Home", h(HomeIcon)),
+        btn("sports", "ESPN Sports", h(SportsIcon)),
         btn("youtube", "YouTube", h(YouTubeIcon)),
         btn("tiktok", "TikTok", h(TikTokIcon)),
         btn("browser", "Browser", h(BrowserIcon)),
@@ -787,7 +839,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // --- Home Component ---
-  const WORDS = ["Roblox", "Geometry Dash", "YouTube", "TikTok", "Play anything"];
+  const WORDS = ["Roblox", "Geometry Dash", "ESPN Sports", "YouTube", "Play anything"];
   function useTypingPlaceholder(paused) {
     const [text, setText] = useState("Browse");
     const pausedRef = useRef(paused);
@@ -817,6 +869,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
 
     const quickBtn = (id, label, icon, customStyle = {}) => {
+      if (id === "tiktok") {
+        return h("button", {
+          onClick: () => onNavigate("tiktok"),
+          style: { opacity: 0.5 }
+        },
+          h("div", { className: "circ", style: customStyle }, icon),
+          "TikTok 🔧"
+        );
+      }
       const unlocked = canAccessView(userTier, id);
       return h("button", {
         onClick: () => onNavigate(id),
@@ -836,6 +897,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         )
       ),
       h("div", { className: "quick" },
+        quickBtn("sports", "ESPN", h(SportsIcon), { borderColor: "rgba(239,68,68,0.6)", color: "#ef4444" }),
         quickBtn("youtube", "YouTube", h(YouTubeIcon), { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" }),
         quickBtn("tiktok", "TikTok", h(TikTokIcon), { borderColor: "rgba(0,242,234,0.45)", color: "#00f2ea" }),
         quickBtn("games", "Games", h(GamesIcon)),
@@ -849,7 +911,191 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // FULL-PAGE GOOGLE-LIKE FROSTED GLASS BROWSER (Premium Tier)
+  // NEW: ESPN SPORTS + LIVE SCREEN BROADCAST HUB (MAX & OWNER EXCLUSIVE)
+  // ============================================================================
+  const ESPN_LEAGUES = [
+    { id: "nba", name: "🏀 NBA", path: "basketball/nba", streamQ: "NBA live game highlights ESPN" },
+    { id: "nfl", name: "🏈 NFL", path: "football/nfl", streamQ: "NFL live game highlights ESPN" },
+    { id: "soccer", name: "⚽ Soccer (EPL / UCL)", path: "soccer/eng.1", streamQ: "Premier League Champions League highlights ESPN" },
+    { id: "nhl", name: "🏒 NHL", path: "hockey/nhl", streamQ: "NHL hockey highlights ESPN" },
+    { id: "mlb", name: "⚾ MLB", path: "baseball/mlb", streamQ: "MLB baseball highlights ESPN" },
+    { id: "mma", name: "🥊 UFC / MMA", path: "mma/ufc", streamQ: "UFC MMA knockouts highlights ESPN" }
+  ];
+
+  function SportsView({ currentUser, userTier, isOwner, sessionsMap, toast }) {
+    const [league, setLeague] = useState(ESPN_LEAGUES[0]);
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [activeStream, setActiveStream] = useState(null);
+    const [bcText, setBcText] = useState("");
+    const [bcTarget, setBcTarget] = useState("all");
+
+    const fetchScoreboard = useCallback(async (lg) => {
+      setLoading(true);
+      try {
+        const res = await fetch(`https://site.api.espn.com/apis/site/v2/sports/${lg.path}/scoreboard`);
+        const data = await res.json();
+        setEvents(data.events || []);
+      } catch {
+        setEvents([]);
+      }
+      setLoading(false);
+    }, []);
+
+    useEffect(() => {
+      fetchScoreboard(league);
+      const t = setInterval(() => fetchScoreboard(league), 15000);
+      return () => clearInterval(t);
+    }, [league, fetchScoreboard]);
+
+    const handleSendScreenBroadcast = async (e) => {
+      e.preventDefault();
+      const msg = bcText.trim();
+      if (!msg) return;
+      const payload = {
+        id: "bc_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        sender: currentUser?.username || "MAX User",
+        tier: isOwner ? "owner" : userTier,
+        target: bcTarget,
+        message: msg,
+        timestamp: Date.now()
+      };
+      await dbSendBroadcast(payload);
+      setBcText("");
+      toast(`📢 Live screen popup sent to ${bcTarget === "all" ? "EVERYONE online" : bcTarget}!`);
+    };
+
+    const onlineUsernames = Object.values(sessionsMap || {})
+      .filter((s) => s && !s.kicked && Date.now() - (s.lastPing || 0) < 45000)
+      .map((s) => s.username);
+
+    return h("section", { className: "view" },
+      h("div", { className: "page" },
+        // Top ESPN Banner
+        h("div", { className: "espn-banner" },
+          h("div", null,
+            h("div", { style: { display: "flex", alignItems: "center", gap: 12, marginBottom: 6 } },
+              h("span", { className: "espn-logo" }, "ESPN"),
+              h("span", { className: "badge-pill tier-max" }, "🔥 MAX TIER EXCLUSIVE"),
+              h("span", { className: "badge-pill live" }, "LIVE SCOREBOARD & STREAMS")
+            ),
+            h("p", { style: { margin: 0, color: "#e4e4e7", fontSize: 14 } }, "Real-time live scores, play-by-play stats, and instant game streams across all major leagues.")
+          )
+        ),
+
+        // MAX TIER EXCLUSIVE: LIVE SCREEN BROADCASTER (Sends popup onto anyone's screen!)
+        h("div", { className: "pop-panel", style: { marginBottom: 26, background: "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,15,20,0.95))", borderColor: "rgba(239,68,68,0.45)" } },
+          h("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 } },
+            h("span", { style: { fontSize: 18 } }, "📢"),
+            h("h3", { style: { margin: 0, fontSize: 17, fontWeight: 700 } }, "MAX Live Screen Broadcaster"),
+            h("span", { className: "badge-pill tier-max" }, "POPS UP OVER GAMES & VIDEOS")
+          ),
+          h("p", { style: { color: "var(--muted)", fontSize: 13, marginBottom: 12 } },
+            "Send an instant live alert directly onto everyone's screen (or a specific user's screen) no matter what they are doing. They click Close to dismiss it."
+          ),
+          h("form", { onSubmit: handleSendScreenBroadcast, style: { display: "flex", gap: 10, flexWrap: "wrap" } },
+            h("select", {
+              className: "field",
+              style: { width: 190 },
+              value: bcTarget,
+              onChange: (e) => setBcTarget(e.target.value)
+            },
+              h("option", { value: "all" }, "🌎 Everyone Online"),
+              onlineUsernames.map((u) => h("option", { key: u, value: u }, `👤 ${u}`))
+            ),
+            h("input", {
+              className: "field",
+              style: { flex: 1, minWidth: 240 },
+              placeholder: "Type message to pop up live on their screen...",
+              value: bcText,
+              onChange: (e) => setBcText(e.target.value)
+            }),
+            h("button", { type: "submit", className: "btn", style: { background: "#ef4444", color: "#fff" } }, "📢 Broadcast to Screen")
+          )
+        ),
+
+        // Active Sports Stream Player
+        activeStream ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
+          h("div", { className: "row", style: { marginBottom: 12 } },
+            h("strong", { style: { fontSize: 17 } }, `📺 ESPN Live Coverage: ${activeStream.name}`),
+            h("button", { className: "btn ghost sm", onClick: () => setActiveStream(null) }, "✕ Close Stream")
+          ),
+          h("div", { style: { width: "100%", height: "60vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
+            h("iframe", {
+              key: activeStream.id,
+              src: `https://www.youtube-nocookie.com/embed?listType=search&list=${encodeURIComponent(activeStream.name + " ESPN highlights live")}&autoplay=1`,
+              style: { width: "100%", height: "100%", border: 0 },
+              allow: FRAME_ALLOW,
+              allowFullScreen: true,
+              referrerPolicy: "strict-origin-when-cross-origin"
+            })
+          )
+        ) : null,
+
+        // League Selector Chips
+        h("div", { className: "chips" },
+          ESPN_LEAGUES.map((lg) =>
+            h("button", {
+              key: lg.id,
+              className: "chip" + (league.id === lg.id ? " on" : ""),
+              style: league.id === lg.id ? { background: "#dc2626", color: "#fff", borderColor: "#dc2626" } : {},
+              onClick: () => setLeague(lg)
+            }, lg.name)
+          )
+        ),
+
+        // Live Scoreboard Cards Grid
+        loading && events.length === 0 ? h("div", { className: "empty" }, "Loading live ESPN scoreboard...") :
+        events.length === 0 ? h("div", { className: "empty" }, "No scheduled games right now for this league.") :
+        h("div", { className: "espn-score-grid" },
+          events.map((ev) => {
+            const comp = ev.competitions?.[0];
+            const competitors = comp?.competitors || [];
+            const homeTeam = competitors.find((c) => c.homeAway === "home") || competitors[0];
+            const awayTeam = competitors.find((c) => c.homeAway === "away") || competitors[1];
+            const statusText = ev.status?.type?.shortDetail || ev.status?.type?.description || "Scheduled";
+            const isLive = ev.status?.type?.state === "in";
+
+            return h("div", {
+              key: ev.id,
+              className: "espn-card",
+              onClick: () => setActiveStream({ id: ev.id, name: ev.name || `${awayTeam?.team?.displayName} vs ${homeTeam?.team?.displayName}` })
+            },
+              h("div", { className: "row", style: { marginBottom: 12 } },
+                h("span", { style: { fontSize: 12, fontWeight: 700, color: isLive ? "#4ade80" : "var(--muted)" } }, isLive ? `🔴 LIVE • ${statusText}` : statusText),
+                h("span", { className: "badge-pill", style: { fontSize: 10.5 } }, "▶ Watch Stream")
+              ),
+              // Away Team Row
+              awayTeam ? h("div", { className: "row", style: { marginBottom: 10 } },
+                h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+                  awayTeam.team?.logo ? h("img", { src: awayTeam.team.logo, style: { width: 32, height: 32, objectFit: "contain" }, referrerPolicy: "no-referrer" }) : null,
+                  h("div", null,
+                    h("div", { style: { fontWeight: 700, fontSize: 15 } }, awayTeam.team?.shortDisplayName || awayTeam.team?.displayName),
+                    h("div", { style: { fontSize: 11, color: "var(--muted)" } }, awayTeam.records?.[0]?.summary || "")
+                  )
+                ),
+                h("div", { style: { fontSize: 22, fontWeight: 800 } }, awayTeam.score ?? "0")
+              ) : null,
+              // Home Team Row
+              homeTeam ? h("div", { className: "row" },
+                h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+                  homeTeam.team?.logo ? h("img", { src: homeTeam.team.logo, style: { width: 32, height: 32, objectFit: "contain" }, referrerPolicy: "no-referrer" }) : null,
+                  h("div", null,
+                    h("div", { style: { fontWeight: 700, fontSize: 15 } }, homeTeam.team?.shortDisplayName || homeTeam.team?.displayName),
+                    h("div", { style: { fontSize: 11, color: "var(--muted)" } }, homeTeam.records?.[0]?.summary || "")
+                  )
+                ),
+                h("div", { style: { fontSize: 22, fontWeight: 800 } }, homeTeam.score ?? "0")
+              ) : null
+            );
+          })
+        )
+      )
+    );
+  }
+
+  // ============================================================================
+  // FULL-PAGE GOOGLE-LIKE FROSTED GLASS BROWSER (Premium & Max Tiers)
   // ============================================================================
   function BrowserView() {
     const [query, setQuery] = useState("");
@@ -1331,7 +1577,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [directStreamUrl, setDirectStreamUrl] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // Automatically fetch a raw MP4 stream in the background in case the school blocks youtube-nocookie embeds
     const selectVideo = useCallback(async (vid) => {
       setActiveVideo(vid);
       setDirectStreamUrl("");
@@ -1420,7 +1665,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       searchYouTube("minecraft roblox gaming");
     }, [searchYouTube]);
 
-    // Clean origin parameter + strict-origin-when-cross-origin completely eliminates YouTube Error 153!
     const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
 
     return h("section", { className: "view" },
@@ -1511,166 +1755,19 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // FIXED TIKTOK FEED (Multi-CORS Proxy Race + Instant Working Fallback Feed!)
+  // TIKTOK VIEW (LOCKED FOR EVERYBODY — UNDER MAINTENANCE)
   // ============================================================================
-  const TT_TOPICS = ["gaming", "memes", "roblox", "anime", "phonk", "sports", "cars", "funny"];
-
-  const FALLBACK_TIKTOK_FEED = [
-    {
-      video_id: "tt_fb_1",
-      title: "Insane 3D Obby Speedrun World Record! 🔥 #roblox #gaming #obby",
-      digg_count: 148200,
-      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-      cover: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80",
-      author: { nickname: "BloxSpeedrunner", unique_id: "bloxspeed", avatar: "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" }
-    },
-    {
-      video_id: "tt_fb_2",
-      title: "When the teacher walks by your desk but you have about:blank cloak on 😎 #school #memes #unblocked",
-      digg_count: 294500,
-      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-      cover: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80",
-      author: { nickname: "SchoolLegends", unique_id: "schoolmemes", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&q=80" }
-    },
-    {
-      video_id: "tt_fb_3",
-      title: "Late night drift phonk edit 🏎️💨 #phonk #cars #drift #jdm",
-      digg_count: 92400,
-      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-      cover: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80",
-      author: { nickname: "DriftPhonkDaily", unique_id: "phonkeditz", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=80" }
-    },
-    {
-      video_id: "tt_fb_4",
-      title: "Next-gen animation showcase ⚡ #anime #edit #4k",
-      digg_count: 184900,
-      play: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-      cover: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&q=80",
-      author: { nickname: "AnimeVibes4K", unique_id: "animevibes", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&q=80" }
-    }
-  ];
-
   function TikTokView() {
-    const [query, setQuery] = useState("gaming");
-    const [inputVal, setInputVal] = useState("");
-    const [feed, setFeed] = useState(FALLBACK_TIKTOK_FEED);
-    const [loading, setLoading] = useState(false);
-    const [likedIds, setLikedIds] = useState({});
-
-    const fetchTikToks = useCallback(async (qText) => {
-      setLoading(true);
-      const targetApi = `https://www.tikwm.com/api/feed/search?keywords=${encodeURIComponent(qText)}&count=18`;
-
-      // Race Direct, AllOrigins CORS Proxy, and CodeTabs Proxy so TikTok never gets stuck!
-      const tryDirect = async () => {
-        const r = await fetch(targetApi);
-        const j = await r.json();
-        if (!j?.data?.videos?.length) throw new Error("empty");
-        return j.data.videos;
-      };
-      const tryAllOrigins = async () => {
-        const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetApi)}`);
-        const j = await r.json();
-        const parsed = JSON.parse(j.contents);
-        if (!parsed?.data?.videos?.length) throw new Error("empty");
-        return parsed.data.videos;
-      };
-      const tryCodeTabs = async () => {
-        const r = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetApi)}`);
-        const parsed = await r.json();
-        if (!parsed?.data?.videos?.length) throw new Error("empty");
-        return parsed.data.videos;
-      };
-
-      try {
-        const videos = await Promise.any([tryDirect(), tryAllOrigins(), tryCodeTabs()]);
-        setFeed(videos);
-      } catch {
-        // Always show working fallback videos if all external relays are blocked on school Wi-Fi
-        setFeed(FALLBACK_TIKTOK_FEED);
-      }
-      setLoading(false);
-    }, []);
-
-    useEffect(() => {
-      fetchTikToks(query);
-    }, [query, fetchTikToks]);
-
     return h("section", { className: "view" },
-      h("div", { className: "page", style: { maxWidth: 960 } },
-        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 16 } },
-          h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-            h("div", { style: { background: "#000", border: "1px solid #00f2ea", color: "#fff", padding: "6px 14px", borderRadius: 10, fontWeight: 800, textShadow: "2px 0 #ff0050, -2px 0 #00f2ea" } }, "♪ TikTok"),
-            h("span", { className: "badge-pill live" }, "DIRECT MP4 STREAM")
-          )
-        ),
-
-        h("form", {
-          className: "toolbar",
-          onSubmit: (e) => {
-            e.preventDefault();
-            if (inputVal.trim()) setQuery(inputVal.trim());
-          }
-        },
-          h("div", { className: "search" },
-            h(SearchIcon),
-            h("input", {
-              type: "text",
-              placeholder: "Search TikTok videos, trends, or creators (e.g. #roblox, #memes, #phonk)...",
-              value: inputVal,
-              onChange: (e) => setInputVal(e.target.value)
-            })
-          ),
-          h("button", { type: "submit", className: "btn", style: { background: "#ff0050", color: "#fff", height: 52 } }, loading ? "Loading..." : "Search TikTok")
-        ),
-
-        h("div", { className: "chips" },
-          TT_TOPICS.map((t) =>
-            h("button", {
-              key: t,
-              className: "chip" + (query === t ? " on" : ""),
-              onClick: () => setQuery(t)
-            }, `#${t}`)
-          )
-        ),
-
-        h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 8 } },
-          feed.map((item) => {
-            const vidId = item.video_id || item.id;
-            const liked = !!likedIds[vidId];
-            return h("div", { key: vidId, className: "tt-card" },
-              h("div", { style: { display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: "1px solid var(--border)" } },
-                item.author?.avatar ? h("img", { src: item.author.avatar, style: { width: 38, height: 38, borderRadius: "50%", objectFit: "cover" }, referrerPolicy: "no-referrer" }) : null,
-                h("div", { style: { flex: 1, minWidth: 0 } },
-                  h("div", { style: { fontWeight: 700, fontSize: 14.5 } }, item.author?.nickname || "TikTok Creator"),
-                  h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `@${item.author?.unique_id || "user"}`)
-                ),
-                h("button", {
-                  className: "btn sm",
-                  style: { background: liked ? "#ff0050" : "rgba(255,255,255,0.08)", color: "#fff" },
-                  onClick: () => setLikedIds((p) => ({ ...p, [vidId]: !p[vidId] }))
-                }, `♥ ${(item.digg_count || 0) + (liked ? 1 : 0)}`)
-              ),
-              h("video", {
-                className: "tt-video",
-                src: item.play || item.wmplay,
-                poster: item.cover,
-                controls: true,
-                loop: true,
-                playsInline: true,
-                preload: "metadata"
-              }),
-              h("div", { style: { padding: "12px 16px", fontSize: 13.5, color: "#e4e4e7" } },
-                item.title || "TikTok Video"
-              )
-            );
-          })
-        )
+      h("div", { className: "page", style: { height: "80vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" } },
+        h("div", { style: { fontSize: 56, marginBottom: 14 } }, "🔧"),
+        h("h2", null, "TikTok is Under Maintenance"),
+        h("p", { className: "sub", style: { maxWidth: 440 } }, "TikTok is currently locked for all tiers while we upgrade the video relay servers. Please check back later!")
       )
     );
   }
 
-  // --- Games Component (Free, Pro & Premium) ---
+  // --- Games Component (Free, Pro, Premium & Max) ---
   const CATS = ["All", ...Array.from(new Set(GAMES.map((g) => g.cat))).sort()];
   function hue(s) { let hVal = 0; for (const c of s) hVal = (hVal * 31 + c.charCodeAt(0)) % 360; return hVal; }
 
@@ -1719,7 +1816,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Spotify Music View (Free, Pro & Premium) ---
+  // --- Spotify Music View (Free, Pro, Premium & Max) ---
   const PLAYLIST_PRESETS = [
     { id: "hits", name: "Today's Top Hits", desc: "Global Chart", color: "#1e3264", icon: "🔥", query: "top hits 2025 2026" },
     { id: "phonk", name: "Drift Phonk & Gym", desc: "High-energy phonk", color: "#8d1732", icon: "⚡", query: "drift phonk" },
@@ -1829,7 +1926,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Netflix Movies & Anime View (Free, Pro & Premium) ---
+  // --- Netflix Movies & Anime View (Free, Pro, Premium & Max) ---
   function MoviesView() {
     const [activeMedia, setActiveMedia] = useState(null);
     const heroItem = INITIAL_MEDIA[0];
@@ -1880,7 +1977,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // WHATSAPP-STYLE LIVE CHAT WITH IMAGE & FILE ATTACHMENTS (Pro & Premium Tiers)
+  // WHATSAPP-STYLE LIVE CHAT WITH IMAGE & FILE ATTACHMENTS (Pro, Premium & Max Tiers)
   // ============================================================================
   function ChatView({ currentUser, accountsMap }) {
     const [messages, setMessages] = useState([]);
@@ -2096,6 +2193,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               h("span", { className: "auth-label" }, "Account Tier"),
               h("div", { style: { fontSize: 15, fontWeight: 700, color: "#fff" } },
                 isOwner ? "Owner (All Access)" :
+                userTier === "max" ? "🔥 MAX (ESPN + Screen Broadcast + All)" :
                 userTier === "premium" ? "💎 Premium (All Access)" :
                 userTier === "pro" ? "⚡ Pro (Chat + Games + Media)" :
                 "Free (Games + Movies + Music)"
@@ -2116,7 +2214,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // ACCOUNT CREATOR HUB (With Tier Selection in Popup, Live Users & Account Cards!)
+  // ACCOUNT CREATOR HUB (With Free / Pro / Premium / MAX Tier Selectors!)
   // ============================================================================
   function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
     const [createModal, setCreateModal] = useState(false);
@@ -2150,7 +2248,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         username: u,
         email: newEmail.trim() || "",
         password: p,
-        tier: isOwn ? "premium" : newTier,
+        tier: isOwn ? "max" : newTier,
         licenseKey: genLicenseKey(),
         infinite: !!newInfinite,
         durationHours: hrs,
@@ -2197,7 +2295,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
               h("span", { className: "badge-pill owner" }, "OWNER ONLY")
             ),
-            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Create accounts, assign Tiers (Free / Pro / Premium), and manage live users.")
+            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Create accounts, assign Tiers (Free / Pro / Premium / MAX), and manage live users.")
           ),
           h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
             h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "\u2601\uFE0F Cloud DB Connected" : "\u2699\uFE0F Cloud DB Setup"),
@@ -2231,7 +2329,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                       ),
                       h("span", { style: { fontSize: 12, color: "var(--muted)" } }, `Tab: ${sess.currentView || "home"}`)
                     ),
-                    // Live Tier Switcher inside Active Accounts area
                     !isOwn ? h("div", { className: "row", style: { marginBottom: 10, background: "#08080b", padding: "6px 10px", borderRadius: 8, border: "1px solid var(--border)" } },
                       h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Live Tier:"),
                       h("select", {
@@ -2241,7 +2338,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                       },
                         h("option", { value: "free" }, "Free (Games/Movies/Music)"),
                         h("option", { value: "pro" }, "⚡ Pro (+ Live Chat)"),
-                        h("option", { value: "premium" }, "💎 Premium (+ YT/TikTok/Browser)")
+                        h("option", { value: "premium" }, "💎 Premium (+ YT/Browser)"),
+                        h("option", { value: "max" }, "🔥 MAX (+ ESPN & Screen Popup)")
                       )
                     ) : null,
                     h("div", { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 14 } }, "Remaining: ", h("strong", { style: { color: "#e4e4e4" } }, formatRemainingTime(acc, now))),
@@ -2294,7 +2392,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                       },
                         h("option", { value: "free" }, "Free (Games/Movies/Music)"),
                         h("option", { value: "pro" }, "⚡ Pro (+ Live Chat)"),
-                        h("option", { value: "premium" }, "💎 Premium (+ YT/TikTok/Browser)")
+                        h("option", { value: "premium" }, "💎 Premium (+ YT/Browser)"),
+                        h("option", { value: "max" }, "🔥 MAX (+ ESPN & Screen Popup)")
                       )
                 ),
                 h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "License"), h("span", { style: { fontSize: 12, fontFamily: "monospace", color: "#bcbcc4" } }, acc.licenseKey)),
@@ -2315,7 +2414,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         )
       ),
 
-      // CREATE ACCOUNT MODAL WITH TIER SELECTOR
+      // CREATE ACCOUNT MODAL WITH 4 TIERS (Free, Pro, Premium, MAX)
       createModal ? h(Modal, { onClose: () => setCreateModal(false) },
         h("h3", null, "Create Licensed Account"),
         h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
@@ -2323,11 +2422,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Password"), h("input", { className: "field", type: "text", placeholder: "Password...", value: newPassword, onChange: (e) => setNewPassword(e.target.value) })),
           h("div", { style: { marginBottom: 14 } },
             h("label", { className: "auth-label" }, "Select Account Tier"),
-            h("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 } },
+            h("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8 } },
               [
                 { id: "free", name: "Free", sub: "Games, Movies, Music" },
                 { id: "pro", name: "⚡ Pro", sub: "+ Live Chat" },
-                { id: "premium", name: "💎 Premium", sub: "+ YT, TikTok, Browser" }
+                { id: "premium", name: "💎 Premium", sub: "+ YT & Browser" },
+                { id: "max", name: "🔥 MAX", sub: "+ ESPN & Screen Popup" }
               ].map((t) =>
                 h("div", {
                   key: t.id,
@@ -2335,8 +2435,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                   style: {
                     padding: "10px 8px",
                     borderRadius: 10,
-                    border: newTier === t.id ? "2px solid #fff" : "1px solid var(--border)",
-                    background: newTier === t.id ? "rgba(255,255,255,0.12)" : "#0e0e11",
+                    border: newTier === t.id ? "2px solid #ef4444" : "1px solid var(--border)",
+                    background: newTier === t.id ? "rgba(239,68,68,0.16)" : "#0e0e11",
                     cursor: "pointer",
                     textAlign: "center"
                   }
@@ -2422,7 +2522,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           username: idClean.includes("@") ? (AUTH_CONFIG.ownerUsernames[0] || "kevin") : idClean,
           email: idClean.includes("@") ? idClean : (AUTH_CONFIG.ownerEmails[0] || ""),
           password: pwClean,
-          tier: "premium",
+          tier: "max",
           licenseKey: "UG-OWNR-ROOT-0001",
           infinite: true,
           expiresAt: null,
@@ -2480,6 +2580,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [playing, setPlaying] = useState(null);
     const [installedMap, setInstalledMap] = useState(getInstalledGames);
     const [upgradePrompt, setUpgradePrompt] = useState(null);
+    const [maintenanceModal, setMaintenanceModal] = useState(false);
+    const [activeBroadcast, setActiveBroadcast] = useState(null);
+    const [quickBcModal, setQuickBcModal] = useState(false);
+    const [quickBcText, setQuickBcText] = useState("");
+    const [quickBcTarget, setQuickBcTarget] = useState("all");
     const [toastMsg, setToastMsg] = useState("");
     const [toastOn, setToastOn] = useState(false);
     const toastT = useRef(undefined);
@@ -2507,7 +2612,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       return getUserTier(acc, isOwner);
     }, [currentUser, accountsMap, isOwner]);
 
+    const canSendScreenBroadcast = isOwner || userTier === "max";
+
     const navigate = useCallback((v) => {
+      if (v === "tiktok") {
+        setMaintenanceModal(true);
+        return;
+      }
       if (!canAccessView(userTier, v)) {
         const req = requiredTierForView(v);
         setUpgradePrompt({ viewName: v.toUpperCase(), reqTier: req });
@@ -2517,8 +2628,30 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       mainRef.current?.scrollTo(0, 0);
     }, [userTier]);
 
+    const checkIncomingBroadcast = useCallback((bcObj, uname) => {
+      if (!bcObj || !bcObj.id || !uname) return;
+      // Only show broadcasts sent in the last 10 minutes
+      if (Date.now() - (bcObj.timestamp || 0) > 600000) return;
+      const targetClean = (bcObj.target || "all").toLowerCase();
+      if (targetClean !== "all" && targetClean !== uname.toLowerCase()) return;
+      try {
+        const dismissed = JSON.parse(localStorage.getItem(LS_DISMISSED_BC) || "{}");
+        if (dismissed[bcObj.id]) return;
+      } catch {}
+      setActiveBroadcast(bcObj);
+    }, []);
+
+    const dismissBroadcast = (id) => {
+      try {
+        const dismissed = JSON.parse(localStorage.getItem(LS_DISMISSED_BC) || "{}");
+        dismissed[id] = true;
+        localStorage.setItem(LS_DISMISSED_BC, JSON.stringify(dismissed));
+      } catch {}
+      setActiveBroadcast(null);
+    };
+
     const refreshDatabaseAndSession = useCallback(async () => {
-      const { accounts, sessions } = await dbFetchAll();
+      const { accounts, sessions, broadcast } = await dbFetchAll();
       setAccountsMap(accounts);
       setSessionsMap(sessions);
 
@@ -2539,7 +2672,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Kicked out by owner."); return;
       }
 
-      // If owner downgraded user's tier live while they are on a restricted tab, bounce them back to home
+      // Check if a MAX or Owner user sent a live screen broadcast!
+      if (broadcast && broadcast.id) {
+        checkIncomingBroadcast(broadcast, acc.username);
+      }
+
       const liveTier = getUserTier(acc, own);
       if (!canAccessView(liveTier, view)) {
         setView("home");
@@ -2556,13 +2693,24 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         kicked: false
       });
       setSessionsMap(getLocalStore(LS_SESSIONS));
-    }, [view, toast]);
+    }, [view, toast, checkIncomingBroadcast]);
 
     useEffect(() => {
       refreshDatabaseAndSession();
-      const interval = setInterval(refreshDatabaseAndSession, 5000);
+      const interval = setInterval(refreshDatabaseAndSession, 3500);
       return () => clearInterval(interval);
     }, [refreshDatabaseAndSession]);
+
+    useEffect(() => {
+      if (!bc) return;
+      const onMsg = (e) => {
+        if (e.data && e.data.type === "live_broadcast" && currentUser?.username) {
+          checkIncomingBroadcast(e.data.payload, currentUser.username);
+        }
+      };
+      bc.addEventListener("message", onMsg);
+      return () => bc.removeEventListener("message", onMsg);
+    }, [currentUser, checkIncomingBroadcast]);
 
     const launchGame = useCallback((g) => {
       saveInstalledGame(g.slug);
@@ -2574,6 +2722,22 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       if (!openCloaked(frameSource(g), settings)) toast("Popup blocked");
     }, [settings, toast]);
 
+    const handleQuickBroadcastSubmit = async (e) => {
+      e.preventDefault();
+      if (!quickBcText.trim()) return;
+      await dbSendBroadcast({
+        id: "bc_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        sender: currentUser?.username || "MAX User",
+        tier: isOwner ? "owner" : userTier,
+        target: quickBcTarget,
+        message: quickBcText.trim(),
+        timestamp: Date.now()
+      });
+      setQuickBcText("");
+      setQuickBcModal(false);
+      toast("📢 Live screen message broadcasted!");
+    };
+
     const hideFloatingPills = view === "browser" || view === "movies" || view === "music";
 
     return h(Fragment, null,
@@ -2581,6 +2745,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       !currentUser ? h(LoginBox, { onLoginSuccess: (sess) => { setCurrentUser(sess); refreshDatabaseAndSession(); toast(`Welcome, ${sess.username}!`); } }) : null,
       h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: navigate, isOwner, userTier }),
       !hideFloatingPills ? h("div", { id: "topRight", style: { display: "flex", gap: 8, alignItems: "center" } },
+        canSendScreenBroadcast ? h("button", {
+          className: "pill",
+          style: { borderColor: "rgba(239,68,68,0.5)", color: "#fca5a5", fontWeight: 700 },
+          onClick: () => setQuickBcModal(true)
+        }, "📢 Screen Broadcast") : null,
         currentUser ? h("button", { className: "pill", style: { display: "flex", alignItems: "center", gap: 8 }, onClick: () => navigate(isOwner ? "creator" : "account") },
           h("span", null, currentUser.username),
           renderTierBadge(userTier, isOwner)
@@ -2588,6 +2757,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       ) : null,
       h("main", { ref: mainRef },
         view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); }, userTier }) : null,
+        view === "sports" ? h(SportsView, { currentUser, userTier, isOwner, sessionsMap, toast }) : null,
         view === "youtube" ? h(YouTubeView, { toast }) : null,
         view === "tiktok" ? h(TikTokView, { toast }) : null,
         view === "browser" ? h(BrowserView, { toast }) : null,
@@ -2599,6 +2769,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabaseAndSession, toast }) : null,
         view === "settings" ? h(SettingsView, { settings, onSave: (s) => { setSettings(s); saveSettings(s); toast("Saved"); }, onCloakSite: () => cloakSite(settings) }) : null
       ),
+
+      // TIKTOK UNDER MAINTENANCE POPUP
+      maintenanceModal ? h(Modal, { onClose: () => setMaintenanceModal(false) },
+        h("h3", null, "🔧 Under Maintenance"),
+        h("p", null, "TikTok is currently locked for everybody while it is under maintenance. Please check back soon!"),
+        h("div", { className: "actions" },
+          h("button", { className: "btn", onClick: () => setMaintenanceModal(false) }, "Close")
+        )
+      ) : null,
+
+      // TIER UPGRADE PROMPT MODAL
       upgradePrompt ? h(Modal, { onClose: () => setUpgradePrompt(null) },
         h("h3", null, `🔒 ${upgradePrompt.reqTier} Tier Required`),
         h("p", null, `Your account is currently on the ${userTier.toUpperCase()} tier. Accessing ${upgradePrompt.viewName} requires a ${upgradePrompt.reqTier} license. Contact the Owner to upgrade your account tier!`),
@@ -2606,6 +2787,62 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           h("button", { className: "btn", onClick: () => setUpgradePrompt(null) }, "Got It")
         )
       ) : null,
+
+      // QUICK SCREEN BROADCAST SENDER MODAL (For MAX & Owner)
+      quickBcModal ? h(Modal, { onClose: () => setQuickBcModal(false) },
+        h("h3", null, "📢 Send Live Screen Broadcast"),
+        h("p", null, "Pop a message directly onto everyone's screen (even while they are playing a game or watching a movie)."),
+        h("form", { onSubmit: handleQuickBroadcastSubmit },
+          h("div", { style: { marginBottom: 12 } },
+            h("label", { className: "auth-label" }, "Target"),
+            h("select", {
+              className: "field",
+              value: quickBcTarget,
+              onChange: (e) => setQuickBcTarget(e.target.value)
+            },
+              h("option", { value: "all" }, "🌎 Everyone Online"),
+              Object.values(sessionsMap || {})
+                .filter((s) => s && !s.kicked && Date.now() - (s.lastPing || 0) < 45000)
+                .map((s) => h("option", { key: s.username, value: s.username }, `👤 ${s.username}`))
+            )
+          ),
+          h("div", { style: { marginBottom: 16 } },
+            h("label", { className: "auth-label" }, "Message"),
+            h("input", {
+              className: "field",
+              placeholder: "Type your live screen announcement...",
+              value: quickBcText,
+              onChange: (e) => setQuickBcText(e.target.value)
+            })
+          ),
+          h("div", { className: "actions" },
+            h("button", { type: "submit", className: "btn", style: { background: "#ef4444", color: "#fff" } }, "Broadcast Now"),
+            h("button", { type: "button", className: "btn ghost", onClick: () => setQuickBcModal(false) }, "Cancel")
+          )
+        )
+      ) : null,
+
+      // INCOMING LIVE SCREEN BROADCAST OVERLAY (Appears on top of EVERYTHING including games!)
+      activeBroadcast ? h("div", { className: "screen-broadcast-bg" },
+        h("div", { className: "screen-broadcast-box" },
+          h("div", { style: { display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginBottom: 12 } },
+            h("span", { style: { fontSize: 24 } }, "📢"),
+            renderTierBadge(activeBroadcast.tier || "max", activeBroadcast.tier === "owner")
+          ),
+          h("div", { style: { fontSize: 13, color: "#fca5a5", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 } },
+            `Live Screen Message from ${activeBroadcast.sender}`
+          ),
+          h("div", { style: { fontSize: 24, fontWeight: 700, color: "#fff", lineHeight: 1.4, margin: "14px 0 24px", wordBreak: "break-word" } },
+            activeBroadcast.message
+          ),
+          h("button", {
+            className: "btn",
+            style: { background: "#ef4444", color: "#fff", width: "100%", height: 48, fontSize: 16 },
+            onClick: () => dismissBroadcast(activeBroadcast.id)
+          }, "Close")
+        )
+      ) : null,
+
       playing ? h(Player, { game: playing, onClose: () => setPlaying(null) }) : null,
       h("div", { id: "toast", className: toastOn ? "show" : "" }, toastMsg)
     );
