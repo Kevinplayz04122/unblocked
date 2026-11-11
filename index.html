@@ -180,9 +180,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .badge-pill.tier-premium { background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(168, 85, 247, 0.22)); color: #fde68a; border-color: rgba(245, 158, 11, 0.55); box-shadow: 0 0 16px rgba(245, 158, 11, 0.18); }
 .badge-pill.tier-max { background: linear-gradient(135deg, rgba(239, 68, 68, 0.32), rgba(249, 115, 22, 0.32)); color: #fecaca; border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.38); }
 
-/* Live Screen Broadcast Overlay (MAX & Owner) */
+/* Live Screen Broadcast Overlay (MAX & Owner) — Locked max-height so Close button is ALWAYS visible! */
 .screen-broadcast-bg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(12px); z-index: 250; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade 0.25s ease; }
-.screen-broadcast-box { background: linear-gradient(180deg, #1a0b0e 0%, #0b0b0f 100%); border: 2px solid #ef4444; border-radius: 22px; padding: 30px; width: min(520px, 100%); box-shadow: 0 28px 75px rgba(239, 68, 68, 0.35), 0 0 40px rgba(0, 0, 0, 0.9); text-align: center; }
+.screen-broadcast-box { background: linear-gradient(180deg, #1a0b0e 0%, #0b0b0f 100%); border: 2px solid #ef4444; border-radius: 22px; padding: 28px; width: min(500px, 94vw); max-height: 85vh; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 28px 75px rgba(239, 68, 68, 0.35), 0 0 40px rgba(0, 0, 0, 0.9); text-align: center; overflow: hidden; }
+.screen-broadcast-msg { font-size: 22px; font-weight: 700; color: #fff; line-height: 1.4; margin: 14px 0 22px; word-break: break-word; overflow-y: auto; max-height: 45vh; padding: 0 4px; }
 
 /* ESPN Sports Hub Styles */
 .espn-banner { background: linear-gradient(135deg, #b91c1c 0%, #111115 70%); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 18px; padding: 22px 26px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
@@ -337,6 +338,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const LS_INSTALLED_GAMES = "ug_installed_games_v1";
   const LS_BROADCAST = "ug_live_broadcast_v1";
   const LS_DISMISSED_BC = "ug_dismissed_bc_v1";
+  const MAX_BROADCAST_CHARS = 90;
   const bc = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("ug_realtime_sync") : null;
 
   function getInstalledGames() {
@@ -430,15 +432,20 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     }
   }
   async function dbSendBroadcast(payload) {
-    setLocalStore(LS_BROADCAST, payload);
-    if (bc) bc.postMessage({ type: "live_broadcast", payload });
+    // Strictly enforce 90-character limit before saving or broadcasting
+    const safePayload = {
+      ...payload,
+      message: String(payload.message || "").slice(0, MAX_BROADCAST_CHARS)
+    };
+    setLocalStore(LS_BROADCAST, safePayload);
+    if (bc) bc.postMessage({ type: "live_broadcast", payload: safePayload });
     const base = getDbUrl();
     if (base) {
       try {
         await fetch(`${base}/ug_broadcast.json`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(safePayload)
         });
       } catch {}
     }
@@ -523,6 +530,38 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     if (hrs > 0) return `${hrs}h ${mins}m ${secs}s`;
     if (mins > 0) return `${mins}m ${secs}s`;
     return `${secs}s`;
+  }
+
+  // Helper: Find a real working YouTube Video ID or MP4 stream for any query (Used by ESPN & YouTube)
+  async function resolveWorkingVideoForQuery(queryText, fallbackVideoId = "jfKfPfyJRdk") {
+    const q = (queryText || "").trim();
+    const apis = [
+      `https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(q)}&filter=videos`,
+      `https://api.piped.private.coffee/search?q=${encodeURIComponent(q)}&filter=videos`,
+      `https://inv.tux.pizza/api/v1/search?q=${encodeURIComponent(q)}&type=video`
+    ];
+    for (const apiUrl of apis) {
+      try {
+        const res = await fetch(apiUrl);
+        if (!res.ok) continue;
+        const data = await res.json();
+        const items = data.items || data;
+        if (Array.isArray(items) && items.length > 0) {
+          for (const item of items) {
+            const id = item.videoId || (item.url ? item.url.split("v=")[1] : "");
+            if (id && id.length === 11) return id;
+          }
+        }
+      } catch {}
+    }
+    try {
+      const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent("https://www.youtube.com/results?search_query=" + q)}`);
+      const j = await r.json();
+      const html = j.contents || "";
+      const m = /"videoId":"([A-Za-z0-9_-]{11})"/.exec(html);
+      if (m && m[1]) return m[1];
+    } catch {}
+    return fallbackVideoId;
   }
 
   // ============================================================================
@@ -730,7 +769,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   function cloakSite(s) { return openCloaked({ src: location.href.split("#")[0] }, s); }
 
   // ============================================================================
-  // ICONS (Including New BroadcastIcon!)
+  // ICONS (Including BroadcastIcon)
   // ============================================================================
   function Svg({ children, sw = 1.8 }) {
     return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
@@ -919,7 +958,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // NEW: DEDICATED SIDEBAR SCREEN BROADCAST VIEW (Select Person & Send Live Popup!)
+  // DEDICATED SIDEBAR SCREEN BROADCAST VIEW (90-Character Limit Enforced!)
   // ============================================================================
   function BroadcastView({ currentUser, userTier, isOwner, sessionsMap, accountsMap, toast }) {
     const [selectedTarget, setSelectedTarget] = useState("all");
@@ -932,7 +971,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
     const handleSend = async (e) => {
       e.preventDefault();
-      const msg = messageText.trim();
+      const msg = messageText.trim().slice(0, MAX_BROADCAST_CHARS);
       if (!msg) {
         toast("Please type a message to broadcast!");
         return;
@@ -961,7 +1000,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               h("span", { className: "badge-pill tier-max" }, "🔥 MAX & OWNER EXCLUSIVE")
             ),
             h("p", { className: "sub", style: { margin: "6px 0 0" } },
-              "Select any online person below (or Everyone Online) and send a live popup directly onto their screen no matter what they are doing. They just click Close to dismiss it."
+              "Select any online person below (or Everyone Online) and send a live popup (max 90 characters) directly onto their screen."
             )
           )
         ),
@@ -1016,21 +1055,28 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           )
         ),
 
-        // Step 2: Type Message & Send Live Popup
+        // Step 2: Type Message (Strictly Capped at 90 Characters!)
         h("div", { className: "pop-panel", style: { background: "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,15,20,0.95))", borderColor: "rgba(239,68,68,0.45)", padding: "22px 24px" } },
-          h("h3", { style: { margin: "0 0 12px", fontSize: 17 } },
-            `2. Message to Pop Up on ${selectedTarget === "all" ? "Everyone's" : selectedTarget + "'s"} Screen`
+          h("div", { className: "row", style: { marginBottom: 12 } },
+            h("h3", { style: { margin: 0, fontSize: 17 } },
+              `2. Message to Pop Up on ${selectedTarget === "all" ? "Everyone's" : selectedTarget + "'s"} Screen`
+            ),
+            h("span", {
+              className: "badge-pill",
+              style: { color: messageText.length >= MAX_BROADCAST_CHARS ? "#ef4444" : "#86efac" }
+            }, `${messageText.length} / ${MAX_BROADCAST_CHARS} chars`)
           ),
           h("form", { onSubmit: handleSend, style: { display: "flex", flexDirection: "column", gap: 14 } },
             h("input", {
               className: "field",
               style: { height: 52, fontSize: 16 },
-              placeholder: `Type message for ${selectedTarget === "all" ? "everyone online" : selectedTarget}...`,
+              maxLength: MAX_BROADCAST_CHARS,
+              placeholder: `Type message (max 90 chars) for ${selectedTarget === "all" ? "everyone online" : selectedTarget}...`,
               value: messageText,
-              onChange: (e) => setMessageText(e.target.value)
+              onChange: (e) => setMessageText(e.target.value.slice(0, MAX_BROADCAST_CHARS))
             }),
             h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 } },
-              h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Appears immediately over games, movies, YouTube, or browser. Recipient clicks Close to dismiss."),
+              h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Capped at 90 characters so the Close button is always 100% visible."),
               h("button", {
                 type: "submit",
                 className: "btn",
@@ -1045,15 +1091,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // ESPN SPORTS + LIVE SCREEN BROADCAST HUB (MAX & OWNER EXCLUSIVE)
+  // ESPN SPORTS + LIVE SCREEN BROADCAST HUB (Fixed Video Playback + 90-Char Limit!)
   // ============================================================================
   const ESPN_LEAGUES = [
-    { id: "nba", name: "🏀 NBA", path: "basketball/nba", streamQ: "NBA live game highlights ESPN" },
-    { id: "nfl", name: "🏈 NFL", path: "football/nfl", streamQ: "NFL live game highlights ESPN" },
-    { id: "soccer", name: "⚽ Soccer (EPL / UCL)", path: "soccer/eng.1", streamQ: "Premier League Champions League highlights ESPN" },
-    { id: "nhl", name: "🏒 NHL", path: "hockey/nhl", streamQ: "NHL hockey highlights ESPN" },
-    { id: "mlb", name: "⚾ MLB", path: "baseball/mlb", streamQ: "MLB baseball highlights ESPN" },
-    { id: "mma", name: "🥊 UFC / MMA", path: "mma/ufc", streamQ: "UFC MMA knockouts highlights ESPN" }
+    { id: "nba", name: "🏀 NBA", path: "basketball/nba", fallbackVid: "dQw4w9WgXcQ", streamQ: "NBA basketball game highlights ESPN" },
+    { id: "nfl", name: "🏈 NFL", path: "football/nfl", fallbackVid: "jfKfPfyJRdk", streamQ: "NFL football game highlights ESPN" },
+    { id: "soccer", name: "⚽ Soccer (EPL / UCL)", path: "soccer/eng.1", fallbackVid: "jfKfPfyJRdk", streamQ: "Premier League Champions League highlights ESPN" },
+    { id: "nhl", name: "🏒 NHL", path: "hockey/nhl", fallbackVid: "jfKfPfyJRdk", streamQ: "NHL hockey game highlights ESPN" },
+    { id: "mlb", name: "⚾ MLB", path: "baseball/mlb", fallbackVid: "jfKfPfyJRdk", streamQ: "MLB baseball game highlights ESPN" },
+    { id: "mma", name: "🥊 UFC / MMA", path: "mma/ufc", fallbackVid: "jfKfPfyJRdk", streamQ: "UFC MMA knockouts highlights ESPN" }
   ];
 
   function SportsView({ currentUser, userTier, isOwner, sessionsMap, toast }) {
@@ -1061,6 +1107,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [activeStream, setActiveStream] = useState(null);
+    const [streamLoading, setStreamLoading] = useState(false);
     const [bcText, setBcText] = useState("");
     const [bcTarget, setBcTarget] = useState("all");
 
@@ -1082,9 +1129,33 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       return () => clearInterval(t);
     }, [league, fetchScoreboard]);
 
+    // Launch ESPN Game Stream (Checks native ESPN MP4 highlight first, then resolves real YouTube videoId!)
+    const openEspnGameStream = useCallback(async (ev, gameTitle) => {
+      setStreamLoading(true);
+      const comp = ev?.competitions?.[0];
+      // 1. Check if ESPN API has a direct MP4 highlight clip attached to this game
+      const directMp4 =
+        comp?.highlights?.[0]?.video?.[0]?.links?.source?.HD?.href ||
+        comp?.highlights?.[0]?.video?.[0]?.links?.source?.full?.href ||
+        comp?.highlights?.[0]?.video?.[0]?.links?.source?.href ||
+        "";
+
+      if (directMp4) {
+        setActiveStream({ id: ev.id, name: gameTitle, mp4Url: directMp4, videoId: "" });
+        setStreamLoading(false);
+        return;
+      }
+
+      // 2. Otherwise resolve a real 11-character YouTube videoId via Piped/Invidious/AllOrigins
+      setActiveStream({ id: ev.id, name: gameTitle, mp4Url: "", videoId: "" });
+      const vidId = await resolveWorkingVideoForQuery(`${gameTitle} ${league.name.replace(/[^a-zA-Z ]/g, "")} highlights ESPN`);
+      setActiveStream({ id: ev.id, name: gameTitle, mp4Url: "", videoId: vidId });
+      setStreamLoading(false);
+    }, [league]);
+
     const handleSendScreenBroadcast = async (e) => {
       e.preventDefault();
-      const msg = bcText.trim();
+      const msg = bcText.trim().slice(0, MAX_BROADCAST_CHARS);
       if (!msg) return;
       const payload = {
         id: "bc_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
@@ -1103,6 +1174,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       .filter((s) => s && !s.kicked && Date.now() - (s.lastPing || 0) < 45000)
       .map((s) => s.username);
 
+    const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
+
     return h("section", { className: "view" },
       h("div", { className: "page" },
         h("div", { className: "espn-banner" },
@@ -1117,13 +1190,19 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         ),
 
         h("div", { className: "pop-panel", style: { marginBottom: 26, background: "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,15,20,0.95))", borderColor: "rgba(239,68,68,0.45)" } },
-          h("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 } },
-            h("span", { style: { fontSize: 18 } }, "📢"),
-            h("h3", { style: { margin: 0, fontSize: 17, fontWeight: 700 } }, "MAX Live Screen Broadcaster"),
-            h("span", { className: "badge-pill tier-max" }, "POPS UP OVER GAMES & VIDEOS")
+          h("div", { className: "row", style: { marginBottom: 10, flexWrap: "wrap" } },
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+              h("span", { style: { fontSize: 18 } }, "📢"),
+              h("h3", { style: { margin: 0, fontSize: 17, fontWeight: 700 } }, "MAX Live Screen Broadcaster"),
+              h("span", { className: "badge-pill tier-max" }, "MAX 90 CHARS")
+            ),
+            h("span", {
+              className: "badge-pill",
+              style: { color: bcText.length >= MAX_BROADCAST_CHARS ? "#ef4444" : "#86efac" }
+            }, `${bcText.length} / ${MAX_BROADCAST_CHARS} chars`)
           ),
           h("p", { style: { color: "var(--muted)", fontSize: 13, marginBottom: 12 } },
-            "Send an instant live alert directly onto everyone's screen (or a specific user's screen) no matter what they are doing. They click Close to dismiss it."
+            "Send an instant live alert (up to 90 characters) directly onto everyone's screen or a specific user's screen."
           ),
           h("form", { onSubmit: handleSendScreenBroadcast, style: { display: "flex", gap: 10, flexWrap: "wrap" } },
             h("select", {
@@ -1138,28 +1217,40 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             h("input", {
               className: "field",
               style: { flex: 1, minWidth: 240 },
-              placeholder: "Type message to pop up live on their screen...",
+              maxLength: MAX_BROADCAST_CHARS,
+              placeholder: "Type message (max 90 chars) to pop up live on their screen...",
               value: bcText,
-              onChange: (e) => setBcText(e.target.value)
+              onChange: (e) => setBcText(e.target.value.slice(0, MAX_BROADCAST_CHARS))
             }),
             h("button", { type: "submit", className: "btn", style: { background: "#ef4444", color: "#fff" } }, "📢 Broadcast to Screen")
           )
         ),
 
+        // Active ESPN Stream Player (Fixed — Uses Direct ESPN MP4 or Resolved Video ID!)
         activeStream ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
           h("div", { className: "row", style: { marginBottom: 12 } },
             h("strong", { style: { fontSize: 17 } }, `📺 ESPN Live Coverage: ${activeStream.name}`),
             h("button", { className: "btn ghost sm", onClick: () => setActiveStream(null) }, "✕ Close Stream")
           ),
-          h("div", { style: { width: "100%", height: "60vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
-            h("iframe", {
-              key: activeStream.id,
-              src: `https://www.youtube-nocookie.com/embed?listType=search&list=${encodeURIComponent(activeStream.name + " ESPN highlights live")}&autoplay=1`,
-              style: { width: "100%", height: "100%", border: 0 },
-              allow: FRAME_ALLOW,
-              allowFullScreen: true,
-              referrerPolicy: "strict-origin-when-cross-origin"
-            })
+          h("div", { style: { width: "100%", height: "60vh", background: "#000", borderRadius: 12, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" } },
+            streamLoading
+              ? h("div", { style: { color: "#e4e4e7", fontSize: 15 } }, "Loading live ESPN stream...")
+              : activeStream.mp4Url
+              ? h("video", {
+                  key: activeStream.id + "_espn_mp4",
+                  src: activeStream.mp4Url,
+                  controls: true,
+                  autoPlay: true,
+                  style: { width: "100%", height: "100%", background: "#000" }
+                })
+              : h("iframe", {
+                  key: activeStream.id + "_" + activeStream.videoId,
+                  src: `https://www.youtube-nocookie.com/embed/${activeStream.videoId || "jfKfPfyJRdk"}?autoplay=1&rel=0&playsinline=1${embedOrigin}`,
+                  style: { width: "100%", height: "100%", border: 0 },
+                  allow: FRAME_ALLOW,
+                  allowFullScreen: true,
+                  referrerPolicy: "strict-origin-when-cross-origin"
+                })
           )
         ) : null,
 
@@ -1184,11 +1275,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             const awayTeam = competitors.find((c) => c.homeAway === "away") || competitors[1];
             const statusText = ev.status?.type?.shortDetail || ev.status?.type?.description || "Scheduled";
             const isLive = ev.status?.type?.state === "in";
+            const gameTitle = ev.name || `${awayTeam?.team?.displayName || "Away"} vs ${homeTeam?.team?.displayName || "Home"}`;
 
             return h("div", {
               key: ev.id,
               className: "espn-card",
-              onClick: () => setActiveStream({ id: ev.id, name: ev.name || `${awayTeam?.team?.displayName} vs ${homeTeam?.team?.displayName}` })
+              onClick: () => openEspnGameStream(ev, gameTitle)
             },
               h("div", { className: "row", style: { marginBottom: 12 } },
                 h("span", { style: { fontSize: 12, fontWeight: 700, color: isLive ? "#4ade80" : "var(--muted)" } }, isLive ? `🔴 LIVE • ${statusText}` : statusText),
@@ -2759,7 +2851,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         const dismissed = JSON.parse(localStorage.getItem(LS_DISMISSED_BC) || "{}");
         if (dismissed[bcObj.id]) return;
       } catch {}
-      setActiveBroadcast(bcObj);
+      setActiveBroadcast({
+        ...bcObj,
+        message: String(bcObj.message || "").slice(0, MAX_BROADCAST_CHARS)
+      });
     }, []);
 
     const dismissBroadcast = (id) => {
@@ -2888,22 +2983,24 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         )
       ) : null,
 
-      // INCOMING LIVE SCREEN BROADCAST OVERLAY (Appears on top of EVERYTHING including games!)
+      // INCOMING LIVE SCREEN BROADCAST OVERLAY (Capped at 90 chars + Close button always visible!)
       activeBroadcast ? h("div", { className: "screen-broadcast-bg" },
         h("div", { className: "screen-broadcast-box" },
-          h("div", { style: { display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginBottom: 12 } },
-            h("span", { style: { fontSize: 24 } }, "📢"),
-            renderTierBadge(activeBroadcast.tier || "max", activeBroadcast.tier === "owner")
+          h("div", null,
+            h("div", { style: { display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginBottom: 12 } },
+              h("span", { style: { fontSize: 24 } }, "📢"),
+              renderTierBadge(activeBroadcast.tier || "max", activeBroadcast.tier === "owner")
+            ),
+            h("div", { style: { fontSize: 13, color: "#fca5a5", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 } },
+              `Live Screen Message from ${activeBroadcast.sender}`
+            )
           ),
-          h("div", { style: { fontSize: 13, color: "#fca5a5", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 } },
-            `Live Screen Message from ${activeBroadcast.sender}`
-          ),
-          h("div", { style: { fontSize: 24, fontWeight: 700, color: "#fff", lineHeight: 1.4, margin: "14px 0 24px", wordBreak: "break-word" } },
-            activeBroadcast.message
+          h("div", { className: "screen-broadcast-msg" },
+            String(activeBroadcast.message || "").slice(0, MAX_BROADCAST_CHARS)
           ),
           h("button", {
             className: "btn",
-            style: { background: "#ef4444", color: "#fff", width: "100%", height: 48, fontSize: 16 },
+            style: { background: "#ef4444", color: "#fff", width: "100%", height: 48, fontSize: 16, flexShrink: 0 },
             onClick: () => dismissBroadcast(activeBroadcast.id)
           }, "Close")
         )
