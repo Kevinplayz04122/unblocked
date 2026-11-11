@@ -379,6 +379,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const seg = () => Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
     return `UG-${seg()}-${seg()}-${seg()}`;
   }
+  function genTwoFACode() {
+    const a = new Uint32Array(1);
+    crypto.getRandomValues(a);
+    return String(a[0] % 100000000).padStart(8, "0");
+  }
   function getLocalStore(key) {
     try { return JSON.parse(localStorage.getItem(key) || "{}"); } catch { return {}; }
   }
@@ -2447,6 +2452,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [revealedPw, setRevealedPw] = useState({});
     const [now, setNow] = useState(Date.now());
     const [dbUrlInput, setDbUrlInput] = useState(getDbUrl());
+    const [codeInfo, setCodeInfo] = useState(null);
+    const [pwEdits, setPwEdits] = useState({});
 
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
     useEffect(() => {
@@ -2469,6 +2476,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         password: p,
         tier: isOwn ? "max" : newTier,
         licenseKey: genLicenseKey(),
+        twoFA: genTwoFACode(),
         infinite: !!newInfinite,
         durationHours: hrs,
         expiresAt: newInfinite ? null : Date.now() + hrs * 3600 * 1000,
@@ -2477,6 +2485,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       };
       await dbSaveAccount(acc);
       await onRefresh();
+      setCodeInfo({ username: u, code: acc.twoFA });
       setNewUsername(""); setNewPassword(""); setNewEmail(""); setNewTier("free"); setNewHours(12); setNewInfinite(false); setCreateModal(false);
       toast(`Account "${u}" created with ${acc.tier.toUpperCase()} Tier!`);
     };
@@ -2497,6 +2506,27 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     };
 
     const handleRevokeAccount = async (username) => { await dbDeleteAccount(username); await onRefresh(); toast(`Revoked "${username}"`); };
+    const kickSession = async (username) => {
+      const sess = sessionsMap[username.toLowerCase()];
+      if (sess) await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
+    };
+    const handleChangePassword = async (acc) => {
+      const k = acc.username.toLowerCase();
+      const p = (pwEdits[k] || "").trim();
+      if (p.length < 6) { toast("Password must be 6+ chars"); return; }
+      await dbSaveAccount({ ...acc, password: p });
+      await kickSession(acc.username);
+      setPwEdits((x) => ({ ...x, [k]: "" }));
+      await onRefresh();
+      toast(`Password changed for "${acc.username}" and session kicked`);
+    };
+    const handleRegenCode = async (acc) => {
+      const c = genTwoFACode();
+      await dbSaveAccount({ ...acc, twoFA: c });
+      await kickSession(acc.username);
+      setCodeInfo({ username: acc.username, code: c });
+      await onRefresh();
+    };
     const handleKickUser = async (sess) => {
       await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
       await onRefresh();
@@ -2616,6 +2646,19 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                       )
                 ),
                 h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "License"), h("span", { style: { fontSize: 12, fontFamily: "monospace", color: "#bcbcc4" } }, acc.licenseKey)),
+                h("div", { className: "row" },
+                  h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "2FA Code"),
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: revealedPw["2fa_" + key] ? "normal" : "0.18em" } },
+                      acc.twoFA ? (revealedPw["2fa_" + key] ? acc.twoFA : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022") : "NONE"),
+                    acc.twoFA ? h("button", { className: "eye-btn", onClick: () => toggleReveal("2fa_" + key) }, revealedPw["2fa_" + key] ? h(EyeOffIcon) : h(EyeIcon)) : null,
+                    h("button", { className: "btn warn sm", onClick: () => handleRegenCode(acc) }, acc.twoFA ? "New" : "Enable")
+                  )
+                ),
+                h("div", { className: "row", style: { gap: 8 } },
+                  h("input", { className: "field", style: { height: 34, fontSize: 13 }, placeholder: "New password (6+)...", value: pwEdits[key] || "", onChange: (e) => setPwEdits((x) => ({ ...x, [key]: e.target.value })) }),
+                  h("button", { className: "btn sm", onClick: () => handleChangePassword(acc) }, "Set")
+                ),
                 h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Remaining"), h("span", { style: { fontSize: 13, fontWeight: 600, color: "#86efac" } }, remText))
               ),
               h("div", { style: { borderTop: "1px solid var(--border)", paddingTop: 12 } },
@@ -2685,6 +2728,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           h("button", { className: "btn", onClick: async () => { setCustomDbUrl(dbUrlInput); await onRefresh(); setDbModal(false); toast("Connected!"); } }, "Save"),
           h("button", { className: "btn ghost", onClick: () => setDbModal(false) }, "Close")
         )
+      ) : null,
+      codeInfo ? h(Modal, { onClose: () => setCodeInfo(null) },
+        h("h3", null, "\uD83D\uDD10 2FA Code for " + codeInfo.username),
+        h("p", null, "Give this to the user privately. They need it at every login."),
+        h("div", { className: "mono-box", style: { fontSize: 26, letterSpacing: "0.2em", marginBottom: 16 } }, codeInfo.code),
+        h("div", { className: "actions" },
+          h("button", { className: "btn", onClick: () => { try { navigator.clipboard.writeText(codeInfo.code); toast("Code copied"); } catch {} } }, "Copy"),
+          h("button", { className: "btn ghost", onClick: () => setCodeInfo(null) }, "Done")
+        )
       ) : null
     );
   }
@@ -2722,6 +2774,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
     const [showPw, setShowPw] = useState(false);
+    const [code, setCode] = useState("");
     const [err, setErr] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -2750,7 +2803,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         };
         await dbSaveAccount(matched);
       }
-      if (!matched || matched.password !== pwClean) { setLoading(false); setErr("Invalid username or password."); return; }
+      if (!matched || matched.password !== pwClean || (matched.twoFA && matched.twoFA !== code.trim())) {
+        setLoading(false); setErr("Invalid username, password or 2FA code."); return;
+      }
       const isOwn = isOwnerIdentity(matched.username, matched);
       if (!isOwn && !matched.infinite && matched.expiresAt && Date.now() >= matched.expiresAt) {
         setLoading(false); setErr("License has expired."); return;
@@ -2783,6 +2838,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               h("input", { className: "field", type: showPw ? "text" : "password", placeholder: "Password...", value: password, onChange: (e) => setPassword(e.target.value), style: { paddingRight: 44 } }),
               h("button", { type: "button", className: "eye-btn", onClick: () => setShowPw((v) => !v), style: { position: "absolute", right: 7, border: 0, background: "transparent" } }, showPw ? h(EyeOffIcon) : h(EyeIcon))
             )
+          ),
+          h("div", { style: { marginBottom: 20 } }, h("label", { className: "auth-label" }, "2FA Code (from owner)"),
+            h("input", { className: "field", placeholder: "8-digit code (leave empty if none)", inputMode: "numeric", maxLength: 8, value: code, onChange: (e) => setCode(e.target.value) })
           ),
           h("button", { type: "submit", className: "btn", disabled: loading, style: { width: "100%" } }, loading ? "Verifying..." : "Sign In")
         )
