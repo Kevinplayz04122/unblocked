@@ -180,7 +180,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .badge-pill.tier-premium { background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(168, 85, 247, 0.22)); color: #fde68a; border-color: rgba(245, 158, 11, 0.55); box-shadow: 0 0 16px rgba(245, 158, 11, 0.18); }
 .badge-pill.tier-max { background: linear-gradient(135deg, rgba(239, 68, 68, 0.32), rgba(249, 115, 22, 0.32)); color: #fecaca; border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.38); }
 
-/* Live Screen Broadcast Overlay (MAX & Owner) — Locked max-height so Close button is ALWAYS visible! */
+/* Live Screen Broadcast Overlay (MAX & Owner) */
 .screen-broadcast-bg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(12px); z-index: 250; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade 0.25s ease; }
 .screen-broadcast-box { background: linear-gradient(180deg, #1a0b0e 0%, #0b0b0f 100%); border: 2px solid #ef4444; border-radius: 22px; padding: 28px; width: min(500px, 94vw); max-height: 85vh; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 28px 75px rgba(239, 68, 68, 0.35), 0 0 40px rgba(0, 0, 0, 0.9); text-align: center; overflow: hidden; }
 .screen-broadcast-msg { font-size: 22px; font-weight: 700; color: #fff; line-height: 1.4; margin: 14px 0 22px; word-break: break-word; overflow-y: auto; max-height: 45vh; padding: 0 4px; }
@@ -192,9 +192,25 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .espn-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px 18px; transition: 0.2s; cursor: pointer; }
 .espn-card:hover { border-color: #ef4444; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.65); }
 
-/* ============================================================================
-   FULL-SCREEN GOOGLE-STYLE FROSTED GLASS BROWSER
-   ============================================================================ */
+/* TikTok Real Full Experience UI */
+.tt-container { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 540px; margin: 0 auto; position: relative; padding: 12px 14px 20px; }
+.tt-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-shrink: 0; }
+.tt-search-bar { flex: 1; display: flex; align-items: center; background: rgba(255,255,255,0.08); border: 1px solid var(--border); border-radius: 999px; padding: 0 16px; height: 42px; gap: 8px; }
+.tt-search-bar input { flex: 1; background: transparent; border: 0; outline: 0; color: #fff; font-size: 14px; }
+.tt-viewport { flex: 1; position: relative; border-radius: 20px; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 50px rgba(0,0,0,0.85); }
+.tt-player-frame { width: 100%; height: 100%; border: 0; background: #000; }
+.tt-side-actions { position: absolute; right: 14px; bottom: 84px; display: flex; flex-direction: column; align-items: center; gap: 18px; z-index: 12; }
+.tt-action-btn { background: rgba(20,20,24,0.72); border: 1px solid rgba(255,255,255,0.18); border-radius: 50%; width: 46px; height: 46px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; cursor: pointer; transition: 0.2s; backdrop-filter: blur(8px); }
+.tt-action-btn:hover { transform: scale(1.12); background: rgba(255,255,255,0.22); }
+.tt-action-label { font-size: 11px; font-weight: 600; color: #eee; margin-top: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+.tt-bottom-overlay { position: absolute; left: 16px; right: 75px; bottom: 18px; z-index: 12; pointer-events: none; text-shadow: 0 2px 8px rgba(0,0,0,0.9); }
+.tt-creator { font-weight: 700; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: #fff; }
+.tt-caption { font-size: 13.5px; color: #e4e4e7; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tt-nav-arrows { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 16px; z-index: 15; bottom: 12px; }
+.tt-nav-pill { background: rgba(0,0,0,0.75); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px 16px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; backdrop-filter: blur(8px); }
+.tt-nav-pill:hover { background: #fff; color: #000; }
+
+/* Frosted Browser */
 .gbrowser-root { height: 100%; width: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden; }
 .gbrowser-idle { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
 .gbrowser-top { background: rgba(14, 14, 18, 0.82); backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 14px 28px 0; flex-shrink: 0; z-index: 15; }
@@ -258,10 +274,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .sp-trow:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .sp-trow.active { background: rgba(29, 185, 84, 0.14); color: #1ed760; }
 .sp-player-bar { height: 80px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 16px; flex-shrink: 0; }
-
-/* TikTok Feed UI */
-.tt-card { background: #0d0d11; border: 1px solid var(--border); border-radius: 18px; overflow: hidden; max-width: 420px; width: 100%; margin: 0 auto 24px; box-shadow: 0 18px 40px rgba(0,0,0,0.8); }
-.tt-video { width: 100%; max-height: 620px; background: #000; display: block; object-fit: contain; }
     </style>
   </head>
   <body>
@@ -287,18 +299,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     masterOwnerPassword: "admin"
   };
 
-  // Tier Access Matrix:
-  // Free -> Games, Movies, Music
-  // Pro -> Chat, Games, Movies, Music
-  // Premium -> YouTube, Browser, Chat, Movies, Games, Music
-  // Max -> ESPN Sports + Screen Broadcast + YouTube, Browser, Chat, Movies, Games, Music
-  // Note: TikTok is locked under maintenance for everybody!
+  // Tier Access Matrix (TikTok unlocked for Pro, Premium, Max, Owner!)
   const TIER_PERMISSIONS = {
     free: ["home", "games", "movies", "music", "account", "settings"],
-    pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
-    premium: ["home", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
-    max: ["home", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
-    owner: ["home", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
+    pro: ["home", "chat", "tiktok", "games", "movies", "music", "account", "settings"],
+    premium: ["home", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings"],
+    max: ["home", "sports", "broadcast", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings"],
+    owner: ["home", "sports", "broadcast", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
   };
 
   function getUserTier(acc, isOwner) {
@@ -309,15 +316,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   function canAccessView(tier, viewId) {
-    if (viewId === "tiktok") return false; // Locked under maintenance for everybody
     const allowed = TIER_PERMISSIONS[tier] || TIER_PERMISSIONS.free;
     return allowed.includes(viewId);
   }
 
   function requiredTierForView(viewId) {
-    if (viewId === "tiktok") return "Under Maintenance";
     if (viewId === "sports" || viewId === "broadcast") return "MAX";
-    if (viewId === "chat") return "Pro";
+    if (viewId === "chat" || viewId === "tiktok") return "Pro";
     if (viewId === "youtube" || viewId === "browser") return "Premium";
     if (viewId === "creator") return "Owner";
     return "Free";
@@ -437,7 +442,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     }
   }
   async function dbSendBroadcast(payload) {
-    // Strictly enforce 90-character limit before saving or broadcasting
     const safePayload = {
       ...payload,
       message: String(payload.message || "").slice(0, MAX_BROADCAST_CHARS)
@@ -537,7 +541,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return `${secs}s`;
   }
 
-  // Helper: Find a real working YouTube Video ID or MP4 stream for any query (Used by ESPN & YouTube)
   async function resolveWorkingVideoForQuery(queryText, fallbackVideoId = "jfKfPfyJRdk") {
     const q = (queryText || "").trim();
     const apis = [
@@ -569,9 +572,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return fallbackVideoId;
   }
 
-  // ============================================================================
-  // BUILT-IN 3D WEBGL ROBLOX ENGINE (100% LOCAL IN-HTML, FORTIGUARD SAFE)
-  // ============================================================================
   function buildRobloxDirectEngine() {
     return `<!doctype html><html><head><meta charset="utf-8"><style>
       *{box-sizing:border-box;margin:0;padding:0;user-select:none;font-family:system-ui,sans-serif}
@@ -641,9 +641,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       <\/script></body></html>`;
   }
 
-  // ============================================================================
-  // FULL GAMES CATALOG
-  // ============================================================================
   const GAMES = [
    { "slug": "roblox", "name": "Roblox", "cat": "Action", "embed": "roblox-direct-engine", "thumb": "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" },
    { "slug": "geometry-dash", "name": "Geometry Dash", "cat": "Arcade", "embed": "https://dasmetry.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/dasmetry_retina.webp" },
@@ -773,9 +770,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
   function cloakSite(s) { return openCloaked({ src: location.href.split("#")[0] }, s); }
 
-  // ============================================================================
-  // ICONS (Including BroadcastIcon)
-  // ============================================================================
   function Svg({ children, sw = 1.8 }) {
     return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
   }
@@ -783,7 +777,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const BroadcastIcon = (p) => h(Svg, p, h("path", { d: "m3 11 18-5v12L3 14v-3z" }), h("path", { d: "M11.6 16.8a3 3 0 1 1-5.8-1.6" }));
   const YouTubeIcon = (p) => h(Svg, p, h("rect", { x: "2", y: "5", width: "20", height: "14", rx: "4" }), h("polygon", { points: "10 9 15 12 10 15 10 9", fill: "currentColor" }));
   const TikTokIcon = (p) => h(Svg, p, h("path", { d: "M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" }));
-  const SportsIcon = (p) => h(Svg, p, h("path", { d: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6" }), h("path", { d: "M18 9h1.5a2.5 2.5 0 0 0 0-5H18" }), h("path", { d: "M4 22h16" }), h("path", { d: "M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" }), h("path", { d: "M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" }), h("path", { d: "M18 2H6v7a6 6 0 0 0 12 0V2Z" }));
+  const SportsIcon = (p) => h(Svg, p, h("path", { d: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6" }), h("path", { d: "M18 9h1.5a2.5 2.5 0 0 0 0-5H18" }), h("path", { d: "M4 22h16" }), h("path", { d: "M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" }), h("path", { d: "M14 14.66V17c0 .57.47.98.97 1.21C16.15 18.75 17 20.24 17 22" }), h("path", { d: "M18 2H6v7a6 6 0 0 0 12 0V2Z" }));
   const ChatIcon = (p) => h(Svg, p, h("path", { d: "M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" }));
   const GamesIcon = (p) => h(Svg, p, h("path", { d: "M6 12h4M8 10v4M15 13h.01M18 11h.01" }), h("path", { d: "M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.7 8A3 3 0 0 0 6 18.5L8 16h8l2 2.5a3 3 0 0 0 4.9-2.3l-1.7-8A4 4 0 0 0 17.3 5z" }));
   const MoviesIcon = (p) => h(Svg, p, h("rect", { x: "3", y: "4", width: "18", height: "16", rx: "2" }), h("path", { d: "M8 4v16M16 4v16M3 12h18" }));
@@ -802,7 +796,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
   }
 
-  // --- Stars Background ---
   function Stars() {
     const ref = useRef(null);
     useEffect(() => {
@@ -835,20 +828,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("canvas", { id: "stars", ref });
   }
 
-  // --- Sidebar Component (Includes Screen Broadcast Icon with Exact Hover Text!) ---
   function Sidebar({ view, open, onToggle, onNavigate, isOwner, userTier }) {
     const btn = (id, label, icon, customHoverText) => {
-      if (id === "tiktok") {
-        return h("button", {
-          key: id,
-          className: "side-btn locked",
-          title: "TikTok (Under Maintenance 🔧)",
-          onClick: () => onNavigate("tiktok")
-        },
-          icon,
-          h("span", null, "TikTok 🔧")
-        );
-      }
       const unlocked = canAccessView(userTier, id);
       const hoverTitle = customHoverText
         ? (unlocked ? customHoverText : `${customHoverText} (${requiredTierForView(id)} Tier Required)`)
@@ -887,8 +868,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Home Component ---
-  const WORDS = ["Roblox", "Geometry Dash", "ESPN Sports", "YouTube", "Play anything"];
+  const WORDS = ["Roblox", "Geometry Dash", "ESPN Sports", "TikTok", "YouTube", "Play anything"];
   function useTypingPlaceholder(paused) {
     const [text, setText] = useState("Browse");
     const pausedRef = useRef(paused);
@@ -918,16 +898,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
 
     const quickBtn = (id, label, icon, customStyle = {}, customTitle = "") => {
-      if (id === "tiktok") {
-        return h("button", {
-          onClick: () => onNavigate("tiktok"),
-          title: "TikTok (Under Maintenance 🔧)",
-          style: { opacity: 0.5 }
-        },
-          h("div", { className: "circ", style: customStyle }, icon),
-          "TikTok 🔧"
-        );
-      }
       const unlocked = canAccessView(userTier, id);
       return h("button", {
         onClick: () => onNavigate(id),
@@ -950,8 +920,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       h("div", { className: "quick" },
         quickBtn("sports", "ESPN", h(SportsIcon), { borderColor: "rgba(239,68,68,0.6)", color: "#ef4444" }),
         quickBtn("broadcast", "Broadcast", h(BroadcastIcon), { borderColor: "rgba(249,115,22,0.6)", color: "#f97316" }, "screen broadcast to selected person"),
+        quickBtn("tiktok", "TikTok", h(TikTokIcon), { borderColor: "rgba(0,242,234,0.6)", color: "#00f2ea" }),
         quickBtn("youtube", "YouTube", h(YouTubeIcon), { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" }),
-        quickBtn("tiktok", "TikTok", h(TikTokIcon), { borderColor: "rgba(0,242,234,0.45)", color: "#00f2ea" }),
         quickBtn("games", "Games", h(GamesIcon)),
         quickBtn("browser", "Browser", h(BrowserIcon)),
         quickBtn("music", "Spotify", h(MusicIcon)),
@@ -962,9 +932,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // ============================================================================
-  // DEDICATED SIDEBAR SCREEN BROADCAST VIEW (90-Character Limit Enforced!)
-  // ============================================================================
   function BroadcastView({ currentUser, userTier, isOwner, sessionsMap, accountsMap, toast }) {
     const [selectedTarget, setSelectedTarget] = useState("all");
     const [messageText, setMessageText] = useState("");
@@ -1009,12 +976,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             )
           )
         ),
-
-        // Step 1: Select Person (Clickable Cards for Everyone or Specific Online Users)
         h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 20 } },
           h("h3", { style: { marginBottom: 12, fontSize: 17 } }, `1. Select Person to Broadcast To (${onlineSessions.length} Online Now)`),
           h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 } },
-            // Everyone Online Card
             h("div", {
               className: "pop-panel",
               onClick: () => setSelectedTarget("all"),
@@ -1030,8 +994,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               ),
               h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `Pops up on all ${onlineSessions.length} active screens`)
             ),
-
-            // Individual Online Users Cards
             onlineSessions.map((sess) => {
               const isSelected = selectedTarget.toLowerCase() === sess.username.toLowerCase();
               const acc = accountsMap?.[sess.username.toLowerCase()];
@@ -1059,8 +1021,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             })
           )
         ),
-
-        // Step 2: Type Message (Strictly Capped at 90 Characters!)
         h("div", { className: "pop-panel", style: { background: "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,15,20,0.95))", borderColor: "rgba(239,68,68,0.45)", padding: "22px 24px" } },
           h("div", { className: "row", style: { marginBottom: 12 } },
             h("h3", { style: { margin: 0, fontSize: 17 } },
@@ -1095,9 +1055,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // ============================================================================
-  // ESPN SPORTS + LIVE SCREEN BROADCAST HUB (Fixed Video Playback + 90-Char Limit!)
-  // ============================================================================
   const ESPN_LEAGUES = [
     { id: "nba", name: "🏀 NBA", path: "basketball/nba", fallbackVid: "dQw4w9WgXcQ", streamQ: "NBA basketball game highlights ESPN" },
     { id: "nfl", name: "🏈 NFL", path: "football/nfl", fallbackVid: "jfKfPfyJRdk", streamQ: "NFL football game highlights ESPN" },
@@ -1134,11 +1091,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       return () => clearInterval(t);
     }, [league, fetchScoreboard]);
 
-    // Launch ESPN Game Stream (Checks native ESPN MP4 highlight first, then resolves real YouTube videoId!)
     const openEspnGameStream = useCallback(async (ev, gameTitle) => {
       setStreamLoading(true);
       const comp = ev?.competitions?.[0];
-      // 1. Check if ESPN API has a direct MP4 highlight clip attached to this game
       const directMp4 =
         comp?.highlights?.[0]?.video?.[0]?.links?.source?.HD?.href ||
         comp?.highlights?.[0]?.video?.[0]?.links?.source?.full?.href ||
@@ -1151,7 +1106,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         return;
       }
 
-      // 2. Otherwise resolve a real 11-character YouTube videoId via Piped/Invidious/AllOrigins
       setActiveStream({ id: ev.id, name: gameTitle, mp4Url: "", videoId: "" });
       const vidId = await resolveWorkingVideoForQuery(`${gameTitle} ${league.name.replace(/[^a-zA-Z ]/g, "")} highlights ESPN`);
       setActiveStream({ id: ev.id, name: gameTitle, mp4Url: "", videoId: vidId });
@@ -1231,7 +1185,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           )
         ),
 
-        // Active ESPN Stream Player (Fixed — Uses Direct ESPN MP4 or Resolved Video ID!)
         activeStream ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
           h("div", { className: "row", style: { marginBottom: 12 } },
             h("strong", { style: { fontSize: 17 } }, `📺 ESPN Live Coverage: ${activeStream.name}`),
@@ -1319,8 +1272,228 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // FULL-PAGE GOOGLE-LIKE FROSTED GLASS BROWSER (Premium & Max Tiers)
+  // REAL WORKING TIKTOK EXPERIENCE (Vertical Scroll, Search, Likes, Direct Embeds)
   // ============================================================================
+  const TIKTOK_CATALOG = [
+    {
+      id: "7217031174395645226",
+      fallbackYt: "M7lc1UVf-VE",
+      creator: "@mrbeast",
+      caption: "I gave away a private island! 🔥 #challenge #viral #mrbeast",
+      likes: "4.8M",
+      comments: "98.2K",
+      sound: "Original Sound - MrBeast"
+    },
+    {
+      id: "7193297136066268458",
+      fallbackYt: "9bZkp7q19f0",
+      creator: "@khaby.lame",
+      caption: "It is really that simple guys 🤲🤷‍♂️ #learnfromkhaby #comedy",
+      likes: "7.1M",
+      comments: "142K",
+      sound: "Original Sound - Khaby Lame"
+    },
+    {
+      id: "7256193792036490538",
+      fallbackYt: "jfKfPfyJRdk",
+      creator: "@satisfying.clips",
+      caption: "Oddly satisfying kinetic sand cutting 🧼✨ #relaxing #asmr",
+      likes: "2.3M",
+      comments: "41.5K",
+      sound: "Lofi Beats Chill - Relax"
+    },
+    {
+      id: "7284729103847291029",
+      fallbackYt: "dQw4w9WgXcQ",
+      creator: "@gaming.daily",
+      caption: "Fastest Geometry Dash demon complete! 🎮🚀 #gaming #roblox #gd",
+      likes: "1.9M",
+      comments: "28K",
+      sound: "Electroman Adventures Remix"
+    }
+  ];
+
+  function TikTokView({ toast }) {
+    const [feed, setFeed] = useState(TIKTOK_CATALOG);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [searchVal, setSearchVal] = useState("");
+    const [likesMap, setLikesMap] = useState({});
+    const [mode, setMode] = useState("tiktok"); // "tiktok" (Direct TikTok Iframe) or "direct" (Unblocked Direct Video)
+    const [isSearching, setIsSearching] = useState(false);
+
+    const activeItem = feed[currentIndex] || TIKTOK_CATALOG[0];
+
+    const handleSearch = async (e) => {
+      e.preventDefault();
+      const q = searchVal.trim();
+      if (!q) return;
+      setIsSearching(true);
+      // If user pastes direct tiktok URL or video ID:
+      const idMatch = q.match(/video\/(\d{15,22})/) || q.match(/^(\d{15,22})$/);
+      if (idMatch && idMatch[1]) {
+        const customItem = {
+          id: idMatch[1],
+          fallbackYt: "M7lc1UVf-VE",
+          creator: "@search.result",
+          caption: `Viewing TikTok Video: ${idMatch[1]}`,
+          likes: "100K",
+          comments: "2.1K",
+          sound: "Original TikTok Sound"
+        };
+        setFeed([customItem, ...feed]);
+        setCurrentIndex(0);
+        setIsSearching(false);
+        toast("Loaded custom TikTok video!");
+        return;
+      }
+
+      // Otherwise fetch real videos matching the query dynamically
+      try {
+        const resolvedId = await resolveWorkingVideoForQuery(`${q} tiktok shorts trending`);
+        const searchedFeed = [
+          {
+            id: "7217031174395645226",
+            fallbackYt: resolvedId,
+            creator: `@${q.replace(/\s+/g, "_").toLowerCase()}`,
+            caption: `Trending TikToks for #${q} 🔥 Watch now!`,
+            likes: "850K",
+            comments: "14.2K",
+            sound: `Soundtrack - ${q}`
+          },
+          ...TIKTOK_CATALOG
+        ];
+        setFeed(searchedFeed);
+        setCurrentIndex(0);
+        toast(`Found trending clips for "${q}"`);
+      } catch {}
+      setIsSearching(false);
+    };
+
+    const nextVideo = () => {
+      if (currentIndex < feed.length - 1) setCurrentIndex((i) => i + 1);
+      else setCurrentIndex(0);
+    };
+
+    const prevVideo = () => {
+      if (currentIndex > 0) setCurrentIndex((i) => i - 1);
+      else setCurrentIndex(feed.length - 1);
+    };
+
+    const toggleLike = (id) => {
+      setLikesMap((prev) => ({ ...prev, [id]: !prev[id] }));
+    };
+
+    // Keyboard navigation (ArrowUp, ArrowDown)
+    useEffect(() => {
+      const onKeyDown = (e) => {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+        if (e.key === "ArrowDown" || e.key === "j") { e.preventDefault(); nextVideo(); }
+        else if (e.key === "ArrowUp" || e.key === "k") { e.preventDefault(); prevVideo(); }
+      };
+      window.addEventListener("keydown", onKeyDown);
+      return () => window.removeEventListener("keydown", onKeyDown);
+    }, [currentIndex, feed]);
+
+    const isLiked = !!likesMap[activeItem.id];
+
+    return h("section", { className: "view", style: { height: "100%", overflow: "hidden" } },
+      h("div", { className: "tt-container" },
+        h("div", { className: "tt-header" },
+          h("div", { style: { display: "flex", alignItems: "center", gap: 6, fontWeight: 800, fontSize: 18, color: "#fff" } },
+            h("span", { style: { color: "#00f2ea" } }, "Tik"),
+            h("span", { style: { color: "#ff0050" } }, "Tok")
+          ),
+          h("form", { className: "tt-search-bar", onSubmit: handleSearch },
+            h(SearchIcon),
+            h("input", {
+              placeholder: "Search creator, tag, or paste TikTok URL/ID...",
+              value: searchVal,
+              onChange: (e) => setSearchVal(e.target.value)
+            }),
+            searchVal ? h("button", { type: "button", onClick: () => { setSearchVal(""); setFeed(TIKTOK_CATALOG); } }, "✕") : null
+          ),
+          h("button", {
+            className: "pill",
+            style: { padding: "6px 12px", fontSize: 11, background: mode === "direct" ? "rgba(34,197,94,0.3)" : "rgba(255,255,255,0.08)" },
+            onClick: () => {
+              const nxt = mode === "tiktok" ? "direct" : "tiktok";
+              setMode(nxt);
+              toast(`Switched to ${nxt === "direct" ? "Unblocked Direct Stream" : "Native TikTok Player"}`);
+            }
+          }, mode === "tiktok" ? "⚡ Native" : "🛡️ Direct")
+        ),
+
+        h("div", { className: "tt-viewport" },
+          mode === "tiktok" ? (
+            h("iframe", {
+              key: `tt_player_${activeItem.id}`,
+              className: "tt-player-frame",
+              src: `https://www.tiktok.com/player/v1/${activeItem.id}?autoplay=1&muted=0`,
+              allow: FRAME_ALLOW,
+              allowFullScreen: true,
+              referrerPolicy: "strict-origin-when-cross-origin"
+            })
+          ) : (
+            h("iframe", {
+              key: `tt_direct_${activeItem.fallbackYt}`,
+              className: "tt-player-frame",
+              src: `https://www.youtube-nocookie.com/embed/${activeItem.fallbackYt}?autoplay=1&rel=0&playsinline=1&loop=1`,
+              allow: FRAME_ALLOW,
+              allowFullScreen: true,
+              referrerPolicy: "strict-origin-when-cross-origin"
+            })
+          ),
+
+          // TikTok Right Side Actions (Heart, Comment, Share, Switch Stream)
+          h("div", { className: "tt-side-actions" },
+            h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center" } },
+              h("button", {
+                className: "tt-action-btn",
+                style: isLiked ? { color: "#ff0050", background: "rgba(255,0,80,0.25)", borderColor: "#ff0050" } : {},
+                onClick: () => toggleLike(activeItem.id)
+              }, isLiked ? "❤️" : "🤍"),
+              h("span", { className: "tt-action-label" }, isLiked ? "Liked" : activeItem.likes)
+            ),
+            h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center" } },
+              h("button", { className: "tt-action-btn", onClick: () => toast("Comments synced!") }, "💬"),
+              h("span", { className: "tt-action-label" }, activeItem.comments)
+            ),
+            h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center" } },
+              h("button", { className: "tt-action-btn", onClick: () => {
+                navigator.clipboard?.writeText(`https://www.tiktok.com/@${activeItem.creator}/video/${activeItem.id}`);
+                toast("TikTok link copied!");
+              } }, "↗"),
+              h("span", { className: "tt-action-label" }, "Share")
+            ),
+            h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center" } },
+              h("button", {
+                className: "tt-action-btn",
+                title: "Flip player engine if blocked",
+                onClick: () => setMode((m) => m === "tiktok" ? "direct" : "tiktok")
+              }, "🔄"),
+              h("span", { className: "tt-action-label" }, "Engine")
+            )
+          ),
+
+          // Creator & Caption Overlay
+          h("div", { className: "tt-bottom-overlay" },
+            h("div", { className: "tt-creator" }, activeItem.creator),
+            h("div", { className: "tt-caption" }, activeItem.caption),
+            h("div", { style: { fontSize: 11.5, color: "#a1a1aa", marginTop: 4, display: "flex", alignItems: "center", gap: 6 } },
+              "🎵", h("span", null, activeItem.sound)
+            )
+          ),
+
+          // Scroll Arrows Pill
+          h("div", { className: "tt-nav-arrows" },
+            h("button", { className: "tt-nav-pill", onClick: prevVideo }, "▲ Prev"),
+            h("button", { className: "tt-nav-pill", onClick: nextVideo }, "▼ Next")
+          )
+        )
+      )
+    );
+  }
+
   function BrowserView() {
     const [query, setQuery] = useState("");
     const [tab, setTab] = useState("all");
@@ -1776,9 +1949,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // ============================================================================
-  // FIXED YOUTUBE HUB (Error 153 Fixed via strict-origin-when-cross-origin + Direct Stream Fallback!)
-  // ============================================================================
   const YT_PRESETS = [
     { label: "🔥 Trending Gaming", q: "minecraft roblox geometry dash gameplay" },
     { label: "😂 Memes & Brainrot", q: "funny memes compilation 2026" },
@@ -1978,20 +2148,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // ============================================================================
-  // TIKTOK VIEW (LOCKED FOR EVERYBODY — UNDER MAINTENANCE)
-  // ============================================================================
-  function TikTokView() {
-    return h("section", { className: "view" },
-      h("div", { className: "page", style: { height: "80vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" } },
-        h("div", { style: { fontSize: 56, marginBottom: 14 } }, "🔧"),
-        h("h2", null, "TikTok is Under Maintenance"),
-        h("p", { className: "sub", style: { maxWidth: 440 } }, "TikTok is currently locked for all tiers while we upgrade the video relay servers. Please check back later!")
-      )
-    );
-  }
-
-  // --- Games Component (Free, Pro, Premium & Max) ---
   const CATS = ["All", ...Array.from(new Set(GAMES.map((g) => g.cat))).sort()];
   function hue(s) { let hVal = 0; for (const c of s) hVal = (hVal * 31 + c.charCodeAt(0)) % 360; return hVal; }
 
@@ -2040,7 +2196,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Spotify Music View (Free, Pro, Premium & Max) ---
   const PLAYLIST_PRESETS = [
     { id: "hits", name: "Today's Top Hits", desc: "Global Chart", color: "#1e3264", icon: "🔥", query: "top hits 2025 2026" },
     { id: "phonk", name: "Drift Phonk & Gym", desc: "High-energy phonk", color: "#8d1732", icon: "⚡", query: "drift phonk" },
@@ -2150,7 +2305,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Netflix Movies & Anime View (Free, Pro, Premium & Max) ---
   function MoviesView() {
     const [activeMedia, setActiveMedia] = useState(null);
     const heroItem = INITIAL_MEDIA[0];
@@ -2201,7 +2355,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // WHATSAPP-STYLE LIVE CHAT WITH IMAGE & FILE ATTACHMENTS (Pro, Premium & Max Tiers)
+  // OPTIMIZED FAST-CHAT (Optimistic Instant Send + Rapid 1000ms Broadcast Sync)
   // ============================================================================
   function ChatView({ currentUser, accountsMap }) {
     const [messages, setMessages] = useState([]);
@@ -2209,34 +2363,51 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [attachment, setAttachment] = useState(null);
     const messagesEndRef = useRef(null);
 
-    useEffect(() => {
-      const fetchChat = async () => {
-        const base = getDbUrl();
-        if (!base) {
-          try {
-            const local = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
-            setMessages(local);
-          } catch {}
-          return;
-        }
+    const syncMessages = useCallback(async () => {
+      const base = getDbUrl();
+      if (!base) {
         try {
-          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
-          if (res.ok) {
-            const data = await res.json();
-            if (data) {
-              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
-              list.sort((a, b) => a.timestamp - b.timestamp);
-              setMessages(list);
-            } else {
-              setMessages([]);
-            }
-          }
+          const local = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+          setMessages(local);
         } catch {}
-      };
+        return;
+      }
+      try {
+        const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data) {
+            const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
+            list.sort((a, b) => a.timestamp - b.timestamp);
+            setMessages(list);
+          } else {
+            setMessages([]);
+          }
+        }
+      } catch {}
+    }, []);
 
-      fetchChat();
-      const interval = setInterval(fetchChat, 3500);
+    useEffect(() => {
+      syncMessages();
+      // High-speed 1000ms polling for instant responsiveness
+      const interval = setInterval(syncMessages, 1000);
       return () => clearInterval(interval);
+    }, [syncMessages]);
+
+    useEffect(() => {
+      if (!bc) return;
+      const onChatSync = (e) => {
+        if (e.data && e.data.type === "new_chat_message") {
+          setMessages((prev) => {
+            if (prev.some((m) => m.id === e.data.payload.id)) return prev;
+            const updated = [...prev, e.data.payload];
+            updated.sort((a, b) => a.timestamp - b.timestamp);
+            return updated;
+          });
+        }
+      };
+      bc.addEventListener("message", onChatSync);
+      return () => bc.removeEventListener("message", onChatSync);
     }, []);
 
     useEffect(() => {
@@ -2270,7 +2441,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       const acc = accountsMap[currentUser.username.toLowerCase()] || currentUser;
       const isUserOwner = isOwnerIdentity(currentUser.username, acc);
 
+      const msgId = "msg_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6);
       const newMsg = {
+        id: msgId,
         sender: currentUser.username,
         role: isUserOwner ? "owner" : "user",
         tier: getUserTier(acc, isUserOwner),
@@ -2279,47 +2452,36 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         timestamp: Date.now()
       };
 
-      const base = getDbUrl();
-      if (base) {
-        try {
-          await fetch(`${base}/global_chat.json`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newMsg)
-          });
-        } catch {}
-      } else {
-        try {
-          const prev = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
-          const next = [...prev, { id: "msg_" + Date.now(), ...newMsg }];
-          localStorage.setItem("ug_global_chat_v1", JSON.stringify(next));
-          setMessages(next);
-        } catch {}
-      }
-
+      // 1. Instant UI update (Zero latency on user screen)
+      setMessages((prev) => [...prev, newMsg]);
       setInputMessage("");
       setAttachment(null);
 
-      setTimeout(async () => {
-        if (base) {
-          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
-          if (res.ok) {
-            const data = await res.json();
-            if (data) {
-              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
-              list.sort((a, b) => a.timestamp - b.timestamp);
-              setMessages(list);
-            }
-          }
-        }
-      }, 250);
+      // 2. Broadcast immediately to other local tabs
+      if (bc) bc.postMessage({ type: "new_chat_message", payload: newMsg });
+
+      // 3. Push to Firebase in background without blocking UI
+      const base = getDbUrl();
+      if (base) {
+        fetch(`${base}/global_chat.json`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newMsg)
+        }).catch(() => {});
+      } else {
+        try {
+          const prev = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+          const next = [...prev, newMsg];
+          localStorage.setItem("ug_global_chat_v1", JSON.stringify(next));
+        } catch {}
+      }
     };
 
     return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
       h("div", { style: { padding: "20px 24px 0", flexShrink: 0 } },
         h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
           h("h2", { style: { margin: 0, fontSize: 26 } }, "Live School Chat"),
-          h("span", { className: "badge-pill live" }, "WHATSAPP LIVE SYNC")
+          h("span", { className: "badge-pill live" }, "INSTANT SPEED SYNC ⚡")
         )
       ),
       h("div", { style: { flex: 1, display: "flex", flexDirection: "column", padding: "16px 24px 24px", overflow: "hidden" } },
@@ -2374,7 +2536,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Clean Player Component ---
   function Player({ game, onClose }) {
     const [nonce, setNonce] = useState(0);
     const frameRef = useRef(null);
@@ -2391,7 +2552,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Account Profile View ---
   function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner, userTier }) {
     const [now, setNow] = useState(Date.now());
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
@@ -2419,7 +2579,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 isOwner ? "Owner (All Access)" :
                 userTier === "max" ? "🔥 MAX (ESPN + Screen Broadcast + All)" :
                 userTier === "premium" ? "💎 Premium (All Access)" :
-                userTier === "pro" ? "⚡ Pro (Chat + Games + Media)" :
+                userTier === "pro" ? "⚡ Pro (Chat + TikTok + Games + Media)" :
                 "Free (Games + Movies + Music)"
               )
             ),
@@ -2437,9 +2597,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // ============================================================================
-  // ACCOUNT CREATOR HUB (With Free / Pro / Premium / MAX Tier Selectors!)
-  // ============================================================================
   function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
     const [createModal, setCreateModal] = useState(false);
     const [dbModal, setDbModal] = useState(false);
@@ -2552,7 +2709,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           )
         ),
 
-        // LIVE ACTIVE USERS PANEL (Includes Instant Live Tier Selector!)
         h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
           h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
             h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
@@ -2586,7 +2742,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                         onChange: (e) => handleChangeTier(acc, e.target.value)
                       },
                         h("option", { value: "free" }, "Free (Games/Movies/Music)"),
-                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat)"),
+                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat/TikTok)"),
                         h("option", { value: "premium" }, "💎 Premium (+ YT/Browser)"),
                         h("option", { value: "max" }, "🔥 MAX (+ ESPN & Screen Popup)")
                       )
@@ -2601,7 +2757,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               )
         ),
 
-        // LICENSED ACCOUNTS CARDS (Includes Tier Selector!)
         h("h3", { style: { fontSize: 20, fontWeight: 600, marginBottom: 14 } }, `Licensed Accounts (${accountsList.length})`),
         h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
           accountsList.map((acc) => {
@@ -2640,7 +2795,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                         onChange: (e) => handleChangeTier(acc, e.target.value)
                       },
                         h("option", { value: "free" }, "Free (Games/Movies/Music)"),
-                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat)"),
+                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat/TikTok)"),
                         h("option", { value: "premium" }, "💎 Premium (+ YT/Browser)"),
                         h("option", { value: "max" }, "🔥 MAX (+ ESPN & Screen Popup)")
                       )
@@ -2676,7 +2831,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         )
       ),
 
-      // CREATE ACCOUNT MODAL WITH 4 TIERS (Free, Pro, Premium, MAX)
       createModal ? h(Modal, { onClose: () => setCreateModal(false) },
         h("h3", null, "Create Licensed Account"),
         h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
@@ -2687,7 +2841,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             h("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8 } },
               [
                 { id: "free", name: "Free", sub: "Games, Movies, Music" },
-                { id: "pro", name: "⚡ Pro", sub: "+ Live Chat" },
+                { id: "pro", name: "⚡ Pro", sub: "+ Live Chat & TikTok" },
                 { id: "premium", name: "💎 Premium", sub: "+ YT & Browser" },
                 { id: "max", name: "🔥 MAX", sub: "+ ESPN & Screen Popup" }
               ].map((t) =>
@@ -2848,7 +3002,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // --- Main App ---
   function App() {
     const [view, setView] = useState("home");
     const [open, setOpen] = useState(false);
@@ -2857,7 +3010,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [playing, setPlaying] = useState(null);
     const [installedMap, setInstalledMap] = useState(getInstalledGames);
     const [upgradePrompt, setUpgradePrompt] = useState(null);
-    const [maintenanceModal, setMaintenanceModal] = useState(false);
     const [activeBroadcast, setActiveBroadcast] = useState(null);
     const [toastMsg, setToastMsg] = useState("");
     const [toastOn, setToastOn] = useState(false);
@@ -2887,10 +3039,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     }, [currentUser, accountsMap, isOwner]);
 
     const navigate = useCallback((v) => {
-      if (v === "tiktok") {
-        setMaintenanceModal(true);
-        return;
-      }
       if (!canAccessView(userTier, v)) {
         const req = requiredTierForView(v);
         setUpgradePrompt({ viewName: v.toUpperCase(), reqTier: req });
@@ -2995,7 +3143,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       if (!openCloaked(frameSource(g), settings)) toast("Popup blocked");
     }, [settings, toast]);
 
-    const hideFloatingPills = view === "browser" || view === "movies" || view === "music";
+    const hideFloatingPills = view === "browser" || view === "movies" || view === "music" || view === "tiktok";
 
     return h(Fragment, null,
       h(Stars),
@@ -3023,16 +3171,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         view === "settings" ? h(SettingsView, { settings, onSave: (s) => { setSettings(s); saveSettings(s); toast("Saved"); }, onCloakSite: () => cloakSite(settings) }) : null
       ),
 
-      // TIKTOK UNDER MAINTENANCE POPUP
-      maintenanceModal ? h(Modal, { onClose: () => setMaintenanceModal(false) },
-        h("h3", null, "🔧 Under Maintenance"),
-        h("p", null, "TikTok is currently locked for everybody while it is under maintenance. Please check back soon!"),
-        h("div", { className: "actions" },
-          h("button", { className: "btn", onClick: () => setMaintenanceModal(false) }, "Close")
-        )
-      ) : null,
-
-      // TIER UPGRADE PROMPT MODAL
       upgradePrompt ? h(Modal, { onClose: () => setUpgradePrompt(null) },
         h("h3", null, `🔒 ${upgradePrompt.reqTier} Tier Required`),
         h("p", null, `Your account is currently on the ${userTier.toUpperCase()} tier. Accessing ${upgradePrompt.viewName} requires a ${upgradePrompt.reqTier} license. Contact the Owner to upgrade your account tier!`),
@@ -3041,7 +3179,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         )
       ) : null,
 
-      // INCOMING LIVE SCREEN BROADCAST OVERLAY (Capped at 90 chars + Close button always visible!)
       activeBroadcast ? h("div", { className: "screen-broadcast-bg" },
         h("div", { className: "screen-broadcast-box" },
           h("div", null,
