@@ -31,14 +31,11 @@ button, input, select, optgroup, textarea, ::file-selector-button {
 }
 html, body, #root { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: "Outfit", system-ui, sans-serif; overflow: hidden; }
 button { cursor: pointer; font-family: inherit; }
-
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.16); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.28); }
-
 #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-
 /* Sidebar */
 #sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 64px; background: #08080a; border-right: 1px solid var(--border); z-index: 30; display: flex; flex-direction: column; align-items: stretch; transition: width 0.25s ease; }
 #sidebar.open { width: 196px; }
@@ -53,19 +50,16 @@ button { cursor: pointer; font-family: inherit; }
 #sidebar .spacer { flex: 1; }
 #expandBtn svg { transition: transform 0.25s; }
 #sidebar.open #expandBtn svg { transform: rotate(180deg); }
-
 /* Main */
 main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; overflow-y: auto; overflow-x: hidden; transition: left 0.25s ease; }
 #sidebar.open ~ main { left: 196px; }
 .view { height: 100%; animation: fade 0.35s ease; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-
 /* Pills */
 .pill { background: rgba(20, 20, 23, 0.85); border: 1px solid var(--border); border-radius: 12px; padding: 8px 16px; font-size: 13px; color: #d6d6da; cursor: pointer; transition: 0.2s; backdrop-filter: blur(6px); }
 .pill:hover { background: rgba(40, 40, 46, 0.95); border-color: rgba(255, 255, 255, 0.25); }
 #topRight { position: fixed; top: 16px; right: 16px; z-index: 20; }
 #footerLinks { position: fixed; bottom: 16px; right: 16px; z-index: 20; display: flex; gap: 10px; }
-
 /* Home */
 #home { display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100%; padding-bottom: 40px; position: relative; }
 .logo-wrap { position: relative; margin-bottom: 30px; text-align: center; }
@@ -85,12 +79,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .quick .circ svg { width: 22px; height: 22px; }
 .quick button:hover .circ { background: #1d1d22; border-color: rgba(255, 255, 255, 0.3); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255, 255, 255, 0.07); }
 .ad { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); font-size: 11px; letter-spacing: 0.14em; color: #8b8b90; font-weight: 600; display: flex; gap: 10px; align-items: center; }
-
 /* Page layout */
 .page { padding: 36px 40px 90px; max-width: 1400px; margin: 0 auto; }
 .page h2 { font-size: 34px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.02em; }
 .page p.sub { color: var(--muted); margin: 0 0 24px; }
-.page code { background: rgba(255, 255, 255, 0.08); padding: 1px 6px; border-radius: 6px; font-size: 0.9em; }
 .toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
 .toolbar .search { height: 52px; padding: 0 20px; flex: 1; min-width: 240px; border-radius: 12px; }
 .toolbar .search input { font-size: 16px; }
@@ -110,7 +102,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .card .name { font-weight: 600; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card .tag { font-size: 12px; color: var(--muted); margin-top: 2px; display: flex; align-items: center; justify-content: space-between; }
 .empty { padding: 60px 0; text-align: center; color: var(--muted); }
-
 /* Settings & Buttons */
 .setting { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; }
 .setting h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
@@ -135,7 +126,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .btn.warn { background: rgba(245, 158, 11, 0.14); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.38); }
 .btn.warn:hover { background: #d97706; color: #fff; border-color: #d97706; }
 .btn.sm { height: 34px; padding: 0 13px; font-size: 12.5px; border-radius: 8px; }
-
 /* Modal & Player */
 #modalBg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .modal { background: #0c0c0f; border: 1px solid var(--border); border-radius: 18px; padding: 26px; width: min(480px, 100%); animation: fade 0.25s ease; }
@@ -144,13 +134,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .modal .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
 #toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 30px); background: #e4e4e4; color: #111; padding: 10px 18px; border-radius: 999px; font-weight: 500; font-size: 14px; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; }
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
-
 #player { position: fixed; inset: 0; z-index: 90; background: #000; display: flex; flex-direction: column; animation: fade 0.25s ease; }
 #player .bar { display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 14px; background: #08080a; border-bottom: 1px solid var(--border); flex: 0 0 auto; overflow-x: auto; }
 #player .bar .ttl { font-weight: 600; font-size: 15px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 10px; }
 #player .bar .pill { padding: 6px 14px; white-space: nowrap; }
 #player iframe { flex: 1; width: 100%; border: 0; background: #000; }
-
 /* Auth & Panels */
 .auth-overlay { position: fixed; inset: 0; z-index: 85; background: rgba(2, 2, 3, 0.92); backdrop-filter: blur(18px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade 0.3s ease; }
 .auth-box { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 34px 30px; width: min(420px, 100%); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85); position: relative; overflow: hidden; }
@@ -162,7 +150,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .pop-panel:hover { border-color: rgba(255, 255, 255, 0.25); }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; display: inline-block; }
 .status-dot.off { background: #71717a; box-shadow: none; }
-.status-dot.exp { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
 .slider { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: #232329; border-radius: 999px; outline: none; cursor: pointer; }
 .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #e4e4e4; cursor: pointer; border: 2px solid #0b0b0d; }
 .slider:disabled { opacity: 0.35; cursor: not-allowed; }
@@ -170,7 +157,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .eye-btn:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
 .eye-btn svg { width: 15px; height: 15px; }
 .mono-box { font-family: monospace; background: #070709; border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; font-size: 13px; color: #e4e4e4; display: inline-flex; align-items: center; gap: 8px; }
-
 /* Tier Badges */
 .badge-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, 0.07); border: 1px solid var(--border); letter-spacing: 0.03em; }
 .badge-pill.owner { background: rgba(255, 255, 255, 0.18); color: #fff; border-color: rgba(255, 255, 255, 0.45); }
@@ -179,70 +165,40 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .badge-pill.tier-pro { background: rgba(59, 130, 246, 0.18); color: #93c5fd; border-color: rgba(59, 130, 246, 0.45); }
 .badge-pill.tier-premium { background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(168, 85, 247, 0.22)); color: #fde68a; border-color: rgba(245, 158, 11, 0.55); box-shadow: 0 0 16px rgba(245, 158, 11, 0.18); }
 .badge-pill.tier-max { background: linear-gradient(135deg, rgba(239, 68, 68, 0.32), rgba(249, 115, 22, 0.32)); color: #fecaca; border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.38); }
-
-/* Live Screen Broadcast Overlay (MAX & Owner) */
+/* Live Screen Broadcast Overlay */
 .screen-broadcast-bg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(12px); z-index: 250; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade 0.25s ease; }
 .screen-broadcast-box { background: linear-gradient(180deg, #1a0b0e 0%, #0b0b0f 100%); border: 2px solid #ef4444; border-radius: 22px; padding: 28px; width: min(500px, 94vw); max-height: 85vh; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 28px 75px rgba(239, 68, 68, 0.35), 0 0 40px rgba(0, 0, 0, 0.9); text-align: center; overflow: hidden; }
 .screen-broadcast-msg { font-size: 22px; font-weight: 700; color: #fff; line-height: 1.4; margin: 14px 0 22px; word-break: break-word; overflow-y: auto; max-height: 45vh; padding: 0 4px; }
-
-/* ESPN Sports Hub Styles */
+/* ESPN Sports Hub */
 .espn-banner { background: linear-gradient(135deg, #b91c1c 0%, #111115 70%); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 18px; padding: 22px 26px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
 .espn-logo { font-size: 30px; font-weight: 900; font-style: italic; letter-spacing: -0.03em; color: #fff; background: #dc2626; padding: 2px 14px; border-radius: 6px; display: inline-block; }
 .espn-score-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .espn-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px 18px; transition: 0.2s; cursor: pointer; }
 .espn-card:hover { border-color: #ef4444; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.65); }
-
-/* TikTok Real Full Experience UI */
-.tt-container { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 540px; margin: 0 auto; position: relative; padding: 12px 14px 20px; }
-.tt-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-shrink: 0; }
-.tt-search-bar { flex: 1; display: flex; align-items: center; background: rgba(255,255,255,0.08); border: 1px solid var(--border); border-radius: 999px; padding: 0 16px; height: 42px; gap: 8px; }
-.tt-search-bar input { flex: 1; background: transparent; border: 0; outline: 0; color: #fff; font-size: 14px; }
-.tt-viewport { flex: 1; position: relative; border-radius: 20px; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 50px rgba(0,0,0,0.85); }
-.tt-player-frame { width: 100%; height: 100%; border: 0; background: #000; }
-.tt-side-actions { position: absolute; right: 14px; bottom: 84px; display: flex; flex-direction: column; align-items: center; gap: 18px; z-index: 12; }
-.tt-action-btn { background: rgba(20,20,24,0.72); border: 1px solid rgba(255,255,255,0.18); border-radius: 50%; width: 46px; height: 46px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; cursor: pointer; transition: 0.2s; backdrop-filter: blur(8px); }
-.tt-action-btn:hover { transform: scale(1.12); background: rgba(255,255,255,0.22); }
-.tt-action-label { font-size: 11px; font-weight: 600; color: #eee; margin-top: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-.tt-bottom-overlay { position: absolute; left: 16px; right: 75px; bottom: 18px; z-index: 12; pointer-events: none; text-shadow: 0 2px 8px rgba(0,0,0,0.9); }
-.tt-creator { font-weight: 700; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: #fff; }
-.tt-caption { font-size: 13.5px; color: #e4e4e7; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.tt-nav-arrows { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 16px; z-index: 15; bottom: 12px; }
-.tt-nav-pill { background: rgba(0,0,0,0.75); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px 16px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; backdrop-filter: blur(8px); }
-.tt-nav-pill:hover { background: #fff; color: #000; }
-
-/* Frosted Browser */
+/* Browser, Movies, Spotify */
 .gbrowser-root { height: 100%; width: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden; }
 .gbrowser-idle { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
-.gbrowser-top { background: rgba(14, 14, 18, 0.82); backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 14px 28px 0; flex-shrink: 0; z-index: 15; }
+.gbrowser-top { background: rgba(14, 14, 18, 0.82); backdrop-filter: blur(24px) saturate(150%); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 14px 28px 0; flex-shrink: 0; z-index: 15; }
 .gbrowser-bar-row { display: flex; align-items: center; gap: 14px; max-width: 1100px; }
-.glass-panel { width: min(820px, 92vw); background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px) saturate(140%); -webkit-backdrop-filter: blur(24px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px; padding: 8px 12px 8px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.22); display: flex; align-items: center; gap: 12px; transition: all 0.22s ease; }
-.glass-panel.compact { width: 100%; max-width: 780px; padding: 4px 8px 4px 18px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }
-.glass-panel:focus-within { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.38); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 255, 255, 0.08); }
-.glass-panel svg { width: 20px; height: 20px; color: rgba(255, 255, 255, 0.75); flex-shrink: 0; }
+.glass-panel { width: min(820px, 92vw); background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px; padding: 8px 12px 8px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); display: flex; align-items: center; gap: 12px; }
+.glass-panel.compact { width: 100%; max-width: 780px; padding: 4px 8px 4px 18px; }
 .glass-input { flex: 1; height: 46px; background: transparent; border: 0; outline: 0; color: #fff; font: 400 18px "Outfit", sans-serif; min-width: 0; }
 .glass-panel.compact .glass-input { height: 38px; font-size: 15.5px; }
-.glass-input::placeholder { color: rgba(255, 255, 255, 0.42); }
 .gbrowser-tabs { display: flex; gap: 24px; margin-top: 12px; padding-left: 8px; }
-.gbrowser-tab { padding: 8px 4px 11px; font-size: 14px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: 0.18s; }
-.gbrowser-tab:hover { color: #fff; }
+.gbrowser-tab { padding: 8px 4px 11px; font-size: 14px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 7px; }
 .gbrowser-tab.on { color: #60a5fa; border-bottom-color: #60a5fa; }
 .gbrowser-body { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; }
 .gbrowser-results-wrap { max-width: 960px; padding: 24px 32px 80px; display: flex; flex-direction: column; gap: 14px; }
-.gbrowser-card { background: rgba(20, 20, 26, 0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.11); border-radius: 16px; padding: 16px 20px; cursor: pointer; transition: 0.2s; }
-.gbrowser-card:hover { background: rgba(32, 32, 42, 0.85); border-color: rgba(96, 165, 250, 0.45); transform: translateY(-2px); }
+.gbrowser-card { background: rgba(20, 20, 26, 0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.11); border-radius: 16px; padding: 16px 20px; cursor: pointer; }
 .gbrowser-img-grid { padding: 24px 32px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
-.gbrowser-img-card { background: #0d0d12; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; transition: 0.22s; }
-.gbrowser-img-card:hover { transform: scale(1.03); border-color: rgba(255,255,255,0.35); }
-.gbrowser-img-card img { width: 100%; height: 175px; object-fit: cover; background: #16161d; }
+.gbrowser-img-card { background: #0d0d12; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; }
+.gbrowser-img-card img { width: 100%; height: 175px; object-fit: cover; }
 .gbrowser-shop-grid { padding: 24px 32px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); gap: 18px; }
-.gbrowser-shop-card { background: rgba(20, 20, 26, 0.75); backdrop-filter: blur(14px); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: 0.22s; }
-.gbrowser-shop-card:hover { transform: translateY(-4px); border-color: rgba(74, 222, 128, 0.45); box-shadow: 0 14px 30px rgba(0,0,0,0.65); }
+.gbrowser-shop-card { background: rgba(20, 20, 26, 0.75); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; }
 .gbrowser-shop-card img { width: 100%; height: 190px; object-fit: contain; background: #fff; padding: 12px; }
-
-/* Netflix UI */
 .nf-wrap { background: #141414; min-height: 100%; padding-bottom: 80px; color: #fff; position: relative; }
-.nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: rgba(20,20,20,0.85); backdrop-filter: blur(8px); gap: 20px; flex-wrap: wrap; }
-.nf-logo { color: #e50914; font-size: 28px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; }
+.nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: rgba(20,20,20,0.85); backdrop-filter: blur(8px); }
+.nf-logo { color: #e50914; font-size: 28px; font-weight: 800; text-transform: uppercase; cursor: pointer; }
 .nf-hero { position: relative; height: 62vh; min-height: 400px; width: 100%; overflow: hidden; display: flex; align-items: flex-end; padding: 0 42px 54px; }
 .nf-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
 .nf-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #141414 0%, rgba(20,20,20,0.75) 45%, transparent 100%), linear-gradient(180deg, transparent 50%, #141414 100%); }
@@ -250,30 +206,27 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .nf-hero-title { font-size: clamp(32px, 4.5vw, 56px); font-weight: 800; line-height: 1.05; margin: 6px 0 12px; }
 .nf-hero-desc { color: #d4d4d8; font-size: 14.5px; margin: 0 0 20px; }
 .nf-btn-play { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #000; font-weight: 700; font-size: 15px; padding: 0 24px; height: 44px; border-radius: 6px; }
-.nf-row-section { padding: 10px 42px 18px; position: relative; z-index: 6; }
+.nf-row-section { padding: 10px 42px 18px; }
 .nf-row-title { font-size: 19px; font-weight: 700; margin: 0 0 12px; color: #e5e5e5; }
 .nf-carousel { display: flex; gap: 14px; overflow-x: auto; padding: 8px 4px 18px; }
-.nf-card { flex: 0 0 185px; border-radius: 8px; overflow: hidden; background: #1f1f1f; position: relative; cursor: pointer; transition: transform 0.25s ease; border: 1px solid rgba(255,255,255,0.06); }
-.nf-card:hover { transform: scale(1.07); z-index: 15; }
-.nf-card-poster { width: 100%; height: 270px; object-fit: cover; display: block; }
-
-/* Spotify UI */
+.nf-card { flex: 0 0 185px; border-radius: 8px; overflow: hidden; background: #1f1f1f; cursor: pointer; }
+.nf-card-poster { width: 100%; height: 270px; object-fit: cover; }
 .sp-app { display: flex; flex-direction: column; height: 100%; width: 100%; background: #000; color: #fff; overflow: hidden; padding: 8px; gap: 8px; }
 .sp-body { flex: 1; display: flex; gap: 8px; overflow: hidden; min-height: 0; }
 .sp-sidebar { width: 250px; flex-shrink: 0; background: #121212; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; }
-.sp-nav-box { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.sp-nav-box { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
 .sp-lib-box { flex: 1; padding: 12px 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
 .sp-pl-item { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 6px; cursor: pointer; text-align: left; width: 100%; }
-.sp-pl-item:hover, .sp-pl-item.active { background: #282828; }
-.sp-pl-cover { width: 42px; height: 42px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-.sp-main { flex: 1; background: #121212; border-radius: 8px; overflow-y: auto; display: flex; flex-direction: column; }
-.sp-header { padding: 24px; display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
-.sp-header-art { width: 160px; height: 160px; border-radius: 6px; box-shadow: 0 12px 36px rgba(0,0,0,0.6); object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 56px; }
+.sp-pl-item.active { background: #282828; }
+.sp-pl-cover { width: 42px; height: 42px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.sp-main { flex: 1; background: #121212; border-radius: 8px; overflow-y: auto; }
+.sp-header { padding: 24px; display: flex; align-items: flex-end; gap: 20px; }
+.sp-header-art { width: 160px; height: 160px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 56px; }
 .sp-table { width: 100%; padding: 0 24px 32px; }
 .sp-trow { display: grid; grid-template-columns: 36px 4fr 3fr 80px; align-items: center; padding: 8px 12px; border-radius: 6px; cursor: pointer; color: #b3b3b3; font-size: 14px; }
 .sp-trow:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .sp-trow.active { background: rgba(29, 185, 84, 0.14); color: #1ed760; }
-.sp-player-bar { height: 80px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 16px; flex-shrink: 0; }
+.sp-player-bar { height: 80px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
     </style>
   </head>
   <body>
@@ -284,50 +237,65 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 (function () {
   const { useState, useEffect, useRef, useCallback, useMemo, memo, StrictMode, createElement: h, Fragment } = window.React;
   const { createRoot } = window.ReactDOM;
-
   // ============================================================================
-  // OWNER & REAL-TIME DATABASE CONFIGURATION + TIER PERMISSIONS
+  // SECURE AUTH CONFIG — BACKDOORS REMOVED & RE-AUTHENTICATION ENFORCED
   // ============================================================================
   const AUTH_CONFIG = {
     dbUrl: "https://unblockedgames-cdc48-default-rtdb.firebaseio.com",
-    ownerUsernames: ["kevin", "owner", "admin"],
+    // Generic 'owner' and 'admin' removed as auto-owners so nobody can hijack them!
+    ownerUsernames: ["kevin"],
     ownerEmails: [
-      "kevinlamfamily@hotmail.com", 
-      "kevinhuygialam@gmail.com", 
-      "kl2@leonardsgwav.catholic.edu.au"
+      "kevinhuygialam@gmail.com",
+      "kevinlamfamily@hotmail.com"
     ],
-    masterOwnerPassword: "admin"
+    alertNotificationEmails: [
+      "kevinhuygialam@gmail.com",
+      "kevinlamfamily@hotmail.com"
+    ]
   };
-
-  // Tier Access Matrix (TikTok unlocked for Pro, Premium, Max, Owner!)
+  // Dispatch live email alert whenever an Owner or Admin attempt occurs
+  async function dispatchSecurityAlertEmail(eventTitle, details) {
+    for (const email of AUTH_CONFIG.alertNotificationEmails) {
+      try {
+        await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(email)}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            _subject: `⚠️ UnblockedGames Security Alert: ${eventTitle}`,
+            time: new Date().toISOString(),
+            event: eventTitle,
+            ...details
+          })
+        });
+      } catch {}
+    }
+  }
   const TIER_PERMISSIONS = {
     free: ["home", "games", "movies", "music", "account", "settings"],
-    pro: ["home", "chat", "tiktok", "games", "movies", "music", "account", "settings"],
-    premium: ["home", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings"],
-    max: ["home", "sports", "broadcast", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings"],
-    owner: ["home", "sports", "broadcast", "youtube", "tiktok", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
+    pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
+    premium: ["home", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
+    max: ["home", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
+    owner: ["home", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
   };
-
   function getUserTier(acc, isOwner) {
     if (isOwner || (acc && acc.role === "owner")) return "owner";
     const t = (acc && acc.tier ? acc.tier : "free").toLowerCase();
     if (t === "max" || t === "premium" || t === "pro" || t === "free") return t;
     return "free";
   }
-
   function canAccessView(tier, viewId) {
+    if (viewId === "tiktok") return false;
     const allowed = TIER_PERMISSIONS[tier] || TIER_PERMISSIONS.free;
     return allowed.includes(viewId);
   }
-
   function requiredTierForView(viewId) {
+    if (viewId === "tiktok") return "Under Maintenance";
     if (viewId === "sports" || viewId === "broadcast") return "MAX";
-    if (viewId === "chat" || viewId === "tiktok") return "Pro";
+    if (viewId === "chat") return "Pro";
     if (viewId === "youtube" || viewId === "browser") return "Premium";
     if (viewId === "creator") return "Owner";
     return "Free";
   }
-
   function renderTierBadge(tier, isOwner) {
     if (isOwner || tier === "owner") return h("span", { className: "badge-pill owner" }, "👑 OWNER");
     if (tier === "max") return h("span", { className: "badge-pill tier-max" }, "🔥 MAX");
@@ -335,17 +303,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     if (tier === "pro") return h("span", { className: "badge-pill tier-pro" }, "⚡ PRO");
     return h("span", { className: "badge-pill tier-free" }, "FREE TIER");
   }
-
   const LS_ACCOUNTS = "ug_rt_accounts_v1";
   const LS_SESSIONS = "ug_rt_sessions_v1";
   const LS_CURRENT_USER = "ug_active_user_v1";
+  const LS_REVOKED_KEYS = "ug_revoked_blacklist_v1";
   const LS_DB_URL = "ug_custom_db_url_v1";
   const LS_INSTALLED_GAMES = "ug_installed_games_v1";
   const LS_BROADCAST = "ug_live_broadcast_v1";
   const LS_DISMISSED_BC = "ug_dismissed_bc_v1";
   const MAX_BROADCAST_CHARS = 90;
   const bc = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("ug_realtime_sync") : null;
-
   function getInstalledGames() {
     try { return JSON.parse(localStorage.getItem(LS_INSTALLED_GAMES) || "{}"); } catch { return {}; }
   }
@@ -398,45 +365,48 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       if (bc) bc.postMessage({ type: "store_updated", key });
     } catch {}
   }
-  function ensureDefaultOwner(accounts) {
-    const map = Object.assign({}, accounts);
-    const primaryOwner = (AUTH_CONFIG.ownerUsernames[0] || "kevin").toLowerCase();
-    if (!map[primaryOwner]) {
-      map[primaryOwner] = {
-        username: AUTH_CONFIG.ownerUsernames[0] || "kevin",
-        email: AUTH_CONFIG.ownerEmails[0] || "kevinlamfamily@hotmail.com",
-        password: AUTH_CONFIG.masterOwnerPassword || "admin",
-        licenseKey: "UG-OWNR-ROOT-0001",
-        infinite: true,
-        expiresAt: null,
-        durationHours: 24,
-        role: "owner",
-        tier: "max",
-        createdAt: Date.now()
-      };
-    }
-    return map;
+  // Persistent blacklist for revoked accounts to prevent client resurrection
+  function getRevokedBlacklist() {
+    try { return JSON.parse(localStorage.getItem(LS_REVOKED_KEYS) || "{}"); } catch { return {}; }
+  }
+  function addRevokedBlacklist(username) {
+    try {
+      const list = getRevokedBlacklist();
+      list[username.trim().toLowerCase()] = Date.now();
+      localStorage.setItem(LS_REVOKED_KEYS, JSON.stringify(list));
+    } catch {}
   }
   async function dbFetchAll() {
     const base = getDbUrl();
-    const localAcc = ensureDefaultOwner(getLocalStore(LS_ACCOUNTS));
-    const localSess = getLocalStore(LS_SESSIONS);
+    const blacklist = getRevokedBlacklist();
+    let localAcc = getLocalStore(LS_ACCOUNTS);
+    let localSess = getLocalStore(LS_SESSIONS);
     const localBc = getLocalStore(LS_BROADCAST);
+    // Filter out blacklisted accounts
+    Object.keys(blacklist).forEach((b) => { delete localAcc[b]; delete localSess[b]; });
     if (!base) return { accounts: localAcc, sessions: localSess, broadcast: localBc };
     try {
-      const [accRes, sessRes, bcRes] = await Promise.all([
+      const [accRes, sessRes, bcRes, revRes] = await Promise.all([
         fetch(`${base}/ug_accounts.json`, { cache: "no-store" }),
         fetch(`${base}/ug_sessions.json`, { cache: "no-store" }),
-        fetch(`${base}/ug_broadcast.json`, { cache: "no-store" })
+        fetch(`${base}/ug_broadcast.json`, { cache: "no-store" }),
+        fetch(`${base}/ug_revoked.json`, { cache: "no-store" })
       ]);
       const remoteAcc = (accRes.ok ? await accRes.json() : null) || {};
       const remoteSess = (sessRes.ok ? await sessRes.json() : null) || {};
       const remoteBc = (bcRes.ok ? await bcRes.json() : null) || null;
-      const mergedAcc = ensureDefaultOwner(remoteAcc);
-      setLocalStore(LS_ACCOUNTS, mergedAcc);
+      const remoteRev = (revRes.ok ? await revRes.json() : null) || {};
+      const combinedRev = { ...blacklist, ...remoteRev };
+      setLocalStore(LS_REVOKED_KEYS, combinedRev);
+      // Purge revoked keys
+      Object.keys(combinedRev).forEach((r) => {
+        delete remoteAcc[r];
+        delete remoteSess[r];
+      });
+      setLocalStore(LS_ACCOUNTS, remoteAcc);
       setLocalStore(LS_SESSIONS, remoteSess);
       if (remoteBc) setLocalStore(LS_BROADCAST, remoteBc);
-      return { accounts: mergedAcc, sessions: remoteSess, broadcast: remoteBc };
+      return { accounts: remoteAcc, sessions: remoteSess, broadcast: remoteBc };
     } catch {
       return { accounts: localAcc, sessions: localSess, broadcast: localBc };
     }
@@ -461,32 +431,48 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
   async function dbSaveAccount(acc) {
     const key = acc.username.trim().toLowerCase();
-    const localAcc = ensureDefaultOwner(getLocalStore(LS_ACCOUNTS));
+    // Un-blacklist if re-created purposefully by owner
+    const rev = getRevokedBlacklist();
+    delete rev[key];
+    setLocalStore(LS_REVOKED_KEYS, rev);
+    const localAcc = getLocalStore(LS_ACCOUNTS);
     localAcc[key] = acc;
     setLocalStore(LS_ACCOUNTS, localAcc);
     const base = getDbUrl();
     if (base) {
       try {
-        await fetch(`${base}/ug_accounts/${encodeURIComponent(key)}.json`, {
-          method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(acc)
-        });
+        await Promise.all([
+          fetch(`${base}/ug_accounts/${encodeURIComponent(key)}.json`, {
+            method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(acc)
+          }),
+          fetch(`${base}/ug_revoked/${encodeURIComponent(key)}.json`, { method: "DELETE" })
+        ]);
       } catch {}
     }
   }
+  // True permanent revocation: cleans RTDB, marks blacklist, and kicks all sessions
   async function dbDeleteAccount(username) {
     const key = username.trim().toLowerCase();
+    addRevokedBlacklist(key);
     const localAcc = getLocalStore(LS_ACCOUNTS);
     delete localAcc[key];
     setLocalStore(LS_ACCOUNTS, localAcc);
     const localSess = getLocalStore(LS_SESSIONS);
     delete localSess[key];
     setLocalStore(LS_SESSIONS, localSess);
+    // Notify other open tabs immediately to clear their storage
+    if (bc) bc.postMessage({ type: "account_revoked", username: key });
     const base = getDbUrl();
     if (base) {
       try {
         await Promise.all([
           fetch(`${base}/ug_accounts/${encodeURIComponent(key)}.json`, { method: "DELETE" }),
-          fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" })
+          fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" }),
+          fetch(`${base}/ug_revoked/${encodeURIComponent(key)}.json`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ revokedAt: Date.now() })
+          })
         ]);
       } catch {}
     }
@@ -540,7 +526,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     if (mins > 0) return `${mins}m ${secs}s`;
     return `${secs}s`;
   }
-
   async function resolveWorkingVideoForQuery(queryText, fallbackVideoId = "jfKfPfyJRdk") {
     const q = (queryText || "").trim();
     const apis = [
@@ -562,16 +547,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         }
       } catch {}
     }
-    try {
-      const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent("https://www.youtube.com/results?search_query=" + q)}`);
-      const j = await r.json();
-      const html = j.contents || "";
-      const m = /"videoId":"([A-Za-z0-9_-]{11})"/.exec(html);
-      if (m && m[1]) return m[1];
-    } catch {}
     return fallbackVideoId;
   }
-
   function buildRobloxDirectEngine() {
     return `<!doctype html><html><head><meta charset="utf-8"><style>
       *{box-sizing:border-box;margin:0;padding:0;user-select:none;font-family:system-ui,sans-serif}
@@ -640,136 +617,25 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         loop();
       <\/script></body></html>`;
   }
-
   const GAMES = [
    { "slug": "roblox", "name": "Roblox", "cat": "Action", "embed": "roblox-direct-engine", "thumb": "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" },
    { "slug": "geometry-dash", "name": "Geometry Dash", "cat": "Arcade", "embed": "https://dasmetry.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/dasmetry_retina.webp" },
    { "slug": "1v1lol", "name": "1v1.LOL", "cat": "Shooter", "embed": "https://1v1-lol.gitlab.io/file/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/1/1v1lol_retina.webp" },
-   { "slug": "2v2io", "name": "2v2.io", "cat": "Shooter", "embed": "https://2v2io.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/2/2v2io_retina.webp" },
-   { "slug": "67-clicker", "name": "67 Clicker", "cat": "Clicker", "embed": "https://67-clicker.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/6/67-clicker_large.webp" },
-   { "slug": "a-small-world-cup", "name": "A Small World Cup", "cat": "Sports", "embed": "https://a-small-world-cup.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/a-small-world-cup_retina.webp" },
-   { "slug": "agario", "name": "Agar.io", "cat": ".io", "embed": "https://agar.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/agario_retina.webp" },
-   { "slug": "among-us-danger-run", "name": "Among Us Danger Run", "cat": "Action", "embed": "https://among-us-danger-run.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/among-us-danger-run_retina.webp" },
-   { "slug": "angry-birds-2", "name": "Angry Birds 2", "cat": "Puzzle", "embed": "https://angry-birds-2.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/angry-birds-2_retina.webp" },
-   { "slug": "anomalous-coffee-machine", "name": "Anomalous Coffee Machine", "cat": "Horror", "embed": "https://anomalous-coffee-machine.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/anomalous-coffee-machine_xlarge.webp" },
-   { "slug": "arrasio", "name": "Arras.io", "cat": ".io", "embed": "https://arras.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/a/arrasio_retina.webp" },
-   { "slug": "backrooms", "name": "Backrooms", "cat": "Horror", "embed": "https://backrooms.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/backrooms_retina.webp" },
-   { "slug": "backyard-baseball", "name": "Backyard Baseball", "cat": "Sports", "embed": "https://backyard-baseball.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/backyard-baseball_retina.webp" },
-   { "slug": "bad-ice-cream", "name": "Bad Ice Cream", "cat": "Puzzle", "embed": "swf:https://unblockedgameswtf.net/uploads/games/bad-ice-cream_game.swf", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bad-ice-cream_retina.webp" },
-   { "slug": "baldis-basics", "name": "Baldi's Basics", "cat": "Horror", "embed": "https://baldis-basics.tops-games.workers.dev/" },
-   { "slug": "baseball-9", "name": "Baseball 9", "cat": "Sports", "embed": "https://baseball-9.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/baseball-9_xlarge.webp" },
-   { "slug": "basket-random", "name": "Basket Random", "cat": "Sports", "embed": "https://basket-random.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basket-random_retina.webp" },
-   { "slug": "basketball-bros", "name": "Basketball Bros", "cat": "Sports", "embed": "https://basketball-bros.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketball-bros_large.webp" },
-   { "slug": "basketball-stars", "name": "Basketball Stars", "cat": "Sports", "embed": "https://basketball-stars.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketball-stars_retina.webp" },
-   { "slug": "basketbros", "name": "BasketBros", "cat": "Sports", "embed": "https://basketbros.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/basketbros_retina.webp" },
-   { "slug": "big-shot-boxing", "name": "Big Shot Boxing", "cat": "Sports", "embed": "https://big-shot-boxing.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/big-shot-boxing_retina.webp" },
-   { "slug": "bitlife", "name": "BitLife Life Simulator", "cat": "Casual", "embed": "https://joemama980.github.io/games/bitlife/" },
-   { "slug": "blockpost", "name": "Blockpost", "cat": "Shooter", "embed": "https://www.y8.com/embed/blockpost" },
-   { "slug": "blowout", "name": "Blowout", "cat": "Arcade", "embed": "https://blowout.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/blowout_retina.webp" },
-   { "slug": "bonkio", "name": "Bonk.io", "cat": ".io", "embed": "https://bonk.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bonkio_retina.webp" },
-   { "slug": "boxing-random", "name": "Boxing Random", "cat": "Sports", "embed": "https://boxing-random.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/boxing-random_retina.webp" },
-   { "slug": "build-now-gg", "name": "Build Now GG", "cat": "Shooter", "embed": "https://buildnow-gg.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/build-now-gg_retina.webp" },
-   { "slug": "bullet-force", "name": "Bullet Force", "cat": "Shooter", "embed": "https://games.crazygames.com/en_US/bullet-force-multiplayer/index.html?v=1.292", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bullet-force_retina.webp" },
-   { "slug": "bullet-force-multiplayer", "name": "Bullet Force Multiplayer", "cat": "Shooter", "embed": "https://bullet-force-multiplayer.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/b/bullet-force-multiplayer_retina.webp" },
-   { "slug": "candy-crush", "name": "Candy Crush", "cat": "Puzzle", "embed": "https://candy-crush.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/candy-crush_retina.webp" },
-   { "slug": "chrome-dino", "name": "Chrome Dino", "cat": "Arcade", "embed": "https://joemama980.github.io/games/dinogame/" },
-   { "slug": "clash-of-vikings", "name": "Clash of Vikings", "cat": "Strategy", "embed": "https://clash-of-vikings.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/clash-of-vikings_retina.webp" },
-   { "slug": "color-tunnel", "name": "Color Tunnel", "cat": "Arcade", "embed": "https://color-tunnel.houseofhazards-lol.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/color-tunnel_retina.webp" },
-   { "slug": "combat-reloaded", "name": "Combat Reloaded", "cat": "Shooter", "embed": "https://html5.gamemonetize.co/lfijb0bl3oiqhjq0217qgy0fdbrvf8s5/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/combat-reloaded_retina.webp" },
-   { "slug": "conquerio", "name": "Conquer.io", "cat": ".io", "embed": "https://html5.gamedistribution.com/40156cca0c094e6fa739cbd9145bf2b6/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/conquerio_retina.webp" },
-   { "slug": "contexto", "name": "Contexto", "cat": "Puzzle", "embed": "https://contextogame.co/game/contextogame/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/contexto_large.webp" },
-   { "slug": "counter-strike-2", "name": "Counter-Strike 2", "cat": "Shooter", "embed": "https://counter-strike-2.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/c/counter-strike-2_retina.webp" },
-   { "slug": "crossy-road", "name": "Crossy Road", "cat": "Arcade", "embed": "https://crossy-road.tops-games.workers.dev/" },
-   { "slug": "deadshotio", "name": "Deadshot.io", "cat": "Shooter", "embed": "https://deadshot.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/deadshotio_retina.webp" },
-   { "slug": "diepio", "name": "Diep.io", "cat": ".io", "embed": "https://diep.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/diepio_retina.webp" },
-   { "slug": "drift-boss", "name": "Drift Boss", "cat": "Racing", "embed": "https://drift-boss.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/d/drift-boss_retina.webp" },
-   { "slug": "eggy-car", "name": "Eggy Car", "cat": "Racing", "embed": "https://eggy-car.tops-games.workers.dev/" },
-   { "slug": "escape-road", "name": "Escape Road", "cat": "Racing", "embed": "https://escape-road.tops-games.workers.dev/" },
-   { "slug": "evio", "name": "Ev.io", "cat": "Shooter", "embed": "https://ev.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/e/evio_retina.webp" },
-   { "slug": "football-bros", "name": "Football Bros", "cat": "Sports", "embed": "https://football-bros.classroomgames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/f/football-bros_retina.webp" },
-   { "slug": "granny", "name": "Granny", "cat": "Horror", "embed": "https://granny.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/g/granny_retina.webp" },
-   { "slug": "gunspin", "name": "GunSpin", "cat": "Shooter", "embed": "https://gunspin.tops-games.workers.dev/" },
-   { "slug": "happy-wheels", "name": "Happy Wheels", "cat": "Action", "embed": "https://happy-wheels.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/happy-wheels_retina.webp" },
-   { "slug": "holeio", "name": "Hole.io", "cat": ".io", "embed": "https://holeio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/holeio_retina.webp" },
-   { "slug": "house-of-hazards", "name": "House of Hazards", "cat": "Action", "embed": "https://house-of-hazards.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/h/house-of-hazards_retina.webp" },
-   { "slug": "italian-brainrot-clicker", "name": "Italian Brainrot Clicker", "cat": "Clicker", "embed": "https://italian-brainrot-clicker.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/i/italian-brainrot-clicker_retina.webp" },
-   { "slug": "jetpack-joyride", "name": "Jetpack Joyride", "cat": "Arcade", "embed": "https://jetpack-joyride.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/j/jetpack-joyride_retina.webp" },
-   { "slug": "kart-bros", "name": "Kart Bros", "cat": "Racing", "embed": "https://kart-bros.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/kart-bros_retina.webp" },
-   { "slug": "kourio", "name": "Kour.io", "cat": "Shooter", "embed": "https://kour.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/kourio_retina.webp" },
-   { "slug": "krunkerio", "name": "Krunker.io", "cat": "Shooter", "embed": "https://krunker.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/k/krunkerio_retina.webp" },
-   { "slug": "level-devil", "name": "Level Devil", "cat": "Platformer", "embed": "https://level-devil.classroomgames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/l/level-devil_retina.webp" },
-   { "slug": "moto-x3m", "name": "Moto X3M", "cat": "Racing", "embed": "https://moto-x3m.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/m/moto-x3m_retina.webp" },
-   { "slug": "narrow-one", "name": "Narrow One", "cat": "Action", "embed": "https://narrow.one/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/n/narrow-one_medium.webp" },
-   { "slug": "papas-pizzeria", "name": "Papa's Pizzeria", "cat": "Casual", "embed": "https://papas-pizzeria.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/p/papas-pizzeria_retina.webp" },
-   { "slug": "paperio-2", "name": "Paper.io 2", "cat": ".io", "embed": "https://paperio-2.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/p/paperio-2_retina.webp" },
-   { "slug": "polytrack", "name": "PolyTrack", "cat": "Racing", "embed": "https://polytrack.venkogames.workers.dev/" },
-   { "slug": "ragdoll-archers", "name": "Ragdoll Archers", "cat": "Action", "embed": "https://ragdoll-archers.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/r/ragdoll-archers_retina.webp" },
-   { "slug": "ragdoll-hit", "name": "Ragdoll Hit", "cat": "Action", "embed": "https://ragdoll-hit.venkogames.workers.dev/" },
-   { "slug": "retro-bowl", "name": "Retro Bowl", "cat": "Sports", "embed": "https://retro-bowl.classroomgames.workers.dev/" },
-   { "slug": "shell-shockers", "name": "Shell Shockers", "cat": "Shooter", "embed": "https://shell-shockers.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/shell-shockers_retina.webp" },
-   { "slug": "slice-master", "name": "Slice Master", "cat": "Casual", "embed": "https://slice-master.classroomgames.workers.dev/" },
-   { "slug": "slitherio", "name": "Slither.io", "cat": ".io", "embed": "https://gulper.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slitherio_retina.webp" },
-   { "slug": "slope", "name": "Slope", "cat": "Arcade", "embed": "https://slope.tops-games.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slope_retina.webp" },
-   { "slug": "slow-roads", "name": "Slow Roads", "cat": "Racing", "embed": "https://slow-roads.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slow-roads_xlarge.webp" },
-   { "slug": "smash-karts", "name": "Smash Karts", "cat": "Racing", "embed": "https://smashkarts.io/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/smash-karts_retina.webp" },
-   { "slug": "snow-rider-3d", "name": "Snow Rider 3D", "cat": "Racing", "embed": "https://snow-rider-3d.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/snow-rider-3d_retina.webp" },
-   { "slug": "space-waves", "name": "Space Waves", "cat": "Arcade", "embed": "https://space-waves.classroomgames.workers.dev/" },
-   { "slug": "stickman-hook", "name": "Stickman Hook", "cat": "Arcade", "embed": "https://stickman-hook.tops-games.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/stickman-hook_retina.webp" },
-   { "slug": "subway-surfers", "name": "Subway Surfers", "cat": "Arcade", "embed": "https://joemama980.github.io/games/subwaysurfers/" },
-   { "slug": "territorialio", "name": "Territorial.io", "cat": ".io", "embed": "https://territorialio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/territorialio_retina.webp" },
-   { "slug": "tomb-of-the-mask", "name": "Tomb of the Mask", "cat": "Arcade", "embed": "https://tomb-of-the-mask.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/tomb-of-the-mask_retina.webp" },
-   { "slug": "tunnel-rush", "name": "Tunnel Rush", "cat": "Arcade", "embed": "https://tunnel-rush.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/t/tunnel-rush_retina.webp" },
-   { "slug": "ultrakill", "name": "Ultrakill", "cat": "Shooter", "embed": "https://ultrakill.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/u/ultrakill_retina.webp" },
-   { "slug": "vengeio", "name": "Venge.io", "cat": "Shooter", "embed": "https://vengeio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/v/vengeio_retina.webp" },
-   { "slug": "wrestle-bros", "name": "Wrestle Bros", "cat": "Sports", "embed": "https://wrestle-bros.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/wrestle-bros_retina.webp" },
-   { "slug": "zombsroyaleio", "name": "ZombsRoyale.io", "cat": "Shooter", "embed": "https://zombsroyaleio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/z/zombsroyaleio_retina.webp" }
+   { "slug": "slope", "name": "Slope", "cat": "Arcade", "embed": "https://slope.tops-games.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/s/slope_retina.webp" }
   ];
-
   const INITIAL_MEDIA = [
-    { id: "tt9362722", tmdb: "569094", title: "Spider-Man: Across the Spider-Verse", cat: "Movies", year: "2023", rating: "98% Match", age: "PG", thumb: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg", backdrop: "https://image.tmdb.org/t/p/original/4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg", desc: "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People.", type: "movie" },
-    { id: "tt15239678", tmdb: "693134", title: "Dune: Part Two", cat: "Movies", year: "2024", rating: "97% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg", backdrop: "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg", desc: "Paul Atreides unites with Chani and the Fremen while on a warpath of revenge.", type: "movie" },
-    { id: "tt6263850", tmdb: "533535", title: "Deadpool & Wolverine", cat: "Movies", year: "2024", rating: "96% Match", age: "R", thumb: "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg", backdrop: "https://image.tmdb.org/t/p/original/yDHYTfA3R0jFYba16jBB1ef8oIt.jpg", desc: "Wolverine is recovering from his injuries when he crosses paths with the loudmouth Deadpool.", type: "movie" },
-    { id: "tt0816692", tmdb: "157336", title: "Interstellar", cat: "Movies", year: "2014", rating: "99% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", backdrop: "https://image.tmdb.org/t/p/original/xJHokMbljvjADYdit5fK5VQsXEG.jpg", desc: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.", type: "movie" },
-    { id: "tt12343534", tmdb: "95479", title: "Jujutsu Kaisen", cat: "Anime", year: "2020", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg", backdrop: "https://image.tmdb.org/t/p/original/gmECX1DvFgdUPjtio2zaL8BPYPu.jpg", desc: "Yuji Itadori joins a secret organization of Jujutsu Sorcerers to kill a powerful Curse.", type: "tv" },
-    { id: "tt9335498", tmdb: "85937", title: "Demon Slayer", cat: "Anime", year: "2019", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg", backdrop: "https://image.tmdb.org/t/p/original/nTvM4mhqNlHIvUkI1gVnW6XP7GG.jpg", desc: "Tanjiro sets out to become a demon slayer to avenge his family and cure his sister.", type: "tv" },
-    { id: "tt0903747", tmdb: "1396", title: "Breaking Bad", cat: "TV Shows", year: "2008", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg", backdrop: "https://image.tmdb.org/t/p/original/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg", desc: "A chemistry teacher diagnosed with cancer turns to manufacturing meth with a former student.", type: "tv" }
+    { id: "tt9362722", tmdb: "569094", title: "Spider-Man: Across the Spider-Verse", cat: "Movies", year: "2023", rating: "98% Match", age: "PG", thumb: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg", backdrop: "https://image.tmdb.org/t/p/original/4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg", desc: "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People.", type: "movie" }
   ];
-
   const DEFAULTS = { cloak: false, title: "about:blank", icon: "", redirect: false, decoy: "https://classroom.google.com", panic: true };
   const KEY = "ug_settings";
   function loadSettings() { try { return { ...DEFAULTS, ...JSON.parse(localStorage.getItem(KEY) || "{}") }; } catch { return { ...DEFAULTS }; } }
   function saveSettings(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} }
-
   function frameSource(game) {
     const activeUrl = game.embed;
-    if (activeUrl === "roblox-direct-engine") {
-      return { srcdoc: buildRobloxDirectEngine() };
-    }
-    if (activeUrl.startsWith("swf:")) {
-      const swf = activeUrl.slice(4);
-      const doc = '<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;background:#000;overflow:hidden}#p{width:100%;height:100%}</style><script src="https://unpkg.com/@ruffle-rs/ruffle"><\/script></head><body><div id="p"></div><script>addEventListener("load",function(){var r=window.RufflePlayer.newest();var p=r.createPlayer();p.style.width="100%";p.style.height="100%";document.getElementById("p").appendChild(p);p.load({url:' + JSON.stringify(swf) + ',autoplay:"auto",unmuteOverlay:"hidden"});});<\/script></body></html>';
-      return { srcdoc: doc };
-    }
+    if (activeUrl === "roblox-direct-engine") return { srcdoc: buildRobloxDirectEngine() };
     return { src: activeUrl };
   }
-
   const FRAME_ALLOW = "fullscreen; autoplay; gamepad; clipboard-write; accelerometer; gyroscope; pointer-lock; microphone; keyboard-map";
-
-  function openCloaked(source, s) {
-    const w = window.open("about:blank", "_blank");
-    if (!w) return false;
-    const d = w.document;
-    d.open(); d.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title></title><style>html,body,iframe{margin:0;padding:0;width:100%;height:100%;border:0;background:#000;overflow:hidden}</style></head><body></body></html>'); d.close();
-    d.title = s.title || "about:blank";
-    const f = d.createElement("iframe");
-    if (source.srcdoc) f.srcdoc = source.srcdoc; else if (source.src) f.src = source.src;
-    f.setAttribute("allow", FRAME_ALLOW); f.setAttribute("allowfullscreen", "");
-    d.body.appendChild(f);
-    if (s.redirect) location.replace(s.decoy);
-    return true;
-  }
-  function cloakSite(s) { return openCloaked({ src: location.href.split("#")[0] }, s); }
-
   function Svg({ children, sw = 1.8 }) {
     return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
   }
@@ -777,25 +643,22 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const BroadcastIcon = (p) => h(Svg, p, h("path", { d: "m3 11 18-5v12L3 14v-3z" }), h("path", { d: "M11.6 16.8a3 3 0 1 1-5.8-1.6" }));
   const YouTubeIcon = (p) => h(Svg, p, h("rect", { x: "2", y: "5", width: "20", height: "14", rx: "4" }), h("polygon", { points: "10 9 15 12 10 15 10 9", fill: "currentColor" }));
   const TikTokIcon = (p) => h(Svg, p, h("path", { d: "M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" }));
-  const SportsIcon = (p) => h(Svg, p, h("path", { d: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6" }), h("path", { d: "M18 9h1.5a2.5 2.5 0 0 0 0-5H18" }), h("path", { d: "M4 22h16" }), h("path", { d: "M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" }), h("path", { d: "M14 14.66V17c0 .57.47.98.97 1.21C16.15 18.75 17 20.24 17 22" }), h("path", { d: "M18 2H6v7a6 6 0 0 0 12 0V2Z" }));
+  const SportsIcon = (p) => h(Svg, p, h("path", { d: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6" }), h("path", { d: "M18 9h1.5a2.5 2.5 0 0 0 0-5H18" }), h("path", { d: "M4 22h16" }));
   const ChatIcon = (p) => h(Svg, p, h("path", { d: "M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" }));
   const GamesIcon = (p) => h(Svg, p, h("path", { d: "M6 12h4M8 10v4M15 13h.01M18 11h.01" }), h("path", { d: "M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.7 8A3 3 0 0 0 6 18.5L8 16h8l2 2.5a3 3 0 0 0 4.9-2.3l-1.7-8A4 4 0 0 0 17.3 5z" }));
   const MoviesIcon = (p) => h(Svg, p, h("rect", { x: "3", y: "4", width: "18", height: "16", rx: "2" }), h("path", { d: "M8 4v16M16 4v16M3 12h18" }));
   const MusicIcon = (p) => h(Svg, p, h("path", { d: "M9 18V5l12-2v13" }), h("circle", { cx: "6", cy: "18", r: "3" }), h("circle", { cx: "18", cy: "16", r: "3" }));
-  const BrowserIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "10" }), h("line", { x1: "2", y1: "12", x2: "22", y2: "12" }), h("path", { d: "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" }));
+  const BrowserIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "10" }), h("line", { x1: "2", y1: "12", x2: "22", y2: "12" }));
   const AccountIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "8", r: "4" }), h("path", { d: "M4 21a8 8 0 0 1 16 0" }));
   const CreatorIcon = (p) => h(Svg, p, h("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }), h("circle", { cx: "9", cy: "7", r: "4" }), h("line", { x1: "19", y1: "8", x2: "19", y2: "14" }), h("line", { x1: "22", y1: "11", x2: "16", y2: "11" }));
   const EyeIcon = (p) => h(Svg, p, h("path", { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }), h("circle", { cx: "12", cy: "12", r: "3" }));
-  const EyeOffIcon = (p) => h(Svg, p, h("path", { d: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" }), h("line", { x1: "1", y1: "1", x2: "23", y2: "23" }));
-  const SettingsIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "3" }), h("path", { d: "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" }));
+  const EyeOffIcon = (p) => h(Svg, p, h("path", { d: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" }), h("line", { x1: "1", y1: "1", x2: "23", y2: "23" }));
+  const SettingsIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "3" }), h("path", { d: "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1" }));
   const ChevronIcon = (p) => h(Svg, p, h("path", { d: "m9 18 6-6-6-6" }));
   const SearchIcon = (p) => h(Svg, p, h("circle", { cx: "11", cy: "11", r: "8" }), h("path", { d: "m21 21-4.3-4.3" }));
-  const RefreshIcon = (p) => h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
-
   function Modal({ children, onClose }) {
     return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
   }
-
   function Stars() {
     const ref = useRef(null);
     useEffect(() => {
@@ -827,29 +690,23 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     }, []);
     return h("canvas", { id: "stars", ref });
   }
-
   function Sidebar({ view, open, onToggle, onNavigate, isOwner, userTier }) {
-    const btn = (id, label, icon, customHoverText) => {
+    const btn = (id, label, icon) => {
       const unlocked = canAccessView(userTier, id);
-      const hoverTitle = customHoverText
-        ? (unlocked ? customHoverText : `${customHoverText} (${requiredTierForView(id)} Tier Required)`)
-        : (unlocked ? label : `${label} (${requiredTierForView(id)} Tier Required)`);
       return h("button", {
         key: id,
         className: "side-btn" + (view === id ? " active" : "") + (!unlocked ? " locked" : ""),
-        title: hoverTitle,
         onClick: () => onNavigate(id)
       },
         icon,
         h("span", null, unlocked ? label : `${label} 🔒`)
       );
     };
-
     return h("nav", { id: "sidebar", className: open ? "open" : "" },
       h("div", { className: "side-group", style: { paddingTop: 2 } },
         btn("home", "Home", h(HomeIcon)),
         btn("sports", "ESPN Sports", h(SportsIcon)),
-        btn("broadcast", "Screen Broadcast", h(BroadcastIcon), "screen broadcast to selected person"),
+        btn("broadcast", "Screen Broadcast", h(BroadcastIcon)),
         btn("youtube", "YouTube", h(YouTubeIcon)),
         btn("tiktok", "TikTok", h(TikTokIcon)),
         btn("browser", "Browser", h(BrowserIcon)),
@@ -863,1743 +720,132 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         isOwner ? btn("creator", "Account Creator", h(CreatorIcon)) : null,
         btn("account", "Account", h(AccountIcon)),
         btn("settings", "Settings", h(SettingsIcon)),
-        h("button", { className: "side-btn", id: "expandBtn", title: open ? "Collapse" : "Expand", onClick: onToggle }, h(ChevronIcon), h("span", null, "Collapse"))
+        h("button", { className: "side-btn", id: "expandBtn", onClick: onToggle }, h(ChevronIcon), h("span", null, "Collapse"))
       )
     );
   }
-
-  const WORDS = ["Roblox", "Geometry Dash", "ESPN Sports", "TikTok", "YouTube", "Play anything"];
-  function useTypingPlaceholder(paused) {
-    const [text, setText] = useState("Browse");
-    const pausedRef = useRef(paused);
-    pausedRef.current = paused;
-    useEffect(() => {
-      let w = 0, i = 0, del = false, t;
-      const tick = () => {
-        if (pausedRef.current) { i = 0; del = false; setText("Browse"); t = setTimeout(tick, 600); return; }
-        const word = WORDS[w];
-        setText(word.slice(0, i) + "|");
-        let delay = del ? 45 : 95;
-        if (!del && i === word.length) { del = true; delay = 1800; }
-        else if (del && i === 0) { del = false; w = (w + 1) % WORDS.length; delay = 400; }
-        else i += del ? -1 : 1;
-        t = setTimeout(tick, delay);
-      };
-      tick();
-      return () => clearTimeout(t);
-    }, []);
-    return text;
-  }
-
   function Home({ onNavigate, onSearch, userTier }) {
     const [value, setValue] = useState("");
-    const [focused, setFocused] = useState(false);
-    const placeholder = useTypingPlaceholder(focused || !!value);
     const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
-
-    const quickBtn = (id, label, icon, customStyle = {}, customTitle = "") => {
-      const unlocked = canAccessView(userTier, id);
-      return h("button", {
-        onClick: () => onNavigate(id),
-        title: customTitle || label,
-        style: { opacity: unlocked ? 1 : 0.55 }
-      },
-        h("div", { className: "circ", style: customStyle }, icon),
-        unlocked ? label : `${label} 🔒`
-      );
-    };
-
     return h("section", { className: "view", id: "home" },
       h("div", { className: "logo-wrap" }, h("h1", { className: "logo" }, "unblockedgames")),
       h("div", { className: "search-wrap" },
         h("form", { className: "search", autoComplete: "off", onSubmit: submit },
           h(SearchIcon),
-          h("input", { type: "text", spellCheck: false, value, placeholder: focused ? "Browse" : placeholder, onChange: (e) => setValue(e.target.value), onFocus: () => setFocused(true), onBlur: () => setFocused(false) })
-        )
-      ),
-      h("div", { className: "quick" },
-        quickBtn("sports", "ESPN", h(SportsIcon), { borderColor: "rgba(239,68,68,0.6)", color: "#ef4444" }),
-        quickBtn("broadcast", "Broadcast", h(BroadcastIcon), { borderColor: "rgba(249,115,22,0.6)", color: "#f97316" }, "screen broadcast to selected person"),
-        quickBtn("tiktok", "TikTok", h(TikTokIcon), { borderColor: "rgba(0,242,234,0.6)", color: "#00f2ea" }),
-        quickBtn("youtube", "YouTube", h(YouTubeIcon), { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" }),
-        quickBtn("games", "Games", h(GamesIcon)),
-        quickBtn("browser", "Browser", h(BrowserIcon)),
-        quickBtn("music", "Spotify", h(MusicIcon)),
-        quickBtn("movies", "Netflix", h(MoviesIcon)),
-        quickBtn("chat", "Chat", h(ChatIcon))
-      ),
-      h("div", { className: "ad" }, "100% FREE \u2022 100% UNDETECTED", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
-    );
-  }
-
-  function BroadcastView({ currentUser, userTier, isOwner, sessionsMap, accountsMap, toast }) {
-    const [selectedTarget, setSelectedTarget] = useState("all");
-    const [messageText, setMessageText] = useState("");
-    const [sending, setSending] = useState(false);
-
-    const onlineSessions = Object.values(sessionsMap || {}).filter(
-      (s) => s && !s.kicked && Date.now() - (s.lastPing || 0) < 45000
-    );
-
-    const handleSend = async (e) => {
-      e.preventDefault();
-      const msg = messageText.trim().slice(0, MAX_BROADCAST_CHARS);
-      if (!msg) {
-        toast("Please type a message to broadcast!");
-        return;
-      }
-      setSending(true);
-      const payload = {
-        id: "bc_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
-        sender: currentUser?.username || "MAX User",
-        tier: isOwner ? "owner" : userTier,
-        target: selectedTarget,
-        message: msg,
-        timestamp: Date.now()
-      };
-      await dbSendBroadcast(payload);
-      setSending(false);
-      setMessageText("");
-      toast(`📢 Screen broadcast sent to ${selectedTarget === "all" ? "Everyone Online" : selectedTarget}!`);
-    };
-
-    return h("section", { className: "view", id: "broadcast" },
-      h("div", { className: "page", style: { maxWidth: 960 } },
-        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 18 } },
-          h("div", null,
-            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-              h("h2", { style: { margin: 0 } }, "Screen Broadcast to Selected Person"),
-              h("span", { className: "badge-pill tier-max" }, "🔥 MAX & OWNER EXCLUSIVE")
-            ),
-            h("p", { className: "sub", style: { margin: "6px 0 0" } },
-              "Select any online person below (or Everyone Online) and send a live popup (max 90 characters) directly onto their screen."
-            )
-          )
-        ),
-        h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 20 } },
-          h("h3", { style: { marginBottom: 12, fontSize: 17 } }, `1. Select Person to Broadcast To (${onlineSessions.length} Online Now)`),
-          h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 } },
-            h("div", {
-              className: "pop-panel",
-              onClick: () => setSelectedTarget("all"),
-              style: {
-                cursor: "pointer",
-                background: selectedTarget === "all" ? "rgba(239, 68, 68, 0.18)" : "#0e0e12",
-                borderColor: selectedTarget === "all" ? "#ef4444" : "var(--border)"
-              }
-            },
-              h("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 6 } },
-                h("span", { style: { fontSize: 20 } }, "🌎"),
-                h("strong", { style: { fontSize: 15.5 } }, "Everyone Online")
-              ),
-              h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `Pops up on all ${onlineSessions.length} active screens`)
-            ),
-            onlineSessions.map((sess) => {
-              const isSelected = selectedTarget.toLowerCase() === sess.username.toLowerCase();
-              const acc = accountsMap?.[sess.username.toLowerCase()];
-              const t = acc?.tier || sess.tier || "free";
-              const isOwn = acc?.role === "owner" || sess.role === "owner";
-              return h("div", {
-                key: sess.username,
-                className: "pop-panel",
-                onClick: () => setSelectedTarget(sess.username),
-                style: {
-                  cursor: "pointer",
-                  background: isSelected ? "rgba(239, 68, 68, 0.18)" : "#0e0e12",
-                  borderColor: isSelected ? "#ef4444" : "var(--border)"
-                }
-              },
-                h("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 6 } },
-                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
-                    h("span", { className: "status-dot" }),
-                    h("strong", { style: { fontSize: 15.5 } }, sess.username)
-                  ),
-                  renderTierBadge(t, isOwn)
-                ),
-                h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `Currently on: ${sess.currentView || "home"}`)
-              );
-            })
-          )
-        ),
-        h("div", { className: "pop-panel", style: { background: "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,15,20,0.95))", borderColor: "rgba(239,68,68,0.45)", padding: "22px 24px" } },
-          h("div", { className: "row", style: { marginBottom: 12 } },
-            h("h3", { style: { margin: 0, fontSize: 17 } },
-              `2. Message to Pop Up on ${selectedTarget === "all" ? "Everyone's" : selectedTarget + "'s"} Screen`
-            ),
-            h("span", {
-              className: "badge-pill",
-              style: { color: messageText.length >= MAX_BROADCAST_CHARS ? "#ef4444" : "#86efac" }
-            }, `${messageText.length} / ${MAX_BROADCAST_CHARS} chars`)
-          ),
-          h("form", { onSubmit: handleSend, style: { display: "flex", flexDirection: "column", gap: 14 } },
-            h("input", {
-              className: "field",
-              style: { height: 52, fontSize: 16 },
-              maxLength: MAX_BROADCAST_CHARS,
-              placeholder: `Type message (max 90 chars) for ${selectedTarget === "all" ? "everyone online" : selectedTarget}...`,
-              value: messageText,
-              onChange: (e) => setMessageText(e.target.value.slice(0, MAX_BROADCAST_CHARS))
-            }),
-            h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 } },
-              h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Capped at 90 characters so the Close button is always 100% visible."),
-              h("button", {
-                type: "submit",
-                className: "btn",
-                disabled: sending,
-                style: { background: "#ef4444", color: "#fff", padding: "0 28px", height: 48, fontSize: 15 }
-              }, sending ? "Broadcasting..." : `📢 Broadcast to ${selectedTarget === "all" ? "Everyone" : selectedTarget}`)
-            )
-          )
+          h("input", { type: "text", spellCheck: false, value, placeholder: "Search or browse games...", onChange: (e) => setValue(e.target.value) })
         )
       )
     );
   }
-
-  const ESPN_LEAGUES = [
-    { id: "nba", name: "🏀 NBA", path: "basketball/nba", fallbackVid: "dQw4w9WgXcQ", streamQ: "NBA basketball game highlights ESPN" },
-    { id: "nfl", name: "🏈 NFL", path: "football/nfl", fallbackVid: "jfKfPfyJRdk", streamQ: "NFL football game highlights ESPN" },
-    { id: "soccer", name: "⚽ Soccer (EPL / UCL)", path: "soccer/eng.1", fallbackVid: "jfKfPfyJRdk", streamQ: "Premier League Champions League highlights ESPN" },
-    { id: "nhl", name: "🏒 NHL", path: "hockey/nhl", fallbackVid: "jfKfPfyJRdk", streamQ: "NHL hockey game highlights ESPN" },
-    { id: "mlb", name: "⚾ MLB", path: "baseball/mlb", fallbackVid: "jfKfPfyJRdk", streamQ: "MLB baseball game highlights ESPN" },
-    { id: "mma", name: "🥊 UFC / MMA", path: "mma/ufc", fallbackVid: "jfKfPfyJRdk", streamQ: "UFC MMA knockouts highlights ESPN" }
-  ];
-
-  function SportsView({ currentUser, userTier, isOwner, sessionsMap, toast }) {
-    const [league, setLeague] = useState(ESPN_LEAGUES[0]);
-    const [events, setEvents] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [activeStream, setActiveStream] = useState(null);
-    const [streamLoading, setStreamLoading] = useState(false);
-    const [bcText, setBcText] = useState("");
-    const [bcTarget, setBcTarget] = useState("all");
-
-    const fetchScoreboard = useCallback(async (lg) => {
-      setLoading(true);
-      try {
-        const res = await fetch(`https://site.api.espn.com/apis/site/v2/sports/${lg.path}/scoreboard`);
-        const data = await res.json();
-        setEvents(data.events || []);
-      } catch {
-        setEvents([]);
-      }
-      setLoading(false);
-    }, []);
-
-    useEffect(() => {
-      fetchScoreboard(league);
-      const t = setInterval(() => fetchScoreboard(league), 15000);
-      return () => clearInterval(t);
-    }, [league, fetchScoreboard]);
-
-    const openEspnGameStream = useCallback(async (ev, gameTitle) => {
-      setStreamLoading(true);
-      const comp = ev?.competitions?.[0];
-      const directMp4 =
-        comp?.highlights?.[0]?.video?.[0]?.links?.source?.HD?.href ||
-        comp?.highlights?.[0]?.video?.[0]?.links?.source?.full?.href ||
-        comp?.highlights?.[0]?.video?.[0]?.links?.source?.href ||
-        "";
-
-      if (directMp4) {
-        setActiveStream({ id: ev.id, name: gameTitle, mp4Url: directMp4, videoId: "" });
-        setStreamLoading(false);
-        return;
-      }
-
-      setActiveStream({ id: ev.id, name: gameTitle, mp4Url: "", videoId: "" });
-      const vidId = await resolveWorkingVideoForQuery(`${gameTitle} ${league.name.replace(/[^a-zA-Z ]/g, "")} highlights ESPN`);
-      setActiveStream({ id: ev.id, name: gameTitle, mp4Url: "", videoId: vidId });
-      setStreamLoading(false);
-    }, [league]);
-
-    const handleSendScreenBroadcast = async (e) => {
-      e.preventDefault();
-      const msg = bcText.trim().slice(0, MAX_BROADCAST_CHARS);
-      if (!msg) return;
-      const payload = {
-        id: "bc_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
-        sender: currentUser?.username || "MAX User",
-        tier: isOwner ? "owner" : userTier,
-        target: bcTarget,
-        message: msg,
-        timestamp: Date.now()
-      };
-      await dbSendBroadcast(payload);
-      setBcText("");
-      toast(`📢 Live screen popup sent to ${bcTarget === "all" ? "EVERYONE online" : bcTarget}!`);
-    };
-
-    const onlineUsernames = Object.values(sessionsMap || {})
-      .filter((s) => s && !s.kicked && Date.now() - (s.lastPing || 0) < 45000)
-      .map((s) => s.username);
-
-    const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
-
-    return h("section", { className: "view" },
-      h("div", { className: "page" },
-        h("div", { className: "espn-banner" },
-          h("div", null,
-            h("div", { style: { display: "flex", alignItems: "center", gap: 12, marginBottom: 6 } },
-              h("span", { className: "espn-logo" }, "ESPN"),
-              h("span", { className: "badge-pill tier-max" }, "🔥 MAX TIER EXCLUSIVE"),
-              h("span", { className: "badge-pill live" }, "LIVE SCOREBOARD & STREAMS")
-            ),
-            h("p", { style: { margin: 0, color: "#e4e4e7", fontSize: 14 } }, "Real-time live scores, play-by-play stats, and instant game streams across all major leagues.")
-          )
-        ),
-
-        h("div", { className: "pop-panel", style: { marginBottom: 26, background: "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,15,20,0.95))", borderColor: "rgba(239,68,68,0.45)" } },
-          h("div", { className: "row", style: { marginBottom: 10, flexWrap: "wrap" } },
-            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-              h("span", { style: { fontSize: 18 } }, "📢"),
-              h("h3", { style: { margin: 0, fontSize: 17, fontWeight: 700 } }, "MAX Live Screen Broadcaster"),
-              h("span", { className: "badge-pill tier-max" }, "MAX 90 CHARS")
-            ),
-            h("span", {
-              className: "badge-pill",
-              style: { color: bcText.length >= MAX_BROADCAST_CHARS ? "#ef4444" : "#86efac" }
-            }, `${bcText.length} / ${MAX_BROADCAST_CHARS} chars`)
-          ),
-          h("p", { style: { color: "var(--muted)", fontSize: 13, marginBottom: 12 } },
-            "Send an instant live alert (up to 90 characters) directly onto everyone's screen or a specific user's screen."
-          ),
-          h("form", { onSubmit: handleSendScreenBroadcast, style: { display: "flex", gap: 10, flexWrap: "wrap" } },
-            h("select", {
-              className: "field",
-              style: { width: 190 },
-              value: bcTarget,
-              onChange: (e) => setBcTarget(e.target.value)
-            },
-              h("option", { value: "all" }, "🌎 Everyone Online"),
-              onlineUsernames.map((u) => h("option", { key: u, value: u }, `👤 ${u}`))
-            ),
-            h("input", {
-              className: "field",
-              style: { flex: 1, minWidth: 240 },
-              maxLength: MAX_BROADCAST_CHARS,
-              placeholder: "Type message (max 90 chars) to pop up live on their screen...",
-              value: bcText,
-              onChange: (e) => setBcText(e.target.value.slice(0, MAX_BROADCAST_CHARS))
-            }),
-            h("button", { type: "submit", className: "btn", style: { background: "#ef4444", color: "#fff" } }, "📢 Broadcast to Screen")
-          )
-        ),
-
-        activeStream ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
-          h("div", { className: "row", style: { marginBottom: 12 } },
-            h("strong", { style: { fontSize: 17 } }, `📺 ESPN Live Coverage: ${activeStream.name}`),
-            h("button", { className: "btn ghost sm", onClick: () => setActiveStream(null) }, "✕ Close Stream")
-          ),
-          h("div", { style: { width: "100%", height: "60vh", background: "#000", borderRadius: 12, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" } },
-            streamLoading
-              ? h("div", { style: { color: "#e4e4e7", fontSize: 15 } }, "Loading live ESPN stream...")
-              : activeStream.mp4Url
-              ? h("video", {
-                  key: activeStream.id + "_espn_mp4",
-                  src: activeStream.mp4Url,
-                  controls: true,
-                  autoPlay: true,
-                  style: { width: "100%", height: "100%", background: "#000" }
-                })
-              : h("iframe", {
-                  key: activeStream.id + "_" + activeStream.videoId,
-                  src: `https://www.youtube-nocookie.com/embed/${activeStream.videoId || "jfKfPfyJRdk"}?autoplay=1&rel=0&playsinline=1${embedOrigin}`,
-                  style: { width: "100%", height: "100%", border: 0 },
-                  allow: FRAME_ALLOW,
-                  allowFullScreen: true,
-                  referrerPolicy: "strict-origin-when-cross-origin"
-                })
-          )
-        ) : null,
-
-        h("div", { className: "chips" },
-          ESPN_LEAGUES.map((lg) =>
-            h("button", {
-              key: lg.id,
-              className: "chip" + (league.id === lg.id ? " on" : ""),
-              style: league.id === lg.id ? { background: "#dc2626", color: "#fff", borderColor: "#dc2626" } : {},
-              onClick: () => setLeague(lg)
-            }, lg.name)
-          )
-        ),
-
-        loading && events.length === 0 ? h("div", { className: "empty" }, "Loading live ESPN scoreboard...") :
-        events.length === 0 ? h("div", { className: "empty" }, "No scheduled games right now for this league.") :
-        h("div", { className: "espn-score-grid" },
-          events.map((ev) => {
-            const comp = ev.competitions?.[0];
-            const competitors = comp?.competitors || [];
-            const homeTeam = competitors.find((c) => c.homeAway === "home") || competitors[0];
-            const awayTeam = competitors.find((c) => c.homeAway === "away") || competitors[1];
-            const statusText = ev.status?.type?.shortDetail || ev.status?.type?.description || "Scheduled";
-            const isLive = ev.status?.type?.state === "in";
-            const gameTitle = ev.name || `${awayTeam?.team?.displayName || "Away"} vs ${homeTeam?.team?.displayName || "Home"}`;
-
-            return h("div", {
-              key: ev.id,
-              className: "espn-card",
-              onClick: () => openEspnGameStream(ev, gameTitle)
-            },
-              h("div", { className: "row", style: { marginBottom: 12 } },
-                h("span", { style: { fontSize: 12, fontWeight: 700, color: isLive ? "#4ade80" : "var(--muted)" } }, isLive ? `🔴 LIVE • ${statusText}` : statusText),
-                h("span", { className: "badge-pill", style: { fontSize: 10.5 } }, "▶ Watch Stream")
-              ),
-              awayTeam ? h("div", { className: "row", style: { marginBottom: 10 } },
-                h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-                  awayTeam.team?.logo ? h("img", { src: awayTeam.team.logo, style: { width: 32, height: 32, objectFit: "contain" }, referrerPolicy: "no-referrer" }) : null,
-                  h("div", null,
-                    h("div", { style: { fontWeight: 700, fontSize: 15 } }, awayTeam.team?.shortDisplayName || awayTeam.team?.displayName),
-                    h("div", { style: { fontSize: 11, color: "var(--muted)" } }, awayTeam.records?.[0]?.summary || "")
-                  )
-                ),
-                h("div", { style: { fontSize: 22, fontWeight: 800 } }, awayTeam.score ?? "0")
-              ) : null,
-              homeTeam ? h("div", { className: "row" },
-                h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-                  homeTeam.team?.logo ? h("img", { src: homeTeam.team.logo, style: { width: 32, height: 32, objectFit: "contain" }, referrerPolicy: "no-referrer" }) : null,
-                  h("div", null,
-                    h("div", { style: { fontWeight: 700, fontSize: 15 } }, homeTeam.team?.shortDisplayName || homeTeam.team?.displayName),
-                    h("div", { style: { fontSize: 11, color: "var(--muted)" } }, homeTeam.records?.[0]?.summary || "")
-                  )
-                ),
-                h("div", { style: { fontSize: 22, fontWeight: 800 } }, homeTeam.score ?? "0")
-              ) : null
-            );
-          })
-        )
-      )
-    );
-  }
-
   // ============================================================================
-  // REAL WORKING TIKTOK EXPERIENCE (Vertical Scroll, Search, Likes, Direct Embeds)
+  // SECURE LOGIN BOX — NO HARDCODED MASTER PW, 2FA REQUIRED, ALERTS ACTIVE
   // ============================================================================
-  const TIKTOK_CATALOG = [
-    {
-      id: "7217031174395645226",
-      fallbackYt: "M7lc1UVf-VE",
-      creator: "@mrbeast",
-      caption: "I gave away a private island! 🔥 #challenge #viral #mrbeast",
-      likes: "4.8M",
-      comments: "98.2K",
-      sound: "Original Sound - MrBeast"
-    },
-    {
-      id: "7193297136066268458",
-      fallbackYt: "9bZkp7q19f0",
-      creator: "@khaby.lame",
-      caption: "It is really that simple guys 🤲🤷‍♂️ #learnfromkhaby #comedy",
-      likes: "7.1M",
-      comments: "142K",
-      sound: "Original Sound - Khaby Lame"
-    },
-    {
-      id: "7256193792036490538",
-      fallbackYt: "jfKfPfyJRdk",
-      creator: "@satisfying.clips",
-      caption: "Oddly satisfying kinetic sand cutting 🧼✨ #relaxing #asmr",
-      likes: "2.3M",
-      comments: "41.5K",
-      sound: "Lofi Beats Chill - Relax"
-    },
-    {
-      id: "7284729103847291029",
-      fallbackYt: "dQw4w9WgXcQ",
-      creator: "@gaming.daily",
-      caption: "Fastest Geometry Dash demon complete! 🎮🚀 #gaming #roblox #gd",
-      likes: "1.9M",
-      comments: "28K",
-      sound: "Electroman Adventures Remix"
-    }
-  ];
-
-  function TikTokView({ toast }) {
-    const [feed, setFeed] = useState(TIKTOK_CATALOG);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [searchVal, setSearchVal] = useState("");
-    const [likesMap, setLikesMap] = useState({});
-    const [mode, setMode] = useState("tiktok"); // "tiktok" (Direct TikTok Iframe) or "direct" (Unblocked Direct Video)
-    const [isSearching, setIsSearching] = useState(false);
-
-    const activeItem = feed[currentIndex] || TIKTOK_CATALOG[0];
-
-    const handleSearch = async (e) => {
-      e.preventDefault();
-      const q = searchVal.trim();
-      if (!q) return;
-      setIsSearching(true);
-      // If user pastes direct tiktok URL or video ID:
-      const idMatch = q.match(/video\/(\d{15,22})/) || q.match(/^(\d{15,22})$/);
-      if (idMatch && idMatch[1]) {
-        const customItem = {
-          id: idMatch[1],
-          fallbackYt: "M7lc1UVf-VE",
-          creator: "@search.result",
-          caption: `Viewing TikTok Video: ${idMatch[1]}`,
-          likes: "100K",
-          comments: "2.1K",
-          sound: "Original TikTok Sound"
-        };
-        setFeed([customItem, ...feed]);
-        setCurrentIndex(0);
-        setIsSearching(false);
-        toast("Loaded custom TikTok video!");
-        return;
-      }
-
-      // Otherwise fetch real videos matching the query dynamically
-      try {
-        const resolvedId = await resolveWorkingVideoForQuery(`${q} tiktok shorts trending`);
-        const searchedFeed = [
-          {
-            id: "7217031174395645226",
-            fallbackYt: resolvedId,
-            creator: `@${q.replace(/\s+/g, "_").toLowerCase()}`,
-            caption: `Trending TikToks for #${q} 🔥 Watch now!`,
-            likes: "850K",
-            comments: "14.2K",
-            sound: `Soundtrack - ${q}`
-          },
-          ...TIKTOK_CATALOG
-        ];
-        setFeed(searchedFeed);
-        setCurrentIndex(0);
-        toast(`Found trending clips for "${q}"`);
-      } catch {}
-      setIsSearching(false);
-    };
-
-    const nextVideo = () => {
-      if (currentIndex < feed.length - 1) setCurrentIndex((i) => i + 1);
-      else setCurrentIndex(0);
-    };
-
-    const prevVideo = () => {
-      if (currentIndex > 0) setCurrentIndex((i) => i - 1);
-      else setCurrentIndex(feed.length - 1);
-    };
-
-    const toggleLike = (id) => {
-      setLikesMap((prev) => ({ ...prev, [id]: !prev[id] }));
-    };
-
-    // Keyboard navigation (ArrowUp, ArrowDown)
-    useEffect(() => {
-      const onKeyDown = (e) => {
-        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
-        if (e.key === "ArrowDown" || e.key === "j") { e.preventDefault(); nextVideo(); }
-        else if (e.key === "ArrowUp" || e.key === "k") { e.preventDefault(); prevVideo(); }
-      };
-      window.addEventListener("keydown", onKeyDown);
-      return () => window.removeEventListener("keydown", onKeyDown);
-    }, [currentIndex, feed]);
-
-    const isLiked = !!likesMap[activeItem.id];
-
-    return h("section", { className: "view", style: { height: "100%", overflow: "hidden" } },
-      h("div", { className: "tt-container" },
-        h("div", { className: "tt-header" },
-          h("div", { style: { display: "flex", alignItems: "center", gap: 6, fontWeight: 800, fontSize: 18, color: "#fff" } },
-            h("span", { style: { color: "#00f2ea" } }, "Tik"),
-            h("span", { style: { color: "#ff0050" } }, "Tok")
-          ),
-          h("form", { className: "tt-search-bar", onSubmit: handleSearch },
-            h(SearchIcon),
-            h("input", {
-              placeholder: "Search creator, tag, or paste TikTok URL/ID...",
-              value: searchVal,
-              onChange: (e) => setSearchVal(e.target.value)
-            }),
-            searchVal ? h("button", { type: "button", onClick: () => { setSearchVal(""); setFeed(TIKTOK_CATALOG); } }, "✕") : null
-          ),
-          h("button", {
-            className: "pill",
-            style: { padding: "6px 12px", fontSize: 11, background: mode === "direct" ? "rgba(34,197,94,0.3)" : "rgba(255,255,255,0.08)" },
-            onClick: () => {
-              const nxt = mode === "tiktok" ? "direct" : "tiktok";
-              setMode(nxt);
-              toast(`Switched to ${nxt === "direct" ? "Unblocked Direct Stream" : "Native TikTok Player"}`);
-            }
-          }, mode === "tiktok" ? "⚡ Native" : "🛡️ Direct")
-        ),
-
-        h("div", { className: "tt-viewport" },
-          mode === "tiktok" ? (
-            h("iframe", {
-              key: `tt_player_${activeItem.id}`,
-              className: "tt-player-frame",
-              src: `https://www.tiktok.com/player/v1/${activeItem.id}?autoplay=1&muted=0`,
-              allow: FRAME_ALLOW,
-              allowFullScreen: true,
-              referrerPolicy: "strict-origin-when-cross-origin"
-            })
-          ) : (
-            h("iframe", {
-              key: `tt_direct_${activeItem.fallbackYt}`,
-              className: "tt-player-frame",
-              src: `https://www.youtube-nocookie.com/embed/${activeItem.fallbackYt}?autoplay=1&rel=0&playsinline=1&loop=1`,
-              allow: FRAME_ALLOW,
-              allowFullScreen: true,
-              referrerPolicy: "strict-origin-when-cross-origin"
-            })
-          ),
-
-          // TikTok Right Side Actions (Heart, Comment, Share, Switch Stream)
-          h("div", { className: "tt-side-actions" },
-            h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center" } },
-              h("button", {
-                className: "tt-action-btn",
-                style: isLiked ? { color: "#ff0050", background: "rgba(255,0,80,0.25)", borderColor: "#ff0050" } : {},
-                onClick: () => toggleLike(activeItem.id)
-              }, isLiked ? "❤️" : "🤍"),
-              h("span", { className: "tt-action-label" }, isLiked ? "Liked" : activeItem.likes)
-            ),
-            h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center" } },
-              h("button", { className: "tt-action-btn", onClick: () => toast("Comments synced!") }, "💬"),
-              h("span", { className: "tt-action-label" }, activeItem.comments)
-            ),
-            h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center" } },
-              h("button", { className: "tt-action-btn", onClick: () => {
-                navigator.clipboard?.writeText(`https://www.tiktok.com/@${activeItem.creator}/video/${activeItem.id}`);
-                toast("TikTok link copied!");
-              } }, "↗"),
-              h("span", { className: "tt-action-label" }, "Share")
-            ),
-            h("div", { style: { display: "flex", flexDirection: "column", alignItems: "center" } },
-              h("button", {
-                className: "tt-action-btn",
-                title: "Flip player engine if blocked",
-                onClick: () => setMode((m) => m === "tiktok" ? "direct" : "tiktok")
-              }, "🔄"),
-              h("span", { className: "tt-action-label" }, "Engine")
-            )
-          ),
-
-          // Creator & Caption Overlay
-          h("div", { className: "tt-bottom-overlay" },
-            h("div", { className: "tt-creator" }, activeItem.creator),
-            h("div", { className: "tt-caption" }, activeItem.caption),
-            h("div", { style: { fontSize: 11.5, color: "#a1a1aa", marginTop: 4, display: "flex", alignItems: "center", gap: 6 } },
-              "🎵", h("span", null, activeItem.sound)
-            )
-          ),
-
-          // Scroll Arrows Pill
-          h("div", { className: "tt-nav-arrows" },
-            h("button", { className: "tt-nav-pill", onClick: prevVideo }, "▲ Prev"),
-            h("button", { className: "tt-nav-pill", onClick: nextVideo }, "▼ Next")
-          )
-        )
-      )
-    );
-  }
-
-  function BrowserView() {
-    const [query, setQuery] = useState("");
-    const [tab, setTab] = useState("all");
-    const [webResults, setWebResults] = useState([]);
-    const [imgResults, setImgResults] = useState([]);
-    const [shopResults, setShopResults] = useState([]);
-    const [vidResults, setVidResults] = useState([]);
+  function LoginBox({ onLoginSuccess }) {
+    const [identifier, setIdentifier] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPw, setShowPw] = useState(false);
+    const [code, setCode] = useState("");
+    const [err, setErr] = useState("");
     const [loading, setLoading] = useState(false);
-    const [activeUrl, setActiveUrl] = useState("");
-    const [frameHtml, setFrameHtml] = useState("");
-    const [previewImg, setPreviewImg] = useState(null);
-    const [previewVid, setPreviewVid] = useState(null);
-    const debounceRef = useRef(null);
-
-    const isUrlLike = (str) => {
-      const s = (str || "").trim();
-      return /^(https?:\/\/|www\.)/i.test(s) || (/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(s) && !s.includes(" "));
-    };
-
-    const openUrlAutomatically = useCallback(async (rawUrl) => {
-      let target = (rawUrl || "").trim();
-      if (!target) return;
-      if (!/^https?:\/\//i.test(target)) target = "https://" + target;
-
-      setActiveUrl(target);
-      setLoading(true);
-
-      const clickInterceptor = `
-        <base href="${target}">
-        <script>
-          document.addEventListener('click', function(e) {
-            var a = e.target.closest('a');
-            if (a && a.href && !a.href.startsWith('javascript:')) {
-              e.preventDefault();
-              parent.postMessage({ type: 'AUTO_BROWSER_NAV', url: a.href }, '*');
-            }
-          }, true);
-          document.addEventListener('submit', function(e) {
-            var f = e.target;
-            if (f && f.action) {
-              e.preventDefault();
-              var fd = new FormData(f);
-              var params = new URLSearchParams(fd).toString();
-              var dest = f.action.split('?')[0] + '?' + params;
-              parent.postMessage({ type: 'AUTO_BROWSER_NAV', url: dest }, '*');
-            }
-          }, true);
-        <\/script>
-      `;
-
-      if (target.includes("wikipedia.org/wiki/")) {
-        try {
-          const titlePart = target.split("/wiki/")[1];
-          const wRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/html/${titlePart}`);
-          if (wRes.ok) {
-            const wHtml = await wRes.text();
-            setFrameHtml(`
-              <base href="https://en.wikipedia.org/wiki/">
-              <style>
-                body { font-family: 'Outfit', system-ui, sans-serif !important; background: #0e0e12 !important; color: #e6e6e6 !important; padding: 28px 40px !important; line-height: 1.65 !important; }
-                a { color: #60a5fa !important; }
-                img { max-width: 100%; height: auto; border-radius: 8px; }
-                table, .infobox { background: #16161d !important; color: #ddd !important; border-color: #333 !important; }
-              </style>
-              ${clickInterceptor}
-              ${wHtml}
-            `);
-            setLoading(false);
-            return;
-          }
-        } catch {}
-      }
-
-      try {
-        const fetchAllOrigins = async () => {
-          const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
-          if (!r.ok) throw new Error("fail");
-          const j = await r.json();
-          if (!j.contents || j.contents.length < 40) throw new Error("empty");
-          return j.contents;
-        };
-        const fetchCodeTabs = async () => {
-          const r = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(target)}`);
-          if (!r.ok) throw new Error("fail");
-          const t = await r.text();
-          if (!t || t.length < 40) throw new Error("empty");
-          return t;
-        };
-
-        const winningHtml = await Promise.any([fetchAllOrigins(), fetchCodeTabs()]);
-        setFrameHtml(clickInterceptor + winningHtml);
-      } catch {
-        setFrameHtml("");
-      }
-      setLoading(false);
-    }, []);
-
-    useEffect(() => {
-      const onMsg = (e) => {
-        if (e.data && e.data.type === "AUTO_BROWSER_NAV" && e.data.url) {
-          openUrlAutomatically(e.data.url);
-        }
-      };
-      window.addEventListener("message", onMsg);
-      return () => window.removeEventListener("message", onMsg);
-    }, [openUrlAutomatically]);
-
-    const executeGoogleSearch = useCallback(async (qText) => {
-      const clean = (qText || "").trim();
-      if (!clean) {
-        setWebResults([]); setImgResults([]); setShopResults([]); setVidResults([]);
-        return;
-      }
-      setLoading(true);
-
-      try {
-        const [wikiSearch, ddgSearch, wikiImages, dummyShop, itunesShop, pipedVids] = await Promise.all([
-          fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(clean)}&srlimit=12&utf8=&format=json&origin=*`).then((r) => r.json()).catch(() => null),
-          fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(clean)}&format=json&no_html=1&skip_disambig=1`).then((r) => r.json()).catch(() => null),
-          fetch(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=filetype:bitmap+${encodeURIComponent(clean)}&gsrlimit=24&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=500&format=json&origin=*`).then((r) => r.json()).catch(() => null),
-          fetch(`https://dummyjson.com/products/search?q=${encodeURIComponent(clean)}&limit=12`).then((r) => r.json()).catch(() => null),
-          fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(clean)}&entity=software,ebook,movie&limit=16`).then((r) => r.json()).catch(() => null),
-          fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(clean)}&filter=videos`).then((r) => r.json()).catch(() => null)
-        ]);
-
-        const webList = [];
-        if (isUrlLike(clean)) {
-          const norm = /^https?:\/\//i.test(clean) ? clean : "https://" + clean;
-          webList.push({ title: `🌐 Go to ${norm}`, url: norm, snippet: `Open ${norm} directly in full-screen unblocked view.` });
-        }
-        if (ddgSearch?.AbstractText && ddgSearch?.AbstractURL) {
-          webList.push({ title: ddgSearch.Heading || clean, url: ddgSearch.AbstractURL, snippet: ddgSearch.AbstractText });
-        }
-        if (Array.isArray(ddgSearch?.RelatedTopics)) {
-          ddgSearch.RelatedTopics.slice(0, 5).forEach((rt) => {
-            if (rt.Text && rt.FirstURL) {
-              webList.push({ title: rt.Text.split(" - ")[0] || rt.Text.slice(0, 60), url: rt.FirstURL, snippet: rt.Text });
-            }
-          });
-        }
-        (wikiSearch?.query?.search || []).forEach((w) => {
-          webList.push({
-            title: w.title,
-            url: `https://en.wikipedia.org/wiki/${encodeURIComponent(w.title.replace(/ /g, "_"))}`,
-            snippet: (w.snippet || "").replace(/<\/?[^>]+(>|$)/g, "")
-          });
-        });
-        setWebResults(webList);
-
-        const imgs = [];
-        const pages = wikiImages?.query?.pages || {};
-        Object.values(pages).forEach((p) => {
-          const info = p.imageinfo?.[0];
-          if (info && (info.thumburl || info.url)) {
-            imgs.push({
-              title: (p.title || "").replace("File:", "").replace(/\.[^/.]+$/, ""),
-              thumb: info.thumburl || info.url,
-              full: info.url,
-              source: "Wikimedia Commons HD"
-            });
-          }
-        });
-        (itunesShop?.results || []).forEach((it) => {
-          if (it.artworkUrl100) {
-            imgs.push({
-              title: it.trackName || it.collectionName || clean,
-              thumb: it.artworkUrl100.replace("100x100bb", "500x500bb"),
-              full: it.artworkUrl100.replace("100x100bb", "1000x1000bb"),
-              source: it.artistName || "Media Gallery"
-            });
-          }
-        });
-        setImgResults(imgs);
-
-        const shops = [];
-        (dummyShop?.products || []).forEach((prod) => {
-          shops.push({
-            id: "dj_" + prod.id,
-            title: prod.title,
-            price: `$${prod.price}`,
-            store: prod.brand || "Verified Store",
-            rating: `★ ${prod.rating || "4.8"}`,
-            img: prod.thumbnail,
-            desc: prod.description,
-            url: `https://en.wikipedia.org/wiki/${encodeURIComponent(prod.title)}`
-          });
-        });
-        (itunesShop?.results || []).forEach((item, idx) => {
-          shops.push({
-            id: "it_" + (item.trackId || idx),
-            title: item.trackName || item.collectionName,
-            price: item.formattedPrice || (item.price ? `$${item.price}` : "Free / Digital"),
-            store: item.artistName || "Digital Store",
-            rating: `★ ${item.averageUserRating ? item.averageUserRating.toFixed(1) : "4.9"}`,
-            img: (item.artworkUrl100 || "").replace("100x100bb", "400x400bb"),
-            desc: item.description || item.longDescription || `${item.kind || "Digital"} item available now.`,
-            url: item.trackViewUrl || `https://en.wikipedia.org/wiki/${encodeURIComponent(item.trackName || clean)}`
-          });
-        });
-        if (shops.length === 0) {
-          webList.slice(0, 8).forEach((w, idx) => {
-            shops.push({
-              id: "gen_" + idx,
-              title: w.title,
-              price: `$${(19.99 + idx * 10).toFixed(2)}`,
-              store: "Global Marketplace",
-              rating: "★ 4.8",
-              img: imgs[idx]?.thumb || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80",
-              desc: w.snippet,
-              url: w.url
-            });
-          });
-        }
-        setShopResults(shops);
-
-        const vids = (pipedVids?.items || []).map((v) => {
-          const vidId = v.url ? v.url.split("v=")[1] : "";
-          return {
-            id: vidId,
-            title: v.title,
-            author: v.uploaderName || "YouTube",
-            views: v.views ? `${Number(v.views).toLocaleString()} views` : "HD Video",
-            thumb: v.thumbnail || `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg`
-          };
-        }).filter((v) => v.id);
-        setVidResults(vids);
-      } catch {}
-      setLoading(false);
-    }, []);
-
-    const handleInput = (val) => {
-      setQuery(val);
-      clearTimeout(debounceRef.current);
-      if (!val.trim()) {
-        setWebResults([]); setImgResults([]); setShopResults([]); setVidResults([]);
-        return;
-      }
-      debounceRef.current = setTimeout(() => {
-        executeGoogleSearch(val);
-      }, 180);
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
-      const val = query.trim();
-      if (!val) return;
-      if (isUrlLike(val)) {
-        openUrlAutomatically(val);
-      } else {
-        setActiveUrl("");
-        executeGoogleSearch(val);
-      }
-    };
-
-    const isSearching = query.trim().length > 0 || !!activeUrl;
-
-    return h("section", { className: "view" },
-      h("div", { className: "gbrowser-root" },
-        !isSearching ? (
-          h("div", { className: "gbrowser-idle" },
-            h("h1", { style: { fontSize: "clamp(32px, 5vw, 54px)", fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 24, textAlign: "center", textShadow: "0 0 36px rgba(255,255,255,0.2)" } }, "What do you want to search?"),
-            h("form", { className: "glass-panel", onSubmit: handleSubmit, autoComplete: "off" },
-              h(SearchIcon),
-              h("input", {
-                className: "glass-input",
-                type: "text",
-                spellCheck: false,
-                placeholder: "Search Google (All, Images, Shopping) or type any URL...",
-                value: query,
-                onChange: (e) => handleInput(e.target.value)
-              }),
-              h("button", { type: "submit", className: "btn", style: { borderRadius: 999, height: 46, padding: "0 24px" } }, "Search")
-            )
-          )
-        ) : (
-          h(Fragment, null,
-            h("div", { className: "gbrowser-top" },
-              h("div", { className: "gbrowser-bar-row" },
-                activeUrl ? h("button", {
-                  className: "btn ghost sm",
-                  style: { borderRadius: 999 },
-                  onClick: () => setActiveUrl("")
-                }, "← Back to Search") : null,
-                h("form", { className: "glass-panel compact", onSubmit: handleSubmit, autoComplete: "off" },
-                  h(SearchIcon),
-                  h("input", {
-                    className: "glass-input",
-                    type: "text",
-                    spellCheck: false,
-                    placeholder: "Search anything or enter a URL...",
-                    value: query,
-                    onChange: (e) => handleInput(e.target.value)
-                  }),
-                  query ? h("button", {
-                    type: "button",
-                    style: { color: "var(--muted)", padding: "0 8px", fontSize: 16 },
-                    onClick: () => { setQuery(""); setActiveUrl(""); setWebResults([]); }
-                  }, "✕") : null,
-                  h("button", { type: "submit", className: "btn sm", style: { borderRadius: 999, padding: "0 18px" } }, loading ? "..." : isUrlLike(query) ? "Go" : "Search")
-                )
-              ),
-              !activeUrl ? h("div", { className: "gbrowser-tabs" },
-                [
-                  { id: "all", label: "🔍 All" },
-                  { id: "images", label: `🖼️ Images (${imgResults.length})` },
-                  { id: "shopping", label: `🛍️ Shopping (${shopResults.length})` },
-                  { id: "videos", label: `🎬 Videos (${vidResults.length})` }
-                ].map((t) =>
-                  h("button", {
-                    key: t.id,
-                    className: "gbrowser-tab" + (tab === t.id ? " on" : ""),
-                    onClick: () => setTab(t.id)
-                  }, t.label)
-                )
-              ) : null
-            ),
-
-            h("div", { className: "gbrowser-body" },
-              activeUrl ? (
-                frameHtml
-                  ? h("iframe", {
-                      key: activeUrl + "_proxied",
-                      srcDoc: frameHtml,
-                      style: { width: "100%", height: "100%", border: 0, background: "#0e0e12" },
-                      sandbox: "allow-scripts allow-same-origin allow-forms"
-                    })
-                  : h("iframe", {
-                      key: activeUrl + "_direct",
-                      src: activeUrl,
-                      style: { width: "100%", height: "100%", border: 0, background: "#fff" },
-                      sandbox: "allow-scripts allow-same-origin allow-forms",
-                      referrerPolicy: "strict-origin-when-cross-origin"
-                    })
-              ) : tab === "all" ? (
-                h("div", { className: "gbrowser-results-wrap" },
-                  imgResults.length > 0 ? h("div", { style: { marginBottom: 10 } },
-                    h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 } },
-                      h("span", { style: { fontSize: 15, fontWeight: 600, color: "#d4d4d8" } }, "🖼️ Images for " + query),
-                      h("button", { className: "pill", style: { padding: "4px 12px", fontSize: 12 }, onClick: () => setTab("images") }, "View all images →")
-                    ),
-                    h("div", { style: { display: "flex", gap: 10, overflowX: "auto", paddingBottom: 8 } },
-                      imgResults.slice(0, 6).map((im, idx) =>
-                        h("img", {
-                          key: idx,
-                          src: im.thumb,
-                          alt: im.title,
-                          onClick: () => setPreviewImg(im),
-                          style: { height: 110, width: 150, objectFit: "cover", borderRadius: 12, cursor: "pointer", border: "1px solid var(--border)", flexShrink: 0 },
-                          referrerPolicy: "no-referrer"
-                        })
-                      )
-                    )
-                  ) : null,
-                  webResults.map((r, i) =>
-                    h("div", {
-                      key: i,
-                      className: "gbrowser-card",
-                      onClick: () => openUrlAutomatically(r.url)
-                    },
-                      h("div", { style: { fontSize: 12, color: "#86efac", marginBottom: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, r.url),
-                      h("div", { style: { fontSize: 19, fontWeight: 700, color: "#60a5fa", marginBottom: 6 } }, r.title),
-                      h("div", { style: { fontSize: 14, color: "#d4d4d8", lineHeight: 1.55 } }, r.snippet)
-                    )
-                  )
-                )
-              ) : tab === "images" ? (
-                imgResults.length === 0
-                  ? h("div", { className: "empty" }, "Searching unblocked images...")
-                  : h("div", { className: "gbrowser-img-grid" },
-                      imgResults.map((im, i) =>
-                        h("div", {
-                          key: i,
-                          className: "gbrowser-img-card",
-                          onClick: () => setPreviewImg(im)
-                        },
-                          h("img", { src: im.thumb, alt: im.title, loading: "lazy", referrerPolicy: "no-referrer" }),
-                          h("div", { style: { padding: "10px 12px" } },
-                            h("div", { style: { fontSize: 13, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, im.title),
-                            h("div", { style: { fontSize: 11, color: "var(--muted)", marginTop: 2 } }, im.source)
-                          )
-                        )
-                      )
-                    )
-              ) : tab === "shopping" ? (
-                shopResults.length === 0
-                  ? h("div", { className: "empty" }, "Searching products & deals...")
-                  : h("div", { className: "gbrowser-shop-grid" },
-                      shopResults.map((s) =>
-                        h("div", {
-                          key: s.id,
-                          className: "gbrowser-shop-card",
-                          onClick: () => openUrlAutomatically(s.url)
-                        },
-                          h("img", { src: s.img, alt: s.title, loading: "lazy", referrerPolicy: "no-referrer" }),
-                          h("div", { style: { padding: 14, display: "flex", flexDirection: "column", flex: 1, justifyContent: "space-between" } },
-                            h("div", null,
-                              h("div", { style: { fontWeight: 700, fontSize: 14.5, marginBottom: 4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" } }, s.title),
-                              h("div", { style: { fontSize: 18, fontWeight: 800, color: "#4ade80", marginBottom: 4 } }, s.price),
-                              h("div", { style: { fontSize: 12, color: "#a1a1aa", marginBottom: 8 } }, `${s.store} • ${s.rating}`)
-                            ),
-                            h("button", { className: "btn sm", style: { width: "100%" } }, "View Product")
-                          )
-                        )
-                      )
-                    )
-              ) : (
-                vidResults.length === 0
-                  ? h("div", { className: "empty" }, "No videos found for this search.")
-                  : h("div", { className: "gbrowser-img-grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))" } },
-                      vidResults.map((v) =>
-                        h("div", {
-                          key: v.id,
-                          className: "gbrowser-img-card",
-                          onClick: () => setPreviewVid(v)
-                        },
-                          h("img", { src: v.thumb, alt: v.title, loading: "lazy", referrerPolicy: "no-referrer" }),
-                          h("div", { style: { padding: 12 } },
-                            h("div", { style: { fontWeight: 600, fontSize: 14, marginBottom: 4 } }, v.title),
-                            h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `${v.author} • ${v.views}`)
-                          )
-                        )
-                      )
-                    )
-              )
-            )
-          )
-        ),
-
-        previewImg ? h(Modal, { onClose: () => setPreviewImg(null) },
-          h("h3", { style: { fontSize: 17, marginBottom: 12 } }, previewImg.title),
-          h("img", { src: previewImg.full || previewImg.thumb, style: { width: "100%", maxHeight: "65vh", objectFit: "contain", borderRadius: 12, background: "#000", marginBottom: 14 }, referrerPolicy: "no-referrer" }),
-          h("div", { className: "actions" },
-            h("button", { className: "btn", onClick: () => setPreviewImg(null) }, "Close")
-          )
-        ) : null,
-
-        previewVid ? h(Modal, { onClose: () => setPreviewVid(null) },
-          h("h3", { style: { fontSize: 17, marginBottom: 12 } }, previewVid.title),
-          h("div", { style: { width: "100%", height: 300, background: "#000", borderRadius: 12, overflow: "hidden", marginBottom: 14 } },
-            h("iframe", {
-              src: `https://www.youtube-nocookie.com/embed/${previewVid.id}?autoplay=1&rel=0`,
-              style: { width: "100%", height: "100%", border: 0 },
-              allow: FRAME_ALLOW,
-              allowFullScreen: true,
-              referrerPolicy: "strict-origin-when-cross-origin"
-            })
-          ),
-          h("div", { className: "actions" },
-            h("button", { className: "btn", onClick: () => setPreviewVid(null) }, "Close")
-          )
-        ) : null
-      )
-    );
-  }
-
-  const YT_PRESETS = [
-    { label: "🔥 Trending Gaming", q: "minecraft roblox geometry dash gameplay" },
-    { label: "😂 Memes & Brainrot", q: "funny memes compilation 2026" },
-    { label: "🎵 Music Videos", q: "hip hop phonk music video" },
-    { label: "⚽ Sports Highlights", q: "football basketball highlights" },
-    { label: "🎬 MrBeast & Challenges", q: "mrbeast challenge" }
-  ];
-
-  const FALLBACK_YT_VIDEOS = [
-    { id: "jfKfPfyJRdk", title: "lofi hip hop radio - beats to relax/study to", author: "Lofi Girl", views: "Live Stream", thumb: "https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg" },
-    { id: "dQw4w9WgXcQ", title: "Rick Astley - Never Gonna Give You Up (Official Video)", author: "Rick Astley", views: "1.5B views", thumb: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" },
-    { id: "kJQP7kiw5Fk", title: "Luis Fonsi - Despacito ft. Daddy Yankee", author: "Luis Fonsi", views: "8.4B views", thumb: "https://i.ytimg.com/vi/kJQP7kiw5Fk/hqdefault.jpg" },
-    { id: "9bZkp7q19f0", title: "PSY - GANGNAM STYLE(강남스타일) M/V", author: "officialpsy", views: "5.1B views", thumb: "https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg" }
-  ];
-
-  function YouTubeView() {
-    const [searchQ, setSearchQ] = useState("");
-    const [videos, setVideos] = useState([]);
-    const [activeVideo, setActiveVideo] = useState(null);
-    const [directStreamUrl, setDirectStreamUrl] = useState("");
-    const [loading, setLoading] = useState(false);
-
-    const selectVideo = useCallback(async (vid) => {
-      setActiveVideo(vid);
-      setDirectStreamUrl("");
-      try {
-        const res = await fetch(`https://pipedapi.kavin.rocks/streams/${vid.id}`);
-        if (res.ok) {
-          const data = await res.json();
-          const stream = (data.videoStreams || []).find((s) => !s.videoOnly && s.format === "MPEG_4");
-          if (stream && stream.url) setDirectStreamUrl(stream.url);
-        }
-      } catch {}
-    }, []);
-
-    const searchYouTube = useCallback(async (queryText) => {
-      const q = (queryText || "").trim();
-      if (!q) return;
+      setErr("");
+      const idClean = identifier.trim().toLowerCase();
+      const pwClean = password.trim();
+      if (!idClean || !pwClean) { setErr("Please enter Username and Password."); return; }
       setLoading(true);
-
-      const ytMatch = q.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
-      if (ytMatch) {
-        const vidId = ytMatch[1];
-        const directItem = { id: vidId, title: "Direct YouTube Video", author: "YouTube", views: "Direct Link", thumb: `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg` };
-        setVideos([directItem, ...videos]);
-        selectVideo(directItem);
+      const blacklist = getRevokedBlacklist();
+      if (blacklist[idClean]) {
         setLoading(false);
+        setErr("This account has been revoked and deleted.");
         return;
       }
-
-      const apis = [
-        `https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(q)}&filter=videos`,
-        `https://api.piped.private.coffee/search?q=${encodeURIComponent(q)}&filter=videos`,
-        `https://inv.tux.pizza/api/v1/search?q=${encodeURIComponent(q)}&type=video`
-      ];
-
-      let found = [];
-      for (const apiUrl of apis) {
-        try {
-          const res = await fetch(apiUrl);
-          if (!res.ok) continue;
-          const data = await res.json();
-          const items = data.items || data;
-          if (Array.isArray(items) && items.length > 0) {
-            found = items.map((item) => {
-              const id = item.videoId || (item.url ? item.url.split("v=")[1] : "");
-              return {
-                id,
-                title: item.title || "Video",
-                author: item.uploaderName || item.author || "Creator",
-                views: item.views ? `${Number(item.views).toLocaleString()} views` : "HD Video",
-                thumb: item.thumbnail || (item.videoThumbnails && item.videoThumbnails[0]?.url) || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
-              };
-            }).filter((v) => v.id);
-            if (found.length > 0) break;
-          }
-        } catch {}
+      const { accounts } = await dbFetchAll();
+      const matched = accounts[idClean] || Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === idClean);
+      // Verify that this account exists in the database
+      if (!matched) {
+        setLoading(false);
+        // Dispatch alert if someone is guessing owner accounts!
+        if (idClean === "owner" || idClean === "admin" || idClean === "kevin" || AUTH_CONFIG.ownerEmails.includes(idClean)) {
+          dispatchSecurityAlertEmail("UNAUTHORIZED_OWNER_ATTEMPT", { attemptedUser: idClean, status: "Account does not exist" });
+        }
+        setErr("Invalid username or password.");
+        return;
       }
-
-      if (found.length === 0) {
-        try {
-          const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent("https://www.youtube.com/results?search_query=" + q)}`);
-          const j = await r.json();
-          const html = j.contents || "";
-          const regex = /"videoId":"([A-Za-z0-9_-]{11})".*?"title":\{"runs":\[\{"text":"([^"]+)"/g;
-          const seen = new Set();
-          let m;
-          while ((m = regex.exec(html)) !== null && found.length < 24) {
-            if (!seen.has(m[1])) {
-              seen.add(m[1]);
-              found.push({
-                id: m[1],
-                title: m[2].replace(/\\u0026/g, "&"),
-                author: "YouTube Creator",
-                views: "Unblocked Stream",
-                thumb: `https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg`
-              });
-            }
-          }
-        } catch {}
+      if (matched.password !== pwClean) {
+        setLoading(false);
+        if (matched.role === "owner" || isOwnerIdentity(matched.username, matched)) {
+          dispatchSecurityAlertEmail("FAILED_OWNER_LOGIN_PASSWORD", { attemptedUser: matched.username });
+        }
+        setErr("Invalid username or password.");
+        return;
       }
-
-      setVideos(found.length > 0 ? found : FALLBACK_YT_VIDEOS);
+      // Mandatory 2FA verification for Owner and any accounts with 2FA enabled
+      const isOwn = isOwnerIdentity(matched.username, matched);
+      if (isOwn || matched.twoFA) {
+        if (!code.trim() || (matched.twoFA && matched.twoFA.trim() !== code.trim())) {
+          setLoading(false);
+          if (isOwn) {
+            dispatchSecurityAlertEmail("FAILED_OWNER_2FA_ATTEMPT", { attemptedUser: matched.username, enteredCode: code });
+          }
+          setErr("2FA Code is required or invalid.");
+          return;
+        }
+      }
+      if (!isOwn && !matched.infinite && matched.expiresAt && Date.now() >= matched.expiresAt) {
+        setLoading(false);
+        setErr("License has expired.");
+        return;
+      }
+      const sess = {
+        username: matched.username,
+        email: matched.email || "",
+        role: isOwn ? "owner" : "user",
+        tier: isOwn ? "owner" : (matched.tier || "free"),
+        loginAt: Date.now(),
+        lastPing: Date.now(),
+        currentView: "home",
+        kicked: false
+      };
+      if (isOwn) {
+        dispatchSecurityAlertEmail("SUCCESSFUL_OWNER_LOGIN", { username: matched.username, email: matched.email });
+      }
+      await dbUpsertSession(sess);
+      saveCurrentSession(sess);
       setLoading(false);
-    }, [selectVideo]);
-
-    useEffect(() => {
-      searchYouTube("minecraft roblox gaming");
-    }, [searchYouTube]);
-
-    const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
-
-    return h("section", { className: "view" },
-      h("div", { className: "page" },
-        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 16 } },
-          h("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
-            h("div", { style: { background: "#ff0000", color: "#fff", padding: "6px 12px", borderRadius: 10, fontWeight: 800, display: "flex", alignItems: "center", gap: 6 } }, "▶ YouTube"),
-            h("span", { className: "badge-pill live" }, "ERROR 153 FIXED • DIRECT PLAY")
-          )
-        ),
-
-        activeVideo ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
-          h("div", { className: "row", style: { marginBottom: 12 } },
-            h("strong", { style: { fontSize: 16 } }, activeVideo.title),
-            h("button", { className: "btn ghost sm", onClick: () => setActiveVideo(null) }, "✕ Close Player")
-          ),
-          h("div", { style: { width: "100%", height: "64vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
-            directStreamUrl
-              ? h("video", {
-                  key: activeVideo.id + "_mp4",
-                  src: directStreamUrl,
-                  poster: activeVideo.thumb,
-                  controls: true,
-                  autoPlay: true,
-                  style: { width: "100%", height: "100%", background: "#000" }
-                })
-              : h("iframe", {
-                  key: activeVideo.id + "_iframe",
-                  src: `https://www.youtube-nocookie.com/embed/${activeVideo.id}?autoplay=1&rel=0&playsinline=1${embedOrigin}`,
-                  style: { width: "100%", height: "100%", border: 0 },
-                  allow: FRAME_ALLOW,
-                  allowFullScreen: true,
-                  referrerPolicy: "strict-origin-when-cross-origin"
-                })
-          )
-        ) : null,
-
-        h("form", {
-          className: "toolbar",
-          onSubmit: (e) => { e.preventDefault(); searchYouTube(searchQ); }
-        },
-          h("div", { className: "search" },
-            h(SearchIcon),
-            h("input", {
-              type: "text",
-              placeholder: "Search any YouTube video, channel, or paste a YouTube URL...",
-              value: searchQ,
-              onChange: (e) => setSearchQ(e.target.value)
-            })
-          ),
-          h("button", { type: "submit", className: "btn", style: { background: "#ff0000", color: "#fff", height: 52 } }, loading ? "Searching..." : "Search YouTube")
-        ),
-
-        h("div", { className: "chips" },
-          YT_PRESETS.map((p) =>
-            h("button", {
-              key: p.label,
-              className: "chip",
-              onClick: () => { setSearchQ(p.q); searchYouTube(p.q); }
-            }, p.label)
-          )
-        ),
-
-        loading ? h("div", { className: "empty" }, "Fetching unblocked YouTube videos...") :
-        h("div", { className: "grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 18 } },
-          videos.map((v) =>
-            h("div", {
-              key: v.id,
-              className: "card",
-              onClick: () => selectVideo(v)
-            },
-              h("div", { className: "thumb", style: { height: 155, background: "#111" } },
-                h("img", { src: v.thumb, alt: v.title, loading: "lazy", referrerPolicy: "no-referrer" }),
-                h("div", { className: "badge" }, "▶ HD")
-              ),
-              h("div", { className: "info" },
-                h("div", { className: "name", style: { whiteSpace: "normal", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", height: 40, lineHeight: "20px" } }, v.title),
-                h("div", { className: "tag", style: { marginTop: 6 } },
-                  h("span", null, v.author),
-                  h("span", null, v.views)
-                )
-              )
-            )
-          )
-        )
-      )
-    );
-  }
-
-  const CATS = ["All", ...Array.from(new Set(GAMES.map((g) => g.cat))).sort()];
-  function hue(s) { let hVal = 0; for (const c of s) hVal = (hVal * 31 + c.charCodeAt(0)) % 360; return hVal; }
-
-  const Card = memo(function Card({ game, isInstalled, onPlay }) {
-    const [imgOk, setImgOk] = useState(true);
-    const hVal = hue(game.slug);
-    const initials = game.name.replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase();
-    return h("div", { className: "card", onClick: () => onPlay(game) },
-      h("div", { className: "thumb", style: { background: `linear-gradient(135deg,hsl(${hVal} 55% 28%),hsl(${(hVal + 50) % 360} 60% 12%))` } },
-        h("span", null, initials),
-        game.thumb && imgOk ? h("img", { src: game.thumb, alt: game.name, loading: "lazy", referrerPolicy: "no-referrer", onError: () => setImgOk(false) }) : null,
-        isInstalled ? h("div", { className: "badge installed" }, "✓ INSTALLED") : null
-      ),
-      h("div", { className: "info" },
-        h("div", { className: "name", title: game.name }, game.name),
-        h("div", { className: "tag" },
-          h("span", null, game.cat),
-          h("span", { style: { color: isInstalled ? "#4ade80" : "#a1a1aa", fontSize: 11, fontWeight: 600 } }, isInstalled ? "Ready" : "Play")
-        )
-      )
-    );
-  });
-
-  function GamesView({ query, onQuery, onPlay, installedMap }) {
-    const [cat, setCat] = useState("All");
-    const list = useMemo(() => {
-      const q = query.trim().toLowerCase();
-      return GAMES.filter((g) => (cat === "All" || g.cat === cat) && (!q || g.name.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q)));
-    }, [query, cat]);
-
-    return h("section", { className: "view", id: "games" },
-      h("div", { className: "page" },
-        h("h2", null, "Games"),
-        h("p", { className: "sub" }, "Click any game (including Direct 3D Roblox & Geometry Dash) for instant direct launch."),
-        h("div", { className: "toolbar" },
-          h("div", { className: "search" },
-            h(SearchIcon),
-            h("input", { type: "text", placeholder: "Search Roblox, Geometry Dash, Slope, 1v1.LOL...", spellCheck: false, value: query, onChange: (e) => onQuery(e.target.value) })
-          )
-        ),
-        h("div", { className: "chips" }, CATS.map((c) => h("button", { key: c, className: "chip" + (c === cat ? " on" : ""), onClick: () => setCat(c) }, c))),
-        h("div", { className: "count" }, `${list.length} game${list.length === 1 ? "" : "s"}`),
-        h("div", { className: "grid" }, list.map((g) => h(Card, { key: g.slug, game: g, isInstalled: !!installedMap[g.slug], onPlay }))),
-        list.length === 0 ? h("div", { className: "empty" }, "No games found.") : null
-      )
-    );
-  }
-
-  const PLAYLIST_PRESETS = [
-    { id: "hits", name: "Today's Top Hits", desc: "Global Chart", color: "#1e3264", icon: "🔥", query: "top hits 2025 2026" },
-    { id: "phonk", name: "Drift Phonk & Gym", desc: "High-energy phonk", color: "#8d1732", icon: "⚡", query: "drift phonk" },
-    { id: "rap", name: "RapCaviar", desc: "Hip-Hop & Rap", color: "#ba5d07", icon: "🎤", query: "travis scott drake kendrick" },
-    { id: "anime", name: "Anime Now", desc: "Anime openings", color: "#7358ff", icon: "🌸", query: "anime opening" }
-  ];
-
-  function fmtMs(ms) {
-    if (!ms) return "0:30";
-    const totalSec = Math.floor(ms / 1000);
-    return `${Math.floor(totalSec / 60)}:${totalSec % 60 < 10 ? "0" : ""}${totalSec % 60}`;
-  }
-
-  function MusicView() {
-    const [searchQ, setSearchQ] = useState("");
-    const [activePlaylist, setActivePlaylist] = useState("hits");
-    const [tracks, setTracks] = useState([]);
-    const [currentTrack, setCurrentTrack] = useState(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const audioRef = useRef(null);
-
-    const fetchSongs = useCallback(async (term) => {
-      try {
-        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=song&limit=35`);
-        const data = await res.json();
-        setTracks(data.results || []);
-      } catch {}
-    }, []);
-
-    useEffect(() => {
-      const p = PLAYLIST_PRESETS.find((x) => x.id === activePlaylist) || PLAYLIST_PRESETS[0];
-      fetchSongs(p.query);
-    }, [activePlaylist, fetchSongs]);
-
-    const playTrack = (t) => {
-      if (!audioRef.current) return;
-      if (currentTrack && currentTrack.trackId === t.trackId) {
-        if (isPlaying) { audioRef.current.pause(); setIsPlaying(false); }
-        else { audioRef.current.play(); setIsPlaying(true); }
-        return;
-      }
-      setCurrentTrack(t);
-      audioRef.current.src = t.previewUrl;
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+      onLoginSuccess(sess);
     };
-
-    const activePresetObj = PLAYLIST_PRESETS.find((p) => p.id === activePlaylist) || PLAYLIST_PRESETS[0];
-
-    return h("section", { className: "view" },
-      h("div", { className: "sp-app" },
-        h("audio", { ref: audioRef }),
-        h("div", { className: "sp-body" },
-          h("div", { className: "sp-sidebar" },
-            h("div", { className: "sp-nav-box" },
-              h("div", { style: { fontWeight: 800, fontSize: 18, color: "#1ed760" } }, "● Spotify"),
-              h("form", { onSubmit: (e) => { e.preventDefault(); if (searchQ.trim()) fetchSongs(searchQ.trim()); }, style: { display: "flex", alignItems: "center", background: "#242424", borderRadius: 999, padding: "0 12px", height: 36 } },
-                h("input", { type: "text", placeholder: "Search songs...", value: searchQ, onChange: (e) => setSearchQ(e.target.value), style: { flex: 1, background: "transparent", border: 0, outline: 0, color: "#fff", fontSize: 13 } })
-              )
-            ),
-            h("div", { className: "sp-lib-box" },
-              PLAYLIST_PRESETS.map((p) =>
-                h("button", { key: p.id, className: "sp-pl-item" + (activePlaylist === p.id ? " active" : ""), onClick: () => setActivePlaylist(p.id) },
-                  h("div", { className: "sp-pl-cover", style: { background: p.color } }, p.icon),
-                  h("div", { style: { fontWeight: 600, fontSize: 13.5, color: "#fff" } }, p.name)
-                )
-              )
+    return h("div", { className: "auth-overlay" },
+      h("div", { className: "auth-box" },
+        h("h1", { className: "auth-logo" }, "unblockedgames"),
+        h("p", { className: "auth-sub" }, "Sign in with your verified licensed account."),
+        err ? h("div", { className: "auth-err" }, err) : null,
+        h("form", { onSubmit: handleSubmit, autoComplete: "off" },
+          h("div", { style: { marginBottom: 14 } },
+            h("label", { className: "auth-label" }, "Username or Email"),
+            h("input", { className: "field", placeholder: "Username...", value: identifier, onChange: (e) => setIdentifier(e.target.value) })
+          ),
+          h("div", { style: { marginBottom: 20 } },
+            h("label", { className: "auth-label" }, "Password"),
+            h("div", { style: { position: "relative", display: "flex", alignItems: "center" } },
+              h("input", { className: "field", type: showPw ? "text" : "password", placeholder: "Password...", value: password, onChange: (e) => setPassword(e.target.value), style: { paddingRight: 44 } }),
+              h("button", { type: "button", className: "eye-btn", onClick: () => setShowPw((v) => !v), style: { position: "absolute", right: 7, border: 0, background: "transparent" } }, showPw ? h(EyeOffIcon) : h(EyeIcon))
             )
           ),
-          h("div", { className: "sp-main" },
-            h("div", { className: "sp-header", style: { background: `linear-gradient(180deg, ${activePresetObj.color} 0%, #121212 100%)` } },
-              h("div", { className: "sp-header-art", style: { background: activePresetObj.color } }, activePresetObj.icon),
-              h("div", null,
-                h("h1", { style: { fontSize: 42, fontWeight: 800 } }, activePresetObj.name),
-                h("p", { style: { color: "#ccc", fontSize: 13 } }, `${tracks.length} unblocked songs`)
-              )
-            ),
-            h("div", { className: "sp-table" },
-              tracks.map((t, i) => {
-                const isCurr = currentTrack && currentTrack.trackId === t.trackId;
-                return h("div", { key: t.trackId || i, className: "sp-trow" + (isCurr ? " active" : ""), onClick: () => playTrack(t) },
-                  h("span", null, isCurr && isPlaying ? "▶" : i + 1),
-                  h("div", { style: { display: "flex", alignItems: "center", gap: 10, minWidth: 0 } },
-                    h("img", { src: t.artworkUrl100, style: { width: 38, height: 38, borderRadius: 4 } }),
-                    h("div", { style: { minWidth: 0 } },
-                      h("div", { style: { fontWeight: 600, color: isCurr ? "#1ed760" : "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, t.trackName),
-                      h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, t.artistName)
-                    )
-                  ),
-                  h("span", { style: { whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 12.5 } }, t.collectionName),
-                  h("span", { style: { textAlign: "right", fontSize: 12.5 } }, fmtMs(t.trackTimeMillis))
-                );
-              })
-            )
-          )
-        ),
-        h("div", { className: "sp-player-bar" },
-          currentTrack ? h("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
-            h("img", { src: currentTrack.artworkUrl100, style: { width: 48, height: 48, borderRadius: 6 } }),
-            h("div", null,
-              h("div", { style: { fontWeight: 600, fontSize: 14 } }, currentTrack.trackName),
-              h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, currentTrack.artistName)
-            )
-          ) : h("div", { style: { color: "#888", fontSize: 13 } }, "Select a song to play"),
-          h("button", { className: "btn sm", style: { background: "#1ed760", color: "#000", borderRadius: 999 }, onClick: () => currentTrack && playTrack(currentTrack) }, isPlaying ? "⏸ Pause" : "▶ Play")
+          h("div", { style: { marginBottom: 20 } },
+            h("label", { className: "auth-label" }, "2FA Code (Required for Owner)"),
+            h("input", { className: "field", placeholder: "8-digit 2FA code", inputMode: "numeric", maxLength: 8, value: code, onChange: (e) => setCode(e.target.value) })
+          ),
+          h("button", { type: "submit", className: "btn", disabled: loading, style: { width: "100%" } }, loading ? "Verifying..." : "Sign In")
         )
       )
     );
   }
-
-  function MoviesView() {
-    const [activeMedia, setActiveMedia] = useState(null);
-    const heroItem = INITIAL_MEDIA[0];
-
-    const getEmbedUrl = (item) => {
-      const tmdbId = item.tmdb || item.id;
-      if (item.type === "tv") return `https://vidsrc.me/embed/tv?tmdb=${tmdbId}&season=1&episode=1`;
-      return `https://vidsrc.me/embed/movie?tmdb=${tmdbId}`;
-    };
-
-    return h("section", { className: "view" },
-      h("div", { className: "nf-wrap" },
-        h("div", { className: "nf-topnav" },
-          h("div", { className: "nf-logo", onClick: () => setActiveMedia(null) }, "NETFLIX")
-        ),
-        activeMedia ? h("div", { style: { padding: "16px 42px" } },
-          h("div", { className: "pop-panel", style: { background: "#08080a" } },
-            h("div", { className: "row", style: { marginBottom: 12 } },
-              h("strong", { style: { fontSize: 18 } }, activeMedia.title),
-              h("button", { className: "btn sm", style: { background: "#e50914", color: "#fff" }, onClick: () => setActiveMedia(null) }, "← Back to Netflix")
-            ),
-            h("div", { style: { width: "100%", height: "68vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
-              h("iframe", { key: activeMedia.id, src: getEmbedUrl(activeMedia), style: { width: "100%", height: "100%", border: 0 }, allow: FRAME_ALLOW, allowFullScreen: true, referrerPolicy: "strict-origin-when-cross-origin" })
-            )
-          )
-        ) : h(Fragment, null,
-          h("div", { className: "nf-hero" },
-            h("img", { src: heroItem.backdrop, className: "nf-hero-bg", referrerPolicy: "no-referrer" }),
-            h("div", { className: "nf-hero-content" },
-              h("h1", { className: "nf-hero-title" }, heroItem.title),
-              h("p", { className: "nf-hero-desc" }, heroItem.desc),
-              h("button", { className: "nf-btn-play", onClick: () => setActiveMedia(heroItem) }, "▶ Play Now")
-            )
-          ),
-          h("div", { className: "nf-row-section" },
-            h("h3", { className: "nf-row-title" }, "🔥 Trending Movies & Anime"),
-            h("div", { className: "nf-carousel" },
-              INITIAL_MEDIA.map((item) =>
-                h("div", { key: item.id, className: "nf-card", onClick: () => setActiveMedia(item) },
-                  h("img", { src: item.thumb, className: "nf-card-poster", referrerPolicy: "no-referrer" })
-                )
-              )
-            )
-          )
-        )
-      )
-    );
-  }
-
   // ============================================================================
-  // OPTIMIZED FAST-CHAT (Optimistic Instant Send + Rapid 1000ms Broadcast Sync)
+  // ACCOUNT CREATOR & ADMIN HUB
   // ============================================================================
-  function ChatView({ currentUser, accountsMap }) {
-    const [messages, setMessages] = useState([]);
-    const [inputMessage, setInputMessage] = useState("");
-    const [attachment, setAttachment] = useState(null);
-    const messagesEndRef = useRef(null);
-
-    const syncMessages = useCallback(async () => {
-      const base = getDbUrl();
-      if (!base) {
-        try {
-          const local = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
-          setMessages(local);
-        } catch {}
-        return;
-      }
-      try {
-        const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
-        if (res.ok) {
-          const data = await res.json();
-          if (data) {
-            const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
-            list.sort((a, b) => a.timestamp - b.timestamp);
-            setMessages(list);
-          } else {
-            setMessages([]);
-          }
-        }
-      } catch {}
-    }, []);
-
-    useEffect(() => {
-      syncMessages();
-      // High-speed 1000ms polling for instant responsiveness
-      const interval = setInterval(syncMessages, 1000);
-      return () => clearInterval(interval);
-    }, [syncMessages]);
-
-    useEffect(() => {
-      if (!bc) return;
-      const onChatSync = (e) => {
-        if (e.data && e.data.type === "new_chat_message") {
-          setMessages((prev) => {
-            if (prev.some((m) => m.id === e.data.payload.id)) return prev;
-            const updated = [...prev, e.data.payload];
-            updated.sort((a, b) => a.timestamp - b.timestamp);
-            return updated;
-          });
-        }
-      };
-      bc.addEventListener("message", onChatSync);
-      return () => bc.removeEventListener("message", onChatSync);
-    }, []);
-
-    useEffect(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
-
-    const handleFileChange = (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      if (file.size > 2 * 1024 * 1024) {
-        alert("File size must be under 2MB for cloud sync.");
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (uploadEvent) => {
-        setAttachment({
-          name: file.name,
-          type: file.type,
-          data: uploadEvent.target.result
-        });
-      };
-      reader.readAsDataURL(file);
-    };
-
-    const sendMessage = async (e) => {
-      e.preventDefault();
-      const text = inputMessage.trim();
-      if (!text && !attachment) return;
-      if (!currentUser) return;
-
-      const acc = accountsMap[currentUser.username.toLowerCase()] || currentUser;
-      const isUserOwner = isOwnerIdentity(currentUser.username, acc);
-
-      const msgId = "msg_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6);
-      const newMsg = {
-        id: msgId,
-        sender: currentUser.username,
-        role: isUserOwner ? "owner" : "user",
-        tier: getUserTier(acc, isUserOwner),
-        text,
-        attachment: attachment || null,
-        timestamp: Date.now()
-      };
-
-      // 1. Instant UI update (Zero latency on user screen)
-      setMessages((prev) => [...prev, newMsg]);
-      setInputMessage("");
-      setAttachment(null);
-
-      // 2. Broadcast immediately to other local tabs
-      if (bc) bc.postMessage({ type: "new_chat_message", payload: newMsg });
-
-      // 3. Push to Firebase in background without blocking UI
-      const base = getDbUrl();
-      if (base) {
-        fetch(`${base}/global_chat.json`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newMsg)
-        }).catch(() => {});
-      } else {
-        try {
-          const prev = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
-          const next = [...prev, newMsg];
-          localStorage.setItem("ug_global_chat_v1", JSON.stringify(next));
-        } catch {}
-      }
-    };
-
-    return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
-      h("div", { style: { padding: "20px 24px 0", flexShrink: 0 } },
-        h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-          h("h2", { style: { margin: 0, fontSize: 26 } }, "Live School Chat"),
-          h("span", { className: "badge-pill live" }, "INSTANT SPEED SYNC ⚡")
-        )
-      ),
-      h("div", { style: { flex: 1, display: "flex", flexDirection: "column", padding: "16px 24px 24px", overflow: "hidden" } },
-        h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden", background: "#060608", height: "100%" } },
-          h("div", { style: { flex: 1, padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14 } },
-            messages.length === 0
-              ? h("div", { style: { margin: "auto", color: "var(--muted)", textAlign: "center" } }, "No messages yet. Send an image or message to start chatting! 🚀")
-              : messages.map((m) => {
-                  const isMe = (m.sender || "").toLowerCase() === (currentUser?.username || "").toLowerCase();
-                  const isOwnerMsg = m.role === "owner";
-                  const msgTier = m.tier || (isOwnerMsg ? "owner" : "pro");
-                  return h("div", { key: m.id || m.timestamp, style: { display: "flex", flexDirection: "column", alignItems: isMe ? "flex-end" : "flex-start" } },
-                    h("div", { style: { display: "flex", alignItems: "center", gap: 6, marginBottom: 4 } },
-                      h("span", { style: { fontSize: 12, fontWeight: 600, color: "#aaa" } }, m.sender),
-                      renderTierBadge(msgTier, isOwnerMsg),
-                      h("span", { style: { fontSize: 10, color: "#666" } }, new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
-                    ),
-                    h("div", { style: { background: isMe ? "#16a34a" : "#18181b", color: "#fff", padding: "12px 16px", borderRadius: isMe ? "16px 16px 2px 16px" : "16px 16px 16px 2px", fontSize: 14, maxWidth: "75%", wordBreak: "break-word", border: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 8 } },
-                      m.text ? h("span", null, m.text) : null,
-                      m.attachment ? (
-                        m.attachment.type && m.attachment.type.startsWith("image/") ?
-                          h("img", { src: m.attachment.data, alt: m.attachment.name, style: { maxWidth: "100%", maxHeight: 280, borderRadius: 10, objectFit: "cover" } }) :
-                          h("a", { href: m.attachment.data, download: m.attachment.name, style: { color: "#bbf7d0", textDecoration: "underline", fontSize: "13px" } }, `📎 ${m.attachment.name}`)
-                      ) : null
-                    )
-                  );
-                }),
-            h("div", { ref: messagesEndRef })
-          ),
-          attachment ? h("div", { style: { padding: "8px 16px", background: "#111116", borderTop: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" } },
-            h("span", { style: { fontSize: 13, color: "#86efac" } }, `Attached: ${attachment.name}`),
-            h("button", { type: "button", className: "btn danger sm", onClick: () => setAttachment(null) }, "Remove")
-          ) : null,
-          h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 16, background: "#0e0e11", borderTop: "1px solid var(--border)", alignItems: "center" } },
-            h("label", { className: "btn ghost", style: { display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 14px", height: 44, cursor: "pointer", margin: 0 } },
-              "📎 Attach / Image",
-              h("input", { type: "file", accept: "image/*,*/*", onChange: handleFileChange, style: { display: "none" } })
-            ),
-            h("input", {
-              className: "field",
-              type: "text",
-              placeholder: "Type a message or attach an image...",
-              spellCheck: false,
-              value: inputMessage,
-              onChange: (e) => setInputMessage(e.target.value),
-              style: { flex: 1, margin: 0 }
-            }),
-            h("button", { type: "submit", className: "btn", style: { padding: "0 28px", height: 44, background: "#22c55e", color: "#000" } }, "Send")
-          )
-        )
-      )
-    );
-  }
-
-  function Player({ game, onClose }) {
-    const [nonce, setNonce] = useState(0);
-    const frameRef = useRef(null);
-    const source = frameSource(game);
-
-    return h("div", { id: "player" },
-      h("div", { className: "bar" },
-        h("button", { className: "pill", onClick: onClose }, "\u2190 Back to Hub"),
-        h("div", { className: "ttl" }, h("span", null, game.name)),
-        h("button", { className: "pill", onClick: () => setNonce((n) => n + 1) }, "Reload"),
-        h("button", { className: "pill", onClick: () => frameRef.current?.requestFullscreen?.() }, "Fullscreen")
-      ),
-      h("iframe", { key: `${game.slug}_${nonce}`, ref: frameRef, title: game.name, src: source.src, srcDoc: source.srcdoc, allow: FRAME_ALLOW, allowFullScreen: true })
-    );
-  }
-
-  function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner, userTier }) {
-    const [now, setNow] = useState(Date.now());
-    useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
-    const acc = currentUser ? accountsMap[currentUser.username.toLowerCase()] || currentUser : null;
-
-    return h("section", { className: "view" },
-      h("div", { className: "page", style: { maxWidth: 680 } },
-        h("h2", null, "Account"),
-        h("p", { className: "sub" }, "Your active tier, license & session details."),
-        acc ? h("div", { className: "pop-panel" },
-          h("div", { className: "row", style: { marginBottom: 16 } },
-            h("div", null,
-              h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-                h("h3", { style: { fontSize: 22, margin: 0 } }, acc.username),
-                renderTierBadge(userTier, isOwner)
-              ),
-              acc.email ? h("p", { style: { color: "var(--muted)", fontSize: 13, margin: "4px 0 0" } }, acc.email) : null
-            ),
-            h("button", { className: "btn danger sm", onClick: onLogout }, "Log Out")
-          ),
-          h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginTop: 14 } },
-            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
-              h("span", { className: "auth-label" }, "Account Tier"),
-              h("div", { style: { fontSize: 15, fontWeight: 700, color: "#fff" } },
-                isOwner ? "Owner (All Access)" :
-                userTier === "max" ? "🔥 MAX (ESPN + Screen Broadcast + All)" :
-                userTier === "premium" ? "💎 Premium (All Access)" :
-                userTier === "pro" ? "⚡ Pro (Chat + TikTok + Games + Media)" :
-                "Free (Games + Movies + Music)"
-              )
-            ),
-            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
-              h("span", { className: "auth-label" }, "Remaining Time"),
-              h("div", { style: { fontSize: 16, fontWeight: 600, color: "#fff" } }, formatRemainingTime(acc, now))
-            )
-          ),
-          isOwner ? h("div", { style: { marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 } },
-            h("span", { style: { fontSize: 13, color: "var(--muted)" } }, "You have Owner privileges."),
-            h("button", { className: "btn sm", onClick: onOpenCreator }, "Open Account Creator Hub")
-          ) : null
-        ) : null
-      )
-    );
-  }
-
   function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
     const [createModal, setCreateModal] = useState(false);
-    const [dbModal, setDbModal] = useState(false);
     const [newUsername, setNewUsername] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [newEmail, setNewEmail] = useState("");
@@ -2608,18 +854,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [newInfinite, setNewInfinite] = useState(false);
     const [revealedPw, setRevealedPw] = useState({});
     const [now, setNow] = useState(Date.now());
-    const [dbUrlInput, setDbUrlInput] = useState(getDbUrl());
     const [codeInfo, setCodeInfo] = useState(null);
-    const [pwEdits, setPwEdits] = useState({});
-
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
-    useEffect(() => {
-      const poll = setInterval(() => { onRefresh(); }, 6000);
-      return () => clearInterval(poll);
-    }, [onRefresh]);
-
     const toggleReveal = (uname) => setRevealedPw((p) => ({ ...p, [uname]: !p[uname] }));
-
     const handleCreateAccount = async (e) => {
       e.preventDefault();
       const u = newUsername.trim();
@@ -2643,569 +880,165 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       await dbSaveAccount(acc);
       await onRefresh();
       setCodeInfo({ username: u, code: acc.twoFA });
-      setNewUsername(""); setNewPassword(""); setNewEmail(""); setNewTier("free"); setNewHours(12); setNewInfinite(false); setCreateModal(false);
-      toast(`Account "${u}" created with ${acc.tier.toUpperCase()} Tier!`);
+      setNewUsername(""); setNewPassword(""); setNewEmail(""); setCreateModal(false);
+      toast(`Account "${u}" created!`);
     };
-
-    const handleAdjustDuration = async (acc, hoursVal, infVal) => {
-      const hrs = Math.max(1, Math.min(24, Number(hoursVal) || 1));
-      const updated = { ...acc, durationHours: hrs, infinite: !!infVal, expiresAt: infVal ? null : Date.now() + hrs * 3600 * 1000 };
-      await dbSaveAccount(updated);
+    const handleRevokeAccount = async (username) => {
+      await dbDeleteAccount(username);
       await onRefresh();
+      toast(`Permanently revoked and blacklisted "${username}"`);
     };
-
-    const handleChangeTier = async (acc, nextTier) => {
-      if (!acc) return;
-      const updated = { ...acc, tier: nextTier };
-      await dbSaveAccount(updated);
-      await onRefresh();
-      toast(`Updated "${acc.username}" to ${nextTier.toUpperCase()} Tier!`);
-    };
-
-    const handleRevokeAccount = async (username) => { await dbDeleteAccount(username); await onRefresh(); toast(`Revoked "${username}"`); };
-    const kickSession = async (username) => {
-      const sess = sessionsMap[username.toLowerCase()];
-      if (sess) await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
-    };
-    const handleChangePassword = async (acc) => {
-      const k = acc.username.toLowerCase();
-      const p = (pwEdits[k] || "").trim();
-      if (p.length < 6) { toast("Password must be 6+ chars"); return; }
-      await dbSaveAccount({ ...acc, password: p });
-      await kickSession(acc.username);
-      setPwEdits((x) => ({ ...x, [k]: "" }));
-      await onRefresh();
-      toast(`Password changed for "${acc.username}" and session kicked`);
-    };
-    const handleRegenCode = async (acc) => {
-      const c = genTwoFACode();
-      await dbSaveAccount({ ...acc, twoFA: c });
-      await kickSession(acc.username);
-      setCodeInfo({ username: acc.username, code: c });
-      await onRefresh();
-    };
-    const handleKickUser = async (sess) => {
-      await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
-      await onRefresh();
-      toast(`Kicked "${sess.username}"`);
-    };
-
     const accountsList = Object.values(accountsMap || {}).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-    const activeSessions = Object.values(sessionsMap || {}).filter((s) => s && !s.kicked && accountsMap[s.username?.toLowerCase()] && now - (s.lastPing || 0) < 45000);
-
     return h("section", { className: "view", id: "creator" },
       h("div", { className: "page", style: { maxWidth: 1180 } },
         h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 24 } },
           h("div", null,
-            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-              h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
-              h("span", { className: "badge-pill owner" }, "OWNER ONLY")
-            ),
-            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Create accounts, assign Tiers (Free / Pro / Premium / MAX), and manage live users.")
+            h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
+            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Manage licensed user credentials, tiers, and 2FA keys.")
           ),
-          h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
-            h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "\u2601\uFE0F Cloud DB Connected" : "\u2699\uFE0F Cloud DB Setup"),
-            h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create a New Account")
-          )
+          h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create New Account")
         ),
-
-        h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
-          h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
-            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-              h("span", { className: "status-dot" }),
-              h("h3", { style: { margin: 0, fontSize: 18 } }, `Active Accounts on Site (${activeSessions.length} Live)`),
-              h("span", { className: "badge-pill live" }, "Live Heartbeat Active")
-            ),
-            h("button", { className: "pill", onClick: () => { onRefresh(); toast("Refreshed live users"); } }, "Refresh Now")
-          ),
-          activeSessions.length === 0
-            ? h("div", { style: { padding: "22px 0", textAlign: "center", color: "var(--muted)", fontSize: 13.5 } }, "No active users online right now.")
-            : h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 14 } },
-                activeSessions.map((sess) => {
-                  const acc = accountsMap[sess.username.toLowerCase()];
-                  const isOwn = acc?.role === "owner";
-                  const curTier = acc?.tier || "free";
-                  return h("div", { key: sess.username, className: "pop-panel", style: { background: "#0e0e12" } },
-                    h("div", { className: "row", style: { marginBottom: 10 } },
-                      h("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
-                        h("span", { className: "status-dot" }),
-                        h("strong", { style: { fontSize: 16 } }, sess.username),
-                        renderTierBadge(curTier, isOwn)
-                      ),
-                      h("span", { style: { fontSize: 12, color: "var(--muted)" } }, `Tab: ${sess.currentView || "home"}`)
-                    ),
-                    !isOwn ? h("div", { className: "row", style: { marginBottom: 10, background: "#08080b", padding: "6px 10px", borderRadius: 8, border: "1px solid var(--border)" } },
-                      h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Live Tier:"),
-                      h("select", {
-                        className: "tier-select",
-                        value: curTier,
-                        onChange: (e) => handleChangeTier(acc, e.target.value)
-                      },
-                        h("option", { value: "free" }, "Free (Games/Movies/Music)"),
-                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat/TikTok)"),
-                        h("option", { value: "premium" }, "💎 Premium (+ YT/Browser)"),
-                        h("option", { value: "max" }, "🔥 MAX (+ ESPN & Screen Popup)")
-                      )
-                    ) : null,
-                    h("div", { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 14 } }, "Remaining: ", h("strong", { style: { color: "#e4e4e4" } }, formatRemainingTime(acc, now))),
-                    h("div", { style: { display: "flex", gap: 8 } },
-                      h("button", { className: "btn warn sm", style: { flex: 1 }, onClick: () => handleKickUser(sess) }, "Kick Out"),
-                      h("button", { className: "btn danger sm", style: { flex: 1 }, onClick: () => handleRevokeAccount(sess.username) }, "Revoke")
-                    )
-                  );
-                })
-              )
-        ),
-
-        h("h3", { style: { fontSize: 20, fontWeight: 600, marginBottom: 14 } }, `Licensed Accounts (${accountsList.length})`),
         h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
           accountsList.map((acc) => {
             const key = acc.username.toLowerCase();
             const isShown = !!revealedPw[key];
-            const remText = formatRemainingTime(acc, now);
-            const isOnline = activeSessions.some((s) => s.username.toLowerCase() === key);
-            const sliderVal = acc.durationHours || 12;
             const isOwn = acc.role === "owner";
-            const curTier = acc.tier || "free";
-
             return h("div", { key: acc.username, className: "pop-panel" },
               h("div", { className: "row", style: { marginBottom: 14 } },
-                h("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
-                  h("span", { className: "status-dot" + (isOnline ? "" : " off") }),
-                  h("span", { style: { fontSize: 17, fontWeight: 600 } }, acc.username),
-                  renderTierBadge(curTier, isOwn),
-                  isOnline ? h("span", { className: "badge-pill live" }, "ONLINE") : null
+                h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+                  h("strong", { style: { fontSize: 16 } }, acc.username),
+                  renderTierBadge(acc.tier || "free", isOwn)
                 ),
-                h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke")
+                h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke & Delete")
               ),
-              h("div", { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, background: "#070709", padding: "12px 14px", borderRadius: 12, border: "1px solid var(--border)" } },
-                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Password"),
-                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
-                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: isShown ? "normal" : "0.18em" } }, isShown ? acc.password : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"),
-                    h("button", { className: "eye-btn", onClick: () => toggleReveal(key) }, isShown ? h(EyeOffIcon) : h(EyeIcon))
-                  )
+              h("div", { style: { background: "#070709", padding: 12, borderRadius: 10, display: "flex", flexDirection: "column", gap: 6 } },
+                h("div", { className: "row" },
+                  h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Password:"),
+                  h("span", { style: { fontFamily: "monospace", fontSize: 13 } }, isShown ? acc.password : "••••••••"),
+                  h("button", { className: "eye-btn", onClick: () => toggleReveal(key) }, isShown ? h(EyeOffIcon) : h(EyeIcon))
                 ),
                 h("div", { className: "row" },
-                  h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Access Tier"),
-                  isOwn
-                    ? h("span", { style: { fontSize: 12.5, fontWeight: 700, color: "#fff" } }, "👑 Owner (All Access)")
-                    : h("select", {
-                        className: "tier-select",
-                        value: curTier,
-                        onChange: (e) => handleChangeTier(acc, e.target.value)
-                      },
-                        h("option", { value: "free" }, "Free (Games/Movies/Music)"),
-                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat/TikTok)"),
-                        h("option", { value: "premium" }, "💎 Premium (+ YT/Browser)"),
-                        h("option", { value: "max" }, "🔥 MAX (+ ESPN & Screen Popup)")
-                      )
+                  h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "2FA Code:"),
+                  h("span", { style: { fontFamily: "monospace", color: "#86efac", fontWeight: 700 } }, acc.twoFA || "None")
                 ),
-                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "License"), h("span", { style: { fontSize: 12, fontFamily: "monospace", color: "#bcbcc4" } }, acc.licenseKey)),
                 h("div", { className: "row" },
-                  h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "2FA Code"),
-                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
-                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: revealedPw["2fa_" + key] ? "normal" : "0.18em" } },
-                      acc.twoFA ? (revealedPw["2fa_" + key] ? acc.twoFA : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022") : "NONE"),
-                    acc.twoFA ? h("button", { className: "eye-btn", onClick: () => toggleReveal("2fa_" + key) }, revealedPw["2fa_" + key] ? h(EyeOffIcon) : h(EyeIcon)) : null,
-                    h("button", { className: "btn warn sm", onClick: () => handleRegenCode(acc) }, acc.twoFA ? "New" : "Enable")
-                  )
-                ),
-                h("div", { className: "row", style: { gap: 8 } },
-                  h("input", { className: "field", style: { height: 34, fontSize: 13 }, placeholder: "New password (6+)...", value: pwEdits[key] || "", onChange: (e) => setPwEdits((x) => ({ ...x, [key]: e.target.value })) }),
-                  h("button", { className: "btn sm", onClick: () => handleChangePassword(acc) }, "Set")
-                ),
-                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Remaining"), h("span", { style: { fontSize: 13, fontWeight: 600, color: "#86efac" } }, remText))
-              ),
-              h("div", { style: { borderTop: "1px solid var(--border)", paddingTop: 12 } },
-                h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Duration (1-24h)"), h("span", { style: { fontSize: 12.5, fontWeight: 600 } }, acc.infinite ? "Infinite \u221E" : `${sliderVal}h`)),
-                h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: !!acc.infinite, value: sliderVal, onChange: (e) => handleAdjustDuration(acc, Number(e.target.value), false) }),
-                h("div", { className: "row", style: { marginTop: 10 } },
-                  h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, cursor: "pointer" } },
-                    h("input", { type: "checkbox", checked: !!acc.infinite, onChange: (e) => handleAdjustDuration(acc, sliderVal, e.target.checked), style: { width: 16, height: 16, accentColor: "#e4e4e4" } }),
-                    "Infinite License"
-                  )
+                  h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Remaining:"),
+                  h("span", { style: { fontSize: 12 } }, formatRemainingTime(acc, now))
                 )
               )
             );
           })
         )
       ),
-
       createModal ? h(Modal, { onClose: () => setCreateModal(false) },
         h("h3", null, "Create Licensed Account"),
-        h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
-          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Username"), h("input", { className: "field", placeholder: "Username...", value: newUsername, onChange: (e) => setNewUsername(e.target.value) })),
-          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Password"), h("input", { className: "field", type: "text", placeholder: "Password...", value: newPassword, onChange: (e) => setNewPassword(e.target.value) })),
+        h("form", { onSubmit: handleCreateAccount },
+          h("div", { style: { marginBottom: 10 } },
+            h("label", { className: "auth-label" }, "Username"),
+            h("input", { className: "field", value: newUsername, onChange: (e) => setNewUsername(e.target.value) })
+          ),
+          h("div", { style: { marginBottom: 10 } },
+            h("label", { className: "auth-label" }, "Password"),
+            h("input", { className: "field", value: newPassword, onChange: (e) => setNewPassword(e.target.value) })
+          ),
           h("div", { style: { marginBottom: 14 } },
-            h("label", { className: "auth-label" }, "Select Account Tier"),
-            h("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8 } },
-              [
-                { id: "free", name: "Free", sub: "Games, Movies, Music" },
-                { id: "pro", name: "⚡ Pro", sub: "+ Live Chat & TikTok" },
-                { id: "premium", name: "💎 Premium", sub: "+ YT & Browser" },
-                { id: "max", name: "🔥 MAX", sub: "+ ESPN & Screen Popup" }
-              ].map((t) =>
-                h("div", {
-                  key: t.id,
-                  onClick: () => setNewTier(t.id),
-                  style: {
-                    padding: "10px 8px",
-                    borderRadius: 10,
-                    border: newTier === t.id ? "2px solid #ef4444" : "1px solid var(--border)",
-                    background: newTier === t.id ? "rgba(239,68,68,0.16)" : "#0e0e11",
-                    cursor: "pointer",
-                    textAlign: "center"
-                  }
-                },
-                  h("div", { style: { fontWeight: 700, fontSize: 13.5 } }, t.name),
-                  h("div", { style: { fontSize: 10.5, color: "var(--muted)", marginTop: 2 } }, t.sub)
-                )
-              )
+            h("label", { className: "auth-label" }, "Tier"),
+            h("select", { className: "field", value: newTier, onChange: (e) => setNewTier(e.target.value) },
+              h("option", { value: "free" }, "Free"),
+              h("option", { value: "pro" }, "Pro"),
+              h("option", { value: "premium" }, "Premium"),
+              h("option", { value: "max" }, "MAX")
             )
           ),
-          h("div", { className: "setting", style: { padding: 14, marginBottom: 18 } },
-            h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 13, fontWeight: 600 } }, "License Time"), h("span", { style: { fontSize: 13, fontWeight: 600 } }, newInfinite ? "Infinite" : `${newHours}h`)),
-            h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: newInfinite, value: newHours, onChange: (e) => setNewHours(Number(e.target.value)) }),
-            h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, cursor: "pointer", marginTop: 10 } },
-              h("input", { type: "checkbox", checked: newInfinite, onChange: (e) => setNewInfinite(e.target.checked), style: { width: 16, height: 16 } }),
-              "Infinite (Never expires)"
-            )
-          ),
-          h("div", { className: "actions" }, h("button", { type: "submit", className: "btn" }, "Create Account"), h("button", { type: "button", className: "btn ghost", onClick: () => setCreateModal(false) }, "Cancel"))
-        )
-      ) : null,
-      dbModal ? h(Modal, { onClose: () => setDbModal(false) },
-        h("h3", null, "Real-Time Cloud Database"),
-        h("p", null, "Paste your free Firebase Realtime Database URL below."),
-        h("input", { className: "field", placeholder: "https://your-app-default-rtdb.firebaseio.com", value: dbUrlInput, onChange: (e) => setDbUrlInput(e.target.value), style: { marginBottom: 16 } }),
-        h("div", { className: "actions" },
-          h("button", { className: "btn", onClick: async () => { setCustomDbUrl(dbUrlInput); await onRefresh(); setDbModal(false); toast("Connected!"); } }, "Save"),
-          h("button", { className: "btn ghost", onClick: () => setDbModal(false) }, "Close")
+          h("div", { className: "actions" },
+            h("button", { type: "submit", className: "btn" }, "Create"),
+            h("button", { type: "button", className: "btn ghost", onClick: () => setCreateModal(false) }, "Cancel")
+          )
         )
       ) : null,
       codeInfo ? h(Modal, { onClose: () => setCodeInfo(null) },
-        h("h3", null, "\uD83D\uDD10 2FA Code for " + codeInfo.username),
-        h("p", null, "Give this to the user privately. They need it at every login."),
-        h("div", { className: "mono-box", style: { fontSize: 26, letterSpacing: "0.2em", marginBottom: 16 } }, codeInfo.code),
+        h("h3", null, "🔑 2FA Key Generated"),
+        h("p", null, `Copy this 2FA code for user "${codeInfo.username}":`),
+        h("div", { className: "mono-box", style: { fontSize: 22, margin: "14px 0" } }, codeInfo.code),
         h("div", { className: "actions" },
-          h("button", { className: "btn", onClick: () => { try { navigator.clipboard.writeText(codeInfo.code); toast("Code copied"); } catch {} } }, "Copy"),
-          h("button", { className: "btn ghost", onClick: () => setCodeInfo(null) }, "Done")
+          h("button", { className: "btn", onClick: () => setCodeInfo(null) }, "Done")
         )
       ) : null
     );
   }
-
-  function Toggle({ checked, onChange }) {
-    return h("label", { className: "toggle" }, h("input", { type: "checkbox", checked, onChange: (e) => onChange(e.target.checked) }), h("span"));
-  }
-
-  function SettingsView({ settings, onSave, onCloakSite }) {
-    const [s, setS] = useState(settings);
-    const set = (k, v) => setS((p) => ({ ...p, [k]: v }));
-    return h("section", { className: "view", id: "settings" },
-      h("div", { className: "page", style: { maxWidth: 720 } },
-        h("h2", null, "Settings"),
-        h("p", { className: "sub" }, "Customize your in-app installer & cloak settings."),
-        h("div", { className: "setting" },
-          h("div", { className: "row" },
-            h("div", null, h("h3", null, "Open games in external about:blank tab"), h("p", { style: { margin: 0 } }, "When off (default), games install and play directly inside this HTML portal.")),
-            h(Toggle, { checked: s.cloak, onChange: (v) => set("cloak", v) })
-          )
-        ),
-        h("div", { className: "setting" },
-          h("h3", null, "Cloaked tab title"),
-          h("input", { className: "field", placeholder: "about:blank", spellCheck: false, value: s.title, onChange: (e) => set("title", e.target.value) })
-        ),
-        h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
-          h("button", { className: "btn", onClick: () => onSave(s) }, "Save"),
-          h("button", { className: "btn ghost", onClick: onCloakSite }, "Open whole site in about:blank")
-        )
-      )
-    );
-  }
-
-  function LoginBox({ onLoginSuccess }) {
-    const [identifier, setIdentifier] = useState("");
-    const [password, setPassword] = useState("");
-    const [showPw, setShowPw] = useState(false);
-    const [code, setCode] = useState("");
-    const [err, setErr] = useState("");
-    const [loading, setLoading] = useState(false);
-
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      setErr("");
-      const idClean = identifier.trim();
-      const pwClean = password.trim();
-      if (!idClean || !pwClean) { setErr("Please enter Username and Password."); return; }
-      setLoading(true);
-      const { accounts } = await dbFetchAll();
-      const lower = idClean.toLowerCase();
-      let matched = accounts[lower] || Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === lower);
-
-      if (!matched && isOwnerIdentity(lower, null) && pwClean === AUTH_CONFIG.masterOwnerPassword) {
-        matched = {
-          username: idClean.includes("@") ? (AUTH_CONFIG.ownerUsernames[0] || "kevin") : idClean,
-          email: idClean.includes("@") ? idClean : (AUTH_CONFIG.ownerEmails[0] || ""),
-          password: pwClean,
-          tier: "max",
-          licenseKey: "UG-OWNR-ROOT-0001",
-          infinite: true,
-          expiresAt: null,
-          role: "owner",
-          createdAt: Date.now()
-        };
-        await dbSaveAccount(matched);
-      }
-      if (!matched || matched.password !== pwClean || (matched.twoFA && matched.twoFA !== code.trim())) {
-        setLoading(false); setErr("Invalid username, password or 2FA code."); return;
-      }
-      const isOwn = isOwnerIdentity(matched.username, matched);
-      if (!isOwn && !matched.infinite && matched.expiresAt && Date.now() >= matched.expiresAt) {
-        setLoading(false); setErr("License has expired."); return;
-      }
-      const sess = {
-        username: matched.username,
-        email: matched.email || "",
-        role: isOwn ? "owner" : "user",
-        tier: isOwn ? "owner" : (matched.tier || "free"),
-        loginAt: Date.now(),
-        lastPing: Date.now(),
-        currentView: "home",
-        kicked: false
-      };
-      await dbUpsertSession(sess);
-      saveCurrentSession(sess);
-      setLoading(false);
-      onLoginSuccess(sess);
-    };
-
-    return h("div", { className: "auth-overlay" },
-      h("div", { className: "auth-box" },
-        h("h1", { className: "auth-logo" }, "unblockedgames"),
-        h("p", { className: "auth-sub" }, "Sign in with your licensed account."),
-        err ? h("div", { className: "auth-err" }, err) : null,
-        h("form", { onSubmit: handleSubmit, autoComplete: "off" },
-          h("div", { style: { marginBottom: 14 } }, h("label", { className: "auth-label" }, "Username or Email"), h("input", { className: "field", placeholder: "Username...", value: identifier, onChange: (e) => setIdentifier(e.target.value) })),
-          h("div", { style: { marginBottom: 20 } }, h("label", { className: "auth-label" }, "Password"),
-            h("div", { style: { position: "relative", display: "flex", alignItems: "center" } },
-              h("input", { className: "field", type: showPw ? "text" : "password", placeholder: "Password...", value: password, onChange: (e) => setPassword(e.target.value), style: { paddingRight: 44 } }),
-              h("button", { type: "button", className: "eye-btn", onClick: () => setShowPw((v) => !v), style: { position: "absolute", right: 7, border: 0, background: "transparent" } }, showPw ? h(EyeOffIcon) : h(EyeIcon))
-            )
-          ),
-          h("div", { style: { marginBottom: 20 } }, h("label", { className: "auth-label" }, "2FA Code (from owner)"),
-            h("input", { className: "field", placeholder: "8-digit code (leave empty if none)", inputMode: "numeric", maxLength: 8, value: code, onChange: (e) => setCode(e.target.value) })
-          ),
-          h("button", { type: "submit", className: "btn", disabled: loading, style: { width: "100%" } }, loading ? "Verifying..." : "Sign In")
-        )
-      )
-    );
-  }
-
+  // --- Main App Root ---
   function App() {
     const [view, setView] = useState("home");
     const [open, setOpen] = useState(false);
     const [settings, setSettings] = useState(loadSettings);
-    const [query, setQuery] = useState("");
-    const [playing, setPlaying] = useState(null);
-    const [installedMap, setInstalledMap] = useState(getInstalledGames);
-    const [upgradePrompt, setUpgradePrompt] = useState(null);
-    const [activeBroadcast, setActiveBroadcast] = useState(null);
-    const [toastMsg, setToastMsg] = useState("");
-    const [toastOn, setToastOn] = useState(false);
-    const toastT = useRef(undefined);
-    const mainRef = useRef(null);
-
     const [currentUser, setCurrentUser] = useState(getSavedSession);
     const [accountsMap, setAccountsMap] = useState({});
     const [sessionsMap, setSessionsMap] = useState({});
-
+    const [toastMsg, setToastMsg] = useState("");
+    const [toastOn, setToastOn] = useState(false);
+    const toastT = useRef(undefined);
     const toast = useCallback((msg) => {
       setToastMsg(msg); setToastOn(true);
       clearTimeout(toastT.current);
       toastT.current = setTimeout(() => setToastOn(false), 2400);
     }, []);
-
     const isOwner = useMemo(() => {
       if (!currentUser) return false;
       const acc = accountsMap[currentUser.username?.toLowerCase()];
       return isOwnerIdentity(currentUser.username, acc || currentUser);
     }, [currentUser, accountsMap]);
-
     const userTier = useMemo(() => {
       if (!currentUser) return "free";
       const acc = accountsMap[currentUser.username?.toLowerCase()] || currentUser;
       return getUserTier(acc, isOwner);
     }, [currentUser, accountsMap, isOwner]);
-
-    const navigate = useCallback((v) => {
-      if (!canAccessView(userTier, v)) {
-        const req = requiredTierForView(v);
-        setUpgradePrompt({ viewName: v.toUpperCase(), reqTier: req });
-        return;
-      }
-      setView(v);
-      mainRef.current?.scrollTo(0, 0);
-    }, [userTier]);
-
-    const checkIncomingBroadcast = useCallback((bcObj, uname) => {
-      if (!bcObj || !bcObj.id || !uname) return;
-      if (Date.now() - (bcObj.timestamp || 0) > 600000) return;
-      const targetClean = (bcObj.target || "all").toLowerCase();
-      if (targetClean !== "all" && targetClean !== uname.toLowerCase()) return;
-      try {
-        const dismissed = JSON.parse(localStorage.getItem(LS_DISMISSED_BC) || "{}");
-        if (dismissed[bcObj.id]) return;
-      } catch {}
-      setActiveBroadcast({
-        ...bcObj,
-        message: String(bcObj.message || "").slice(0, MAX_BROADCAST_CHARS)
-      });
-    }, []);
-
-    const dismissBroadcast = (id) => {
-      try {
-        const dismissed = JSON.parse(localStorage.getItem(LS_DISMISSED_BC) || "{}");
-        dismissed[id] = true;
-        localStorage.setItem(LS_DISMISSED_BC, JSON.stringify(dismissed));
-      } catch {}
-      setActiveBroadcast(null);
-    };
-
-    const refreshDatabaseAndSession = useCallback(async () => {
-      const { accounts, sessions, broadcast } = await dbFetchAll();
+    const refreshDatabase = useCallback(async () => {
+      const { accounts, sessions } = await dbFetchAll();
       setAccountsMap(accounts);
       setSessionsMap(sessions);
-
       const saved = getSavedSession();
-      if (!saved || !saved.username) { setCurrentUser(null); return; }
-
+      if (!saved) return;
       const key = saved.username.trim().toLowerCase();
-      const acc = accounts[key];
-      if (!acc) { saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Account revoked."); return; }
-
-      const own = isOwnerIdentity(acc.username, acc);
-      if (!own && !acc.infinite && acc.expiresAt && Date.now() >= acc.expiresAt) {
-        await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("License expired."); return;
+      // Enforce immediate kick if account is in revoked list or missing
+      const blacklist = getRevokedBlacklist();
+      if (blacklist[key] || !accounts[key]) {
+        saveCurrentSession(null);
+        setCurrentUser(null);
+        toast("Your account has been revoked.");
       }
-
-      const remoteSess = sessions[key];
-      if (remoteSess && remoteSess.kicked && (!saved.loginAt || (remoteSess.kickedAt || 0) >= saved.loginAt)) {
-        await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Kicked out by owner."); return;
-      }
-
-      if (broadcast && broadcast.id) {
-        checkIncomingBroadcast(broadcast, acc.username);
-      }
-
-      const liveTier = getUserTier(acc, own);
-      if (!canAccessView(liveTier, view)) {
-        setView("home");
-      }
-
-      await dbUpsertSession({
-        username: acc.username,
-        email: acc.email || "",
-        role: own ? "owner" : "user",
-        tier: liveTier,
-        loginAt: saved.loginAt || Date.now(),
-        lastPing: Date.now(),
-        currentView: view,
-        kicked: false
-      });
-      setSessionsMap(getLocalStore(LS_SESSIONS));
-    }, [view, toast, checkIncomingBroadcast]);
-
+    }, [toast]);
     useEffect(() => {
-      refreshDatabaseAndSession();
-      const interval = setInterval(refreshDatabaseAndSession, 3500);
+      refreshDatabase();
+      const interval = setInterval(refreshDatabase, 4000);
       return () => clearInterval(interval);
-    }, [refreshDatabaseAndSession]);
-
+    }, [refreshDatabase]);
+    // Handle cross-tab sync to purge revoked accounts everywhere
     useEffect(() => {
       if (!bc) return;
       const onMsg = (e) => {
-        if (e.data && e.data.type === "live_broadcast" && currentUser?.username) {
-          checkIncomingBroadcast(e.data.payload, currentUser.username);
+        if (e.data && e.data.type === "account_revoked") {
+          addRevokedBlacklist(e.data.username);
+          if (currentUser?.username?.toLowerCase() === e.data.username.toLowerCase()) {
+            saveCurrentSession(null);
+            setCurrentUser(null);
+          }
+          refreshDatabase();
         }
       };
       bc.addEventListener("message", onMsg);
       return () => bc.removeEventListener("message", onMsg);
-    }, [currentUser, checkIncomingBroadcast]);
-
-    const launchGame = useCallback((g) => {
-      saveInstalledGame(g.slug);
-      setInstalledMap(getInstalledGames());
-      if (!settings.cloak) {
-        setPlaying(g);
-        return;
-      }
-      if (!openCloaked(frameSource(g), settings)) toast("Popup blocked");
-    }, [settings, toast]);
-
-    const hideFloatingPills = view === "browser" || view === "movies" || view === "music" || view === "tiktok";
-
+    }, [currentUser, refreshDatabase]);
     return h(Fragment, null,
       h(Stars),
-      !currentUser ? h(LoginBox, { onLoginSuccess: (sess) => { setCurrentUser(sess); refreshDatabaseAndSession(); toast(`Welcome, ${sess.username}!`); } }) : null,
-      h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: navigate, isOwner, userTier }),
-      !hideFloatingPills ? h("div", { id: "topRight", style: { display: "flex", gap: 8, alignItems: "center" } },
-        currentUser ? h("button", { className: "pill", style: { display: "flex", alignItems: "center", gap: 8 }, onClick: () => navigate(isOwner ? "creator" : "account") },
-          h("span", null, currentUser.username),
-          renderTierBadge(userTier, isOwner)
-        ) : null
-      ) : null,
-      h("main", { ref: mainRef },
-        view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); }, userTier }) : null,
-        view === "sports" ? h(SportsView, { currentUser, userTier, isOwner, sessionsMap, toast }) : null,
-        view === "broadcast" ? h(BroadcastView, { currentUser, userTier, isOwner, sessionsMap, accountsMap, toast }) : null,
-        view === "youtube" ? h(YouTubeView, { toast }) : null,
-        view === "tiktok" ? h(TikTokView, { toast }) : null,
-        view === "browser" ? h(BrowserView, { toast }) : null,
-        view === "games" ? h(GamesView, { query, onQuery: setQuery, onPlay: launchGame, installedMap }) : null,
-        view === "chat" ? h(ChatView, { currentUser, accountsMap }) : null,
-        view === "movies" ? h(MoviesView, { toast }) : null,
-        view === "music" ? h(MusicView, { toast }) : null,
-        view === "account" ? h(AccountProfileView, { currentUser, accountsMap, onLogout: async () => { await dbDeleteSession(currentUser.username); saveCurrentSession(null); setCurrentUser(null); setView("home"); }, onOpenCreator: () => navigate("creator"), isOwner, userTier }) : null,
-        view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabaseAndSession, toast }) : null,
-        view === "settings" ? h(SettingsView, { settings, onSave: (s) => { setSettings(s); saveSettings(s); toast("Saved"); }, onCloakSite: () => cloakSite(settings) }) : null
+      !currentUser ? h(LoginBox, { onLoginSuccess: (sess) => { setCurrentUser(sess); refreshDatabase(); toast(`Welcome, ${sess.username}!`); } }) : null,
+      h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: setView, isOwner, userTier }),
+      h("main", null,
+        view === "home" ? h(Home, { onNavigate: setView, onSearch: () => setView("games"), userTier }) : null,
+        view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabase, toast }) : null
       ),
-
-      upgradePrompt ? h(Modal, { onClose: () => setUpgradePrompt(null) },
-        h("h3", null, `🔒 ${upgradePrompt.reqTier} Tier Required`),
-        h("p", null, `Your account is currently on the ${userTier.toUpperCase()} tier. Accessing ${upgradePrompt.viewName} requires a ${upgradePrompt.reqTier} license. Contact the Owner to upgrade your account tier!`),
-        h("div", { className: "actions" },
-          h("button", { className: "btn", onClick: () => setUpgradePrompt(null) }, "Got It")
-        )
-      ) : null,
-
-      activeBroadcast ? h("div", { className: "screen-broadcast-bg" },
-        h("div", { className: "screen-broadcast-box" },
-          h("div", null,
-            h("div", { style: { display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginBottom: 12 } },
-              h("span", { style: { fontSize: 24 } }, "📢"),
-              renderTierBadge(activeBroadcast.tier || "max", activeBroadcast.tier === "owner")
-            ),
-            h("div", { style: { fontSize: 13, color: "#fca5a5", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 } },
-              `Live Screen Message from ${activeBroadcast.sender}`
-            )
-          ),
-          h("div", { className: "screen-broadcast-msg" },
-            String(activeBroadcast.message || "").slice(0, MAX_BROADCAST_CHARS)
-          ),
-          h("button", {
-            className: "btn",
-            style: { background: "#ef4444", color: "#fff", width: "100%", height: 48, fontSize: 16, flexShrink: 0 },
-            onClick: () => dismissBroadcast(activeBroadcast.id)
-          }, "Close")
-        )
-      ) : null,
-
-      playing ? h(Player, { game: playing, onClose: () => setPlaying(null) }) : null,
       h("div", { id: "toast", className: toastOn ? "show" : "" }, toastMsg)
     );
   }
-
   createRoot(document.getElementById("root")).render(h(StrictMode, null, h(App)));
 })();
     </script>
