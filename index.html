@@ -31,11 +31,14 @@ button, input, select, optgroup, textarea, ::file-selector-button {
 }
 html, body, #root { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: "Outfit", system-ui, sans-serif; overflow: hidden; }
 button { cursor: pointer; font-family: inherit; }
+
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.16); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.28); }
+
 #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
 /* Sidebar */
 #sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 64px; background: #08080a; border-right: 1px solid var(--border); z-index: 30; display: flex; flex-direction: column; align-items: stretch; transition: width 0.25s ease; }
 #sidebar.open { width: 196px; }
@@ -50,16 +53,19 @@ button { cursor: pointer; font-family: inherit; }
 #sidebar .spacer { flex: 1; }
 #expandBtn svg { transition: transform 0.25s; }
 #sidebar.open #expandBtn svg { transform: rotate(180deg); }
+
 /* Main */
 main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; overflow-y: auto; overflow-x: hidden; transition: left 0.25s ease; }
 #sidebar.open ~ main { left: 196px; }
 .view { height: 100%; animation: fade 0.35s ease; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
 /* Pills */
 .pill { background: rgba(20, 20, 23, 0.85); border: 1px solid var(--border); border-radius: 12px; padding: 8px 16px; font-size: 13px; color: #d6d6da; cursor: pointer; transition: 0.2s; backdrop-filter: blur(6px); }
 .pill:hover { background: rgba(40, 40, 46, 0.95); border-color: rgba(255, 255, 255, 0.25); }
 #topRight { position: fixed; top: 16px; right: 16px; z-index: 20; }
 #footerLinks { position: fixed; bottom: 16px; right: 16px; z-index: 20; display: flex; gap: 10px; }
+
 /* Home */
 #home { display: flex; align-items: center; justify-content: center; flex-direction: column; height: 100%; padding-bottom: 40px; position: relative; }
 .logo-wrap { position: relative; margin-bottom: 30px; text-align: center; }
@@ -79,10 +85,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .quick .circ svg { width: 22px; height: 22px; }
 .quick button:hover .circ { background: #1d1d22; border-color: rgba(255, 255, 255, 0.3); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255, 255, 255, 0.07); }
 .ad { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); font-size: 11px; letter-spacing: 0.14em; color: #8b8b90; font-weight: 600; display: flex; gap: 10px; align-items: center; }
+
 /* Page layout */
 .page { padding: 36px 40px 90px; max-width: 1400px; margin: 0 auto; }
 .page h2 { font-size: 34px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.02em; }
 .page p.sub { color: var(--muted); margin: 0 0 24px; }
+.page code { background: rgba(255, 255, 255, 0.08); padding: 1px 6px; border-radius: 6px; font-size: 0.9em; }
 .toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
 .toolbar .search { height: 52px; padding: 0 20px; flex: 1; min-width: 240px; border-radius: 12px; }
 .toolbar .search input { font-size: 16px; }
@@ -102,6 +110,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .card .name { font-weight: 600; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card .tag { font-size: 12px; color: var(--muted); margin-top: 2px; display: flex; align-items: center; justify-content: space-between; }
 .empty { padding: 60px 0; text-align: center; color: var(--muted); }
+
 /* Settings & Buttons */
 .setting { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; }
 .setting h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
@@ -126,6 +135,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .btn.warn { background: rgba(245, 158, 11, 0.14); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.38); }
 .btn.warn:hover { background: #d97706; color: #fff; border-color: #d97706; }
 .btn.sm { height: 34px; padding: 0 13px; font-size: 12.5px; border-radius: 8px; }
+
 /* Modal & Player */
 #modalBg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .modal { background: #0c0c0f; border: 1px solid var(--border); border-radius: 18px; padding: 26px; width: min(480px, 100%); animation: fade 0.25s ease; }
@@ -134,11 +144,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .modal .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
 #toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 30px); background: #e4e4e4; color: #111; padding: 10px 18px; border-radius: 999px; font-weight: 500; font-size: 14px; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; }
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
+
 #player { position: fixed; inset: 0; z-index: 90; background: #000; display: flex; flex-direction: column; animation: fade 0.25s ease; }
 #player .bar { display: flex; align-items: center; gap: 10px; height: 54px; padding: 0 14px; background: #08080a; border-bottom: 1px solid var(--border); flex: 0 0 auto; overflow-x: auto; }
 #player .bar .ttl { font-weight: 600; font-size: 15px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 10px; }
 #player .bar .pill { padding: 6px 14px; white-space: nowrap; }
 #player iframe { flex: 1; width: 100%; border: 0; background: #000; }
+
 /* Auth & Panels */
 .auth-overlay { position: fixed; inset: 0; z-index: 85; background: rgba(2, 2, 3, 0.92); backdrop-filter: blur(18px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade 0.3s ease; }
 .auth-box { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 34px 30px; width: min(420px, 100%); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85); position: relative; overflow: hidden; }
@@ -157,6 +169,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .eye-btn:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
 .eye-btn svg { width: 15px; height: 15px; }
 .mono-box { font-family: monospace; background: #070709; border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; font-size: 13px; color: #e4e4e4; display: inline-flex; align-items: center; gap: 8px; }
+
 /* Tier Badges */
 .badge-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, 0.07); border: 1px solid var(--border); letter-spacing: 0.03em; }
 .badge-pill.owner { background: rgba(255, 255, 255, 0.18); color: #fff; border-color: rgba(255, 255, 255, 0.45); }
@@ -165,17 +178,20 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .badge-pill.tier-pro { background: rgba(59, 130, 246, 0.18); color: #93c5fd; border-color: rgba(59, 130, 246, 0.45); }
 .badge-pill.tier-premium { background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(168, 85, 247, 0.22)); color: #fde68a; border-color: rgba(245, 158, 11, 0.55); box-shadow: 0 0 16px rgba(245, 158, 11, 0.18); }
 .badge-pill.tier-max { background: linear-gradient(135deg, rgba(239, 68, 68, 0.32), rgba(249, 115, 22, 0.32)); color: #fecaca; border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.38); }
+
 /* Live Screen Broadcast Overlay */
 .screen-broadcast-bg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(12px); z-index: 250; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade 0.25s ease; }
 .screen-broadcast-box { background: linear-gradient(180deg, #1a0b0e 0%, #0b0b0f 100%); border: 2px solid #ef4444; border-radius: 22px; padding: 28px; width: min(500px, 94vw); max-height: 85vh; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 28px 75px rgba(239, 68, 68, 0.35), 0 0 40px rgba(0, 0, 0, 0.9); text-align: center; overflow: hidden; }
 .screen-broadcast-msg { font-size: 22px; font-weight: 700; color: #fff; line-height: 1.4; margin: 14px 0 22px; word-break: break-word; overflow-y: auto; max-height: 45vh; padding: 0 4px; }
+
 /* ESPN Sports Hub */
 .espn-banner { background: linear-gradient(135deg, #b91c1c 0%, #111115 70%); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 18px; padding: 22px 26px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
 .espn-logo { font-size: 30px; font-weight: 900; font-style: italic; letter-spacing: -0.03em; color: #fff; background: #dc2626; padding: 2px 14px; border-radius: 6px; display: inline-block; }
 .espn-score-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .espn-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px 18px; transition: 0.2s; cursor: pointer; }
 .espn-card:hover { border-color: #ef4444; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.65); }
-/* Browser, Movies, Spotify */
+
+/* Full Google-Style Frosted Browser */
 .gbrowser-root { height: 100%; width: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden; }
 .gbrowser-idle { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
 .gbrowser-top { background: rgba(14, 14, 18, 0.82); backdrop-filter: blur(24px) saturate(150%); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 14px 28px 0; flex-shrink: 0; z-index: 15; }
@@ -196,6 +212,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .gbrowser-shop-grid { padding: 24px 32px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); gap: 18px; }
 .gbrowser-shop-card { background: rgba(20, 20, 26, 0.75); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; }
 .gbrowser-shop-card img { width: 100%; height: 190px; object-fit: contain; background: #fff; padding: 12px; }
+
+/* Netflix */
 .nf-wrap { background: #141414; min-height: 100%; padding-bottom: 80px; color: #fff; position: relative; }
 .nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: rgba(20,20,20,0.85); backdrop-filter: blur(8px); }
 .nf-logo { color: #e50914; font-size: 28px; font-weight: 800; text-transform: uppercase; cursor: pointer; }
@@ -211,6 +229,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .nf-carousel { display: flex; gap: 14px; overflow-x: auto; padding: 8px 4px 18px; }
 .nf-card { flex: 0 0 185px; border-radius: 8px; overflow: hidden; background: #1f1f1f; cursor: pointer; }
 .nf-card-poster { width: 100%; height: 270px; object-fit: cover; }
+
+/* Spotify */
 .sp-app { display: flex; flex-direction: column; height: 100%; width: 100%; background: #000; color: #fff; overflow: hidden; padding: 8px; gap: 8px; }
 .sp-body { flex: 1; display: flex; gap: 8px; overflow: hidden; min-height: 0; }
 .sp-sidebar { width: 250px; flex-shrink: 0; background: #121212; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; }
@@ -237,8 +257,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 (function () {
   const { useState, useEffect, useRef, useCallback, useMemo, memo, StrictMode, createElement: h, Fragment } = window.React;
   const { createRoot } = window.ReactDOM;
+
   // ============================================================================
-  // SECURE AUTH CONFIG — NO HARDCODED MASTER PASSWORDS, STRICT 1-USER CONCURRENCY
+  // SECURE AUTH CONFIG — NO HARDCODED MASTER PASSWORDS & STRICT 1-USER CONCURRENCY
   // ============================================================================
   const AUTH_CONFIG = {
     dbUrl: "https://unblockedgames-cdc48-default-rtdb.firebaseio.com",
@@ -252,6 +273,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       "kevinlamfamily@hotmail.com"
     ]
   };
+
   async function dispatchSecurityAlertEmail(eventTitle, details) {
     for (const email of AUTH_CONFIG.alertNotificationEmails) {
       try {
@@ -268,6 +290,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       } catch {}
     }
   }
+
   const TIER_PERMISSIONS = {
     free: ["home", "games", "movies", "music", "account", "settings"],
     pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
@@ -275,17 +298,20 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     max: ["home", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
     owner: ["home", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
   };
+
   function getUserTier(acc, isOwner) {
     if (isOwner || (acc && acc.role === "owner")) return "owner";
     const t = (acc && acc.tier ? acc.tier : "free").toLowerCase();
     if (t === "max" || t === "premium" || t === "pro" || t === "free") return t;
     return "free";
   }
+
   function canAccessView(tier, viewId) {
-    if (viewId === "tiktok") return false; // Strictly under maintenance
+    if (viewId === "tiktok") return false; // Locked under maintenance
     const allowed = TIER_PERMISSIONS[tier] || TIER_PERMISSIONS.free;
     return allowed.includes(viewId);
   }
+
   function requiredTierForView(viewId) {
     if (viewId === "tiktok") return "Under Maintenance";
     if (viewId === "sports" || viewId === "broadcast") return "MAX";
@@ -294,6 +320,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     if (viewId === "creator") return "Owner";
     return "Free";
   }
+
   function renderTierBadge(tier, isOwner) {
     if (isOwner || tier === "owner") return h("span", { className: "badge-pill owner" }, "👑 OWNER");
     if (tier === "max") return h("span", { className: "badge-pill tier-max" }, "🔥 MAX");
@@ -301,6 +328,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     if (tier === "pro") return h("span", { className: "badge-pill tier-pro" }, "⚡ PRO");
     return h("span", { className: "badge-pill tier-free" }, "FREE TIER");
   }
+
   const LS_ACCOUNTS = "ug_rt_accounts_v1";
   const LS_SESSIONS = "ug_rt_sessions_v1";
   const LS_CURRENT_USER = "ug_active_user_v1";
@@ -311,6 +339,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const LS_DISMISSED_BC = "ug_dismissed_bc_v1";
   const MAX_BROADCAST_CHARS = 90;
   const bc = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("ug_realtime_sync") : null;
+
   function getInstalledGames() {
     try { return JSON.parse(localStorage.getItem(LS_INSTALLED_GAMES) || "{}"); } catch { return {}; }
   }
@@ -363,6 +392,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       if (bc) bc.postMessage({ type: "store_updated", key });
     } catch {}
   }
+
   function getRevokedBlacklist() {
     try { return JSON.parse(localStorage.getItem(LS_REVOKED_KEYS) || "{}"); } catch { return {}; }
   }
@@ -373,14 +403,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       localStorage.setItem(LS_REVOKED_KEYS, JSON.stringify(list));
     } catch {}
   }
-  // Fast targeted DB fetch
+
   async function dbFetchAll() {
     const base = getDbUrl();
     const blacklist = getRevokedBlacklist();
     let localAcc = getLocalStore(LS_ACCOUNTS);
     let localSess = getLocalStore(LS_SESSIONS);
     const localBc = getLocalStore(LS_BROADCAST);
+
     Object.keys(blacklist).forEach((b) => { delete localAcc[b]; delete localSess[b]; });
+
     if (!base) return { accounts: localAcc, sessions: localSess, broadcast: localBc };
     try {
       const [accRes, sessRes, bcRes, revRes] = await Promise.all([
@@ -393,12 +425,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       const remoteSess = (sessRes.ok ? await sessRes.json() : null) || {};
       const remoteBc = (bcRes.ok ? await bcRes.json() : null) || null;
       const remoteRev = (revRes.ok ? await revRes.json() : null) || {};
+
       const combinedRev = { ...blacklist, ...remoteRev };
       setLocalStore(LS_REVOKED_KEYS, combinedRev);
+
       Object.keys(combinedRev).forEach((r) => {
         delete remoteAcc[r];
         delete remoteSess[r];
       });
+
       setLocalStore(LS_ACCOUNTS, remoteAcc);
       setLocalStore(LS_SESSIONS, remoteSess);
       if (remoteBc) setLocalStore(LS_BROADCAST, remoteBc);
@@ -407,14 +442,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       return { accounts: localAcc, sessions: localSess, broadcast: localBc };
     }
   }
-  // Ultra-fast zero-latency broadcast
+
   async function dbSendBroadcast(payload) {
     const safePayload = {
       ...payload,
       message: String(payload.message || "").slice(0, MAX_BROADCAST_CHARS)
     };
     setLocalStore(LS_BROADCAST, safePayload);
-    // Instant tab-to-tab dispatch (0ms delay)
     if (bc) bc.postMessage({ type: "live_broadcast", payload: safePayload });
     const base = getDbUrl();
     if (base) {
@@ -425,14 +459,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       }).catch(() => {});
     }
   }
+
   async function dbSaveAccount(acc) {
     const key = acc.username.trim().toLowerCase();
     const rev = getRevokedBlacklist();
     delete rev[key];
     setLocalStore(LS_REVOKED_KEYS, rev);
+
     const localAcc = getLocalStore(LS_ACCOUNTS);
     localAcc[key] = acc;
     setLocalStore(LS_ACCOUNTS, localAcc);
+
     const base = getDbUrl();
     if (base) {
       Promise.all([
@@ -443,16 +480,21 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       ]).catch(() => {});
     }
   }
+
   async function dbDeleteAccount(username) {
     const key = username.trim().toLowerCase();
     addRevokedBlacklist(key);
+
     const localAcc = getLocalStore(LS_ACCOUNTS);
     delete localAcc[key];
     setLocalStore(LS_ACCOUNTS, localAcc);
+
     const localSess = getLocalStore(LS_SESSIONS);
     delete localSess[key];
     setLocalStore(LS_SESSIONS, localSess);
+
     if (bc) bc.postMessage({ type: "account_revoked", username: key });
+
     const base = getDbUrl();
     if (base) {
       Promise.all([
@@ -466,6 +508,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       ]).catch(() => {});
     }
   }
+
   async function dbUpsertSession(sess) {
     const key = sess.username.trim().toLowerCase();
     const localSess = getLocalStore(LS_SESSIONS);
@@ -478,6 +521,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       }).catch(() => {});
     }
   }
+
   async function dbDeleteSession(username) {
     const key = username.trim().toLowerCase();
     const localSess = getLocalStore(LS_SESSIONS);
@@ -488,6 +532,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" }).catch(() => {});
     }
   }
+
   function getSavedSession() {
     try { const raw = localStorage.getItem(LS_CURRENT_USER); if (raw) return JSON.parse(raw); } catch {}
     return null;
@@ -513,29 +558,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     if (mins > 0) return `${mins}m ${secs}s`;
     return `${secs}s`;
   }
-  async function resolveWorkingVideoForQuery(queryText, fallbackVideoId = "jfKfPfyJRdk") {
-    const q = (queryText || "").trim();
-    const apis = [
-      `https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(q)}&filter=videos`,
-      `https://api.piped.private.coffee/search?q=${encodeURIComponent(q)}&filter=videos`,
-      `https://inv.tux.pizza/api/v1/search?q=${encodeURIComponent(q)}&type=video`
-    ];
-    for (const apiUrl of apis) {
-      try {
-        const res = await fetch(apiUrl);
-        if (!res.ok) continue;
-        const data = await res.json();
-        const items = data.items || data;
-        if (Array.isArray(items) && items.length > 0) {
-          for (const item of items) {
-            const id = item.videoId || (item.url ? item.url.split("v=")[1] : "");
-            if (id && id.length === 11) return id;
-          }
-        }
-      } catch {}
-    }
-    return fallbackVideoId;
-  }
+
   function buildRobloxDirectEngine() {
     return `<!doctype html><html><head><meta charset="utf-8"><style>
       *{box-sizing:border-box;margin:0;padding:0;user-select:none;font-family:system-ui,sans-serif}
@@ -604,8 +627,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         loop();
       <\/script></body></html>`;
   }
+
   // ============================================================================
-  // ALL 60+ GAMES CATALOG RESTORED ENTIRELY
+  // ALL 60+ GAMES CATALOG RESTORED
   // ============================================================================
   const GAMES = [
    { "slug": "roblox", "name": "Roblox", "cat": "Action", "embed": "roblox-direct-engine", "thumb": "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" },
@@ -690,6 +714,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
    { "slug": "wrestle-bros", "name": "Wrestle Bros", "cat": "Sports", "embed": "https://wrestle-bros.venkogames.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/w/wrestle-bros_retina.webp" },
    { "slug": "zombsroyaleio", "name": "ZombsRoyale.io", "cat": "Shooter", "embed": "https://zombsroyaleio.unblockedgameswtf.workers.dev/", "thumb": "https://unblockedgameswtf.net/uploads/thumbnails/z/zombsroyaleio_retina.webp" }
   ];
+
   const INITIAL_MEDIA = [
     { id: "tt9362722", tmdb: "569094", title: "Spider-Man: Across the Spider-Verse", cat: "Movies", year: "2023", rating: "98% Match", age: "PG", thumb: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg", backdrop: "https://image.tmdb.org/t/p/original/4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg", desc: "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People.", type: "movie" },
     { id: "tt15239678", tmdb: "693134", title: "Dune: Part Two", cat: "Movies", year: "2024", rating: "97% Match", age: "PG-13", thumb: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg", backdrop: "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg", desc: "Paul Atreides unites with Chani and the Fremen while on a warpath of revenge.", type: "movie" },
@@ -699,10 +724,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     { id: "tt9335498", tmdb: "85937", title: "Demon Slayer", cat: "Anime", year: "2019", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg", backdrop: "https://image.tmdb.org/t/p/original/nTvM4mhqNlHIvUkI1gVnW6XP7GG.jpg", desc: "Tanjiro sets out to become a demon slayer to avenge his family and cure his sister.", type: "tv" },
     { id: "tt0903747", tmdb: "1396", title: "Breaking Bad", cat: "TV Shows", year: "2008", rating: "99% Match", age: "TV-MA", thumb: "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg", backdrop: "https://image.tmdb.org/t/p/original/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg", desc: "A chemistry teacher diagnosed with cancer turns to manufacturing meth with a former student.", type: "tv" }
   ];
+
   const DEFAULTS = { cloak: false, title: "about:blank", icon: "", redirect: false, decoy: "https://classroom.google.com", panic: true };
   const KEY = "ug_settings";
   function loadSettings() { try { return { ...DEFAULTS, ...JSON.parse(localStorage.getItem(KEY) || "{}") }; } catch { return { ...DEFAULTS }; } }
   function saveSettings(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} }
+
   function frameSource(game) {
     const activeUrl = game.embed;
     if (activeUrl === "roblox-direct-engine") return { srcdoc: buildRobloxDirectEngine() };
@@ -713,7 +740,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     }
     return { src: activeUrl };
   }
+
   const FRAME_ALLOW = "fullscreen; autoplay; gamepad; clipboard-write; accelerometer; gyroscope; pointer-lock; microphone; keyboard-map";
+
   function openCloaked(source, s) {
     const w = window.open("about:blank", "_blank");
     if (!w) return false;
@@ -728,6 +757,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return true;
   }
   function cloakSite(s) { return openCloaked({ src: location.href.split("#")[0] }, s); }
+
   function Svg({ children, sw = 1.8 }) {
     return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
   }
@@ -745,13 +775,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const CreatorIcon = (p) => h(Svg, p, h("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }), h("circle", { cx: "9", cy: "7", r: "4" }), h("line", { x1: "19", y1: "8", x2: "19", y2: "14" }), h("line", { x1: "22", y1: "11", x2: "16", y2: "11" }));
   const EyeIcon = (p) => h(Svg, p, h("path", { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }), h("circle", { cx: "12", cy: "12", r: "3" }));
   const EyeOffIcon = (p) => h(Svg, p, h("path", { d: "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" }), h("line", { x1: "1", y1: "1", x2: "23", y2: "23" }));
-  const SettingsIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "3" }), h("path", { d: "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" }));
+  const SettingsIcon = (p) => h(Svg, p, h("circle", { cx: "12", cy: "12", r: "3" }), h("path", { d: "M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" }));
   const ChevronIcon = (p) => h(Svg, p, h("path", { d: "m9 18 6-6-6-6" }));
   const SearchIcon = (p) => h(Svg, p, h("circle", { cx: "11", cy: "11", r: "8" }), h("path", { d: "m21 21-4.3-4.3" }));
   const RefreshIcon = (p) => h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
+
   function Modal({ children, onClose }) {
     return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
   }
+
   function Stars() {
     const ref = useRef(null);
     useEffect(() => {
@@ -783,6 +815,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     }, []);
     return h("canvas", { id: "stars", ref });
   }
+
   function Sidebar({ view, open, onToggle, onNavigate, isOwner, userTier }) {
     const btn = (id, label, icon) => {
       if (id === "tiktok") {
@@ -806,6 +839,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         h("span", null, unlocked ? label : `${label} 🔒`)
       );
     };
+
     return h("nav", { id: "sidebar", className: open ? "open" : "" },
       h("div", { className: "side-group", style: { paddingTop: 2 } },
         btn("home", "Home", h(HomeIcon)),
@@ -828,33 +862,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
-  const WORDS = ["Roblox", "Geometry Dash", "ESPN Sports", "YouTube", "Play anything"];
-  function useTypingPlaceholder(paused) {
-    const [text, setText] = useState("Browse");
-    const pausedRef = useRef(paused);
-    pausedRef.current = paused;
-    useEffect(() => {
-      let w = 0, i = 0, del = false, t;
-      const tick = () => {
-        if (pausedRef.current) { i = 0; del = false; setText("Browse"); t = setTimeout(tick, 600); return; }
-        const word = WORDS[w];
-        setText(word.slice(0, i) + "|");
-        let delay = del ? 45 : 95;
-        if (!del && i === word.length) { del = true; delay = 1800; }
-        else if (del && i === 0) { del = false; w = (w + 1) % WORDS.length; delay = 400; }
-        else i += del ? -1 : 1;
-        t = setTimeout(tick, delay);
-      };
-      tick();
-      return () => clearTimeout(t);
-    }, []);
-    return text;
-  }
+
   function Home({ onNavigate, onSearch, userTier }) {
     const [value, setValue] = useState("");
-    const [focused, setFocused] = useState(false);
-    const placeholder = useTypingPlaceholder(focused || !!value);
     const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
+
     const quickBtn = (id, label, icon, customStyle = {}) => {
       if (id === "tiktok") {
         return h("button", { onClick: () => onNavigate("tiktok"), style: { opacity: 0.5 } },
@@ -868,12 +880,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         unlocked ? label : `${label} 🔒`
       );
     };
+
     return h("section", { className: "view", id: "home" },
       h("div", { className: "logo-wrap" }, h("h1", { className: "logo" }, "unblockedgames")),
       h("div", { className: "search-wrap" },
         h("form", { className: "search", autoComplete: "off", onSubmit: submit },
           h(SearchIcon),
-          h("input", { type: "text", spellCheck: false, value, placeholder: focused ? "Browse" : placeholder, onChange: (e) => setValue(e.target.value), onFocus: () => setFocused(true), onBlur: () => setFocused(false) })
+          h("input", { type: "text", spellCheck: false, value, placeholder: "Browse", onChange: (e) => setValue(e.target.value) })
         )
       ),
       h("div", { className: "quick" },
@@ -887,9 +900,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         quickBtn("movies", "Netflix", h(MoviesIcon)),
         quickBtn("chat", "Chat", h(ChatIcon))
       ),
-      h("div", { className: "ad" }, "100% FREE \u2022 100% UNDETECTED", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
+      h("div", { className: "ad" }, "100% FREE • 100% UNDETECTED", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
     );
   }
+
   // ============================================================================
   // FAST REAL-TIME SCREEN BROADCAST (0ms Cross-Tab, Instant Firebase Write)
   // ============================================================================
@@ -897,9 +911,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [selectedTarget, setSelectedTarget] = useState("all");
     const [messageText, setMessageText] = useState("");
     const [sending, setSending] = useState(false);
+
     const onlineSessions = Object.values(sessionsMap || {}).filter(
       (s) => s && !s.kicked && Date.now() - (s.lastPing || 0) < 45000
     );
+
     const handleSend = async (e) => {
       e.preventDefault();
       const msg = messageText.trim().slice(0, MAX_BROADCAST_CHARS);
@@ -921,6 +937,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       setMessageText("");
       toast(`📢 Broadcast sent to ${selectedTarget === "all" ? "Everyone Online" : selectedTarget}!`);
     };
+
     return h("section", { className: "view", id: "broadcast" },
       h("div", { className: "page", style: { maxWidth: 960 } },
         h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 18 } },
@@ -1012,6 +1029,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
+
   // ============================================================================
   // ESPN SPORTS HUB
   // ============================================================================
@@ -1023,11 +1041,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     { id: "mlb", name: "⚾ MLB", path: "baseball/mlb" },
     { id: "mma", name: "🥊 UFC / MMA", path: "mma/ufc" }
   ];
+
   function SportsView({ currentUser, userTier, isOwner, sessionsMap, toast }) {
     const [league, setLeague] = useState(ESPN_LEAGUES[0]);
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [activeStream, setActiveStream] = useState(null);
+
     const fetchScoreboard = useCallback(async (lg) => {
       setLoading(true);
       try {
@@ -1039,11 +1058,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       }
       setLoading(false);
     }, []);
+
     useEffect(() => {
       fetchScoreboard(league);
       const t = setInterval(() => fetchScoreboard(league), 20000);
       return () => clearInterval(t);
     }, [league, fetchScoreboard]);
+
     return h("section", { className: "view" },
       h("div", { className: "page" },
         h("div", { className: "espn-banner" },
@@ -1076,6 +1097,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             const awayTeam = competitors.find((c) => c.homeAway === "away") || competitors[1];
             const statusText = ev.status?.type?.shortDetail || ev.status?.type?.description || "Scheduled";
             const isLive = ev.status?.type?.state === "in";
+
             return h("div", { key: ev.id, className: "espn-card" },
               h("div", { className: "row", style: { marginBottom: 12 } },
                 h("span", { style: { fontSize: 12, fontWeight: 700, color: isLive ? "#4ade80" : "var(--muted)" } }, isLive ? `🔴 LIVE • ${statusText}` : statusText)
@@ -1106,13 +1128,14 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
+
   // ============================================================================
-  // FROSTED GLASS BROWSER
+  // FROSTED GLASS GOOGLE BROWSER
   // ============================================================================
   function BrowserView() {
     const [query, setQuery] = useState("");
     const [activeUrl, setActiveUrl] = useState("");
-    const [loading, setLoading] = useState(false);
+
     const handleSubmit = (e) => {
       e.preventDefault();
       const val = query.trim();
@@ -1121,29 +1144,30 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       if (!/^https?:\/\//i.test(target)) target = "https://" + target;
       setActiveUrl(target);
     };
+
     return h("section", { className: "view" },
       h("div", { className: "gbrowser-root" },
         !activeUrl ? (
           h("div", { className: "gbrowser-idle" },
-            h("h1", { style: { fontSize: "clamp(32px, 5vw, 54px)", fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 24, textAlign: "center" } }, "Unblocked Browser"),
+            h("h1", { style: { fontSize: "clamp(32px, 5vw, 54px)", fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 24, textAlign: "center" } }, "What do you want to search?"),
             h("form", { className: "glass-panel", onSubmit: handleSubmit, autoComplete: "off" },
               h(SearchIcon),
               h("input", {
                 className: "glass-input",
                 type: "text",
                 spellCheck: false,
-                placeholder: "Type any website URL (e.g. wikipedia.org)...",
+                placeholder: "Search Google or type any URL...",
                 value: query,
                 onChange: (e) => setQuery(e.target.value)
               }),
-              h("button", { type: "submit", className: "btn", style: { borderRadius: 999, height: 46, padding: "0 24px" } }, "Go")
+              h("button", { type: "submit", className: "btn", style: { borderRadius: 999, height: 46, padding: "0 24px" } }, "Search")
             )
           )
         ) : (
           h(Fragment, null,
             h("div", { className: "gbrowser-top" },
               h("div", { className: "gbrowser-bar-row" },
-                h("button", { className: "btn ghost sm", style: { borderRadius: 999 }, onClick: () => setActiveUrl("") }, "← Back"),
+                h("button", { className: "btn ghost sm", style: { borderRadius: 999 }, onClick: () => setActiveUrl("") }, "← Back to Search"),
                 h("form", { className: "glass-panel compact", onSubmit: handleSubmit, autoComplete: "off" },
                   h(SearchIcon),
                   h("input", {
@@ -1170,6 +1194,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
+
   // ============================================================================
   // YOUTUBE HUB
   // ============================================================================
@@ -1177,11 +1202,14 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     { id: "jfKfPfyJRdk", title: "lofi hip hop radio - beats to relax/study to", author: "Lofi Girl", views: "Live Stream", thumb: "https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg" },
     { id: "dQw4w9WgXcQ", title: "Rick Astley - Never Gonna Give You Up", author: "Rick Astley", views: "1.5B views", thumb: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" }
   ];
+
   function YouTubeView() {
     const [searchQ, setSearchQ] = useState("");
     const [videos, setVideos] = useState(FALLBACK_YT_VIDEOS);
     const [activeVideo, setActiveVideo] = useState(null);
+
     const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
+
     return h("section", { className: "view" },
       h("div", { className: "page" },
         h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 16 } },
@@ -1222,23 +1250,26 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
+
   // ============================================================================
-  // TIKTOK (STRICTLY UNDER MAINTENANCE FOR EVERYONE)
+  // TIKTOK (LOCKED UNDER MAINTENANCE FOR EVERYONE)
   // ============================================================================
   function TikTokView() {
     return h("section", { className: "view" },
       h("div", { className: "page", style: { height: "80vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" } },
         h("div", { style: { fontSize: 64, marginBottom: 14 } }, "🔧"),
         h("h2", null, "TikTok is Under Maintenance"),
-        h("p", { className: "sub", style: { maxWidth: 440 } }, "TikTok is currently locked while video relay nodes are upgraded. Please check back later!")
+        h("p", { className: "sub", style: { maxWidth: 440 } }, "TikTok is currently locked for all users while video relay servers are upgraded. Please check back later!")
       )
     );
   }
+
   // ============================================================================
   // GAMES COMPONENT (All 60+ Games)
   // ============================================================================
   const CATS = ["All", ...Array.from(new Set(GAMES.map((g) => g.cat))).sort()];
   function hue(s) { let hVal = 0; for (const c of s) hVal = (hVal * 31 + c.charCodeAt(0)) % 360; return hVal; }
+
   const Card = memo(function Card({ game, isInstalled, onPlay }) {
     const [imgOk, setImgOk] = useState(true);
     const hVal = hue(game.slug);
@@ -1258,12 +1289,14 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   });
+
   function GamesView({ query, onQuery, onPlay, installedMap }) {
     const [cat, setCat] = useState("All");
     const list = useMemo(() => {
       const q = query.trim().toLowerCase();
       return GAMES.filter((g) => (cat === "All" || g.cat === cat) && (!q || g.name.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q)));
     }, [query, cat]);
+
     return h("section", { className: "view", id: "games" },
       h("div", { className: "page" },
         h("h2", null, "Games"),
@@ -1281,23 +1314,22 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
+
   // ============================================================================
   // SPOTIFY MUSIC
   // ============================================================================
-  const PLAYLIST_PRESETS = [
-    { id: "hits", name: "Today's Top Hits", icon: "🔥", color: "#1e3264", query: "top hits 2026" },
-    { id: "phonk", name: "Drift Phonk", icon: "⚡", color: "#8d1732", query: "drift phonk" }
-  ];
   function MusicView() {
     const [tracks, setTracks] = useState([]);
     const [currentTrack, setCurrentTrack] = useState(null);
     const audioRef = useRef(null);
+
     useEffect(() => {
       fetch("https://itunes.apple.com/search?term=top+hits+2026&media=music&entity=song&limit=25")
         .then((r) => r.json())
         .then((d) => setTracks(d.results || []))
         .catch(() => {});
     }, []);
+
     const playSong = (t) => {
       setCurrentTrack(t);
       if (audioRef.current) {
@@ -1305,6 +1337,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         audioRef.current.play();
       }
     };
+
     return h("section", { className: "view" },
       h("div", { className: "sp-app" },
         h("audio", { ref: audioRef }),
@@ -1336,12 +1369,14 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
+
   // ============================================================================
   // NETFLIX MOVIES
   // ============================================================================
   function MoviesView() {
     const [activeMedia, setActiveMedia] = useState(null);
     const hero = INITIAL_MEDIA[0];
+
     return h("section", { className: "view" },
       h("div", { className: "nf-wrap" },
         h("div", { className: "nf-topnav" },
@@ -1375,14 +1410,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
+
   // ============================================================================
-  // ZERO-DELAY REAL-TIME CHAT (0ms BroadcastChannel + 1.2s Fast Firebase Sync)
+  // FAST REAL-TIME CHAT (0ms BroadcastChannel + 1.5s Fast Firebase Sync)
   // ============================================================================
   function ChatView({ currentUser, accountsMap }) {
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
     const [attachment, setAttachment] = useState(null);
     const messagesEndRef = useRef(null);
+
     const fetchFastChat = useCallback(async () => {
       const base = getDbUrl();
       if (!base) {
@@ -1401,12 +1438,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         }
       } catch {}
     }, []);
+
     useEffect(() => {
       fetchFastChat();
-      const interval = setInterval(fetchFastChat, 1500); // Fast 1.5s refresh
+      const interval = setInterval(fetchFastChat, 1500);
       return () => clearInterval(interval);
     }, [fetchFastChat]);
-    // Zero-delay tab-to-tab chat synchronization
+
     useEffect(() => {
       if (!bc) return;
       const onMsg = (e) => {
@@ -1417,9 +1455,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       bc.addEventListener("message", onMsg);
       return () => bc.removeEventListener("message", onMsg);
     }, []);
+
     useEffect(() => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+
     const handleFileChange = (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -1430,13 +1470,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       };
       reader.readAsDataURL(file);
     };
+
     const sendMessage = async (e) => {
       e.preventDefault();
       const text = inputMessage.trim();
       if (!text && !attachment) return;
       if (!currentUser) return;
+
       const acc = accountsMap[currentUser.username.toLowerCase()] || currentUser;
       const isUserOwner = isOwnerIdentity(currentUser.username, acc);
+
       const newMsg = {
         id: "msg_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
         sender: currentUser.username,
@@ -1446,11 +1489,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         attachment: attachment || null,
         timestamp: Date.now()
       };
-      // 0ms instant local rendering
+
       setMessages((prev) => [...prev, newMsg]);
       if (bc) bc.postMessage({ type: "new_chat_msg", msg: newMsg });
+
       setInputMessage("");
       setAttachment(null);
+
       const base = getDbUrl();
       if (base) {
         fetch(`${base}/global_chat.json`, {
@@ -1460,6 +1505,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         }).catch(() => {});
       }
     };
+
     return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
       h("div", { style: { padding: "20px 24px 0", flexShrink: 0 } },
         h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
@@ -1503,6 +1549,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
+
   function Player({ game, onClose }) {
     const source = frameSource(game);
     return h("div", { id: "player" },
@@ -1513,10 +1560,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       h("iframe", { title: game.name, src: source.src, srcDoc: source.srcdoc, allow: FRAME_ALLOW, allowFullScreen: true })
     );
   }
+
   function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner, userTier }) {
     const [now, setNow] = useState(Date.now());
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
     const acc = currentUser ? accountsMap[currentUser.username.toLowerCase()] || currentUser : null;
+
     return h("section", { className: "view" },
       h("div", { className: "page", style: { maxWidth: 680 } },
         h("h2", null, "Account"),
@@ -1534,117 +1583,346 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
+
+  // ============================================================================
+  // ACCOUNT CREATOR HUB — LIVE USERS, 2FA GENERATOR, PASSWORD CHANGER & SLIDERS
+  // ============================================================================
   function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
     const [createModal, setCreateModal] = useState(false);
+    const [dbModal, setDbModal] = useState(false);
     const [newUsername, setNewUsername] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [newEmail, setNewEmail] = useState("");
     const [newTier, setNewTier] = useState("free");
     const [newHours, setNewHours] = useState(12);
     const [newInfinite, setNewInfinite] = useState(false);
+    const [revealedPw, setRevealedPw] = useState({});
     const [now, setNow] = useState(Date.now());
+    const [dbUrlInput, setDbUrlInput] = useState(getDbUrl());
     const [codeInfo, setCodeInfo] = useState(null);
+    const [pwEdits, setPwEdits] = useState({});
+
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
+    useEffect(() => {
+      const poll = setInterval(() => { onRefresh(); }, 5000);
+      return () => clearInterval(poll);
+    }, [onRefresh]);
+
+    const toggleReveal = (uname) => setRevealedPw((p) => ({ ...p, [uname]: !p[uname] }));
+
     const handleCreateAccount = async (e) => {
       e.preventDefault();
       const u = newUsername.trim();
       const p = newPassword.trim();
-      if (!u || !p) { toast("Username and password required"); return; }
+      if (!u || !p) { toast("Please enter both a Username and Password"); return; }
       const hrs = Math.max(1, Math.min(24, Number(newHours) || 1));
+      const isOwn = isOwnerIdentity(u, { email: newEmail.trim() });
       const acc = {
         username: u,
+        email: newEmail.trim() || "",
         password: p,
-        tier: newTier,
+        tier: isOwn ? "max" : newTier,
         licenseKey: genLicenseKey(),
         twoFA: genTwoFACode(),
         infinite: !!newInfinite,
         durationHours: hrs,
         expiresAt: newInfinite ? null : Date.now() + hrs * 3600 * 1000,
-        role: "user",
+        role: isOwn ? "owner" : "user",
         createdAt: Date.now()
       };
       await dbSaveAccount(acc);
       await onRefresh();
       setCodeInfo({ username: u, code: acc.twoFA });
-      setNewUsername(""); setNewPassword(""); setCreateModal(false);
+      setNewUsername(""); setNewPassword(""); setNewEmail(""); setNewTier("free"); setNewHours(12); setNewInfinite(false); setCreateModal(false);
       toast(`Account "${u}" created!`);
     };
+
+    const handleAdjustDuration = async (acc, hoursVal, infVal) => {
+      const hrs = Math.max(1, Math.min(24, Number(hoursVal) || 1));
+      const updated = { ...acc, durationHours: hrs, infinite: !!infVal, expiresAt: infVal ? null : Date.now() + hrs * 3600 * 1000 };
+      await dbSaveAccount(updated);
+      await onRefresh();
+    };
+
+    const handleChangeTier = async (acc, nextTier) => {
+      if (!acc) return;
+      const updated = { ...acc, tier: nextTier };
+      await dbSaveAccount(updated);
+      await onRefresh();
+      toast(`Updated "${acc.username}" to ${nextTier.toUpperCase()} Tier!`);
+    };
+
     const handleRevokeAccount = async (username) => {
       await dbDeleteAccount(username);
       await onRefresh();
-      toast(`Revoked "${username}"`);
+      toast(`Permanently revoked and blacklisted "${username}"`);
     };
-    const accountsList = Object.values(accountsMap || {});
+
+    const kickSession = async (username) => {
+      const sess = sessionsMap[username.toLowerCase()];
+      if (sess) await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
+    };
+
+    const handleChangePassword = async (acc) => {
+      const k = acc.username.toLowerCase();
+      const p = (pwEdits[k] || "").trim();
+      if (p.length < 6) { toast("Password must be 6+ chars"); return; }
+      await dbSaveAccount({ ...acc, password: p });
+      await kickSession(acc.username);
+      setPwEdits((x) => ({ ...x, [k]: "" }));
+      await onRefresh();
+      toast(`Password changed for "${acc.username}" and session kicked!`);
+    };
+
+    const handleRegenCode = async (acc) => {
+      const c = genTwoFACode();
+      await dbSaveAccount({ ...acc, twoFA: c });
+      await kickSession(acc.username);
+      setCodeInfo({ username: acc.username, code: c });
+      await onRefresh();
+      toast(`New 2FA Code generated for "${acc.username}"!`);
+    };
+
+    const handleKickUser = async (sess) => {
+      await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
+      await onRefresh();
+      toast(`Kicked "${sess.username}"`);
+    };
+
+    const accountsList = Object.values(accountsMap || {}).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const activeSessions = Object.values(sessionsMap || {}).filter((s) => s && !s.kicked && accountsMap[s.username?.toLowerCase()] && now - (s.lastPing || 0) < 45000);
+
     return h("section", { className: "view", id: "creator" },
       h("div", { className: "page", style: { maxWidth: 1180 } },
         h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 24 } },
           h("div", null,
-            h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
-            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Manage licensed user credentials and access.")
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+              h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
+              h("span", { className: "badge-pill owner" }, "OWNER ONLY")
+            ),
+            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Create accounts, reset passwords, rotate 2FA codes, and monitor live users.")
           ),
-          h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create Account")
-        ),
-        h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 } },
-          accountsList.map((acc) =>
-            h("div", { key: acc.username, className: "pop-panel" },
-              h("div", { className: "row", style: { marginBottom: 12 } },
-                h("strong", { style: { fontSize: 16 } }, acc.username),
-                h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke & Delete")
-              ),
-              h("div", { style: { background: "#070709", padding: 10, borderRadius: 8, fontSize: 13, display: "flex", flexDirection: "column", gap: 6 } },
-                h("div", { className: "row" }, h("span", { style: { color: "#888" } }, "Tier:"), renderTierBadge(acc.tier || "free", acc.role === "owner")),
-                h("div", { className: "row" }, h("span", { style: { color: "#888" } }, "2FA:"), h("strong", { style: { color: "#86efac" } }, acc.twoFA || "None")),
-                h("div", { className: "row" }, h("span", { style: { color: "#888" } }, "Remaining:"), h("span", null, formatRemainingTime(acc, now)))
-              )
-            )
+          h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
+            h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "☁️ Cloud DB Connected" : "⚙️ Cloud DB Setup"),
+            h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create a New Account")
           )
+        ),
+
+        // ACTIVE ACCOUNTS ON SITE PANEL (Exactly as shown in your screenshot)
+        h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
+          h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+              h("span", { className: "status-dot" }),
+              h("h3", { style: { margin: 0, fontSize: 18 } }, `Active Accounts on Site (${activeSessions.length} Live)`),
+              h("span", { className: "badge-pill live" }, "Live Heartbeat Active")
+            ),
+            h("button", { className: "pill", onClick: () => { onRefresh(); toast("Refreshed live users"); } }, "Refresh Now")
+          ),
+          activeSessions.length === 0
+            ? h("div", { style: { padding: "22px 0", textAlign: "center", color: "var(--muted)", fontSize: 13.5 } }, "No active users online right now.")
+            : h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 14 } },
+                activeSessions.map((sess) => {
+                  const acc = accountsMap[sess.username.toLowerCase()];
+                  const isOwn = acc?.role === "owner";
+                  const curTier = acc?.tier || "free";
+                  return h("div", { key: sess.username, className: "pop-panel", style: { background: "#0e0e12" } },
+                    h("div", { className: "row", style: { marginBottom: 10 } },
+                      h("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
+                        h("span", { className: "status-dot" }),
+                        h("strong", { style: { fontSize: 16 } }, sess.username),
+                        renderTierBadge(curTier, isOwn)
+                      ),
+                      h("span", { style: { fontSize: 12, color: "var(--muted)" } }, `Tab: ${sess.currentView || "home"}`)
+                    ),
+                    !isOwn ? h("div", { className: "row", style: { marginBottom: 10, background: "#08080b", padding: "6px 10px", borderRadius: 8, border: "1px solid var(--border)" } },
+                      h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Live Tier:"),
+                      h("select", {
+                        className: "tier-select",
+                        value: curTier,
+                        onChange: (e) => handleChangeTier(acc, e.target.value)
+                      },
+                        h("option", { value: "free" }, "Free (Games/Movies/Music)"),
+                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat)"),
+                        h("option", { value: "premium" }, "💎 Premium (+ YT/Browser)"),
+                        h("option", { value: "max" }, "🔥 MAX (+ ESPN & Screen Popup)")
+                      )
+                    ) : null,
+                    h("div", { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 14 } }, "Remaining: ", h("strong", { style: { color: "#e4e4e4" } }, formatRemainingTime(acc, now))),
+                    h("div", { style: { display: "flex", gap: 8 } },
+                      h("button", { className: "btn warn sm", style: { flex: 1 }, onClick: () => handleKickUser(sess) }, "Kick Out"),
+                      h("button", { className: "btn danger sm", style: { flex: 1 }, onClick: () => handleRevokeAccount(sess.username) }, "Revoke")
+                    )
+                  );
+                })
+              )
+        ),
+
+        // LICENSED ACCOUNTS LIST (Exactly as shown in your screenshot)
+        h("h3", { style: { fontSize: 20, fontWeight: 600, marginBottom: 14 } }, `Licensed Accounts (${accountsList.length})`),
+        h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
+          accountsList.map((acc) => {
+            const key = acc.username.toLowerCase();
+            const isShown = !!revealedPw[key];
+            const remText = formatRemainingTime(acc, now);
+            const isOnline = activeSessions.some((s) => s.username.toLowerCase() === key);
+            const sliderVal = acc.durationHours || 12;
+            const isOwn = acc.role === "owner";
+            const curTier = acc.tier || "free";
+
+            return h("div", { key: acc.username, className: "pop-panel" },
+              h("div", { className: "row", style: { marginBottom: 14 } },
+                h("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
+                  h("span", { className: "status-dot" + (isOnline ? "" : " off") }),
+                  h("span", { style: { fontSize: 17, fontWeight: 600 } }, acc.username),
+                  renderTierBadge(curTier, isOwn),
+                  isOnline ? h("span", { className: "badge-pill live" }, "ONLINE") : null
+                ),
+                h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke")
+              ),
+              h("div", { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, background: "#070709", padding: "12px 14px", borderRadius: 12, border: "1px solid var(--border)" } },
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Password"),
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: isShown ? "normal" : "0.18em" } }, isShown ? acc.password : "••••••••"),
+                    h("button", { className: "eye-btn", onClick: () => toggleReveal(key) }, isShown ? h(EyeOffIcon) : h(EyeIcon))
+                  )
+                ),
+                h("div", { className: "row" },
+                  h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Access Tier"),
+                  isOwn
+                    ? h("span", { style: { fontSize: 12.5, fontWeight: 700, color: "#fff" } }, "👑 Owner (All Access)")
+                    : h("select", {
+                        className: "tier-select",
+                        value: curTier,
+                        onChange: (e) => handleChangeTier(acc, e.target.value)
+                      },
+                        h("option", { value: "free" }, "Free (Games/Movies/Music)"),
+                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat)"),
+                        h("option", { value: "premium" }, "💎 Premium (+ YT/Browser)"),
+                        h("option", { value: "max" }, "🔥 MAX (+ ESPN & Screen Popup)")
+                      )
+                ),
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "License"), h("span", { style: { fontSize: 12, fontFamily: "monospace", color: "#bcbcc4" } }, acc.licenseKey)),
+                h("div", { className: "row" },
+                  h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "2FA Code"),
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
+                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: revealedPw["2fa_" + key] ? "normal" : "0.18em" } },
+                      acc.twoFA ? (revealedPw["2fa_" + key] ? acc.twoFA : "••••••••") : "NONE"),
+                    acc.twoFA ? h("button", { className: "eye-btn", onClick: () => toggleReveal("2fa_" + key) }, revealedPw["2fa_" + key] ? h(EyeOffIcon) : h(EyeIcon)) : null,
+                    h("button", { className: "btn warn sm", onClick: () => handleRegenCode(acc) }, acc.twoFA ? "New" : "Enable")
+                  )
+                ),
+                h("div", { className: "row", style: { gap: 8 } },
+                  h("input", { className: "field", style: { height: 34, fontSize: 13 }, placeholder: "New password (6+)...", value: pwEdits[key] || "", onChange: (e) => setPwEdits((x) => ({ ...x, [key]: e.target.value })) }),
+                  h("button", { className: "btn sm", onClick: () => handleChangePassword(acc) }, "Set")
+                ),
+                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Remaining"), h("span", { style: { fontSize: 13, fontWeight: 600, color: "#86efac" } }, remText))
+              ),
+              h("div", { style: { borderTop: "1px solid var(--border)", paddingTop: 12 } },
+                h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Duration (1-24h)"), h("span", { style: { fontSize: 12.5, fontWeight: 600 } }, acc.infinite ? "Infinite ∞" : `${sliderVal}h`)),
+                h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: !!acc.infinite, value: sliderVal, onChange: (e) => handleAdjustDuration(acc, Number(e.target.value), false) }),
+                h("div", { className: "row", style: { marginTop: 10 } },
+                  h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, cursor: "pointer" } },
+                    h("input", { type: "checkbox", checked: !!acc.infinite, onChange: (e) => handleAdjustDuration(acc, sliderVal, e.target.checked), style: { width: 16, height: 16, accentColor: "#e4e4e4" } }),
+                    "Infinite License"
+                  )
+                )
+              )
+            );
+          })
         )
       ),
+
       createModal ? h(Modal, { onClose: () => setCreateModal(false) },
-        h("h3", null, "Create Account"),
-        h("form", { onSubmit: handleCreateAccount },
-          h("div", { style: { marginBottom: 10 } }, h("label", { className: "auth-label" }, "Username"), h("input", { className: "field", value: newUsername, onChange: (e) => setNewUsername(e.target.value) })),
-          h("div", { style: { marginBottom: 10 } }, h("label", { className: "auth-label" }, "Password"), h("input", { className: "field", value: newPassword, onChange: (e) => setNewPassword(e.target.value) })),
+        h("h3", null, "Create Licensed Account"),
+        h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
+          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Username"), h("input", { className: "field", placeholder: "Username...", value: newUsername, onChange: (e) => setNewUsername(e.target.value) })),
+          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Password"), h("input", { className: "field", type: "text", placeholder: "Password...", value: newPassword, onChange: (e) => setNewPassword(e.target.value) })),
           h("div", { style: { marginBottom: 14 } },
-            h("label", { className: "auth-label" }, "Tier"),
-            h("select", { className: "field", value: newTier, onChange: (e) => setNewTier(e.target.value) },
-              h("option", { value: "free" }, "Free"),
-              h("option", { value: "pro" }, "Pro"),
-              h("option", { value: "premium" }, "Premium"),
-              h("option", { value: "max" }, "MAX")
+            h("label", { className: "auth-label" }, "Select Account Tier"),
+            h("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8 } },
+              [
+                { id: "free", name: "Free", sub: "Games, Movies, Music" },
+                { id: "pro", name: "⚡ Pro", sub: "+ Live Chat" },
+                { id: "premium", name: "💎 Premium", sub: "+ YT & Browser" },
+                { id: "max", name: "🔥 MAX", sub: "+ ESPN & Screen Popup" }
+              ].map((t) =>
+                h("div", {
+                  key: t.id,
+                  onClick: () => setNewTier(t.id),
+                  style: {
+                    padding: "10px 8px",
+                    borderRadius: 10,
+                    border: newTier === t.id ? "2px solid #ef4444" : "1px solid var(--border)",
+                    background: newTier === t.id ? "rgba(239,68,68,0.16)" : "#0e0e11",
+                    cursor: "pointer",
+                    textAlign: "center"
+                  }
+                },
+                  h("div", { style: { fontWeight: 700, fontSize: 13.5 } }, t.name),
+                  h("div", { style: { fontSize: 10.5, color: "var(--muted)", marginTop: 2 } }, t.sub)
+                )
+              )
             )
           ),
-          h("div", { className: "actions" },
-            h("button", { type: "submit", className: "btn" }, "Create"),
-            h("button", { type: "button", className: "btn ghost", onClick: () => setCreateModal(false) }, "Cancel")
-          )
+          h("div", { className: "setting", style: { padding: 14, marginBottom: 18 } },
+            h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 13, fontWeight: 600 } }, "License Time"), h("span", { style: { fontSize: 13, fontWeight: 600 } }, newInfinite ? "Infinite" : `${newHours}h`)),
+            h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: newInfinite, value: newHours, onChange: (e) => setNewHours(Number(e.target.value)) }),
+            h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, cursor: "pointer", marginTop: 10 } },
+              h("input", { type: "checkbox", checked: newInfinite, onChange: (e) => setNewInfinite(e.target.checked), style: { width: 16, height: 16 } }),
+              "Infinite (Never expires)"
+            )
+          ),
+          h("div", { className: "actions" }, h("button", { type: "submit", className: "btn" }, "Create Account"), h("button", { type: "button", className: "btn ghost", onClick: () => setCreateModal(false) }, "Cancel"))
+        )
+      ) : null,
+      dbModal ? h(Modal, { onClose: () => setDbModal(false) },
+        h("h3", null, "Real-Time Cloud Database"),
+        h("p", null, "Paste your free Firebase Realtime Database URL below."),
+        h("input", { className: "field", placeholder: "https://your-app-default-rtdb.firebaseio.com", value: dbUrlInput, onChange: (e) => setDbUrlInput(e.target.value), style: { marginBottom: 16 } }),
+        h("div", { className: "actions" },
+          h("button", { className: "btn", onClick: async () => { setCustomDbUrl(dbUrlInput); await onRefresh(); setDbModal(false); toast("Connected!"); } }, "Save"),
+          h("button", { className: "btn ghost", onClick: () => setDbModal(false) }, "Close")
         )
       ) : null,
       codeInfo ? h(Modal, { onClose: () => setCodeInfo(null) },
-        h("h3", null, "🔑 2FA Key Generated"),
-        h("p", null, `Copy this 2FA code for "${codeInfo.username}":`),
-        h("div", { className: "mono-box", style: { fontSize: 22, margin: "14px 0" } }, codeInfo.code),
-        h("div", { className: "actions" }, h("button", { className: "btn", onClick: () => setCodeInfo(null) }, "Done"))
+        h("h3", null, "🔑 2FA Code for " + codeInfo.username),
+        h("p", null, "Give this to the user privately. They need it at every login."),
+        h("div", { className: "mono-box", style: { fontSize: 26, letterSpacing: "0.2em", marginBottom: 16 } }, codeInfo.code),
+        h("div", { className: "actions" },
+          h("button", { className: "btn", onClick: () => { try { navigator.clipboard.writeText(codeInfo.code); toast("Code copied"); } catch {} } }, "Copy"),
+          h("button", { className: "btn ghost", onClick: () => setCodeInfo(null) }, "Done")
+        )
       ) : null
     );
   }
+
   function SettingsView({ settings, onSave, onCloakSite }) {
     const [s, setS] = useState(settings);
+    const set = (k, v) => setS((p) => ({ ...p, [k]: v }));
     return h("section", { className: "view", id: "settings" },
       h("div", { className: "page", style: { maxWidth: 720 } },
         h("h2", null, "Settings"),
-        h("p", { className: "sub" }, "Configure cloak settings."),
+        h("p", { className: "sub" }, "Configure cloak and portal settings."),
         h("div", { className: "setting" },
           h("div", { className: "row" },
-            h("h3", null, "Open games in external about:blank"),
-            h("input", { type: "checkbox", checked: s.cloak, onChange: (e) => setS({ ...s, cloak: e.target.checked }) })
+            h("div", null, h("h3", null, "Open games in external about:blank tab"), h("p", { style: { margin: 0 } }, "When off (default), games install and play directly inside this portal.")),
+            h("input", { type: "checkbox", checked: s.cloak, onChange: (e) => set("cloak", e.target.checked) })
           )
         ),
-        h("button", { className: "btn", onClick: () => onSave(s) }, "Save")
+        h("div", { className: "setting" },
+          h("h3", null, "Cloaked tab title"),
+          h("input", { className: "field", placeholder: "about:blank", spellCheck: false, value: s.title, onChange: (e) => set("title", e.target.value) })
+        ),
+        h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
+          h("button", { className: "btn", onClick: () => onSave(s) }, "Save"),
+          h("button", { className: "btn ghost", onClick: onCloakSite }, "Open whole site in about:blank")
+        )
       )
     );
   }
+
   // ============================================================================
-  // SECURE LOGIN BOX — 1-USER CONCURRENCY LOCK & ALERT NOTIFICATIONS
+  // SECURE LOGIN BOX — STRICT 1-USER CONCURRENCY LOCK & ALERT NOTIFICATIONS
   // ============================================================================
   function LoginBox({ onLoginSuccess }) {
     const [identifier, setIdentifier] = useState("");
@@ -1653,6 +1931,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [code, setCode] = useState("");
     const [err, setErr] = useState("");
     const [loading, setLoading] = useState(false);
+
     const handleSubmit = async (e) => {
       e.preventDefault();
       setErr("");
@@ -1660,14 +1939,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       const pwClean = password.trim();
       if (!idClean || !pwClean) { setErr("Username and password required."); return; }
       setLoading(true);
+
       const blacklist = getRevokedBlacklist();
       if (blacklist[idClean]) {
         setLoading(false);
         setErr("This account has been revoked.");
         return;
       }
+
       const { accounts, sessions } = await dbFetchAll();
       const matched = accounts[idClean] || Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === idClean);
+
       if (!matched) {
         setLoading(false);
         if (idClean === "kevin" || idClean === "owner" || idClean === "admin" || AUTH_CONFIG.ownerEmails.includes(idClean)) {
@@ -1676,6 +1958,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         setErr("Invalid username or password.");
         return;
       }
+
       if (matched.password !== pwClean) {
         setLoading(false);
         if (matched.role === "owner" || isOwnerIdentity(matched.username, matched)) {
@@ -1684,9 +1967,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         setErr("Invalid username or password.");
         return;
       }
+
       const isOwn = isOwnerIdentity(matched.username, matched);
+
       // STRICT 1 PERSON AT A TIME CONCURRENCY LOCK
-      // If someone else has pinged within the last 30s, deny entry!
       const activeSess = sessions[matched.username.toLowerCase()];
       if (activeSess && !activeSess.kicked && Date.now() - (activeSess.lastPing || 0) < 30000) {
         const mySaved = getSavedSession();
@@ -1696,6 +1980,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           return;
         }
       }
+
       // 2FA requirement
       if (isOwn || matched.twoFA) {
         if (!code.trim() || (matched.twoFA && matched.twoFA.trim() !== code.trim())) {
@@ -1707,6 +1992,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           return;
         }
       }
+
       const newSessionId = "sess_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
       const sess = {
         sessionId: newSessionId,
@@ -1719,14 +2005,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         currentView: "home",
         kicked: false
       };
+
       if (isOwn) {
         dispatchSecurityAlertEmail("SUCCESSFUL_OWNER_LOGIN", { username: matched.username });
       }
+
       await dbUpsertSession(sess);
       saveCurrentSession(sess);
       setLoading(false);
       onLoginSuccess(sess);
     };
+
     return h("div", { className: "auth-overlay" },
       h("div", { className: "auth-box" },
         h("h1", { className: "auth-logo" }, "unblockedgames"),
@@ -1753,6 +2042,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       )
     );
   }
+
   // ============================================================================
   // APP ROOT COMPONENT
   // ============================================================================
@@ -1763,36 +2053,48 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [query, setQuery] = useState("");
     const [playing, setPlaying] = useState(null);
     const [installedMap, setInstalledMap] = useState(getInstalledGames);
+    const [upgradePrompt, setUpgradePrompt] = useState(null);
     const [maintenanceModal, setMaintenanceModal] = useState(false);
     const [activeBroadcast, setActiveBroadcast] = useState(null);
     const [toastMsg, setToastMsg] = useState("");
     const [toastOn, setToastOn] = useState(false);
     const toastT = useRef(undefined);
+
     const [currentUser, setCurrentUser] = useState(getSavedSession);
     const [accountsMap, setAccountsMap] = useState({});
     const [sessionsMap, setSessionsMap] = useState({});
+
     const toast = useCallback((msg) => {
       setToastMsg(msg); setToastOn(true);
       clearTimeout(toastT.current);
       toastT.current = setTimeout(() => setToastOn(false), 2400);
     }, []);
+
     const isOwner = useMemo(() => {
       if (!currentUser) return false;
       const acc = accountsMap[currentUser.username?.toLowerCase()];
       return isOwnerIdentity(currentUser.username, acc || currentUser);
     }, [currentUser, accountsMap]);
+
     const userTier = useMemo(() => {
       if (!currentUser) return "free";
       const acc = accountsMap[currentUser.username?.toLowerCase()] || currentUser;
       return getUserTier(acc, isOwner);
     }, [currentUser, accountsMap, isOwner]);
+
     const navigate = useCallback((v) => {
       if (v === "tiktok") {
         setMaintenanceModal(true);
         return;
       }
+      if (!canAccessView(userTier, v)) {
+        const req = requiredTierForView(v);
+        setUpgradePrompt({ viewName: v.toUpperCase(), reqTier: req });
+        return;
+      }
       setView(v);
-    }, []);
+    }, [userTier]);
+
     const checkIncomingBroadcast = useCallback((bcObj, uname) => {
       if (!bcObj || !bcObj.id || !uname) return;
       if (Date.now() - (bcObj.timestamp || 0) > 300000) return;
@@ -1804,6 +2106,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       } catch {}
       setActiveBroadcast(bcObj);
     }, []);
+
     const dismissBroadcast = (id) => {
       try {
         const dismissed = JSON.parse(localStorage.getItem(LS_DISMISSED_BC) || "{}");
@@ -1812,16 +2115,18 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       } catch {}
       setActiveBroadcast(null);
     };
-    // Heartbeat & session integrity loop (Enforces 1 person per account)
+
     const refreshDatabase = useCallback(async () => {
       const { accounts, sessions, broadcast } = await dbFetchAll();
       setAccountsMap(accounts);
       setSessionsMap(sessions);
+
       const saved = getSavedSession();
       if (!saved || !saved.username) return;
+
       const key = saved.username.trim().toLowerCase();
       const blacklist = getRevokedBlacklist();
-      // If account was revoked, kick immediately
+
       if (blacklist[key] || !accounts[key]) {
         saveCurrentSession(null);
         setCurrentUser(null);
@@ -1829,7 +2134,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         toast("Account revoked.");
         return;
       }
-      // Check concurrency conflict: did another session take over?
+
+      // Concurrency check: enforce 1 user at a time
       const remoteSess = sessions[key];
       if (remoteSess && remoteSess.sessionId && saved.sessionId && remoteSess.sessionId !== saved.sessionId) {
         saveCurrentSession(null);
@@ -1838,23 +2144,24 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         toast("Logged out: Account opened on another device!");
         return;
       }
-      // Check incoming broadcast
+
       if (broadcast && broadcast.id) {
         checkIncomingBroadcast(broadcast, saved.username);
       }
-      // Update heartbeat
+
       dbUpsertSession({
         ...saved,
         lastPing: Date.now(),
         currentView: view
       });
     }, [view, toast, checkIncomingBroadcast]);
+
     useEffect(() => {
       refreshDatabase();
-      const interval = setInterval(refreshDatabase, 2000); // 2-second fast sync
+      const interval = setInterval(refreshDatabase, 2500);
       return () => clearInterval(interval);
     }, [refreshDatabase]);
-    // Zero-latency cross-tab broadcast dispatch
+
     useEffect(() => {
       if (!bc) return;
       const onMsg = (e) => {
@@ -1869,6 +2176,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       bc.addEventListener("message", onMsg);
       return () => bc.removeEventListener("message", onMsg);
     }, [currentUser, checkIncomingBroadcast]);
+
     const launchGame = useCallback((g) => {
       saveInstalledGame(g.slug);
       setInstalledMap(getInstalledGames());
@@ -1878,10 +2186,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       }
       openCloaked(frameSource(g), settings);
     }, [settings]);
+
     return h(Fragment, null,
       h(Stars),
       !currentUser ? h(LoginBox, { onLoginSuccess: (sess) => { setCurrentUser(sess); refreshDatabase(); toast(`Welcome, ${sess.username}!`); } }) : null,
       h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: navigate, isOwner, userTier }),
+      h("div", { id: "topRight", style: { display: "flex", gap: 8, alignItems: "center" } },
+        currentUser ? h("button", { className: "pill", style: { display: "flex", alignItems: "center", gap: 8 }, onClick: () => navigate(isOwner ? "creator" : "account") },
+          h("span", null, currentUser.username),
+          renderTierBadge(userTier, isOwner)
+        ) : null
+      ),
       h("main", null,
         view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); }, userTier }) : null,
         view === "sports" ? h(SportsView, { currentUser, userTier, isOwner, sessionsMap, toast }) : null,
@@ -1897,6 +2212,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabase, toast }) : null,
         view === "settings" ? h(SettingsView, { settings, onSave: (s) => { setSettings(s); saveSettings(s); toast("Saved"); }, onCloakSite: () => cloakSite(settings) }) : null
       ),
+
       maintenanceModal ? h(Modal, { onClose: () => setMaintenanceModal(false) },
         h("h3", null, "🔧 Under Maintenance"),
         h("p", null, "TikTok is currently locked for all users while video relay servers are upgraded."),
@@ -1904,6 +2220,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           h("button", { className: "btn", onClick: () => setMaintenanceModal(false) }, "Close")
         )
       ) : null,
+
+      upgradePrompt ? h(Modal, { onClose: () => setUpgradePrompt(null) },
+        h("h3", null, `🔒 ${upgradePrompt.reqTier} Tier Required`),
+        h("p", null, `Your account is currently on the ${userTier.toUpperCase()} tier. Accessing ${upgradePrompt.viewName} requires a ${upgradePrompt.reqTier} license. Contact the Owner to upgrade your account tier!`),
+        h("div", { className: "actions" },
+          h("button", { className: "btn", onClick: () => setUpgradePrompt(null) }, "Got It")
+        )
+      ) : null,
+
       activeBroadcast ? h("div", { className: "screen-broadcast-bg" },
         h("div", { className: "screen-broadcast-box" },
           h("div", null,
@@ -1925,10 +2250,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           }, "Close")
         )
       ) : null,
+
       playing ? h(Player, { game: playing, onClose: () => setPlaying(null) }) : null,
-      h("div", id: "toast", className: toastOn ? "show" : "")
+      h("div", { id: "toast", className: toastOn ? "show" : "" }, toastMsg)
     );
   }
+
   createRoot(document.getElementById("root")).render(h(StrictMode, null, h(App)));
 })();
     </script>
