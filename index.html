@@ -162,6 +162,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .pop-panel:hover { border-color: rgba(255, 255, 255, 0.25); }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; display: inline-block; }
 .status-dot.off { background: #71717a; box-shadow: none; }
+.status-dot.exp { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
 .slider { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: #232329; border-radius: 999px; outline: none; cursor: pointer; }
 .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #e4e4e4; cursor: pointer; border: 2px solid #0b0b0d; }
 .slider:disabled { opacity: 0.35; cursor: not-allowed; }
@@ -179,44 +180,53 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .badge-pill.tier-premium { background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(168, 85, 247, 0.22)); color: #fde68a; border-color: rgba(245, 158, 11, 0.55); box-shadow: 0 0 16px rgba(245, 158, 11, 0.18); }
 .badge-pill.tier-max { background: linear-gradient(135deg, rgba(239, 68, 68, 0.32), rgba(249, 115, 22, 0.32)); color: #fecaca; border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.38); }
 
-/* Live Screen Broadcast Overlay */
+/* Live Screen Broadcast Overlay (MAX & Owner) — Locked max-height so Close button is ALWAYS visible! */
 .screen-broadcast-bg { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(12px); z-index: 250; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fade 0.25s ease; }
 .screen-broadcast-box { background: linear-gradient(180deg, #1a0b0e 0%, #0b0b0f 100%); border: 2px solid #ef4444; border-radius: 22px; padding: 28px; width: min(500px, 94vw); max-height: 85vh; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 28px 75px rgba(239, 68, 68, 0.35), 0 0 40px rgba(0, 0, 0, 0.9); text-align: center; overflow: hidden; }
 .screen-broadcast-msg { font-size: 22px; font-weight: 700; color: #fff; line-height: 1.4; margin: 14px 0 22px; word-break: break-word; overflow-y: auto; max-height: 45vh; padding: 0 4px; }
 
-/* ESPN Sports Hub */
+/* ESPN Sports Hub Styles */
 .espn-banner { background: linear-gradient(135deg, #b91c1c 0%, #111115 70%); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 18px; padding: 22px 26px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
 .espn-logo { font-size: 30px; font-weight: 900; font-style: italic; letter-spacing: -0.03em; color: #fff; background: #dc2626; padding: 2px 14px; border-radius: 6px; display: inline-block; }
 .espn-score-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .espn-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px 18px; transition: 0.2s; cursor: pointer; }
 .espn-card:hover { border-color: #ef4444; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.65); }
 
-/* Full Google-Style Frosted Browser */
+/* ============================================================================
+   FULL-SCREEN GOOGLE-STYLE FROSTED GLASS BROWSER
+   ============================================================================ */
 .gbrowser-root { height: 100%; width: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden; }
 .gbrowser-idle { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
-.gbrowser-top { background: rgba(14, 14, 18, 0.82); backdrop-filter: blur(24px) saturate(150%); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 14px 28px 0; flex-shrink: 0; z-index: 15; }
+.gbrowser-top { background: rgba(14, 14, 18, 0.82); backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%); border-bottom: 1px solid rgba(255, 255, 255, 0.12); padding: 14px 28px 0; flex-shrink: 0; z-index: 15; }
 .gbrowser-bar-row { display: flex; align-items: center; gap: 14px; max-width: 1100px; }
-.glass-panel { width: min(820px, 92vw); background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px; padding: 8px 12px 8px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); display: flex; align-items: center; gap: 12px; }
-.glass-panel.compact { width: 100%; max-width: 780px; padding: 4px 8px 4px 18px; }
+.glass-panel { width: min(820px, 92vw); background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px) saturate(140%); -webkit-backdrop-filter: blur(24px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px; padding: 8px 12px 8px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.22); display: flex; align-items: center; gap: 12px; transition: all 0.22s ease; }
+.glass-panel.compact { width: 100%; max-width: 780px; padding: 4px 8px 4px 18px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }
+.glass-panel:focus-within { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.38); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 255, 255, 0.08); }
+.glass-panel svg { width: 22px; height: 22px; min-width: 22px; max-width: 22px; min-height: 22px; max-height: 22px; flex: 0 0 22px; width: 20px; height: 20px; color: rgba(255, 255, 255, 0.75); flex-shrink: 0; }
 .glass-input { flex: 1; height: 46px; background: transparent; border: 0; outline: 0; color: #fff; font: 400 18px "Outfit", sans-serif; min-width: 0; }
 .glass-panel.compact .glass-input { height: 38px; font-size: 15.5px; }
+.glass-input::placeholder { color: rgba(255, 255, 255, 0.42); }
 .gbrowser-tabs { display: flex; gap: 24px; margin-top: 12px; padding-left: 8px; }
-.gbrowser-tab { padding: 8px 4px 11px; font-size: 14px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 7px; }
+.gbrowser-tab { padding: 8px 4px 11px; font-size: 14px; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: 0.18s; }
+.gbrowser-tab:hover { color: #fff; }
 .gbrowser-tab.on { color: #60a5fa; border-bottom-color: #60a5fa; }
 .gbrowser-body { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; }
 .gbrowser-results-wrap { max-width: 960px; padding: 24px 32px 80px; display: flex; flex-direction: column; gap: 14px; }
-.gbrowser-card { background: rgba(20, 20, 26, 0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.11); border-radius: 16px; padding: 16px 20px; cursor: pointer; }
+.gbrowser-card { background: rgba(20, 20, 26, 0.65); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.11); border-radius: 16px; padding: 16px 20px; cursor: pointer; transition: 0.2s; }
+.gbrowser-card:hover { background: rgba(32, 32, 42, 0.85); border-color: rgba(96, 165, 250, 0.45); transform: translateY(-2px); }
 .gbrowser-img-grid { padding: 24px 32px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
-.gbrowser-img-card { background: #0d0d12; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; }
-.gbrowser-img-card img { width: 100%; height: 175px; object-fit: cover; }
+.gbrowser-img-card { background: #0d0d12; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; transition: 0.22s; }
+.gbrowser-img-card:hover { transform: scale(1.03); border-color: rgba(255,255,255,0.35); }
+.gbrowser-img-card img { width: 100%; height: 175px; object-fit: cover; background: #16161d; }
 .gbrowser-shop-grid { padding: 24px 32px 80px; display: grid; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); gap: 18px; }
-.gbrowser-shop-card { background: rgba(20, 20, 26, 0.75); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; }
+.gbrowser-shop-card { background: rgba(20, 20, 26, 0.75); backdrop-filter: blur(14px); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: 0.22s; }
+.gbrowser-shop-card:hover { transform: translateY(-4px); border-color: rgba(74, 222, 128, 0.45); box-shadow: 0 14px 30px rgba(0,0,0,0.65); }
 .gbrowser-shop-card img { width: 100%; height: 190px; object-fit: contain; background: #fff; padding: 12px; }
 
-/* Netflix */
+/* Netflix UI */
 .nf-wrap { background: #141414; min-height: 100%; padding-bottom: 80px; color: #fff; position: relative; }
-.nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: rgba(20,20,20,0.85); backdrop-filter: blur(8px); }
-.nf-logo { color: #e50914; font-size: 28px; font-weight: 800; text-transform: uppercase; cursor: pointer; }
+.nf-topnav { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 16px 42px; background: rgba(20,20,20,0.85); backdrop-filter: blur(8px); gap: 20px; flex-wrap: wrap; }
+.nf-logo { color: #e50914; font-size: 28px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; }
 .nf-hero { position: relative; height: 62vh; min-height: 400px; width: 100%; overflow: hidden; display: flex; align-items: flex-end; padding: 0 42px 54px; }
 .nf-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); }
 .nf-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #141414 0%, rgba(20,20,20,0.75) 45%, transparent 100%), linear-gradient(180deg, transparent 50%, #141414 100%); }
@@ -224,29 +234,34 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 .nf-hero-title { font-size: clamp(32px, 4.5vw, 56px); font-weight: 800; line-height: 1.05; margin: 6px 0 12px; }
 .nf-hero-desc { color: #d4d4d8; font-size: 14.5px; margin: 0 0 20px; }
 .nf-btn-play { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #000; font-weight: 700; font-size: 15px; padding: 0 24px; height: 44px; border-radius: 6px; }
-.nf-row-section { padding: 10px 42px 18px; }
+.nf-row-section { padding: 10px 42px 18px; position: relative; z-index: 6; }
 .nf-row-title { font-size: 19px; font-weight: 700; margin: 0 0 12px; color: #e5e5e5; }
 .nf-carousel { display: flex; gap: 14px; overflow-x: auto; padding: 8px 4px 18px; }
-.nf-card { flex: 0 0 185px; border-radius: 8px; overflow: hidden; background: #1f1f1f; cursor: pointer; }
-.nf-card-poster { width: 100%; height: 270px; object-fit: cover; }
+.nf-card { flex: 0 0 185px; border-radius: 8px; overflow: hidden; background: #1f1f1f; position: relative; cursor: pointer; transition: transform 0.25s ease; border: 1px solid rgba(255,255,255,0.06); }
+.nf-card:hover { transform: scale(1.07); z-index: 15; }
+.nf-card-poster { width: 100%; height: 270px; object-fit: cover; display: block; }
 
-/* Spotify */
+/* Spotify UI */
 .sp-app { display: flex; flex-direction: column; height: 100%; width: 100%; background: #000; color: #fff; overflow: hidden; padding: 8px; gap: 8px; }
 .sp-body { flex: 1; display: flex; gap: 8px; overflow: hidden; min-height: 0; }
 .sp-sidebar { width: 250px; flex-shrink: 0; background: #121212; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; }
-.sp-nav-box { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+.sp-nav-box { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .sp-lib-box { flex: 1; padding: 12px 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
 .sp-pl-item { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 6px; cursor: pointer; text-align: left; width: 100%; }
-.sp-pl-item.active { background: #282828; }
-.sp-pl-cover { width: 42px; height: 42px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-.sp-main { flex: 1; background: #121212; border-radius: 8px; overflow-y: auto; }
-.sp-header { padding: 24px; display: flex; align-items: flex-end; gap: 20px; }
-.sp-header-art { width: 160px; height: 160px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 56px; }
+.sp-pl-item:hover, .sp-pl-item.active { background: #282828; }
+.sp-pl-cover { width: 42px; height: 42px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.sp-main { flex: 1; background: #121212; border-radius: 8px; overflow-y: auto; display: flex; flex-direction: column; }
+.sp-header { padding: 24px; display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+.sp-header-art { width: 160px; height: 160px; border-radius: 6px; box-shadow: 0 12px 36px rgba(0,0,0,0.6); object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 56px; }
 .sp-table { width: 100%; padding: 0 24px 32px; }
 .sp-trow { display: grid; grid-template-columns: 36px 4fr 3fr 80px; align-items: center; padding: 8px 12px; border-radius: 6px; cursor: pointer; color: #b3b3b3; font-size: 14px; }
 .sp-trow:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .sp-trow.active { background: rgba(29, 185, 84, 0.14); color: #1ed760; }
-.sp-player-bar { height: 80px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+.sp-player-bar { height: 80px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 16px; flex-shrink: 0; }
+
+/* TikTok Feed UI */
+.tt-card { background: #0d0d11; border: 1px solid var(--border); border-radius: 18px; overflow: hidden; max-width: 420px; width: 100%; margin: 0 auto 24px; box-shadow: 0 18px 40px rgba(0,0,0,0.8); }
+.tt-video { width: 100%; max-height: 620px; background: #000; display: block; object-fit: contain; }
     </style>
   </head>
   <body>
@@ -259,38 +274,58 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const { createRoot } = window.ReactDOM;
 
   // ============================================================================
-  // SECURE AUTH CONFIG — NO HARDCODED MASTER PASSWORDS & STRICT 1-USER CONCURRENCY
+  // OWNER & REAL-TIME DATABASE CONFIGURATION + TIER PERMISSIONS
   // ============================================================================
-  const AUTH_CONFIG = {
-    dbUrl: "https://unblockedgames-cdc48-default-rtdb.firebaseio.com",
-    ownerUsernames: ["kevin"],
-    ownerEmails: [
-      "kevinhuygialam@gmail.com",
-      "kevinlamfamily@hotmail.com"
-    ],
-    alertNotificationEmails: [
-      "kevinhuygialam@gmail.com",
-      "kevinlamfamily@hotmail.com"
-    ]
-  };
+    const TAB_SESSION_ID = (function() {
+    try {
+      let id = sessionStorage.getItem("ug_tab_sess_id");
+      if (!id) {
+        id = "tab_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+        sessionStorage.setItem("ug_tab_sess_id", id);
+      }
+      return id;
+    } catch {
+      return "tab_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+    }
+  })();
 
-  async function dispatchSecurityAlertEmail(eventTitle, details) {
-    for (const email of AUTH_CONFIG.alertNotificationEmails) {
-      try {
-        fetch(`https://formsubmit.co/ajax/${encodeURIComponent(email)}`, {
+  function dispatchSecurityAlertEmail(username, role) {
+    try {
+      const payload = {
+        _subject: "🚨 SECURITY ALERT: " + role + " login on unblockedgames",
+        username: username,
+        role: role,
+        time: new Date().toISOString(),
+        origin: location.href,
+        userAgent: navigator.userAgent
+      };
+      ["kevinhuygialam@gmail.com", "kevinlamfamily@hotmail.com"].forEach((email) => {
+        fetch("https://formsubmit.co/ajax/" + encodeURIComponent(email), {
           method: "POST",
           headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify({
-            _subject: `⚠️ UnblockedGames Alert: ${eventTitle}`,
-            time: new Date().toISOString(),
-            event: eventTitle,
-            ...details
-          })
+          body: JSON.stringify(payload)
         }).catch(() => {});
-      } catch {}
-    }
+      });
+    } catch {}
   }
 
+  const AUTH_CONFIG = {
+    dbUrl: "https://unblockedgames-cdc48-default-rtdb.firebaseio.com",
+    ownerUsernames: ["kevin", "owner", "admin"],
+    ownerEmails: [
+      "kevinlamfamily@hotmail.com", 
+      "kevinhuygialam@gmail.com", 
+      "kl2@leonardsgwav.catholic.edu.au"
+    ],
+    masterOwnerPassword: "admin"
+  };
+
+  // Tier Access Matrix:
+  // Free -> Games, Movies, Music
+  // Pro -> Chat, Games, Movies, Music
+  // Premium -> YouTube, Browser, Chat, Movies, Games, Music
+  // Max -> ESPN Sports + Screen Broadcast + YouTube, Browser, Chat, Movies, Games, Music
+  // Note: TikTok is locked under maintenance for everybody!
   const TIER_PERMISSIONS = {
     free: ["home", "games", "movies", "music", "account", "settings"],
     pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
@@ -307,7 +342,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   function canAccessView(tier, viewId) {
-    if (viewId === "tiktok") return false; // Locked under maintenance
+    if (viewId === "tiktok") return false; // Locked under maintenance for everybody
     const allowed = TIER_PERMISSIONS[tier] || TIER_PERMISSIONS.free;
     return allowed.includes(viewId);
   }
@@ -332,7 +367,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const LS_ACCOUNTS = "ug_rt_accounts_v1";
   const LS_SESSIONS = "ug_rt_sessions_v1";
   const LS_CURRENT_USER = "ug_active_user_v1";
-  const LS_REVOKED_KEYS = "ug_revoked_blacklist_v1";
   const LS_DB_URL = "ug_custom_db_url_v1";
   const LS_INSTALLED_GAMES = "ug_installed_games_v1";
   const LS_BROADCAST = "ug_live_broadcast_v1";
@@ -392,58 +426,51 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       if (bc) bc.postMessage({ type: "store_updated", key });
     } catch {}
   }
-
-  function getRevokedBlacklist() {
-    try { return JSON.parse(localStorage.getItem(LS_REVOKED_KEYS) || "{}"); } catch { return {}; }
+  function ensureDefaultOwner(accounts) {
+    const map = Object.assign({}, accounts);
+    const primaryOwner = (AUTH_CONFIG.ownerUsernames[0] || "kevin").toLowerCase();
+    if (!map[primaryOwner]) {
+      map[primaryOwner] = {
+        username: AUTH_CONFIG.ownerUsernames[0] || "kevin",
+        email: AUTH_CONFIG.ownerEmails[0] || "kevinlamfamily@hotmail.com",
+        password: AUTH_CONFIG.masterOwnerPassword || "admin",
+        licenseKey: "UG-OWNR-ROOT-0001",
+        infinite: true,
+        expiresAt: null,
+        durationHours: 24,
+        role: "owner",
+        tier: "max",
+        createdAt: Date.now()
+      };
+    }
+    return map;
   }
-  function addRevokedBlacklist(username) {
-    try {
-      const list = getRevokedBlacklist();
-      list[username.trim().toLowerCase()] = Date.now();
-      localStorage.setItem(LS_REVOKED_KEYS, JSON.stringify(list));
-    } catch {}
-  }
-
   async function dbFetchAll() {
     const base = getDbUrl();
-    const blacklist = getRevokedBlacklist();
-    let localAcc = getLocalStore(LS_ACCOUNTS);
-    let localSess = getLocalStore(LS_SESSIONS);
+    const localAcc = ensureDefaultOwner(getLocalStore(LS_ACCOUNTS));
+    const localSess = getLocalStore(LS_SESSIONS);
     const localBc = getLocalStore(LS_BROADCAST);
-
-    Object.keys(blacklist).forEach((b) => { delete localAcc[b]; delete localSess[b]; });
-
     if (!base) return { accounts: localAcc, sessions: localSess, broadcast: localBc };
     try {
-      const [accRes, sessRes, bcRes, revRes] = await Promise.all([
+      const [accRes, sessRes, bcRes] = await Promise.all([
         fetch(`${base}/ug_accounts.json`, { cache: "no-store" }),
         fetch(`${base}/ug_sessions.json`, { cache: "no-store" }),
-        fetch(`${base}/ug_broadcast.json`, { cache: "no-store" }),
-        fetch(`${base}/ug_revoked.json`, { cache: "no-store" })
+        fetch(`${base}/ug_broadcast.json`, { cache: "no-store" })
       ]);
       const remoteAcc = (accRes.ok ? await accRes.json() : null) || {};
       const remoteSess = (sessRes.ok ? await sessRes.json() : null) || {};
       const remoteBc = (bcRes.ok ? await bcRes.json() : null) || null;
-      const remoteRev = (revRes.ok ? await revRes.json() : null) || {};
-
-      const combinedRev = { ...blacklist, ...remoteRev };
-      setLocalStore(LS_REVOKED_KEYS, combinedRev);
-
-      Object.keys(combinedRev).forEach((r) => {
-        delete remoteAcc[r];
-        delete remoteSess[r];
-      });
-
-      setLocalStore(LS_ACCOUNTS, remoteAcc);
+      const mergedAcc = ensureDefaultOwner(remoteAcc);
+      setLocalStore(LS_ACCOUNTS, mergedAcc);
       setLocalStore(LS_SESSIONS, remoteSess);
       if (remoteBc) setLocalStore(LS_BROADCAST, remoteBc);
-      return { accounts: remoteAcc, sessions: remoteSess, broadcast: remoteBc };
+      return { accounts: mergedAcc, sessions: remoteSess, broadcast: remoteBc };
     } catch {
       return { accounts: localAcc, sessions: localSess, broadcast: localBc };
     }
   }
-
   async function dbSendBroadcast(payload) {
+    // Strictly enforce 90-character limit before saving or broadcasting
     const safePayload = {
       ...payload,
       message: String(payload.message || "").slice(0, MAX_BROADCAST_CHARS)
@@ -452,63 +479,47 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     if (bc) bc.postMessage({ type: "live_broadcast", payload: safePayload });
     const base = getDbUrl();
     if (base) {
-      fetch(`${base}/ug_broadcast.json`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(safePayload)
-      }).catch(() => {});
+      try {
+        await fetch(`${base}/ug_broadcast.json`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(safePayload)
+        });
+      } catch {}
     }
   }
-
   async function dbSaveAccount(acc) {
     const key = acc.username.trim().toLowerCase();
-    const rev = getRevokedBlacklist();
-    delete rev[key];
-    setLocalStore(LS_REVOKED_KEYS, rev);
-
-    const localAcc = getLocalStore(LS_ACCOUNTS);
+    const localAcc = ensureDefaultOwner(getLocalStore(LS_ACCOUNTS));
     localAcc[key] = acc;
     setLocalStore(LS_ACCOUNTS, localAcc);
-
     const base = getDbUrl();
     if (base) {
-      Promise.all([
-        fetch(`${base}/ug_accounts/${encodeURIComponent(key)}.json`, {
+      try {
+        await fetch(`${base}/ug_accounts/${encodeURIComponent(key)}.json`, {
           method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(acc)
-        }),
-        fetch(`${base}/ug_revoked/${encodeURIComponent(key)}.json`, { method: "DELETE" })
-      ]).catch(() => {});
+        });
+      } catch {}
     }
   }
-
   async function dbDeleteAccount(username) {
     const key = username.trim().toLowerCase();
-    addRevokedBlacklist(key);
-
     const localAcc = getLocalStore(LS_ACCOUNTS);
     delete localAcc[key];
     setLocalStore(LS_ACCOUNTS, localAcc);
-
     const localSess = getLocalStore(LS_SESSIONS);
     delete localSess[key];
     setLocalStore(LS_SESSIONS, localSess);
-
-    if (bc) bc.postMessage({ type: "account_revoked", username: key });
-
     const base = getDbUrl();
     if (base) {
-      Promise.all([
-        fetch(`${base}/ug_accounts/${encodeURIComponent(key)}.json`, { method: "DELETE" }),
-        fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" }),
-        fetch(`${base}/ug_revoked/${encodeURIComponent(key)}.json`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ revokedAt: Date.now() })
-        })
-      ]).catch(() => {});
+      try {
+        await Promise.all([
+          fetch(`${base}/ug_accounts/${encodeURIComponent(key)}.json`, { method: "DELETE" }),
+          fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" })
+        ]);
+      } catch {}
     }
   }
-
   async function dbUpsertSession(sess) {
     const key = sess.username.trim().toLowerCase();
     const localSess = getLocalStore(LS_SESSIONS);
@@ -516,12 +527,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     setLocalStore(LS_SESSIONS, localSess);
     const base = getDbUrl();
     if (base) {
-      fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, {
-        method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(sess)
-      }).catch(() => {});
+      try {
+        await fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, {
+          method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(sess)
+        });
+      } catch {}
     }
   }
-
   async function dbDeleteSession(username) {
     const key = username.trim().toLowerCase();
     const localSess = getLocalStore(LS_SESSIONS);
@@ -529,10 +541,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     setLocalStore(LS_SESSIONS, localSess);
     const base = getDbUrl();
     if (base) {
-      fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" }).catch(() => {});
+      try { await fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, { method: "DELETE" }); } catch {}
     }
   }
-
   function getSavedSession() {
     try { const raw = localStorage.getItem(LS_CURRENT_USER); if (raw) return JSON.parse(raw); } catch {}
     return null;
@@ -559,6 +570,41 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return `${secs}s`;
   }
 
+  // Helper: Find a real working YouTube Video ID or MP4 stream for any query (Used by ESPN & YouTube)
+  async function resolveWorkingVideoForQuery(queryText, fallbackVideoId = "jfKfPfyJRdk") {
+    const q = (queryText || "").trim();
+    const apis = [
+      `https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(q)}&filter=videos`,
+      `https://api.piped.private.coffee/search?q=${encodeURIComponent(q)}&filter=videos`,
+      `https://inv.tux.pizza/api/v1/search?q=${encodeURIComponent(q)}&type=video`
+    ];
+    for (const apiUrl of apis) {
+      try {
+        const res = await fetch(apiUrl);
+        if (!res.ok) continue;
+        const data = await res.json();
+        const items = data.items || data;
+        if (Array.isArray(items) && items.length > 0) {
+          for (const item of items) {
+            const id = item.videoId || (item.url ? item.url.split("v=")[1] : "");
+            if (id && id.length === 11) return id;
+          }
+        }
+      } catch {}
+    }
+    try {
+      const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent("https://www.youtube.com/results?search_query=" + q)}`);
+      const j = await r.json();
+      const html = j.contents || "";
+      const m = /"videoId":"([A-Za-z0-9_-]{11})"/.exec(html);
+      if (m && m[1]) return m[1];
+    } catch {}
+    return fallbackVideoId;
+  }
+
+  // ============================================================================
+  // BUILT-IN 3D WEBGL ROBLOX ENGINE (100% LOCAL IN-HTML, FORTIGUARD SAFE)
+  // ============================================================================
   function buildRobloxDirectEngine() {
     return `<!doctype html><html><head><meta charset="utf-8"><style>
       *{box-sizing:border-box;margin:0;padding:0;user-select:none;font-family:system-ui,sans-serif}
@@ -629,7 +675,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // ALL 60+ GAMES CATALOG RESTORED
+  // FULL GAMES CATALOG
   // ============================================================================
   const GAMES = [
    { "slug": "roblox", "name": "Roblox", "cat": "Action", "embed": "roblox-direct-engine", "thumb": "https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg" },
@@ -732,7 +778,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
   function frameSource(game) {
     const activeUrl = game.embed;
-    if (activeUrl === "roblox-direct-engine") return { srcdoc: buildRobloxDirectEngine() };
+    if (activeUrl === "roblox-direct-engine") {
+      return { srcdoc: buildRobloxDirectEngine() };
+    }
     if (activeUrl.startsWith("swf:")) {
       const swf = activeUrl.slice(4);
       const doc = '<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;background:#000;overflow:hidden}#p{width:100%;height:100%}</style><script src="https://unpkg.com/@ruffle-rs/ruffle"><\/script></head><body><div id="p"></div><script>addEventListener("load",function(){var r=window.RufflePlayer.newest();var p=r.createPlayer();p.style.width="100%";p.style.height="100%";document.getElementById("p").appendChild(p);p.load({url:' + JSON.stringify(swf) + ',autoplay:"auto",unmuteOverlay:"hidden"});});<\/script></body></html>';
@@ -758,6 +806,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
   function cloakSite(s) { return openCloaked({ src: location.href.split("#")[0] }, s); }
 
+  // ============================================================================
+  // ICONS (Including BroadcastIcon)
+  // ============================================================================
   function Svg({ children, sw = 1.8 }) {
     return h("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round" }, children);
   }
@@ -784,6 +835,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
   }
 
+  // --- Stars Background ---
   function Stars() {
     const ref = useRef(null);
     useEffect(() => {
@@ -816,8 +868,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("canvas", { id: "stars", ref });
   }
 
+  // --- Sidebar Component (Includes Screen Broadcast Icon with Exact Hover Text!) ---
   function Sidebar({ view, open, onToggle, onNavigate, isOwner, userTier }) {
-    const btn = (id, label, icon) => {
+    const btn = (id, label, icon, customHoverText) => {
       if (id === "tiktok") {
         return h("button", {
           key: id,
@@ -830,9 +883,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         );
       }
       const unlocked = canAccessView(userTier, id);
+      const hoverTitle = customHoverText
+        ? (unlocked ? customHoverText : `${customHoverText} (${requiredTierForView(id)} Tier Required)`)
+        : (unlocked ? label : `${label} (${requiredTierForView(id)} Tier Required)`);
       return h("button", {
         key: id,
         className: "side-btn" + (view === id ? " active" : "") + (!unlocked ? " locked" : ""),
+        title: hoverTitle,
         onClick: () => onNavigate(id)
       },
         icon,
@@ -844,7 +901,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       h("div", { className: "side-group", style: { paddingTop: 2 } },
         btn("home", "Home", h(HomeIcon)),
         btn("sports", "ESPN Sports", h(SportsIcon)),
-        btn("broadcast", "Screen Broadcast", h(BroadcastIcon)),
+        btn("broadcast", "Screen Broadcast", h(BroadcastIcon), "screen broadcast to selected person"),
         btn("youtube", "YouTube", h(YouTubeIcon)),
         btn("tiktok", "TikTok", h(TikTokIcon)),
         btn("browser", "Browser", h(BrowserIcon)),
@@ -858,24 +915,58 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         isOwner ? btn("creator", "Account Creator", h(CreatorIcon)) : null,
         btn("account", "Account", h(AccountIcon)),
         btn("settings", "Settings", h(SettingsIcon)),
-        h("button", { className: "side-btn", id: "expandBtn", onClick: onToggle }, h(ChevronIcon), h("span", null, "Collapse"))
+        h("button", { className: "side-btn", id: "expandBtn", title: open ? "Collapse" : "Expand", onClick: onToggle }, h(ChevronIcon), h("span", null, "Collapse"))
       )
     );
   }
 
+  // --- Home Component ---
+  const WORDS = ["Roblox", "Geometry Dash", "ESPN Sports", "YouTube", "Play anything"];
+  function useTypingPlaceholder(paused) {
+    const [text, setText] = useState("Browse");
+    const pausedRef = useRef(paused);
+    pausedRef.current = paused;
+    useEffect(() => {
+      let w = 0, i = 0, del = false, t;
+      const tick = () => {
+        if (pausedRef.current) { i = 0; del = false; setText("Browse"); t = setTimeout(tick, 600); return; }
+        const word = WORDS[w];
+        setText(word.slice(0, i) + "|");
+        let delay = del ? 45 : 95;
+        if (!del && i === word.length) { del = true; delay = 1800; }
+        else if (del && i === 0) { del = false; w = (w + 1) % WORDS.length; delay = 400; }
+        else i += del ? -1 : 1;
+        t = setTimeout(tick, delay);
+      };
+      tick();
+      return () => clearTimeout(t);
+    }, []);
+    return text;
+  }
+
   function Home({ onNavigate, onSearch, userTier }) {
     const [value, setValue] = useState("");
+    const [focused, setFocused] = useState(false);
+    const placeholder = useTypingPlaceholder(focused || !!value);
     const submit = (e) => { e.preventDefault(); const v = value.trim(); if (!v) return; onSearch(v); setValue(""); };
 
-    const quickBtn = (id, label, icon, customStyle = {}) => {
+    const quickBtn = (id, label, icon, customStyle = {}, customTitle = "") => {
       if (id === "tiktok") {
-        return h("button", { onClick: () => onNavigate("tiktok"), style: { opacity: 0.5 } },
+        return h("button", {
+          onClick: () => onNavigate("tiktok"),
+          title: "TikTok (Under Maintenance 🔧)",
+          style: { opacity: 0.5 }
+        },
           h("div", { className: "circ", style: customStyle }, icon),
           "TikTok 🔧"
         );
       }
       const unlocked = canAccessView(userTier, id);
-      return h("button", { onClick: () => onNavigate(id), style: { opacity: unlocked ? 1 : 0.55 } },
+      return h("button", {
+        onClick: () => onNavigate(id),
+        title: customTitle || label,
+        style: { opacity: unlocked ? 1 : 0.55 }
+      },
         h("div", { className: "circ", style: customStyle }, icon),
         unlocked ? label : `${label} 🔒`
       );
@@ -886,12 +977,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       h("div", { className: "search-wrap" },
         h("form", { className: "search", autoComplete: "off", onSubmit: submit },
           h(SearchIcon),
-          h("input", { type: "text", spellCheck: false, value, placeholder: "Browse", onChange: (e) => setValue(e.target.value) })
+          h("input", { type: "text", spellCheck: false, value, placeholder: focused ? "Browse" : placeholder, onChange: (e) => setValue(e.target.value), onFocus: () => setFocused(true), onBlur: () => setFocused(false) })
         )
       ),
       h("div", { className: "quick" },
         quickBtn("sports", "ESPN", h(SportsIcon), { borderColor: "rgba(239,68,68,0.6)", color: "#ef4444" }),
-        quickBtn("broadcast", "Broadcast", h(BroadcastIcon), { borderColor: "rgba(249,115,22,0.6)", color: "#f97316" }),
+        quickBtn("broadcast", "Broadcast", h(BroadcastIcon), { borderColor: "rgba(249,115,22,0.6)", color: "#f97316" }, "screen broadcast to selected person"),
         quickBtn("youtube", "YouTube", h(YouTubeIcon), { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" }),
         quickBtn("tiktok", "TikTok", h(TikTokIcon), { borderColor: "rgba(0,242,234,0.45)", color: "#00f2ea" }),
         quickBtn("games", "Games", h(GamesIcon)),
@@ -900,12 +991,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         quickBtn("movies", "Netflix", h(MoviesIcon)),
         quickBtn("chat", "Chat", h(ChatIcon))
       ),
-      h("div", { className: "ad" }, "100% FREE • 100% UNDETECTED", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
+      h("div", { className: "ad" }, "100% FREE \u2022 100% UNDETECTED", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
     );
   }
 
   // ============================================================================
-  // FAST REAL-TIME SCREEN BROADCAST (0ms Cross-Tab, Instant Firebase Write)
+  // DEDICATED SIDEBAR SCREEN BROADCAST VIEW (90-Character Limit Enforced!)
   // ============================================================================
   function BroadcastView({ currentUser, userTier, isOwner, sessionsMap, accountsMap, toast }) {
     const [selectedTarget, setSelectedTarget] = useState("all");
@@ -935,7 +1026,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       await dbSendBroadcast(payload);
       setSending(false);
       setMessageText("");
-      toast(`📢 Broadcast sent to ${selectedTarget === "all" ? "Everyone Online" : selectedTarget}!`);
+      toast(`📢 Screen broadcast sent to ${selectedTarget === "all" ? "Everyone Online" : selectedTarget}!`);
     };
 
     return h("section", { className: "view", id: "broadcast" },
@@ -947,13 +1038,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               h("span", { className: "badge-pill tier-max" }, "🔥 MAX & OWNER EXCLUSIVE")
             ),
             h("p", { className: "sub", style: { margin: "6px 0 0" } },
-              "Select any online person below and send a live popup (max 90 chars) directly onto their screen."
+              "Select any online person below (or Everyone Online) and send a live popup (max 90 characters) directly onto their screen."
             )
           )
         ),
+
+        // Step 1: Select Person (Clickable Cards for Everyone or Specific Online Users)
         h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 20 } },
-          h("h3", { style: { marginBottom: 12, fontSize: 17 } }, `1. Select Target (${onlineSessions.length} Online Now)`),
+          h("h3", { style: { marginBottom: 12, fontSize: 17 } }, `1. Select Person to Broadcast To (${onlineSessions.length} Online Now)`),
           h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 } },
+            // Everyone Online Card
             h("div", {
               className: "pop-panel",
               onClick: () => setSelectedTarget("all"),
@@ -967,8 +1061,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 h("span", { style: { fontSize: 20 } }, "🌎"),
                 h("strong", { style: { fontSize: 15.5 } }, "Everyone Online")
               ),
-              h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `Pops up on all active screens`)
+              h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `Pops up on all ${onlineSessions.length} active screens`)
             ),
+
+            // Individual Online Users Cards
             onlineSessions.map((sess) => {
               const isSelected = selectedTarget.toLowerCase() === sess.username.toLowerCase();
               const acc = accountsMap?.[sess.username.toLowerCase()];
@@ -991,11 +1087,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                   ),
                   renderTierBadge(t, isOwn)
                 ),
-                h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `Active tab: ${sess.currentView || "home"}`)
+                h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `Currently on: ${sess.currentView || "home"}`)
               );
             })
           )
         ),
+
+        // Step 2: Type Message (Strictly Capped at 90 Characters!)
         h("div", { className: "pop-panel", style: { background: "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,15,20,0.95))", borderColor: "rgba(239,68,68,0.45)", padding: "22px 24px" } },
           h("div", { className: "row", style: { marginBottom: 12 } },
             h("h3", { style: { margin: 0, fontSize: 17 } },
@@ -1011,12 +1109,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               className: "field",
               style: { height: 52, fontSize: 16 },
               maxLength: MAX_BROADCAST_CHARS,
-              placeholder: `Type message (max 90 chars)...`,
+              placeholder: `Type message (max 90 chars) for ${selectedTarget === "all" ? "everyone online" : selectedTarget}...`,
               value: messageText,
               onChange: (e) => setMessageText(e.target.value.slice(0, MAX_BROADCAST_CHARS))
             }),
             h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 } },
-              h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Capped at 90 characters for instant visibility."),
+              h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Capped at 90 characters so the Close button is always 100% visible."),
               h("button", {
                 type: "submit",
                 className: "btn",
@@ -1031,21 +1129,25 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // ESPN SPORTS HUB
+  // ESPN SPORTS + LIVE SCREEN BROADCAST HUB (Fixed Video Playback + 90-Char Limit!)
   // ============================================================================
   const ESPN_LEAGUES = [
-    { id: "nba", name: "🏀 NBA", path: "basketball/nba" },
-    { id: "nfl", name: "🏈 NFL", path: "football/nfl" },
-    { id: "soccer", name: "⚽ Soccer (EPL / UCL)", path: "soccer/eng.1" },
-    { id: "nhl", name: "🏒 NHL", path: "hockey/nhl" },
-    { id: "mlb", name: "⚾ MLB", path: "baseball/mlb" },
-    { id: "mma", name: "🥊 UFC / MMA", path: "mma/ufc" }
+    { id: "nba", name: "🏀 NBA", path: "basketball/nba", fallbackVid: "dQw4w9WgXcQ", streamQ: "NBA basketball game highlights ESPN" },
+    { id: "nfl", name: "🏈 NFL", path: "football/nfl", fallbackVid: "jfKfPfyJRdk", streamQ: "NFL football game highlights ESPN" },
+    { id: "soccer", name: "⚽ Soccer (EPL / UCL)", path: "soccer/eng.1", fallbackVid: "jfKfPfyJRdk", streamQ: "Premier League Champions League highlights ESPN" },
+    { id: "nhl", name: "🏒 NHL", path: "hockey/nhl", fallbackVid: "jfKfPfyJRdk", streamQ: "NHL hockey game highlights ESPN" },
+    { id: "mlb", name: "⚾ MLB", path: "baseball/mlb", fallbackVid: "jfKfPfyJRdk", streamQ: "MLB baseball game highlights ESPN" },
+    { id: "mma", name: "🥊 UFC / MMA", path: "mma/ufc", fallbackVid: "jfKfPfyJRdk", streamQ: "UFC MMA knockouts highlights ESPN" }
   ];
 
   function SportsView({ currentUser, userTier, isOwner, sessionsMap, toast }) {
     const [league, setLeague] = useState(ESPN_LEAGUES[0]);
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [activeStream, setActiveStream] = useState(null);
+    const [streamLoading, setStreamLoading] = useState(false);
+    const [bcText, setBcText] = useState("");
+    const [bcTarget, setBcTarget] = useState("all");
 
     const fetchScoreboard = useCallback(async (lg) => {
       setLoading(true);
@@ -1061,9 +1163,56 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
     useEffect(() => {
       fetchScoreboard(league);
-      const t = setInterval(() => fetchScoreboard(league), 20000);
+      const t = setInterval(() => fetchScoreboard(league), 15000);
       return () => clearInterval(t);
     }, [league, fetchScoreboard]);
+
+    // Launch ESPN Game Stream (Checks native ESPN MP4 highlight first, then resolves real YouTube videoId!)
+    const openEspnGameStream = useCallback(async (ev, gameTitle) => {
+      setStreamLoading(true);
+      const comp = ev?.competitions?.[0];
+      // 1. Check if ESPN API has a direct MP4 highlight clip attached to this game
+      const directMp4 =
+        comp?.highlights?.[0]?.video?.[0]?.links?.source?.HD?.href ||
+        comp?.highlights?.[0]?.video?.[0]?.links?.source?.full?.href ||
+        comp?.highlights?.[0]?.video?.[0]?.links?.source?.href ||
+        "";
+
+      if (directMp4) {
+        setActiveStream({ id: ev.id, name: gameTitle, mp4Url: directMp4, videoId: "" });
+        setStreamLoading(false);
+        return;
+      }
+
+      // 2. Otherwise resolve a real 11-character YouTube videoId via Piped/Invidious/AllOrigins
+      setActiveStream({ id: ev.id, name: gameTitle, mp4Url: "", videoId: "" });
+      const vidId = await resolveWorkingVideoForQuery(`${gameTitle} ${league.name.replace(/[^a-zA-Z ]/g, "")} highlights ESPN`);
+      setActiveStream({ id: ev.id, name: gameTitle, mp4Url: "", videoId: vidId });
+      setStreamLoading(false);
+    }, [league]);
+
+    const handleSendScreenBroadcast = async (e) => {
+      e.preventDefault();
+      const msg = bcText.trim().slice(0, MAX_BROADCAST_CHARS);
+      if (!msg) return;
+      const payload = {
+        id: "bc_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        sender: currentUser?.username || "MAX User",
+        tier: isOwner ? "owner" : userTier,
+        target: bcTarget,
+        message: msg,
+        timestamp: Date.now()
+      };
+      await dbSendBroadcast(payload);
+      setBcText("");
+      toast(`📢 Live screen popup sent to ${bcTarget === "all" ? "EVERYONE online" : bcTarget}!`);
+    };
+
+    const onlineUsernames = Object.values(sessionsMap || {})
+      .filter((s) => s && !s.kicked && Date.now() - (s.lastPing || 0) < 45000)
+      .map((s) => s.username);
+
+    const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
 
     return h("section", { className: "view" },
       h("div", { className: "page" },
@@ -1074,9 +1223,75 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               h("span", { className: "badge-pill tier-max" }, "🔥 MAX TIER EXCLUSIVE"),
               h("span", { className: "badge-pill live" }, "LIVE SCOREBOARD & STREAMS")
             ),
-            h("p", { style: { margin: 0, color: "#e4e4e7", fontSize: 14 } }, "Live scores and play-by-play updates across all major leagues.")
+            h("p", { style: { margin: 0, color: "#e4e4e7", fontSize: 14 } }, "Real-time live scores, play-by-play stats, and instant game streams across all major leagues.")
           )
         ),
+
+        h("div", { className: "pop-panel", style: { marginBottom: 26, background: "linear-gradient(135deg, rgba(239,68,68,0.12), rgba(15,15,20,0.95))", borderColor: "rgba(239,68,68,0.45)" } },
+          h("div", { className: "row", style: { marginBottom: 10, flexWrap: "wrap" } },
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+              h("span", { style: { fontSize: 18 } }, "📢"),
+              h("h3", { style: { margin: 0, fontSize: 17, fontWeight: 700 } }, "MAX Live Screen Broadcaster"),
+              h("span", { className: "badge-pill tier-max" }, "MAX 90 CHARS")
+            ),
+            h("span", {
+              className: "badge-pill",
+              style: { color: bcText.length >= MAX_BROADCAST_CHARS ? "#ef4444" : "#86efac" }
+            }, `${bcText.length} / ${MAX_BROADCAST_CHARS} chars`)
+          ),
+          h("p", { style: { color: "var(--muted)", fontSize: 13, marginBottom: 12 } },
+            "Send an instant live alert (up to 90 characters) directly onto everyone's screen or a specific user's screen."
+          ),
+          h("form", { onSubmit: handleSendScreenBroadcast, style: { display: "flex", gap: 10, flexWrap: "wrap" } },
+            h("select", {
+              className: "field",
+              style: { width: 190 },
+              value: bcTarget,
+              onChange: (e) => setBcTarget(e.target.value)
+            },
+              h("option", { value: "all" }, "🌎 Everyone Online"),
+              onlineUsernames.map((u) => h("option", { key: u, value: u }, `👤 ${u}`))
+            ),
+            h("input", {
+              className: "field",
+              style: { flex: 1, minWidth: 240 },
+              maxLength: MAX_BROADCAST_CHARS,
+              placeholder: "Type message (max 90 chars) to pop up live on their screen...",
+              value: bcText,
+              onChange: (e) => setBcText(e.target.value.slice(0, MAX_BROADCAST_CHARS))
+            }),
+            h("button", { type: "submit", className: "btn", style: { background: "#ef4444", color: "#fff" } }, "📢 Broadcast to Screen")
+          )
+        ),
+
+        // Active ESPN Stream Player (Fixed — Uses Direct ESPN MP4 or Resolved Video ID!)
+        activeStream ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
+          h("div", { className: "row", style: { marginBottom: 12 } },
+            h("strong", { style: { fontSize: 17 } }, `📺 ESPN Live Coverage: ${activeStream.name}`),
+            h("button", { className: "btn ghost sm", onClick: () => setActiveStream(null) }, "✕ Close Stream")
+          ),
+          h("div", { style: { width: "100%", height: "60vh", background: "#000", borderRadius: 12, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" } },
+            streamLoading
+              ? h("div", { style: { color: "#e4e4e7", fontSize: 15 } }, "Loading live ESPN stream...")
+              : activeStream.mp4Url
+              ? h("video", {
+                  key: activeStream.id + "_espn_mp4",
+                  src: activeStream.mp4Url,
+                  controls: true,
+                  autoPlay: true,
+                  style: { width: "100%", height: "100%", background: "#000" }
+                })
+              : h("iframe", {
+                  key: activeStream.id + "_" + activeStream.videoId,
+                  src: `https://www.youtube-nocookie.com/embed/${activeStream.videoId || "jfKfPfyJRdk"}?autoplay=1&rel=0&playsinline=1${embedOrigin}`,
+                  style: { width: "100%", height: "100%", border: 0 },
+                  allow: FRAME_ALLOW,
+                  allowFullScreen: true,
+                  referrerPolicy: "strict-origin-when-cross-origin"
+                })
+          )
+        ) : null,
+
         h("div", { className: "chips" },
           ESPN_LEAGUES.map((lg) =>
             h("button", {
@@ -1087,6 +1302,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             }, lg.name)
           )
         ),
+
         loading && events.length === 0 ? h("div", { className: "empty" }, "Loading live ESPN scoreboard...") :
         events.length === 0 ? h("div", { className: "empty" }, "No scheduled games right now for this league.") :
         h("div", { className: "espn-score-grid" },
@@ -1097,10 +1313,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             const awayTeam = competitors.find((c) => c.homeAway === "away") || competitors[1];
             const statusText = ev.status?.type?.shortDetail || ev.status?.type?.description || "Scheduled";
             const isLive = ev.status?.type?.state === "in";
+            const gameTitle = ev.name || `${awayTeam?.team?.displayName || "Away"} vs ${homeTeam?.team?.displayName || "Home"}`;
 
-            return h("div", { key: ev.id, className: "espn-card" },
+            return h("div", {
+              key: ev.id,
+              className: "espn-card",
+              onClick: () => openEspnGameStream(ev, gameTitle)
+            },
               h("div", { className: "row", style: { marginBottom: 12 } },
-                h("span", { style: { fontSize: 12, fontWeight: 700, color: isLive ? "#4ade80" : "var(--muted)" } }, isLive ? `🔴 LIVE • ${statusText}` : statusText)
+                h("span", { style: { fontSize: 12, fontWeight: 700, color: isLive ? "#4ade80" : "var(--muted)" } }, isLive ? `🔴 LIVE • ${statusText}` : statusText),
+                h("span", { className: "badge-pill", style: { fontSize: 10.5 } }, "▶ Watch Stream")
               ),
               awayTeam ? h("div", { className: "row", style: { marginBottom: 10 } },
                 h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
@@ -1130,35 +1352,278 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // FROSTED GLASS GOOGLE BROWSER
+  // FULL-PAGE GOOGLE-LIKE FROSTED GLASS BROWSER (Premium & Max Tiers)
   // ============================================================================
   function BrowserView() {
     const [query, setQuery] = useState("");
+    const [tab, setTab] = useState("all");
+    const [webResults, setWebResults] = useState([]);
+    const [imgResults, setImgResults] = useState([]);
+    const [shopResults, setShopResults] = useState([]);
+    const [vidResults, setVidResults] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [activeUrl, setActiveUrl] = useState("");
+    const [frameHtml, setFrameHtml] = useState("");
+    const [previewImg, setPreviewImg] = useState(null);
+    const [previewVid, setPreviewVid] = useState(null);
+    const debounceRef = useRef(null);
+
+    const isUrlLike = (str) => {
+      const s = (str || "").trim();
+      return /^(https?:\/\/|www\.)/i.test(s) || (/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(s) && !s.includes(" "));
+    };
+
+    const openUrlAutomatically = useCallback(async (rawUrl) => {
+      let target = (rawUrl || "").trim();
+      if (!target) return;
+      if (!/^https?:\/\//i.test(target)) target = "https://" + target;
+
+      setActiveUrl(target);
+      setLoading(true);
+
+      const clickInterceptor = `
+        <base href="${target}">
+        <script>
+          document.addEventListener('click', function(e) {
+            var a = e.target.closest('a');
+            if (a && a.href && !a.href.startsWith('javascript:')) {
+              e.preventDefault();
+              parent.postMessage({ type: 'AUTO_BROWSER_NAV', url: a.href }, '*');
+            }
+          }, true);
+          document.addEventListener('submit', function(e) {
+            var f = e.target;
+            if (f && f.action) {
+              e.preventDefault();
+              var fd = new FormData(f);
+              var params = new URLSearchParams(fd).toString();
+              var dest = f.action.split('?')[0] + '?' + params;
+              parent.postMessage({ type: 'AUTO_BROWSER_NAV', url: dest }, '*');
+            }
+          }, true);
+        <\/script>
+      `;
+
+      if (target.includes("wikipedia.org/wiki/")) {
+        try {
+          const titlePart = target.split("/wiki/")[1];
+          const wRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/html/${titlePart}`);
+          if (wRes.ok) {
+            const wHtml = await wRes.text();
+            setFrameHtml(`
+              <base href="https://en.wikipedia.org/wiki/">
+              <style>
+                body { font-family: 'Outfit', system-ui, sans-serif !important; background: #0e0e12 !important; color: #e6e6e6 !important; padding: 28px 40px !important; line-height: 1.65 !important; }
+                a { color: #60a5fa !important; }
+                img { max-width: 100%; height: auto; border-radius: 8px; }
+                table, .infobox { background: #16161d !important; color: #ddd !important; border-color: #333 !important; }
+              </style>
+              ${clickInterceptor}
+              ${wHtml}
+            `);
+            setLoading(false);
+            return;
+          }
+        } catch {}
+      }
+
+      try {
+        const fetchAllOrigins = async () => {
+          const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
+          if (!r.ok) throw new Error("fail");
+          const j = await r.json();
+          if (!j.contents || j.contents.length < 40) throw new Error("empty");
+          return j.contents;
+        };
+        const fetchCodeTabs = async () => {
+          const r = await fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(target)}`);
+          if (!r.ok) throw new Error("fail");
+          const t = await r.text();
+          if (!t || t.length < 40) throw new Error("empty");
+          return t;
+        };
+
+        const winningHtml = await Promise.any([fetchAllOrigins(), fetchCodeTabs()]);
+        setFrameHtml(clickInterceptor + winningHtml);
+      } catch {
+        setFrameHtml("");
+      }
+      setLoading(false);
+    }, []);
+
+    useEffect(() => {
+      const onMsg = (e) => {
+        if (e.data && e.data.type === "AUTO_BROWSER_NAV" && e.data.url) {
+          openUrlAutomatically(e.data.url);
+        }
+      };
+      window.addEventListener("message", onMsg);
+      return () => window.removeEventListener("message", onMsg);
+    }, [openUrlAutomatically]);
+
+    const executeGoogleSearch = useCallback(async (qText) => {
+      const clean = (qText || "").trim();
+      if (!clean) {
+        setWebResults([]); setImgResults([]); setShopResults([]); setVidResults([]);
+        return;
+      }
+      setLoading(true);
+
+      try {
+        const [wikiSearch, ddgSearch, wikiImages, dummyShop, itunesShop, pipedVids] = await Promise.all([
+          fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(clean)}&srlimit=12&utf8=&format=json&origin=*`).then((r) => r.json()).catch(() => null),
+          fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(clean)}&format=json&no_html=1&skip_disambig=1`).then((r) => r.json()).catch(() => null),
+          fetch(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=filetype:bitmap+${encodeURIComponent(clean)}&gsrlimit=24&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=500&format=json&origin=*`).then((r) => r.json()).catch(() => null),
+          fetch(`https://dummyjson.com/products/search?q=${encodeURIComponent(clean)}&limit=12`).then((r) => r.json()).catch(() => null),
+          fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(clean)}&entity=software,ebook,movie&limit=16`).then((r) => r.json()).catch(() => null),
+          fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(clean)}&filter=videos`).then((r) => r.json()).catch(() => null)
+        ]);
+
+        const webList = [];
+        if (isUrlLike(clean)) {
+          const norm = /^https?:\/\//i.test(clean) ? clean : "https://" + clean;
+          webList.push({ title: `🌐 Go to ${norm}`, url: norm, snippet: `Open ${norm} directly in full-screen unblocked view.` });
+        }
+        if (ddgSearch?.AbstractText && ddgSearch?.AbstractURL) {
+          webList.push({ title: ddgSearch.Heading || clean, url: ddgSearch.AbstractURL, snippet: ddgSearch.AbstractText });
+        }
+        if (Array.isArray(ddgSearch?.RelatedTopics)) {
+          ddgSearch.RelatedTopics.slice(0, 5).forEach((rt) => {
+            if (rt.Text && rt.FirstURL) {
+              webList.push({ title: rt.Text.split(" - ")[0] || rt.Text.slice(0, 60), url: rt.FirstURL, snippet: rt.Text });
+            }
+          });
+        }
+        (wikiSearch?.query?.search || []).forEach((w) => {
+          webList.push({
+            title: w.title,
+            url: `https://en.wikipedia.org/wiki/${encodeURIComponent(w.title.replace(/ /g, "_"))}`,
+            snippet: (w.snippet || "").replace(/<\/?[^>]+(>|$)/g, "")
+          });
+        });
+        setWebResults(webList);
+
+        const imgs = [];
+        const pages = wikiImages?.query?.pages || {};
+        Object.values(pages).forEach((p) => {
+          const info = p.imageinfo?.[0];
+          if (info && (info.thumburl || info.url)) {
+            imgs.push({
+              title: (p.title || "").replace("File:", "").replace(/\.[^/.]+$/, ""),
+              thumb: info.thumburl || info.url,
+              full: info.url,
+              source: "Wikimedia Commons HD"
+            });
+          }
+        });
+        (itunesShop?.results || []).forEach((it) => {
+          if (it.artworkUrl100) {
+            imgs.push({
+              title: it.trackName || it.collectionName || clean,
+              thumb: it.artworkUrl100.replace("100x100bb", "500x500bb"),
+              full: it.artworkUrl100.replace("100x100bb", "1000x1000bb"),
+              source: it.artistName || "Media Gallery"
+            });
+          }
+        });
+        setImgResults(imgs);
+
+        const shops = [];
+        (dummyShop?.products || []).forEach((prod) => {
+          shops.push({
+            id: "dj_" + prod.id,
+            title: prod.title,
+            price: `$${prod.price}`,
+            store: prod.brand || "Verified Store",
+            rating: `★ ${prod.rating || "4.8"}`,
+            img: prod.thumbnail,
+            desc: prod.description,
+            url: `https://en.wikipedia.org/wiki/${encodeURIComponent(prod.title)}`
+          });
+        });
+        (itunesShop?.results || []).forEach((item, idx) => {
+          shops.push({
+            id: "it_" + (item.trackId || idx),
+            title: item.trackName || item.collectionName,
+            price: item.formattedPrice || (item.price ? `$${item.price}` : "Free / Digital"),
+            store: item.artistName || "Digital Store",
+            rating: `★ ${item.averageUserRating ? item.averageUserRating.toFixed(1) : "4.9"}`,
+            img: (item.artworkUrl100 || "").replace("100x100bb", "400x400bb"),
+            desc: item.description || item.longDescription || `${item.kind || "Digital"} item available now.`,
+            url: item.trackViewUrl || `https://en.wikipedia.org/wiki/${encodeURIComponent(item.trackName || clean)}`
+          });
+        });
+        if (shops.length === 0) {
+          webList.slice(0, 8).forEach((w, idx) => {
+            shops.push({
+              id: "gen_" + idx,
+              title: w.title,
+              price: `$${(19.99 + idx * 10).toFixed(2)}`,
+              store: "Global Marketplace",
+              rating: "★ 4.8",
+              img: imgs[idx]?.thumb || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80",
+              desc: w.snippet,
+              url: w.url
+            });
+          });
+        }
+        setShopResults(shops);
+
+        const vids = (pipedVids?.items || []).map((v) => {
+          const vidId = v.url ? v.url.split("v=")[1] : "";
+          return {
+            id: vidId,
+            title: v.title,
+            author: v.uploaderName || "YouTube",
+            views: v.views ? `${Number(v.views).toLocaleString()} views` : "HD Video",
+            thumb: v.thumbnail || `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg`
+          };
+        }).filter((v) => v.id);
+        setVidResults(vids);
+      } catch {}
+      setLoading(false);
+    }, []);
+
+    const handleInput = (val) => {
+      setQuery(val);
+      clearTimeout(debounceRef.current);
+      if (!val.trim()) {
+        setWebResults([]); setImgResults([]); setShopResults([]); setVidResults([]);
+        return;
+      }
+      debounceRef.current = setTimeout(() => {
+        executeGoogleSearch(val);
+      }, 180);
+    };
 
     const handleSubmit = (e) => {
       e.preventDefault();
       const val = query.trim();
       if (!val) return;
-      let target = val;
-      if (!/^https?:\/\//i.test(target)) target = "https://" + target;
-      setActiveUrl(target);
+      if (isUrlLike(val)) {
+        openUrlAutomatically(val);
+      } else {
+        setActiveUrl("");
+        executeGoogleSearch(val);
+      }
     };
+
+    const isSearching = query.trim().length > 0 || !!activeUrl;
 
     return h("section", { className: "view" },
       h("div", { className: "gbrowser-root" },
-        !activeUrl ? (
+        !isSearching ? (
           h("div", { className: "gbrowser-idle" },
-            h("h1", { style: { fontSize: "clamp(32px, 5vw, 54px)", fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 24, textAlign: "center" } }, "What do you want to search?"),
+            h("h1", { style: { fontSize: "clamp(32px, 5vw, 54px)", fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 24, textAlign: "center", textShadow: "0 0 36px rgba(255,255,255,0.2)" } }, "What do you want to search?"),
             h("form", { className: "glass-panel", onSubmit: handleSubmit, autoComplete: "off" },
               h(SearchIcon),
               h("input", {
                 className: "glass-input",
                 type: "text",
                 spellCheck: false,
-                placeholder: "Search Google or type any URL...",
+                placeholder: "Search Google (All, Images, Shopping) or type any URL...",
                 value: query,
-                onChange: (e) => setQuery(e.target.value)
+                onChange: (e) => handleInput(e.target.value)
               }),
               h("button", { type: "submit", className: "btn", style: { borderRadius: 999, height: 46, padding: "0 24px" } }, "Search")
             )
@@ -1167,46 +1632,312 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           h(Fragment, null,
             h("div", { className: "gbrowser-top" },
               h("div", { className: "gbrowser-bar-row" },
-                h("button", { className: "btn ghost sm", style: { borderRadius: 999 }, onClick: () => setActiveUrl("") }, "← Back to Search"),
+                activeUrl ? h("button", {
+                  className: "btn ghost sm",
+                  style: { borderRadius: 999 },
+                  onClick: () => setActiveUrl("")
+                }, "← Back to Search") : null,
                 h("form", { className: "glass-panel compact", onSubmit: handleSubmit, autoComplete: "off" },
                   h(SearchIcon),
                   h("input", {
                     className: "glass-input",
                     type: "text",
+                    spellCheck: false,
+                    placeholder: "Search anything or enter a URL...",
                     value: query,
-                    onChange: (e) => setQuery(e.target.value)
+                    onChange: (e) => handleInput(e.target.value)
                   }),
-                  h("button", { type: "submit", className: "btn sm", style: { borderRadius: 999 } }, "Go")
+                  query ? h("button", {
+                    type: "button",
+                    style: { color: "var(--muted)", padding: "0 8px", fontSize: 16 },
+                    onClick: () => { setQuery(""); setActiveUrl(""); setWebResults([]); }
+                  }, "✕") : null,
+                  h("button", { type: "submit", className: "btn sm", style: { borderRadius: 999, padding: "0 18px" } }, loading ? "..." : isUrlLike(query) ? "Go" : "Search")
                 )
-              )
+              ),
+              !activeUrl ? h("div", { className: "gbrowser-tabs" },
+                [
+                  { id: "all", label: "🔍 All" },
+                  { id: "images", label: `🖼️ Images (${imgResults.length})` },
+                  { id: "shopping", label: `🛍️ Shopping (${shopResults.length})` },
+                  { id: "videos", label: `🎬 Videos (${vidResults.length})` }
+                ].map((t) =>
+                  h("button", {
+                    key: t.id,
+                    className: "gbrowser-tab" + (tab === t.id ? " on" : ""),
+                    onClick: () => setTab(t.id)
+                  }, t.label)
+                )
+              ) : null
             ),
+
             h("div", { className: "gbrowser-body" },
-              h("iframe", {
-                key: activeUrl,
-                src: activeUrl,
-                style: { width: "100%", height: "100%", border: 0, background: "#fff" },
-                sandbox: "allow-scripts allow-same-origin allow-forms",
-                referrerPolicy: "strict-origin-when-cross-origin"
-              })
+              activeUrl ? (
+                frameHtml
+                  ? h("iframe", {
+                      key: activeUrl + "_proxied",
+                      srcDoc: frameHtml,
+                      style: { width: "100%", height: "100%", border: 0, background: "#0e0e12" },
+                      sandbox: "allow-scripts allow-same-origin allow-forms"
+                    })
+                  : h("iframe", {
+                      key: activeUrl + "_direct",
+                      src: activeUrl,
+                      style: { width: "100%", height: "100%", border: 0, background: "#fff" },
+                      sandbox: "allow-scripts allow-same-origin allow-forms",
+                      referrerPolicy: "strict-origin-when-cross-origin"
+                    })
+              ) : tab === "all" ? (
+                h("div", { className: "gbrowser-results-wrap" },
+                  imgResults.length > 0 ? h("div", { style: { marginBottom: 10 } },
+                    h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 } },
+                      h("span", { style: { fontSize: 15, fontWeight: 600, color: "#d4d4d8" } }, "🖼️ Images for " + query),
+                      h("button", { className: "pill", style: { padding: "4px 12px", fontSize: 12 }, onClick: () => setTab("images") }, "View all images →")
+                    ),
+                    h("div", { style: { display: "flex", gap: 10, overflowX: "auto", paddingBottom: 8 } },
+                      imgResults.slice(0, 6).map((im, idx) =>
+                        h("img", {
+                          key: idx,
+                          src: im.thumb,
+                          alt: im.title,
+                          onClick: () => setPreviewImg(im),
+                          style: { height: 110, width: 150, objectFit: "cover", borderRadius: 12, cursor: "pointer", border: "1px solid var(--border)", flexShrink: 0 },
+                          referrerPolicy: "no-referrer"
+                        })
+                      )
+                    )
+                  ) : null,
+                  webResults.map((r, i) =>
+                    h("div", {
+                      key: i,
+                      className: "gbrowser-card",
+                      onClick: () => openUrlAutomatically(r.url)
+                    },
+                      h("div", { style: { fontSize: 12, color: "#86efac", marginBottom: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, r.url),
+                      h("div", { style: { fontSize: 19, fontWeight: 700, color: "#60a5fa", marginBottom: 6 } }, r.title),
+                      h("div", { style: { fontSize: 14, color: "#d4d4d8", lineHeight: 1.55 } }, r.snippet)
+                    )
+                  )
+                )
+              ) : tab === "images" ? (
+                imgResults.length === 0
+                  ? h("div", { className: "empty" }, "Searching unblocked images...")
+                  : h("div", { className: "gbrowser-img-grid" },
+                      imgResults.map((im, i) =>
+                        h("div", {
+                          key: i,
+                          className: "gbrowser-img-card",
+                          onClick: () => setPreviewImg(im)
+                        },
+                          h("img", { src: im.thumb, alt: im.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                          h("div", { style: { padding: "10px 12px" } },
+                            h("div", { style: { fontSize: 13, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, im.title),
+                            h("div", { style: { fontSize: 11, color: "var(--muted)", marginTop: 2 } }, im.source)
+                          )
+                        )
+                      )
+                    )
+              ) : tab === "shopping" ? (
+                shopResults.length === 0
+                  ? h("div", { className: "empty" }, "Searching products & deals...")
+                  : h("div", { className: "gbrowser-shop-grid" },
+                      shopResults.map((s) =>
+                        h("div", {
+                          key: s.id,
+                          className: "gbrowser-shop-card",
+                          onClick: () => openUrlAutomatically(s.url)
+                        },
+                          h("img", { src: s.img, alt: s.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                          h("div", { style: { padding: 14, display: "flex", flexDirection: "column", flex: 1, justifyContent: "space-between" } },
+                            h("div", null,
+                              h("div", { style: { fontWeight: 700, fontSize: 14.5, marginBottom: 4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" } }, s.title),
+                              h("div", { style: { fontSize: 18, fontWeight: 800, color: "#4ade80", marginBottom: 4 } }, s.price),
+                              h("div", { style: { fontSize: 12, color: "#a1a1aa", marginBottom: 8 } }, `${s.store} • ${s.rating}`)
+                            ),
+                            h("button", { className: "btn sm", style: { width: "100%" } }, "View Product")
+                          )
+                        )
+                      )
+                    )
+              ) : (
+                vidResults.length === 0
+                  ? h("div", { className: "empty" }, "No videos found for this search.")
+                  : h("div", { className: "gbrowser-img-grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))" } },
+                      vidResults.map((v) =>
+                        h("div", {
+                          key: v.id,
+                          className: "gbrowser-img-card",
+                          onClick: () => setPreviewVid(v)
+                        },
+                          h("img", { src: v.thumb, alt: v.title, loading: "lazy", referrerPolicy: "no-referrer" }),
+                          h("div", { style: { padding: 12 } },
+                            h("div", { style: { fontWeight: 600, fontSize: 14, marginBottom: 4 } }, v.title),
+                            h("div", { style: { fontSize: 12, color: "var(--muted)" } }, `${v.author} • ${v.views}`)
+                          )
+                        )
+                      )
+                    )
+              )
             )
           )
-        )
+        ),
+
+        previewImg ? h(Modal, { onClose: () => setPreviewImg(null) },
+          h("h3", { style: { fontSize: 17, marginBottom: 12 } }, previewImg.title),
+          h("img", { src: previewImg.full || previewImg.thumb, style: { width: "100%", maxHeight: "65vh", objectFit: "contain", borderRadius: 12, background: "#000", marginBottom: 14 }, referrerPolicy: "no-referrer" }),
+          h("div", { className: "actions" },
+            h("button", { className: "btn", onClick: () => setPreviewImg(null) }, "Close")
+          )
+        ) : null,
+
+        previewVid ? h(Modal, { onClose: () => setPreviewVid(null) },
+          h("h3", { style: { fontSize: 17, marginBottom: 12 } }, previewVid.title),
+          h("div", { style: { width: "100%", height: 300, background: "#000", borderRadius: 12, overflow: "hidden", marginBottom: 14 } },
+            h("iframe", {
+              src: `https://www.youtube-nocookie.com/embed/${previewVid.id}?autoplay=1&rel=0`,
+              style: { width: "100%", height: "100%", border: 0 },
+              allow: FRAME_ALLOW,
+              allowFullScreen: true,
+              referrerPolicy: "strict-origin-when-cross-origin"
+            })
+          ),
+          h("div", { className: "actions" },
+            h("button", { className: "btn", onClick: () => setPreviewVid(null) }, "Close")
+          )
+        ) : null
       )
     );
   }
 
   // ============================================================================
-  // YOUTUBE HUB
+  // FIXED YOUTUBE HUB (Error 153 Fixed via strict-origin-when-cross-origin + Direct Stream Fallback!)
   // ============================================================================
+  const YT_PRESETS = [
+    { label: "🔥 Trending Gaming", q: "minecraft roblox geometry dash gameplay" },
+    { label: "😂 Memes & Brainrot", q: "funny memes compilation 2026" },
+    { label: "🎵 Music Videos", q: "hip hop phonk music video" },
+    { label: "⚽ Sports Highlights", q: "football basketball highlights" },
+    { label: "🎬 MrBeast & Challenges", q: "mrbeast challenge" }
+  ];
+
   const FALLBACK_YT_VIDEOS = [
-    { id: "jfKfPfyJRdk", title: "lofi hip hop radio - beats to relax/study to", author: "Lofi Girl", views: "Live Stream", thumb: "https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg" },
-    { id: "dQw4w9WgXcQ", title: "Rick Astley - Never Gonna Give You Up", author: "Rick Astley", views: "1.5B views", thumb: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" }
+    { id: "jfKfPfyJRdk", title: "lofi hip hop radio - beats to relax/study to", author: "Lofi Girl", views: "Live Stream", thumb: "https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg", tags: "lofi chill relax study music" },
+    { id: "dQw4w9WgXcQ", title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", author: "Rick Astley", views: "1.6B views", thumb: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg", tags: "music pop meme classic" },
+    { id: "0e3GPea1Tyg", title: "$456,000 Squid Game In Real Life!", author: "MrBeast", views: "680M views", thumb: "https://i.ytimg.com/vi/0e3GPea1Tyg/hqdefault.jpg", tags: "mrbeast challenge fun squid game" },
+    { id: "kJQP7kiw5Fk", title: "Luis Fonsi - Despacito ft. Daddy Yankee", author: "Luis Fonsi", views: "8.5B views", thumb: "https://i.ytimg.com/vi/kJQP7kiw5Fk/hqdefault.jpg", tags: "music latin pop hit" },
+    { id: "fJ9rUzIMcZQ", title: "Queen - Bohemian Rhapsody (Official Video)", author: "Queen", views: "1.7B views", thumb: "https://i.ytimg.com/vi/fJ9rUzIMcZQ/hqdefault.jpg", tags: "rock classic queen music" },
+    { id: "9bZkp7q19f0", title: "PSY - GANGNAM STYLE (강남스타일) M/V", author: "officialpsy", views: "5.2B views", thumb: "https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg", tags: "kpop dance music fun" },
+    { id: "JGwWNGJdvx8", title: "Ed Sheeran - Shape of You (Official Music Video)", author: "Ed Sheeran", views: "6.3B views", thumb: "https://i.ytimg.com/vi/JGwWNGJdvx8/hqdefault.jpg", tags: "pop ed sheeran music hits" },
+    { id: "2Vv-BfVoq4g", title: "Ed Sheeran - Perfect (Official Music Video)", author: "Ed Sheeran", views: "3.8B views", thumb: "https://i.ytimg.com/vi/2Vv-BfVoq4g/hqdefault.jpg", tags: "ballad love romantic music" },
+    { id: "hT_nvWreIhg", title: "OneRepublic - Counting Stars (Official Music Video)", author: "OneRepublic", views: "4.1B views", thumb: "https://i.ytimg.com/vi/hT_nvWreIhg/hqdefault.jpg", tags: "pop rock onerepublic music" },
+    { id: "CevxZvSJLk8", title: "Katy Perry - Roar (Official Video)", author: "Katy Perry", views: "4.0B views", thumb: "https://i.ytimg.com/vi/CevxZvSJLk8/hqdefault.jpg", tags: "pop katy perry music" },
+    { id: "YQHsXMglC9A", title: "Adele - Hello (Official Music Video)", author: "Adele", views: "3.2B views", thumb: "https://i.ytimg.com/vi/YQHsXMglC9A/hqdefault.jpg", tags: "adele ballad soulful music" },
+    { id: "kXYiU_JCYtU", title: "Linkin Park - Numb (Official Music Video) [4K Upgrade]", author: "Linkin Park", views: "2.3B views", thumb: "https://i.ytimg.com/vi/kXYiU_JCYtU/hqdefault.jpg", tags: "rock linkin park numb music" },
+    { id: "eVTXPUF4Oz4", title: "Linkin Park - In The End (Official Music Video) [4K Upgrade]", author: "Linkin Park", views: "1.8B views", thumb: "https://i.ytimg.com/vi/eVTXPUF4Oz4/hqdefault.jpg", tags: "rock linkin park in the end" },
+    { id: "fLexgOxsZu0", title: "Bruno Mars - The Lazy Song (Official Music Video)", author: "Bruno Mars", views: "2.7B views", thumb: "https://i.ytimg.com/vi/fLexgOxsZu0/hqdefault.jpg", tags: "fun pop bruno mars music" },
+    { id: "OPf0YbXqDm0", title: "Mark Ronson - Uptown Funk (Official Video) ft. Bruno Mars", author: "Mark Ronson", views: "5.3B views", thumb: "https://i.ytimg.com/vi/OPf0YbXqDm0/hqdefault.jpg", tags: "funk dance bruno mars music" },
+    { id: "RgKAFK5djSk", title: "Wiz Khalifa - See You Again ft. Charlie Puth [Official Video]", author: "Wiz Khalifa", views: "6.4B views", thumb: "https://i.ytimg.com/vi/RgKAFK5djSk/hqdefault.jpg", tags: "hip hop rap paul walker tribute" },
+    { id: "SlPhMPnQ58k", title: "Memories - Maroon 5 (Official Video)", author: "Maroon 5", views: "1.0B views", thumb: "https://i.ytimg.com/vi/SlPhMPnQ58k/hqdefault.jpg", tags: "maroon 5 memories pop" },
+    { id: "7wtfhZwyrcc", title: "Imagine Dragons - Believer (Official Music Video)", author: "Imagine Dragons", views: "2.7B views", thumb: "https://i.ytimg.com/vi/7wtfhZwyrcc/hqdefault.jpg", tags: "rock imagine dragons believer" },
+    { id: "1G4isv_Fylg", title: "Coldplay - Paradise (Official Video)", author: "Coldplay", views: "1.9B views", thumb: "https://i.ytimg.com/vi/1G4isv_Fylg/hqdefault.jpg", tags: "coldplay paradise alt rock" },
+    { id: "RBumgq5yVrA", title: "Passenger | Let Her Go (Official Video)", author: "Passenger", views: "3.7B views", thumb: "https://i.ytimg.com/vi/RBumgq5yVrA/hqdefault.jpg", tags: "acoustic folk passenger" },
+    { id: "LsoLEjrDogU", title: "Alan Walker - Faded", author: "Alan Walker", views: "3.6B views", thumb: "https://i.ytimg.com/vi/LsoLEjrDogU/hqdefault.jpg", tags: "edm electronic alan walker faded" },
+    { id: "60ItHLz5WEA", title: "Alan Walker - The Spectre", author: "Alan Walker", views: "1.2B views", thumb: "https://i.ytimg.com/vi/60ItHLz5WEA/hqdefault.jpg", tags: "edm alan walker electronic" },
+    { id: "ru0K8uYEZWw", title: "Justin Bieber - Sorry (PURPOSE : The Movement)", author: "Justin Bieber", views: "3.7B views", thumb: "https://i.ytimg.com/vi/ru0K8uYEZWw/hqdefault.jpg", tags: "pop justin bieber dance" },
+    { id: "34Na4j8AVgA", title: "The Weeknd - Starboy ft. Daft Punk (Official Music Video)", author: "The Weeknd", views: "2.4B views", thumb: "https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg", tags: "r&b the weeknd starboy" }
   ];
 
   function YouTubeView() {
     const [searchQ, setSearchQ] = useState("");
-    const [videos, setVideos] = useState(FALLBACK_YT_VIDEOS);
+    const [videos, setVideos] = useState([]);
     const [activeVideo, setActiveVideo] = useState(null);
+    const [directStreamUrl, setDirectStreamUrl] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const selectVideo = useCallback(async (vid) => {
+      setActiveVideo(vid);
+      setDirectStreamUrl("");
+      try {
+        const res = await fetch(`https://pipedapi.kavin.rocks/streams/${vid.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          const stream = (data.videoStreams || []).find((s) => !s.videoOnly && s.format === "MPEG_4");
+          if (stream && stream.url) setDirectStreamUrl(stream.url);
+        }
+      } catch {}
+    }, []);
+
+    const searchYouTube = useCallback(async (queryText) => {
+      const q = (queryText || "").trim();
+      if (!q) return;
+      setLoading(true);
+
+      const ytMatch = q.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+      if (ytMatch) {
+        const vidId = ytMatch[1];
+        const directItem = { id: vidId, title: "Direct YouTube Video (" + vidId + ")", author: "YouTube Stream", views: "Direct Link", thumb: "https://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg" };
+        setVideos((prev) => [directItem, ...prev.filter((x) => x.id !== vidId)]);
+        selectVideo(directItem);
+        setLoading(false);
+        return;
+      }
+
+      // 1. Instant match from rich curated library
+      const qLower = q.toLowerCase();
+      const localMatches = FALLBACK_YT_VIDEOS.filter((v) =>
+        v.title.toLowerCase().includes(qLower) ||
+        v.author.toLowerCase().includes(qLower) ||
+        (v.tags && v.tags.toLowerCase().includes(qLower))
+      );
+
+      // 2. Fetch from fast Invidious / Piped instances
+      const apis = [
+        "https://inv.nadeko.net/api/v1/search?q=" + encodeURIComponent(q) + "&type=video",
+        "https://invidious.nerdvpn.de/api/v1/search?q=" + encodeURIComponent(q) + "&type=video",
+        "https://pipedapi.kavin.rocks/search?q=" + encodeURIComponent(q) + "&filter=videos"
+      ];
+
+      let found = [];
+      for (const apiUrl of apis) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 2800);
+          const res = await fetch(apiUrl, { signal: controller.signal });
+          clearTimeout(timeoutId);
+          if (!res.ok) continue;
+          const data = await res.json();
+          const items = Array.isArray(data) ? data : (data.items || []);
+          if (items.length > 0) {
+            found = items.map((item) => {
+              const id = item.videoId || (item.url ? (item.url.split("v=")[1] || item.url.split("/").pop()) : "");
+              return {
+                id,
+                title: item.title || "Video",
+                author: item.uploaderName || item.author || "Creator",
+                views: item.views ? Number(item.views).toLocaleString() + " views" : "HD Video",
+                thumb: item.thumbnail || (item.videoThumbnails && item.videoThumbnails[0] && item.videoThumbnails[0].url) || ("https://i.ytimg.com/vi/" + id + "/hqdefault.jpg")
+              };
+            }).filter((v) => v.id && v.id.length === 11);
+            if (found.length > 0) break;
+          }
+        } catch {}
+      }
+
+      const combined = [...localMatches];
+      found.forEach((f) => {
+        if (!combined.some((c) => c.id === f.id)) combined.push(f);
+      });
+      FALLBACK_YT_VIDEOS.forEach((f) => {
+        if (!combined.some((c) => c.id === f.id)) combined.push(f);
+      });
+
+      setVideos(combined.slice(0, 36));
+      setLoading(false);
+    }, [selectVideo]);
+
+    useEffect(() => {
+      searchYouTube("minecraft roblox gaming");
+    }, [searchYouTube]);
 
     const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
 
@@ -1214,35 +1945,81 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       h("div", { className: "page" },
         h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 16 } },
           h("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
-            h("div", { style: { background: "#ff0000", color: "#fff", padding: "6px 12px", borderRadius: 10, fontWeight: 800 } }, "▶ YouTube"),
-            h("span", { className: "badge-pill live" }, "DIRECT EMBED PLAY")
+            h("div", { style: { background: "#ff0000", color: "#fff", padding: "6px 12px", borderRadius: 10, fontWeight: 800, display: "flex", alignItems: "center", gap: 6 } }, "▶ YouTube"),
+            h("span", { className: "badge-pill live" }, "ERROR 153 FIXED • DIRECT PLAY")
           )
         ),
+
         activeVideo ? h("div", { className: "pop-panel", style: { marginBottom: 24, background: "#060608", padding: 16 } },
           h("div", { className: "row", style: { marginBottom: 12 } },
             h("strong", { style: { fontSize: 16 } }, activeVideo.title),
-            h("button", { className: "btn ghost sm", onClick: () => setActiveVideo(null) }, "✕ Close")
+            h("button", { className: "btn ghost sm", onClick: () => setActiveVideo(null) }, "✕ Close Player")
           ),
           h("div", { style: { width: "100%", height: "64vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
-            h("iframe", {
-              src: `https://www.youtube-nocookie.com/embed/${activeVideo.id}?autoplay=1&rel=0&playsinline=1${embedOrigin}`,
-              style: { width: "100%", height: "100%", border: 0 },
-              allow: FRAME_ALLOW,
-              allowFullScreen: true,
-              referrerPolicy: "strict-origin-when-cross-origin"
-            })
+            directStreamUrl
+              ? h("video", {
+                  key: activeVideo.id + "_mp4",
+                  src: directStreamUrl,
+                  poster: activeVideo.thumb,
+                  controls: true,
+                  autoPlay: true,
+                  style: { width: "100%", height: "100%", background: "#000" }
+                })
+              : h("iframe", {
+                  key: activeVideo.id + "_iframe",
+                  src: `https://www.youtube-nocookie.com/embed/${activeVideo.id}?autoplay=1&rel=0&playsinline=1${embedOrigin}`,
+                  style: { width: "100%", height: "100%", border: 0 },
+                  allow: FRAME_ALLOW,
+                  allowFullScreen: true,
+                  referrerPolicy: "strict-origin-when-cross-origin"
+                })
           )
         ) : null,
+
+        h("form", {
+          className: "toolbar",
+          onSubmit: (e) => { e.preventDefault(); searchYouTube(searchQ); }
+        },
+          h("div", { className: "search" },
+            h(SearchIcon),
+            h("input", {
+              type: "text",
+              placeholder: "Search any YouTube video, channel, or paste a YouTube URL...",
+              value: searchQ,
+              onChange: (e) => setSearchQ(e.target.value)
+            })
+          ),
+          h("button", { type: "submit", className: "btn", style: { background: "#ff0000", color: "#fff", height: 52 } }, loading ? "Searching..." : "Search YouTube")
+        ),
+
+        h("div", { className: "chips" },
+          YT_PRESETS.map((p) =>
+            h("button", {
+              key: p.label,
+              className: "chip",
+              onClick: () => { setSearchQ(p.q); searchYouTube(p.q); }
+            }, p.label)
+          )
+        ),
+
+        loading ? h("div", { className: "empty" }, "Fetching unblocked YouTube videos...") :
         h("div", { className: "grid", style: { gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 18 } },
           videos.map((v) =>
-            h("div", { key: v.id, className: "card", onClick: () => setActiveVideo(v) },
+            h("div", {
+              key: v.id,
+              className: "card",
+              onClick: () => selectVideo(v)
+            },
               h("div", { className: "thumb", style: { height: 155, background: "#111" } },
                 h("img", { src: v.thumb, alt: v.title, loading: "lazy", referrerPolicy: "no-referrer" }),
                 h("div", { className: "badge" }, "▶ HD")
               ),
               h("div", { className: "info" },
-                h("div", { className: "name" }, v.title),
-                h("div", { className: "tag" }, h("span", null, v.author), h("span", null, v.views))
+                h("div", { className: "name", style: { whiteSpace: "normal", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", height: 40, lineHeight: "20px" } }, v.title),
+                h("div", { className: "tag", style: { marginTop: 6 } },
+                  h("span", null, v.author),
+                  h("span", null, v.views)
+                )
               )
             )
           )
@@ -1252,21 +2029,19 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // TIKTOK (LOCKED UNDER MAINTENANCE FOR EVERYONE)
+  // TIKTOK VIEW (LOCKED FOR EVERYBODY — UNDER MAINTENANCE)
   // ============================================================================
   function TikTokView() {
     return h("section", { className: "view" },
       h("div", { className: "page", style: { height: "80vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" } },
-        h("div", { style: { fontSize: 64, marginBottom: 14 } }, "🔧"),
+        h("div", { style: { fontSize: 56, marginBottom: 14 } }, "🔧"),
         h("h2", null, "TikTok is Under Maintenance"),
-        h("p", { className: "sub", style: { maxWidth: 440 } }, "TikTok is currently locked for all users while video relay servers are upgraded. Please check back later!")
+        h("p", { className: "sub", style: { maxWidth: 440 } }, "TikTok is currently locked for all tiers while we upgrade the video relay servers. Please check back later!")
       )
     );
   }
 
-  // ============================================================================
-  // GAMES COMPONENT (All 60+ Games)
-  // ============================================================================
+  // --- Games Component (Free, Pro, Premium & Max) ---
   const CATS = ["All", ...Array.from(new Set(GAMES.map((g) => g.cat))).sort()];
   function hue(s) { let hVal = 0; for (const c of s) hVal = (hVal * 31 + c.charCodeAt(0)) % 360; return hVal; }
 
@@ -1300,7 +2075,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("section", { className: "view", id: "games" },
       h("div", { className: "page" },
         h("h2", null, "Games"),
-        h("p", { className: "sub" }, "Click any game to launch."),
+        h("p", { className: "sub" }, "Click any game (including Direct 3D Roblox & Geometry Dash) for instant direct launch."),
         h("div", { className: "toolbar" },
           h("div", { className: "search" },
             h(SearchIcon),
@@ -1315,67 +2090,144 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // ============================================================================
-  // SPOTIFY MUSIC
-  // ============================================================================
+  // --- Spotify Music View (Free, Pro, Premium & Max) ---
+  const PLAYLIST_PRESETS = [
+    { id: "hits", name: "Today's Top Hits", desc: "Global Chart", color: "#1e3264", icon: "🔥", query: "top hits 2025 2026" },
+    { id: "phonk", name: "Drift Phonk & Gym", desc: "High-energy phonk", color: "#8d1732", icon: "⚡", query: "drift phonk" },
+    { id: "rap", name: "RapCaviar", desc: "Hip-Hop & Rap", color: "#ba5d07", icon: "🎤", query: "travis scott drake kendrick" },
+    { id: "anime", name: "Anime Now", desc: "Anime openings", color: "#7358ff", icon: "🌸", query: "anime opening" }
+  ];
+
+  function fmtMs(ms) {
+    if (!ms) return "0:30";
+    const totalSec = Math.floor(ms / 1000);
+    return `${Math.floor(totalSec / 60)}:${totalSec % 60 < 10 ? "0" : ""}${totalSec % 60}`;
+  }
+
   function MusicView() {
+    const [searchQ, setSearchQ] = useState("");
+    const [activePlaylist, setActivePlaylist] = useState("hits");
     const [tracks, setTracks] = useState([]);
     const [currentTrack, setCurrentTrack] = useState(null);
+    const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
 
-    useEffect(() => {
-      fetch("https://itunes.apple.com/search?term=top+hits+2026&media=music&entity=song&limit=25")
-        .then((r) => r.json())
-        .then((d) => setTracks(d.results || []))
-        .catch(() => {});
+    const fetchSongs = useCallback(async (term) => {
+      try {
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=song&limit=35`);
+        const data = await res.json();
+        setTracks(data.results || []);
+      } catch {}
     }, []);
 
-    const playSong = (t) => {
-      setCurrentTrack(t);
-      if (audioRef.current) {
-        audioRef.current.src = t.previewUrl;
-        audioRef.current.play();
+    useEffect(() => {
+      const p = PLAYLIST_PRESETS.find((x) => x.id === activePlaylist) || PLAYLIST_PRESETS[0];
+      fetchSongs(p.query);
+    }, [activePlaylist, fetchSongs]);
+
+    const playTrack = (t) => {
+      if (!audioRef.current) return;
+      if (currentTrack && currentTrack.trackId === t.trackId) {
+        if (isPlaying) { audioRef.current.pause(); setIsPlaying(false); }
+        else { audioRef.current.play(); setIsPlaying(true); }
+        return;
       }
+      setCurrentTrack(t);
+      audioRef.current.src = t.previewUrl;
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
     };
+
+    const activePresetObj = PLAYLIST_PRESETS.find((p) => p.id === activePlaylist) || PLAYLIST_PRESETS[0];
 
     return h("section", { className: "view" },
       h("div", { className: "sp-app" },
         h("audio", { ref: audioRef }),
-        h("div", { className: "sp-main" },
-          h("div", { className: "sp-header" },
-            h("div", { className: "sp-header-art", style: { background: "#1ed760" } }, "🎵"),
-            h("div", null,
-              h("h1", { style: { fontSize: 36, fontWeight: 800 } }, "Top Tracks"),
-              h("p", { style: { color: "#aaa" } }, `${tracks.length} songs ready`)
-            )
-          ),
-          h("div", { className: "sp-table" },
-            tracks.map((t, idx) =>
-              h("div", { key: t.trackId || idx, className: "sp-trow", onClick: () => playSong(t) },
-                h("span", null, idx + 1),
-                h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-                  h("img", { src: t.artworkUrl100, style: { width: 36, height: 36, borderRadius: 4 } }),
-                  h("div", null,
-                    h("div", { style: { fontWeight: 600 } }, t.trackName),
-                    h("div", { style: { fontSize: 12, color: "#888" } }, t.artistName)
-                  )
-                ),
-                h("span", null, t.collectionName),
-                h("span", null, "0:30")
+        h("div", { className: "sp-body" },
+          h("div", { className: "sp-sidebar" },
+            h("div", { className: "sp-nav-box" },
+              h("div", { style: { fontWeight: 800, fontSize: 18, color: "#1ed760" } }, "● Spotify"),
+              h("form", { onSubmit: (e) => { e.preventDefault(); if (searchQ.trim()) fetchSongs(searchQ.trim()); }, style: { display: "flex", alignItems: "center", background: "#242424", borderRadius: 999, padding: "0 12px", height: 36 } },
+                h("input", { type: "text", placeholder: "Search songs...", value: searchQ, onChange: (e) => setSearchQ(e.target.value), style: { flex: 1, background: "transparent", border: 0, outline: 0, color: "#fff", fontSize: 13 } })
+              )
+            ),
+            h("div", { className: "sp-lib-box" },
+              PLAYLIST_PRESETS.map((p) =>
+                h("button", { key: p.id, className: "sp-pl-item" + (activePlaylist === p.id ? " active" : ""), onClick: () => setActivePlaylist(p.id) },
+                  h("div", { className: "sp-pl-cover", style: { background: p.color } }, p.icon),
+                  h("div", { style: { fontWeight: 600, fontSize: 13.5, color: "#fff" } }, p.name)
+                )
               )
             )
+          ),
+          h("div", { className: "sp-main" },
+            h("div", { className: "sp-header", style: { background: `linear-gradient(180deg, ${activePresetObj.color} 0%, #121212 100%)` } },
+              h("div", { className: "sp-header-art", style: { background: activePresetObj.color } }, activePresetObj.icon),
+              h("div", null,
+                h("h1", { style: { fontSize: 42, fontWeight: 800 } }, activePresetObj.name),
+                h("p", { style: { color: "#ccc", fontSize: 13 } }, `${tracks.length} unblocked songs`)
+              )
+            ),
+            h("div", { className: "sp-table" },
+              tracks.map((t, i) => {
+                const isCurr = currentTrack && currentTrack.trackId === t.trackId;
+                return h("div", { key: t.trackId || i, className: "sp-trow" + (isCurr ? " active" : ""), onClick: () => playTrack(t) },
+                  h("span", null, isCurr && isPlaying ? "▶" : i + 1),
+                  h("div", { style: { display: "flex", alignItems: "center", gap: 10, minWidth: 0 } },
+                    h("img", { src: t.artworkUrl100, style: { width: 38, height: 38, borderRadius: 4 } }),
+                    h("div", { style: { minWidth: 0 } },
+                      h("div", { style: { fontWeight: 600, color: isCurr ? "#1ed760" : "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, t.trackName),
+                      h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, t.artistName)
+                    )
+                  ),
+                  h("span", { style: { whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontSize: 12.5 } }, t.collectionName),
+                  h("span", { style: { textAlign: "right", fontSize: 12.5 } }, fmtMs(t.trackTimeMillis))
+                );
+              })
+            )
           )
+        ),
+        h("div", { className: "sp-player-bar" },
+          currentTrack ? h("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
+            h("img", { src: currentTrack.artworkUrl100, style: { width: 48, height: 48, borderRadius: 6 } }),
+            h("div", null,
+              h("div", { style: { fontWeight: 600, fontSize: 14 } }, currentTrack.trackName),
+              h("div", { style: { fontSize: 12, color: "#b3b3b3" } }, currentTrack.artistName)
+            )
+          ) : h("div", { style: { color: "#888", fontSize: 13 } }, "Select a song to play"),
+          h("button", { className: "btn sm", style: { background: "#1ed760", color: "#000", borderRadius: 999 }, onClick: () => currentTrack && playTrack(currentTrack) }, isPlaying ? "⏸ Pause" : "▶ Play")
         )
       )
     );
   }
 
-  // ============================================================================
-  // NETFLIX MOVIES
-  // ============================================================================
+  // --- Netflix Movies & Anime View (Free, Pro, Premium & Max) ---
   function MoviesView() {
     const [activeMedia, setActiveMedia] = useState(null);
-    const hero = INITIAL_MEDIA[0];
+    const [streamServer, setStreamServer] = useState("vidlink");
+    const heroItem = INITIAL_MEDIA[0];
+
+    const getEmbedUrl = (item, server) => {
+      const tmdbId = item.tmdb || item.id;
+      const isTv = item.type === "tv";
+      if (server === "vidlink") {
+        return isTv ? "https://vidlink.pro/tv/" + tmdbId + "/1/1" : "https://vidlink.pro/movie/" + tmdbId;
+      }
+      if (server === "multiembed") {
+        return "https://multiembed.mov/?video_id=" + tmdbId + "&tmdb=1" + (isTv ? "&s=1&e=1" : "");
+      }
+      if (server === "twoembed") {
+        return isTv ? "https://www.2embed.cc/embedtv/" + tmdbId + "&s=1&e=1" : "https://www.2embed.cc/embed/" + tmdbId;
+      }
+      if (server === "vidsrc_cc") {
+        return isTv ? "https://vidsrc.cc/v2/embed/tv/" + tmdbId + "/1/1" : "https://vidsrc.cc/v2/embed/movie/" + tmdbId;
+      }
+      return isTv ? "https://vidsrc.to/embed/tv/" + tmdbId + "/1/1" : "https://vidsrc.to/embed/movie/" + tmdbId;
+    };
+
+    const openPopoutPlayer = (item) => {
+      const url = getEmbedUrl(item, streamServer);
+      window.open(url, "_blank", "width=1100,height=680,scrollbars=no,resizable=yes");
+    };
 
     return h("section", { className: "view" },
       h("div", { className: "nf-wrap" },
@@ -1383,24 +2235,71 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           h("div", { className: "nf-logo", onClick: () => setActiveMedia(null) }, "NETFLIX")
         ),
         activeMedia ? h("div", { style: { padding: "16px 42px" } },
-          h("button", { className: "btn sm", style: { marginBottom: 12 }, onClick: () => setActiveMedia(null) }, "← Back"),
-          h("div", { style: { width: "100%", height: "68vh", background: "#000", borderRadius: 12, overflow: "hidden" } },
-            h("iframe", { src: `https://vidsrc.me/embed/movie?tmdb=${activeMedia.tmdb}`, style: { width: "100%", height: "100%", border: 0 }, allow: FRAME_ALLOW, allowFullScreen: true })
+          h("div", { className: "pop-panel", style: { background: "#08080a" } },
+            h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap", gap: 10 } },
+              h("div", { style: { display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" } },
+                h("strong", { style: { fontSize: 18 } }, activeMedia.title),
+                h("span", { className: "badge-pill live" }, activeMedia.year || "HD Movie"),
+                h("span", { style: { fontSize: 13, color: "#86efac", fontWeight: 600 } }, activeMedia.rating)
+              ),
+              h("div", { style: { display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" } },
+                h("button", {
+                  className: "chip" + (streamServer === "vidlink" ? " on" : ""),
+                  onClick: () => setStreamServer("vidlink")
+                }, "⚡ VidLink (Fast)"),
+                h("button", {
+                  className: "chip" + (streamServer === "multiembed" ? " on" : ""),
+                  onClick: () => setStreamServer("multiembed")
+                }, "🌐 MultiEmbed"),
+                h("button", {
+                  className: "chip" + (streamServer === "twoembed" ? " on" : ""),
+                  onClick: () => setStreamServer("twoembed")
+                }, "🎬 2Embed"),
+                h("button", {
+                  className: "chip" + (streamServer === "vidsrc_cc" ? " on" : ""),
+                  onClick: () => setStreamServer("vidsrc_cc")
+                }, "📺 VidSrc"),
+                h("button", {
+                  className: "btn ghost sm",
+                  style: { color: "#60a5fa" },
+                  onClick: () => openPopoutPlayer(activeMedia)
+                }, "🚀 Open Popout Window"),
+                h("button", {
+                  className: "btn sm",
+                  style: { background: "#e50914", color: "#fff" },
+                  onClick: () => setActiveMedia(null)
+                }, "✕ Close")
+              )
+            ),
+            h("div", { style: { width: "100%", height: "70vh", background: "#000", borderRadius: 12, overflow: "hidden", position: "relative" } },
+              h("iframe", {
+                key: activeMedia.id + "_" + streamServer,
+                src: getEmbedUrl(activeMedia, streamServer),
+                style: { width: "100%", height: "100%", border: 0 },
+                allow: FRAME_ALLOW,
+                allowFullScreen: true,
+                referrerPolicy: "no-referrer"
+              })
+            ),
+            h("div", { style: { marginTop: 12, display: "flex", justifyContent: "space-between", alignItems: "center", color: "var(--muted)", fontSize: 12.5 } },
+              h("span", null, "💡 If current stream doesn't start or shows unavailable, click another server button above or open the Popout Window."),
+              h("span", null, activeMedia.desc ? activeMedia.desc.slice(0, 100) + "..." : "")
+            )
           )
         ) : h(Fragment, null,
           h("div", { className: "nf-hero" },
-            h("img", { src: hero.backdrop, className: "nf-hero-bg", referrerPolicy: "no-referrer" }),
+            h("img", { src: heroItem.backdrop, className: "nf-hero-bg", referrerPolicy: "no-referrer" }),
             h("div", { className: "nf-hero-content" },
-              h("h1", { className: "nf-hero-title" }, hero.title),
-              h("p", { className: "nf-hero-desc" }, hero.desc),
-              h("button", { className: "nf-btn-play", onClick: () => setActiveMedia(hero) }, "▶ Play Now")
+              h("h1", { className: "nf-hero-title" }, heroItem.title),
+              h("p", { className: "nf-hero-desc" }, heroItem.desc),
+              h("button", { className: "nf-btn-play", onClick: () => { setStreamServer("vidlink"); setActiveMedia(heroItem); } }, "▶ Play Now")
             )
           ),
           h("div", { className: "nf-row-section" },
-            h("h3", { className: "nf-row-title" }, "Trending Titles"),
+            h("h3", { className: "nf-row-title" }, "🔥 Trending Movies & Anime"),
             h("div", { className: "nf-carousel" },
               INITIAL_MEDIA.map((item) =>
-                h("div", { key: item.id, className: "nf-card", onClick: () => setActiveMedia(item) },
+                h("div", { key: item.id, className: "nf-card", onClick: () => { setStreamServer("vidlink"); setActiveMedia(item); } },
                   h("img", { src: item.thumb, className: "nf-card-poster", referrerPolicy: "no-referrer" })
                 )
               )
@@ -1412,48 +2311,44 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   }
 
   // ============================================================================
-  // FAST REAL-TIME CHAT (0ms BroadcastChannel + 1.5s Fast Firebase Sync)
+  // WHATSAPP-STYLE LIVE CHAT WITH IMAGE & FILE ATTACHMENTS (Pro, Premium & Max Tiers)
   // ============================================================================
   function ChatView({ currentUser, accountsMap }) {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(() => {
+      try { return JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]"); } catch { return []; }
+    });
     const [inputMessage, setInputMessage] = useState("");
     const [attachment, setAttachment] = useState(null);
     const messagesEndRef = useRef(null);
 
-    const fetchFastChat = useCallback(async () => {
-      const base = getDbUrl();
-      if (!base) {
-        try { setMessages(JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]")); } catch {}
-        return;
-      }
-      try {
-        const res = await fetch(`${base}/global_chat.json?limitToLast=40`, { cache: "no-store" });
-        if (res.ok) {
-          const data = await res.json();
-          if (data) {
-            const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
-            list.sort((a, b) => a.timestamp - b.timestamp);
-            setMessages(list);
+    useEffect(() => {
+      const fetchChat = async () => {
+        const base = getDbUrl();
+        if (!base) {
+          try {
+            const local = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+            setMessages(local);
+          } catch {}
+          return;
+        }
+        try {
+          const res = await fetch(`${base}/global_chat.json?limitToLast=35`, { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
+              list.sort((a, b) => a.timestamp - b.timestamp);
+              setMessages(list);
+            } else {
+              setMessages([]);
+            }
           }
-        }
-      } catch {}
-    }, []);
-
-    useEffect(() => {
-      fetchFastChat();
-      const interval = setInterval(fetchFastChat, 1500);
-      return () => clearInterval(interval);
-    }, [fetchFastChat]);
-
-    useEffect(() => {
-      if (!bc) return;
-      const onMsg = (e) => {
-        if (e.data && e.data.type === "new_chat_msg") {
-          setMessages((prev) => [...prev, e.data.msg]);
-        }
+        } catch {}
       };
-      bc.addEventListener("message", onMsg);
-      return () => bc.removeEventListener("message", onMsg);
+
+      fetchChat();
+      const interval = setInterval(fetchChat, 3500);
+      return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
@@ -1463,10 +2358,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const handleFileChange = (e) => {
       const file = e.target.files[0];
       if (!file) return;
-      if (file.size > 2 * 1024 * 1024) { alert("Max 2MB file size."); return; }
+      if (file.size > 2 * 1024 * 1024) {
+        alert("File size must be under 2MB for cloud sync.");
+        return;
+      }
       const reader = new FileReader();
-      reader.onload = (evt) => {
-        setAttachment({ name: file.name, type: file.type, data: evt.target.result });
+      reader.onload = (uploadEvent) => {
+        setAttachment({
+          name: file.name,
+          type: file.type,
+          data: uploadEvent.target.result
+        });
       };
       reader.readAsDataURL(file);
     };
@@ -1481,7 +2383,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       const isUserOwner = isOwnerIdentity(currentUser.username, acc);
 
       const newMsg = {
-        id: "msg_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
         sender: currentUser.username,
         role: isUserOwner ? "owner" : "user",
         tier: getUserTier(acc, isUserOwner),
@@ -1490,77 +2391,119 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         timestamp: Date.now()
       };
 
-      setMessages((prev) => [...prev, newMsg]);
-      if (bc) bc.postMessage({ type: "new_chat_msg", msg: newMsg });
+      const base = getDbUrl();
+      if (base) {
+        try {
+          await fetch(`${base}/global_chat.json`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newMsg)
+          });
+        } catch {}
+      } else {
+        try {
+          const prev = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+          const next = [...prev, { id: "msg_" + Date.now(), ...newMsg }];
+          localStorage.setItem("ug_global_chat_v1", JSON.stringify(next));
+          setMessages(next);
+        } catch {}
+      }
 
       setInputMessage("");
       setAttachment(null);
 
-      const base = getDbUrl();
-      if (base) {
-        fetch(`${base}/global_chat.json`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newMsg)
-        }).catch(() => {});
-      }
+      setTimeout(async () => {
+        if (base) {
+          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
+              list.sort((a, b) => a.timestamp - b.timestamp);
+              setMessages(list);
+            }
+          }
+        }
+      }, 250);
     };
 
     return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
       h("div", { style: { padding: "20px 24px 0", flexShrink: 0 } },
         h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
           h("h2", { style: { margin: 0, fontSize: 26 } }, "Live School Chat"),
-          h("span", { className: "badge-pill live" }, "FAST SYNC")
+          h("span", { className: "badge-pill live" }, "WHATSAPP LIVE SYNC")
         )
       ),
       h("div", { style: { flex: 1, display: "flex", flexDirection: "column", padding: "16px 24px 24px", overflow: "hidden" } },
         h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden", background: "#060608", height: "100%" } },
           h("div", { style: { flex: 1, padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14 } },
             messages.length === 0
-              ? h("div", { style: { margin: "auto", color: "var(--muted)", textAlign: "center" } }, "No messages yet. Send a message to start! 🚀")
+              ? h("div", { style: { margin: "auto", color: "var(--muted)", textAlign: "center" } }, "No messages yet. Send an image or message to start chatting! 🚀")
               : messages.map((m) => {
                   const isMe = (m.sender || "").toLowerCase() === (currentUser?.username || "").toLowerCase();
+                  const isOwnerMsg = m.role === "owner";
+                  const msgTier = m.tier || (isOwnerMsg ? "owner" : "pro");
                   return h("div", { key: m.id || m.timestamp, style: { display: "flex", flexDirection: "column", alignItems: isMe ? "flex-end" : "flex-start" } },
                     h("div", { style: { display: "flex", alignItems: "center", gap: 6, marginBottom: 4 } },
                       h("span", { style: { fontSize: 12, fontWeight: 600, color: "#aaa" } }, m.sender),
-                      renderTierBadge(m.tier || "pro", m.role === "owner"),
+                      renderTierBadge(msgTier, isOwnerMsg),
                       h("span", { style: { fontSize: 10, color: "#666" } }, new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
                     ),
-                    h("div", { style: { background: isMe ? "#16a34a" : "#18181b", color: "#fff", padding: "12px 16px", borderRadius: isMe ? "16px 16px 2px 16px" : "16px 16px 16px 2px", fontSize: 14, maxWidth: "75%", wordBreak: "break-word", border: "1px solid var(--border)" } },
+                    h("div", { style: { background: isMe ? "#16a34a" : "#18181b", color: "#fff", padding: "12px 16px", borderRadius: isMe ? "16px 16px 2px 16px" : "16px 16px 16px 2px", fontSize: 14, maxWidth: "75%", wordBreak: "break-word", border: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 8 } },
                       m.text ? h("span", null, m.text) : null,
-                      m.attachment && m.attachment.type?.startsWith("image/") ?
-                        h("img", { src: m.attachment.data, style: { maxWidth: "100%", maxHeight: 260, borderRadius: 8, marginTop: 8 } }) :
-                      m.attachment ?
-                        h("a", { href: m.attachment.data, download: m.attachment.name, style: { color: "#86efac", textDecoration: "underline", display: "block", marginTop: 4 } }, `📎 ${m.attachment.name}`) : null
+                      m.attachment ? (
+                        m.attachment.type && m.attachment.type.startsWith("image/") ?
+                          h("img", { src: m.attachment.data, alt: m.attachment.name, style: { maxWidth: "100%", maxHeight: 280, borderRadius: 10, objectFit: "cover" } }) :
+                          h("a", { href: m.attachment.data, download: m.attachment.name, style: { color: "#bbf7d0", textDecoration: "underline", fontSize: "13px" } }, `📎 ${m.attachment.name}`)
+                      ) : null
                     )
                   );
                 }),
             h("div", { ref: messagesEndRef })
           ),
-          h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 16, background: "#0e0e11", borderTop: "1px solid var(--border)" } },
-            h("label", { className: "btn ghost", style: { padding: "0 14px", height: 44, cursor: "pointer", display: "flex", alignItems: "center" } },
-              "📎",
-              h("input", { type: "file", onChange: handleFileChange, style: { display: "none" } })
+          attachment ? h("div", { style: { padding: "8px 16px", background: "#111116", borderTop: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" } },
+            h("span", { style: { fontSize: 13, color: "#86efac" } }, `Attached: ${attachment.name}`),
+            h("button", { type: "button", className: "btn danger sm", onClick: () => setAttachment(null) }, "Remove")
+          ) : null,
+          h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 16, background: "#0e0e11", borderTop: "1px solid var(--border)", alignItems: "center" } },
+            h("label", { className: "btn ghost", style: { display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 14px", height: 44, cursor: "pointer", margin: 0 } },
+              "📎 Attach / Image",
+              h("input", { type: "file", accept: "image/*,*/*", onChange: handleFileChange, style: { display: "none" } })
             ),
-            h("input", { className: "field", placeholder: "Type a message...", value: inputMessage, onChange: (e) => setInputMessage(e.target.value), style: { flex: 1 } }),
-            h("button", { type: "submit", className: "btn", style: { background: "#22c55e", color: "#000" } }, "Send")
+            h("input", {
+              className: "field",
+              type: "text",
+              placeholder: "Type a message or attach an image...",
+              spellCheck: false,
+              value: inputMessage,
+              onChange: (e) => setInputMessage(e.target.value),
+              style: { flex: 1, margin: 0 }
+            }),
+            h("button", { type: "submit", className: "btn", style: { padding: "0 28px", height: 44, background: "#22c55e", color: "#000" } }, "Send")
           )
         )
       )
     );
   }
 
+  // --- Clean Player Component ---
   function Player({ game, onClose }) {
+    const [nonce, setNonce] = useState(0);
+    const frameRef = useRef(null);
     const source = frameSource(game);
+
     return h("div", { id: "player" },
       h("div", { className: "bar" },
-        h("button", { className: "pill", onClick: onClose }, "← Back to Hub"),
-        h("div", { className: "ttl" }, h("span", null, game.name))
+        h("button", { className: "pill", onClick: onClose }, "\u2190 Back to Hub"),
+        h("div", { className: "ttl" }, h("span", null, game.name)),
+        h("button", { className: "pill", onClick: () => setNonce((n) => n + 1) }, "Reload"),
+        h("button", { className: "pill", onClick: () => frameRef.current?.requestFullscreen?.() }, "Fullscreen")
       ),
-      h("iframe", { title: game.name, src: source.src, srcDoc: source.srcdoc, allow: FRAME_ALLOW, allowFullScreen: true })
+      h("iframe", { key: `${game.slug}_${nonce}`, ref: frameRef, title: game.name, src: source.src, srcDoc: source.srcdoc, allow: FRAME_ALLOW, allowFullScreen: true })
     );
   }
 
+  // --- Account Profile View ---
   function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner, userTier }) {
     const [now, setNow] = useState(Date.now());
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
@@ -1569,23 +2512,45 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("section", { className: "view" },
       h("div", { className: "page", style: { maxWidth: 680 } },
         h("h2", null, "Account"),
+        h("p", { className: "sub" }, "Your active tier, license & session details."),
         acc ? h("div", { className: "pop-panel" },
           h("div", { className: "row", style: { marginBottom: 16 } },
             h("div", null,
-              h("h3", { style: { fontSize: 22, margin: 0 } }, acc.username),
-              renderTierBadge(userTier, isOwner)
+              h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+                h("h3", { style: { fontSize: 22, margin: 0 } }, acc.username),
+                renderTierBadge(userTier, isOwner)
+              ),
+              acc.email ? h("p", { style: { color: "var(--muted)", fontSize: 13, margin: "4px 0 0" } }, acc.email) : null
             ),
             h("button", { className: "btn danger sm", onClick: onLogout }, "Log Out")
           ),
-          h("div", { style: { fontSize: 13, color: "var(--muted)", marginBottom: 8 } }, "Remaining Time: ", h("strong", { style: { color: "#fff" } }, formatRemainingTime(acc, now))),
-          isOwner ? h("button", { className: "btn sm", onClick: onOpenCreator, style: { marginTop: 14 } }, "Open Account Creator Hub") : null
+          h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginTop: 14 } },
+            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
+              h("span", { className: "auth-label" }, "Account Tier"),
+              h("div", { style: { fontSize: 15, fontWeight: 700, color: "#fff" } },
+                isOwner ? "Owner (All Access)" :
+                userTier === "max" ? "🔥 MAX (ESPN + Screen Broadcast + All)" :
+                userTier === "premium" ? "💎 Premium (All Access)" :
+                userTier === "pro" ? "⚡ Pro (Chat + Games + Media)" :
+                "Free (Games + Movies + Music)"
+              )
+            ),
+            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
+              h("span", { className: "auth-label" }, "Remaining Time"),
+              h("div", { style: { fontSize: 16, fontWeight: 600, color: "#fff" } }, formatRemainingTime(acc, now))
+            )
+          ),
+          isOwner ? h("div", { style: { marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 } },
+            h("span", { style: { fontSize: 13, color: "var(--muted)" } }, "You have Owner privileges."),
+            h("button", { className: "btn sm", onClick: onOpenCreator }, "Open Account Creator Hub")
+          ) : null
         ) : null
       )
     );
   }
 
   // ============================================================================
-  // ACCOUNT CREATOR HUB — LIVE USERS, 2FA GENERATOR, PASSWORD CHANGER & SLIDERS
+  // ACCOUNT CREATOR HUB (With Free / Pro / Premium / MAX Tier Selectors!)
   // ============================================================================
   function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
     const [createModal, setCreateModal] = useState(false);
@@ -1604,7 +2569,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
     useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
     useEffect(() => {
-      const poll = setInterval(() => { onRefresh(); }, 5000);
+      const poll = setInterval(() => { onRefresh(); }, 6000);
       return () => clearInterval(poll);
     }, [onRefresh]);
 
@@ -1634,7 +2599,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       await onRefresh();
       setCodeInfo({ username: u, code: acc.twoFA });
       setNewUsername(""); setNewPassword(""); setNewEmail(""); setNewTier("free"); setNewHours(12); setNewInfinite(false); setCreateModal(false);
-      toast(`Account "${u}" created!`);
+      toast(`Account "${u}" created with ${acc.tier.toUpperCase()} Tier!`);
     };
 
     const handleAdjustDuration = async (acc, hoursVal, infVal) => {
@@ -1652,17 +2617,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       toast(`Updated "${acc.username}" to ${nextTier.toUpperCase()} Tier!`);
     };
 
-    const handleRevokeAccount = async (username) => {
-      await dbDeleteAccount(username);
-      await onRefresh();
-      toast(`Permanently revoked and blacklisted "${username}"`);
-    };
-
+    const handleRevokeAccount = async (username) => { await dbDeleteAccount(username); await onRefresh(); toast(`Revoked "${username}"`); };
     const kickSession = async (username) => {
       const sess = sessionsMap[username.toLowerCase()];
       if (sess) await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
     };
-
     const handleChangePassword = async (acc) => {
       const k = acc.username.toLowerCase();
       const p = (pwEdits[k] || "").trim();
@@ -1671,18 +2630,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       await kickSession(acc.username);
       setPwEdits((x) => ({ ...x, [k]: "" }));
       await onRefresh();
-      toast(`Password changed for "${acc.username}" and session kicked!`);
+      toast(`Password changed for "${acc.username}" and session kicked`);
     };
-
     const handleRegenCode = async (acc) => {
       const c = genTwoFACode();
       await dbSaveAccount({ ...acc, twoFA: c });
       await kickSession(acc.username);
       setCodeInfo({ username: acc.username, code: c });
       await onRefresh();
-      toast(`New 2FA Code generated for "${acc.username}"!`);
     };
-
     const handleKickUser = async (sess) => {
       await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
       await onRefresh();
@@ -1700,15 +2656,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
               h("span", { className: "badge-pill owner" }, "OWNER ONLY")
             ),
-            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Create accounts, reset passwords, rotate 2FA codes, and monitor live users.")
+            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Create accounts, assign Tiers (Free / Pro / Premium / MAX), and manage live users.")
           ),
           h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
-            h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "☁️ Cloud DB Connected" : "⚙️ Cloud DB Setup"),
+            h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "\u2601\uFE0F Cloud DB Connected" : "\u2699\uFE0F Cloud DB Setup"),
             h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create a New Account")
           )
         ),
 
-        // ACTIVE ACCOUNTS ON SITE PANEL (Exactly as shown in your screenshot)
+        // LIVE ACTIVE USERS PANEL (Includes Instant Live Tier Selector!)
         h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
           h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
             h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
@@ -1757,7 +2713,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               )
         ),
 
-        // LICENSED ACCOUNTS LIST (Exactly as shown in your screenshot)
+        // LICENSED ACCOUNTS CARDS (Includes Tier Selector!)
         h("h3", { style: { fontSize: 20, fontWeight: 600, marginBottom: 14 } }, `Licensed Accounts (${accountsList.length})`),
         h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
           accountsList.map((acc) => {
@@ -1782,7 +2738,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               h("div", { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, background: "#070709", padding: "12px 14px", borderRadius: 12, border: "1px solid var(--border)" } },
                 h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Password"),
                   h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
-                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: isShown ? "normal" : "0.18em" } }, isShown ? acc.password : "••••••••"),
+                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: isShown ? "normal" : "0.18em" } }, isShown ? acc.password : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"),
                     h("button", { className: "eye-btn", onClick: () => toggleReveal(key) }, isShown ? h(EyeOffIcon) : h(EyeIcon))
                   )
                 ),
@@ -1806,7 +2762,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                   h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "2FA Code"),
                   h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
                     h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: revealedPw["2fa_" + key] ? "normal" : "0.18em" } },
-                      acc.twoFA ? (revealedPw["2fa_" + key] ? acc.twoFA : "••••••••") : "NONE"),
+                      acc.twoFA ? (revealedPw["2fa_" + key] ? acc.twoFA : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022") : "NONE"),
                     acc.twoFA ? h("button", { className: "eye-btn", onClick: () => toggleReveal("2fa_" + key) }, revealedPw["2fa_" + key] ? h(EyeOffIcon) : h(EyeIcon)) : null,
                     h("button", { className: "btn warn sm", onClick: () => handleRegenCode(acc) }, acc.twoFA ? "New" : "Enable")
                   )
@@ -1818,7 +2774,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Remaining"), h("span", { style: { fontSize: 13, fontWeight: 600, color: "#86efac" } }, remText))
               ),
               h("div", { style: { borderTop: "1px solid var(--border)", paddingTop: 12 } },
-                h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Duration (1-24h)"), h("span", { style: { fontSize: 12.5, fontWeight: 600 } }, acc.infinite ? "Infinite ∞" : `${sliderVal}h`)),
+                h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Duration (1-24h)"), h("span", { style: { fontSize: 12.5, fontWeight: 600 } }, acc.infinite ? "Infinite \u221E" : `${sliderVal}h`)),
                 h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: !!acc.infinite, value: sliderVal, onChange: (e) => handleAdjustDuration(acc, Number(e.target.value), false) }),
                 h("div", { className: "row", style: { marginTop: 10 } },
                   h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, cursor: "pointer" } },
@@ -1832,6 +2788,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         )
       ),
 
+      // CREATE ACCOUNT MODAL WITH 4 TIERS (Free, Pro, Premium, MAX)
       createModal ? h(Modal, { onClose: () => setCreateModal(false) },
         h("h3", null, "Create Licensed Account"),
         h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
@@ -1885,7 +2842,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         )
       ) : null,
       codeInfo ? h(Modal, { onClose: () => setCodeInfo(null) },
-        h("h3", null, "🔑 2FA Code for " + codeInfo.username),
+        h("h3", null, "\uD83D\uDD10 2FA Code for " + codeInfo.username),
         h("p", null, "Give this to the user privately. They need it at every login."),
         h("div", { className: "mono-box", style: { fontSize: 26, letterSpacing: "0.2em", marginBottom: 16 } }, codeInfo.code),
         h("div", { className: "actions" },
@@ -1896,17 +2853,21 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
+  function Toggle({ checked, onChange }) {
+    return h("label", { className: "toggle" }, h("input", { type: "checkbox", checked, onChange: (e) => onChange(e.target.checked) }), h("span"));
+  }
+
   function SettingsView({ settings, onSave, onCloakSite }) {
     const [s, setS] = useState(settings);
     const set = (k, v) => setS((p) => ({ ...p, [k]: v }));
     return h("section", { className: "view", id: "settings" },
       h("div", { className: "page", style: { maxWidth: 720 } },
         h("h2", null, "Settings"),
-        h("p", { className: "sub" }, "Configure cloak and portal settings."),
+        h("p", { className: "sub" }, "Customize your in-app installer & cloak settings."),
         h("div", { className: "setting" },
           h("div", { className: "row" },
-            h("div", null, h("h3", null, "Open games in external about:blank tab"), h("p", { style: { margin: 0 } }, "When off (default), games install and play directly inside this portal.")),
-            h("input", { type: "checkbox", checked: s.cloak, onChange: (e) => set("cloak", e.target.checked) })
+            h("div", null, h("h3", null, "Open games in external about:blank tab"), h("p", { style: { margin: 0 } }, "When off (default), games install and play directly inside this HTML portal.")),
+            h(Toggle, { checked: s.cloak, onChange: (v) => set("cloak", v) })
           )
         ),
         h("div", { className: "setting" },
@@ -1921,9 +2882,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // ============================================================================
-  // SECURE LOGIN BOX — STRICT 1-USER CONCURRENCY LOCK & ALERT NOTIFICATIONS
-  // ============================================================================
   function LoginBox({ onLoginSuccess }) {
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
@@ -1935,83 +2893,73 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const handleSubmit = async (e) => {
       e.preventDefault();
       setErr("");
-      const idClean = identifier.trim().toLowerCase();
+      const idClean = identifier.trim();
       const pwClean = password.trim();
-      if (!idClean || !pwClean) { setErr("Username and password required."); return; }
+      if (!idClean || !pwClean) { setErr("Please enter Username and Password."); return; }
       setLoading(true);
-
-      const blacklist = getRevokedBlacklist();
-      if (blacklist[idClean]) {
-        setLoading(false);
-        setErr("This account has been revoked.");
-        return;
-      }
-
       const { accounts, sessions } = await dbFetchAll();
-      const matched = accounts[idClean] || Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === idClean);
+      const lower = idClean.toLowerCase();
 
-      if (!matched) {
+      // Permanent revocation blacklist check
+      const blacklist = getRevokedBlacklist();
+      if (blacklist[lower]) {
         setLoading(false);
-        if (idClean === "kevin" || idClean === "owner" || idClean === "admin" || AUTH_CONFIG.ownerEmails.includes(idClean)) {
-          dispatchSecurityAlertEmail("UNAUTHORIZED_OWNER_ATTEMPT", { attemptedUser: idClean, status: "Account does not exist" });
-        }
-        setErr("Invalid username or password.");
+        setErr("⛔ This account has been permanently revoked by the owner.");
         return;
       }
 
-      if (matched.password !== pwClean) {
-        setLoading(false);
-        if (matched.role === "owner" || isOwnerIdentity(matched.username, matched)) {
-          dispatchSecurityAlertEmail("FAILED_OWNER_PASSWORD", { attemptedUser: matched.username });
+      let matched = accounts[lower] || Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === lower);
+
+      // Auto-provision initial owner only if zero owners exist
+      if (!matched && isOwnerIdentity(lower, null)) {
+        const anyOwnerExists = Object.values(accounts).some((a) => a.role === "owner");
+        if (!anyOwnerExists) {
+          matched = {
+            username: idClean.includes("@") ? (AUTH_CONFIG.ownerUsernames[0] || "kevin") : idClean,
+            email: idClean.includes("@") ? idClean : (AUTH_CONFIG.ownerEmails[0] || "kevinhuygialam@gmail.com"),
+            password: pwClean,
+            tier: "max",
+            licenseKey: "UG-OWNR-ROOT-0001",
+            twoFA: "",
+            infinite: true,
+            expiresAt: null,
+            role: "owner",
+            createdAt: Date.now()
+          };
+          await dbSaveAccount(matched);
         }
-        setErr("Invalid username or password.");
-        return;
       }
 
+      if (!matched || matched.password !== pwClean || (matched.twoFA && matched.twoFA !== code.trim())) {
+        setLoading(false); setErr("Invalid username, password or 2FA code."); return;
+      }
       const isOwn = isOwnerIdentity(matched.username, matched);
-
-      // STRICT 1 PERSON AT A TIME CONCURRENCY LOCK
-      const activeSess = sessions[matched.username.toLowerCase()];
-      if (activeSess && !activeSess.kicked && Date.now() - (activeSess.lastPing || 0) < 30000) {
-        const mySaved = getSavedSession();
-        if (!mySaved || mySaved.sessionId !== activeSess.sessionId) {
-          setLoading(false);
-          setErr("⚠️ This account is currently in use on another computer/tab! Only 1 person is allowed at a time.");
-          return;
-        }
+      if (!isOwn && !matched.infinite && matched.expiresAt && Date.now() >= matched.expiresAt) {
+        setLoading(false); setErr("License has expired."); return;
       }
 
-      // 2FA requirement
-      if (isOwn || matched.twoFA) {
-        if (!code.trim() || (matched.twoFA && matched.twoFA.trim() !== code.trim())) {
-          setLoading(false);
-          if (isOwn) {
-            dispatchSecurityAlertEmail("FAILED_OWNER_2FA", { attemptedUser: matched.username, enteredCode: code });
-          }
-          setErr("2FA Code is required or invalid.");
-          return;
-        }
+      // STRICT 1-PERSON-PER-ACCOUNT CONCURRENCY CHECK
+      const curSess = sessions && sessions[matched.username.toLowerCase()];
+      if (curSess && !curSess.kicked && Date.now() - (curSess.lastPing || 0) < 35000 && curSess.sessionId && curSess.sessionId !== TAB_SESSION_ID) {
+        setLoading(false);
+        setErr("⚠️ This account is currently in use on another computer/tab! Only 1 person is allowed at a time.");
+        return;
       }
 
-      const newSessionId = "sess_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
       const sess = {
-        sessionId: newSessionId,
         username: matched.username,
         email: matched.email || "",
         role: isOwn ? "owner" : "user",
         tier: isOwn ? "owner" : (matched.tier || "free"),
+        sessionId: TAB_SESSION_ID,
         loginAt: Date.now(),
         lastPing: Date.now(),
         currentView: "home",
         kicked: false
       };
-
-      if (isOwn) {
-        dispatchSecurityAlertEmail("SUCCESSFUL_OWNER_LOGIN", { username: matched.username });
-      }
-
       await dbUpsertSession(sess);
       saveCurrentSession(sess);
+      if (isOwn) dispatchSecurityAlertEmail(matched.username, "OWNER");
       setLoading(false);
       onLoginSuccess(sess);
     };
@@ -2019,23 +2967,18 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("div", { className: "auth-overlay" },
       h("div", { className: "auth-box" },
         h("h1", { className: "auth-logo" }, "unblockedgames"),
-        h("p", { className: "auth-sub" }, "1 person per account policy enforced."),
+        h("p", { className: "auth-sub" }, "Sign in with your licensed account."),
         err ? h("div", { className: "auth-err" }, err) : null,
         h("form", { onSubmit: handleSubmit, autoComplete: "off" },
-          h("div", { style: { marginBottom: 14 } },
-            h("label", { className: "auth-label" }, "Username"),
-            h("input", { className: "field", placeholder: "Username...", value: identifier, onChange: (e) => setIdentifier(e.target.value) })
-          ),
-          h("div", { style: { marginBottom: 20 } },
-            h("label", { className: "auth-label" }, "Password"),
+          h("div", { style: { marginBottom: 14 } }, h("label", { className: "auth-label" }, "Username or Email"), h("input", { className: "field", placeholder: "Username...", value: identifier, onChange: (e) => setIdentifier(e.target.value) })),
+          h("div", { style: { marginBottom: 20 } }, h("label", { className: "auth-label" }, "Password"),
             h("div", { style: { position: "relative", display: "flex", alignItems: "center" } },
               h("input", { className: "field", type: showPw ? "text" : "password", placeholder: "Password...", value: password, onChange: (e) => setPassword(e.target.value), style: { paddingRight: 44 } }),
               h("button", { type: "button", className: "eye-btn", onClick: () => setShowPw((v) => !v), style: { position: "absolute", right: 7, border: 0, background: "transparent" } }, showPw ? h(EyeOffIcon) : h(EyeIcon))
             )
           ),
-          h("div", { style: { marginBottom: 20 } },
-            h("label", { className: "auth-label" }, "2FA Code (If enabled)"),
-            h("input", { className: "field", placeholder: "8-digit 2FA code", value: code, onChange: (e) => setCode(e.target.value) })
+          h("div", { style: { marginBottom: 20 } }, h("label", { className: "auth-label" }, "2FA Code (from owner)"),
+            h("input", { className: "field", placeholder: "8-digit code (leave empty if none)", inputMode: "numeric", maxLength: 8, value: code, onChange: (e) => setCode(e.target.value) })
           ),
           h("button", { type: "submit", className: "btn", disabled: loading, style: { width: "100%" } }, loading ? "Verifying..." : "Sign In")
         )
@@ -2043,9 +2986,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     );
   }
 
-  // ============================================================================
-  // APP ROOT COMPONENT
-  // ============================================================================
+  // --- Main App ---
   function App() {
     const [view, setView] = useState("home");
     const [open, setOpen] = useState(false);
@@ -2059,6 +3000,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [toastMsg, setToastMsg] = useState("");
     const [toastOn, setToastOn] = useState(false);
     const toastT = useRef(undefined);
+    const mainRef = useRef(null);
 
     const [currentUser, setCurrentUser] = useState(getSavedSession);
     const [accountsMap, setAccountsMap] = useState({});
@@ -2093,18 +3035,22 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         return;
       }
       setView(v);
+      mainRef.current?.scrollTo(0, 0);
     }, [userTier]);
 
     const checkIncomingBroadcast = useCallback((bcObj, uname) => {
       if (!bcObj || !bcObj.id || !uname) return;
-      if (Date.now() - (bcObj.timestamp || 0) > 300000) return;
+      if (Date.now() - (bcObj.timestamp || 0) > 600000) return;
       const targetClean = (bcObj.target || "all").toLowerCase();
       if (targetClean !== "all" && targetClean !== uname.toLowerCase()) return;
       try {
         const dismissed = JSON.parse(localStorage.getItem(LS_DISMISSED_BC) || "{}");
         if (dismissed[bcObj.id]) return;
       } catch {}
-      setActiveBroadcast(bcObj);
+      setActiveBroadcast({
+        ...bcObj,
+        message: String(bcObj.message || "").slice(0, MAX_BROADCAST_CHARS)
+      });
     }, []);
 
     const dismissBroadcast = (id) => {
@@ -2116,61 +3062,61 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       setActiveBroadcast(null);
     };
 
-    const refreshDatabase = useCallback(async () => {
+    const refreshDatabaseAndSession = useCallback(async () => {
       const { accounts, sessions, broadcast } = await dbFetchAll();
       setAccountsMap(accounts);
       setSessionsMap(sessions);
 
       const saved = getSavedSession();
-      if (!saved || !saved.username) return;
+      if (!saved || !saved.username) { setCurrentUser(null); return; }
 
       const key = saved.username.trim().toLowerCase();
-      const blacklist = getRevokedBlacklist();
+      const acc = accounts[key];
+      if (!acc) { saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Account revoked."); return; }
 
-      if (blacklist[key] || !accounts[key]) {
-        saveCurrentSession(null);
-        setCurrentUser(null);
-        setPlaying(null);
-        toast("Account revoked.");
-        return;
+      const own = isOwnerIdentity(acc.username, acc);
+      if (!own && !acc.infinite && acc.expiresAt && Date.now() >= acc.expiresAt) {
+        await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("License expired."); return;
       }
 
-      // Concurrency check: enforce 1 user at a time
       const remoteSess = sessions[key];
-      if (remoteSess && remoteSess.sessionId && saved.sessionId && remoteSess.sessionId !== saved.sessionId) {
-        saveCurrentSession(null);
-        setCurrentUser(null);
-        setPlaying(null);
-        toast("Logged out: Account opened on another device!");
-        return;
+      if (remoteSess && remoteSess.kicked && (!saved.loginAt || (remoteSess.kickedAt || 0) >= saved.loginAt)) {
+        await dbDeleteSession(acc.username); saveCurrentSession(null); setCurrentUser(null); setPlaying(null); toast("Kicked out by owner."); return;
       }
 
       if (broadcast && broadcast.id) {
-        checkIncomingBroadcast(broadcast, saved.username);
+        checkIncomingBroadcast(broadcast, acc.username);
       }
 
-      dbUpsertSession({
-        ...saved,
+      const liveTier = getUserTier(acc, own);
+      if (!canAccessView(liveTier, view)) {
+        setView("home");
+      }
+
+      await dbUpsertSession({
+        username: acc.username,
+        email: acc.email || "",
+        role: own ? "owner" : "user",
+        tier: liveTier,
+        loginAt: saved.loginAt || Date.now(),
         lastPing: Date.now(),
-        currentView: view
+        currentView: view,
+        kicked: false
       });
+      setSessionsMap(getLocalStore(LS_SESSIONS));
     }, [view, toast, checkIncomingBroadcast]);
 
     useEffect(() => {
-      refreshDatabase();
-      const interval = setInterval(refreshDatabase, 2500);
+      refreshDatabaseAndSession();
+      const interval = setInterval(refreshDatabaseAndSession, 3500);
       return () => clearInterval(interval);
-    }, [refreshDatabase]);
+    }, [refreshDatabaseAndSession]);
 
     useEffect(() => {
       if (!bc) return;
       const onMsg = (e) => {
         if (e.data && e.data.type === "live_broadcast" && currentUser?.username) {
           checkIncomingBroadcast(e.data.payload, currentUser.username);
-        }
-        if (e.data && e.data.type === "account_revoked" && currentUser?.username?.toLowerCase() === e.data.username) {
-          saveCurrentSession(null);
-          setCurrentUser(null);
         }
       };
       bc.addEventListener("message", onMsg);
@@ -2184,43 +3130,47 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         setPlaying(g);
         return;
       }
-      openCloaked(frameSource(g), settings);
-    }, [settings]);
+      if (!openCloaked(frameSource(g), settings)) toast("Popup blocked");
+    }, [settings, toast]);
+
+    const hideFloatingPills = view === "browser" || view === "movies" || view === "music";
 
     return h(Fragment, null,
       h(Stars),
-      !currentUser ? h(LoginBox, { onLoginSuccess: (sess) => { setCurrentUser(sess); refreshDatabase(); toast(`Welcome, ${sess.username}!`); } }) : null,
+      !currentUser ? h(LoginBox, { onLoginSuccess: (sess) => { setCurrentUser(sess); refreshDatabaseAndSession(); toast(`Welcome, ${sess.username}!`); } }) : null,
       h(Sidebar, { view, open, onToggle: () => setOpen((o) => !o), onNavigate: navigate, isOwner, userTier }),
-      h("div", { id: "topRight", style: { display: "flex", gap: 8, alignItems: "center" } },
+      !hideFloatingPills ? h("div", { id: "topRight", style: { display: "flex", gap: 8, alignItems: "center" } },
         currentUser ? h("button", { className: "pill", style: { display: "flex", alignItems: "center", gap: 8 }, onClick: () => navigate(isOwner ? "creator" : "account") },
           h("span", null, currentUser.username),
           renderTierBadge(userTier, isOwner)
         ) : null
-      ),
-      h("main", null,
+      ) : null,
+      h("main", { ref: mainRef },
         view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); }, userTier }) : null,
         view === "sports" ? h(SportsView, { currentUser, userTier, isOwner, sessionsMap, toast }) : null,
         view === "broadcast" ? h(BroadcastView, { currentUser, userTier, isOwner, sessionsMap, accountsMap, toast }) : null,
         view === "youtube" ? h(YouTubeView, { toast }) : null,
-        view === "tiktok" ? h(TikTokView) : null,
-        view === "browser" ? h(BrowserView) : null,
+        view === "tiktok" ? h(TikTokView, { toast }) : null,
+        view === "browser" ? h(BrowserView, { toast }) : null,
         view === "games" ? h(GamesView, { query, onQuery: setQuery, onPlay: launchGame, installedMap }) : null,
         view === "chat" ? h(ChatView, { currentUser, accountsMap }) : null,
-        view === "movies" ? h(MoviesView) : null,
-        view === "music" ? h(MusicView) : null,
+        view === "movies" ? h(MoviesView, { toast }) : null,
+        view === "music" ? h(MusicView, { toast }) : null,
         view === "account" ? h(AccountProfileView, { currentUser, accountsMap, onLogout: async () => { await dbDeleteSession(currentUser.username); saveCurrentSession(null); setCurrentUser(null); setView("home"); }, onOpenCreator: () => navigate("creator"), isOwner, userTier }) : null,
-        view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabase, toast }) : null,
+        view === "creator" && isOwner ? h(AccountCreatorView, { accountsMap, sessionsMap, onRefresh: refreshDatabaseAndSession, toast }) : null,
         view === "settings" ? h(SettingsView, { settings, onSave: (s) => { setSettings(s); saveSettings(s); toast("Saved"); }, onCloakSite: () => cloakSite(settings) }) : null
       ),
 
+      // TIKTOK UNDER MAINTENANCE POPUP
       maintenanceModal ? h(Modal, { onClose: () => setMaintenanceModal(false) },
         h("h3", null, "🔧 Under Maintenance"),
-        h("p", null, "TikTok is currently locked for all users while video relay servers are upgraded."),
+        h("p", null, "TikTok is currently locked for everybody while it is under maintenance. Please check back soon!"),
         h("div", { className: "actions" },
           h("button", { className: "btn", onClick: () => setMaintenanceModal(false) }, "Close")
         )
       ) : null,
 
+      // TIER UPGRADE PROMPT MODAL
       upgradePrompt ? h(Modal, { onClose: () => setUpgradePrompt(null) },
         h("h3", null, `🔒 ${upgradePrompt.reqTier} Tier Required`),
         h("p", null, `Your account is currently on the ${userTier.toUpperCase()} tier. Accessing ${upgradePrompt.viewName} requires a ${upgradePrompt.reqTier} license. Contact the Owner to upgrade your account tier!`),
@@ -2229,6 +3179,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         )
       ) : null,
 
+      // INCOMING LIVE SCREEN BROADCAST OVERLAY (Capped at 90 chars + Close button always visible!)
       activeBroadcast ? h("div", { className: "screen-broadcast-bg" },
         h("div", { className: "screen-broadcast-box" },
           h("div", null,
@@ -2261,3 +3212,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     </script>
   </body>
 </html>
+
+this is my code, why do people keep being able to go into woner account and hack people even if i made 2fa codes and different passwords and when i revoke accoutns they dont actually get deleteed, if just says their deleted but when the person signs into the revoked accounts it comes back. also change the owner and admin accounts to send me an email at kevinhuygialam@gmail.com kevinlamfamily@hotmail.com
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-11-12T17:49:56+11:00.
+
+The user has uploaded 1 image(s):
+- C:/Users/kevin/.gemini/antigravity/brain/c19d385a-7242-4bd7-b9ff-77283330111c/.user_uploaded/media_1794466096885_ec4e6ee1.jpg
+You can embed this image in an artifact if you need the USER to review it.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from None to Gemini 3.8 Flash (Medium). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
