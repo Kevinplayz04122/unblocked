@@ -2343,46 +2343,90 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   // WHATSAPP-STYLE LIVE CHAT WITH IMAGE & FILE ATTACHMENTS (Pro, Premium & Max Tiers)
   // ============================================================================
   function ChatView({ currentUser, accountsMap }) {
+    const DAY_MS = 24 * 60 * 60 * 1000;
+
     const [messages, setMessages] = useState(() => {
-      try { return JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]"); } catch { return []; }
+      try {
+        const cutoff = Date.now() - DAY_MS;
+        const local = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+        return local.filter((m) => m && (m.timestamp || 0) >= cutoff);
+      } catch {
+        return [];
+      }
     });
     const [inputMessage, setInputMessage] = useState("");
     const [attachment, setAttachment] = useState(null);
     const messagesEndRef = useRef(null);
+    const hasInitializedScroll = useRef(false);
 
-    useEffect(() => {
-      const fetchChat = async () => {
-        const base = getDbUrl();
-        if (!base) {
-          try {
-            const local = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
-            setMessages(local);
-          } catch {}
-          return;
-        }
-        try {
-          const res = await fetch(`${base}/global_chat.json?limitToLast=35`, { cache: "no-store" });
-          if (res.ok) {
-            const data = await res.json();
-            if (data) {
-              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
-              list.sort((a, b) => a.timestamp - b.timestamp);
-              setMessages(list);
-            } else {
-              setMessages([]);
-            }
+    // Auto-purge messages older than 24 hours locally and from Firebase RTDB
+    const purgeAndSetMessages = useCallback((rawList, rawData, base) => {
+      const cutoff = Date.now() - DAY_MS;
+      const fresh = (rawList || []).filter((m) => m && (m.timestamp || 0) >= cutoff);
+      fresh.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+
+      try {
+        localStorage.setItem("ug_global_chat_v1", JSON.stringify(fresh));
+      } catch {}
+
+      setMessages(fresh);
+
+      // Background permanent deletion of messages older than 24 hours from Cloud Database
+      if (base && rawData) {
+        Object.keys(rawData).forEach((k) => {
+          const item = rawData[k];
+          if (item && (item.timestamp || 0) < cutoff) {
+            fetch(base + "/global_chat/" + encodeURIComponent(k) + ".json", { method: "DELETE" }).catch(() => {});
           }
-        } catch {}
-      };
+        });
+      }
+    }, [DAY_MS]);
 
-      fetchChat();
-      const interval = setInterval(fetchChat, 3500);
-      return () => clearInterval(interval);
-    }, []);
+    const fetchChat = useCallback(async () => {
+      const base = getDbUrl();
+      if (!base) {
+        try {
+          const cutoff = Date.now() - DAY_MS;
+          const local = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
+          const fresh = local.filter((m) => m && (m.timestamp || 0) >= cutoff);
+          setMessages(fresh);
+        } catch {}
+        return;
+      }
+      try {
+        // Fast lightweight fetch - last 25 messages only
+        const res = await fetch(base + "/global_chat.json?limitToLast=25", { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data) {
+            const list = Object.keys(data).map((k) => Object.assign({ id: k }, data[k]));
+            purgeAndSetMessages(list, data, base);
+          } else {
+            setMessages([]);
+          }
+        }
+      } catch {}
+    }, [DAY_MS, purgeAndSetMessages]);
 
     useEffect(() => {
+      fetchChat();
+      const interval = setInterval(fetchChat, 3000);
+      return () => clearInterval(interval);
+    }, [fetchChat]);
+
+    // Initial scroll down ONLY ONCE on mount, then auto-scroll is OFF so user can scroll up freely
+    useEffect(() => {
+      if (!hasInitializedScroll.current && messages.length > 0) {
+        hasInitializedScroll.current = true;
+        setTimeout(() => {
+          messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+        }, 120);
+      }
+    }, [messages.length]);
+
+    const scrollToBottom = () => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
+    };
 
     const handleFileChange = (e) => {
       const file = e.target.files[0];
@@ -2423,7 +2467,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       const base = getDbUrl();
       if (base) {
         try {
-          await fetch(`${base}/global_chat.json`, {
+          await fetch(base + "/global_chat.json", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newMsg)
@@ -2431,8 +2475,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         } catch {}
       } else {
         try {
-          const prev = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]");
-          const next = [...prev, { id: "msg_" + Date.now(), ...newMsg }];
+          const cutoff = Date.now() - DAY_MS;
+          const prev = JSON.parse(localStorage.getItem("ug_global_chat_v1") || "[]").filter((m) => (m.timestamp || 0) >= cutoff);
+          const next = [...prev, Object.assign({ id: "msg_" + Date.now() }, newMsg)];
           localStorage.setItem("ug_global_chat_v1", JSON.stringify(next));
           setMessages(next);
         } catch {}
@@ -2441,449 +2486,92 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       setInputMessage("");
       setAttachment(null);
 
+      // Only scroll down when the user themselves sends a message
       setTimeout(async () => {
-        if (base) {
-          const res = await fetch(`${base}/global_chat.json`, { cache: "no-store" });
-          if (res.ok) {
-            const data = await res.json();
-            if (data) {
-              const list = Object.keys(data).map((k) => ({ id: k, ...data[k] }));
-              list.sort((a, b) => a.timestamp - b.timestamp);
-              setMessages(list);
-            }
-          }
-        }
-      }, 250);
+        await fetchChat();
+        scrollToBottom();
+      }, 150);
     };
 
     return h("section", { className: "view", style: { height: "100%", display: "flex", flexDirection: "column" } },
-      h("div", { style: { padding: "20px 24px 0", flexShrink: 0 } },
+      h("div", { style: { padding: "20px 24px 0", flexShrink: 0, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 } },
         h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
           h("h2", { style: { margin: 0, fontSize: 26 } }, "Live School Chat"),
-          h("span", { className: "badge-pill live" }, "WHATSAPP LIVE SYNC")
-        )
+          h("span", { className: "badge-pill live" }, "WHATSAPP LIVE SYNC"),
+          h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Auto-purges chats every 24h")
+        ),
+        h("button", {
+          className: "btn ghost sm",
+          style: { borderRadius: 999, fontSize: 12 },
+          onClick: scrollToBottom
+        }, "⬇ Jump to Bottom")
       ),
       h("div", { style: { flex: 1, display: "flex", flexDirection: "column", padding: "16px 24px 24px", overflow: "hidden" } },
-        h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden", background: "#060608", height: "100%" } },
+        h("div", { className: "pop-panel", style: { flex: 1, display: "flex", flexDirection: "column", padding: 0, overflow: "hidden", background: "#060608", height: "100%", position: "relative" } },
           h("div", { style: { flex: 1, padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 14 } },
             messages.length === 0
-              ? h("div", { style: { margin: "auto", color: "var(--muted)", textAlign: "center" } }, "No messages yet. Send an image or message to start chatting! 🚀")
+              ? h("div", { style: { textAlign: "center", color: "#666", marginTop: 40 } }, "No messages in the last 24 hours. Start the conversation!")
               : messages.map((m) => {
-                  const isMe = (m.sender || "").toLowerCase() === (currentUser?.username || "").toLowerCase();
-                  const isOwnerMsg = m.role === "owner";
-                  const msgTier = m.tier || (isOwnerMsg ? "owner" : "pro");
-                  return h("div", { key: m.id || m.timestamp, style: { display: "flex", flexDirection: "column", alignItems: isMe ? "flex-end" : "flex-start" } },
+                  const isMe = currentUser && m.sender.toLowerCase() === currentUser.username.toLowerCase();
+                  const isMsgOwner = m.role === "owner";
+                  return h("div", {
+                    key: m.id || m.timestamp,
+                    style: {
+                      alignSelf: isMe ? "flex-end" : "flex-start",
+                      maxWidth: "75%",
+                      background: isMe ? "rgba(30, 215, 96, 0.12)" : "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid " + (isMe ? "rgba(30, 215, 96, 0.3)" : "rgba(255, 255, 255, 0.08)"),
+                      borderRadius: 14,
+                      padding: "10px 14px"
+                    }
+                  },
                     h("div", { style: { display: "flex", alignItems: "center", gap: 6, marginBottom: 4 } },
-                      h("span", { style: { fontSize: 12, fontWeight: 600, color: "#aaa" } }, m.sender),
-                      renderTierBadge(msgTier, isOwnerMsg),
-                      h("span", { style: { fontSize: 10, color: "#666" } }, new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+                      h("span", { style: { fontWeight: 700, fontSize: 13, color: isMe ? "#1ed760" : "#fff" } }, m.sender),
+                      renderTierBadge(m.tier, isMsgOwner),
+                      h("span", { style: { fontSize: 11, color: "var(--muted)", marginLeft: "auto" } },
+                        new Date(m.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                      )
                     ),
-                    h("div", { style: { background: isMe ? "#16a34a" : "#18181b", color: "#fff", padding: "12px 16px", borderRadius: isMe ? "16px 16px 2px 16px" : "16px 16px 16px 2px", fontSize: 14, maxWidth: "75%", wordBreak: "break-word", border: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 8 } },
-                      m.text ? h("span", null, m.text) : null,
-                      m.attachment ? (
-                        m.attachment.type && m.attachment.type.startsWith("image/") ?
-                          h("img", { src: m.attachment.data, alt: m.attachment.name, style: { maxWidth: "100%", maxHeight: 280, borderRadius: 10, objectFit: "cover" } }) :
-                          h("a", { href: m.attachment.data, download: m.attachment.name, style: { color: "#bbf7d0", textDecoration: "underline", fontSize: "13px" } }, `📎 ${m.attachment.name}`)
-                      ) : null
-                    )
+                    m.text ? h("div", { style: { fontSize: 14, lineHeight: 1.4, wordBreak: "break-word" } }, m.text) : null,
+                    m.attachment ? (
+                      h("div", { style: { marginTop: 8 } },
+                        m.attachment.type.startsWith("image/") ? (
+                          h("img", {
+                            src: m.attachment.data,
+                            alt: m.attachment.name,
+                            style: { maxWidth: "100%", maxHeight: 240, borderRadius: 8, display: "block" }
+                          })
+                        ) : (
+                          h("a", {
+                            href: m.attachment.data,
+                            download: m.attachment.name,
+                            style: { color: "#60a5fa", fontSize: 13, textDecoration: "underline", display: "flex", alignItems: "center", gap: 6 }
+                          }, "📎 " + m.attachment.name)
+                        )
+                      )
+                    ) : null
                   );
                 }),
             h("div", { ref: messagesEndRef })
           ),
-          attachment ? h("div", { style: { padding: "8px 16px", background: "#111116", borderTop: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" } },
-            h("span", { style: { fontSize: 13, color: "#86efac" } }, `Attached: ${attachment.name}`),
-            h("button", { type: "button", className: "btn danger sm", onClick: () => setAttachment(null) }, "Remove")
-          ) : null,
-          h("form", { onSubmit: sendMessage, style: { display: "flex", gap: 10, padding: 16, background: "#0e0e11", borderTop: "1px solid var(--border)", alignItems: "center" } },
-            h("label", { className: "btn ghost", style: { display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 14px", height: 44, cursor: "pointer", margin: 0 } },
-              "📎 Attach / Image",
-              h("input", { type: "file", accept: "image/*,*/*", onChange: handleFileChange, style: { display: "none" } })
+          h("form", { onSubmit: sendMessage, style: { display: "flex", alignItems: "center", gap: 10, padding: 14, background: "#0b0b0e", borderTop: "1px solid var(--border)" } },
+            h("label", { style: { cursor: "pointer", color: "var(--muted)", display: "flex", alignItems: "center" } },
+              h("span", { style: { fontSize: 20 } }, "📎"),
+              h("input", { type: "file", onChange: handleFileChange, style: { display: "none" } })
             ),
+            attachment ? h("span", { style: { fontSize: 12, color: "#1ed760", maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, attachment.name) : null,
             h("input", {
               className: "field",
-              type: "text",
-              placeholder: "Type a message or attach an image...",
-              spellCheck: false,
+              placeholder: "Type a school message...",
               value: inputMessage,
               onChange: (e) => setInputMessage(e.target.value),
-              style: { flex: 1, margin: 0 }
+              style: { flex: 1, height: 42, background: "#131317", border: "1px solid var(--border)", borderRadius: 10, padding: "0 14px", color: "#fff" }
             }),
-            h("button", { type: "submit", className: "btn", style: { padding: "0 28px", height: 44, background: "#22c55e", color: "#000" } }, "Send")
+            h("button", { type: "submit", className: "btn", style: { height: 42, borderRadius: 10, padding: "0 20px" } }, "Send")
           )
         )
       )
     );
-  }
-
-  // --- Clean Player Component ---
-  function Player({ game, onClose }) {
-    const [nonce, setNonce] = useState(0);
-    const frameRef = useRef(null);
-    const source = frameSource(game);
-
-    return h("div", { id: "player" },
-      h("div", { className: "bar" },
-        h("button", { className: "pill", onClick: onClose }, "\u2190 Back to Hub"),
-        h("div", { className: "ttl" }, h("span", null, game.name)),
-        h("button", { className: "pill", onClick: () => setNonce((n) => n + 1) }, "Reload"),
-        h("button", { className: "pill", onClick: () => frameRef.current?.requestFullscreen?.() }, "Fullscreen")
-      ),
-      h("iframe", { key: `${game.slug}_${nonce}`, ref: frameRef, title: game.name, src: source.src, srcDoc: source.srcdoc, allow: FRAME_ALLOW, allowFullScreen: true })
-    );
-  }
-
-  // --- Account Profile View ---
-  function AccountProfileView({ currentUser, accountsMap, onLogout, onOpenCreator, isOwner, userTier }) {
-    const [now, setNow] = useState(Date.now());
-    useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
-    const acc = currentUser ? accountsMap[currentUser.username.toLowerCase()] || currentUser : null;
-
-    return h("section", { className: "view" },
-      h("div", { className: "page", style: { maxWidth: 680 } },
-        h("h2", null, "Account"),
-        h("p", { className: "sub" }, "Your active tier, license & session details."),
-        acc ? h("div", { className: "pop-panel" },
-          h("div", { className: "row", style: { marginBottom: 16 } },
-            h("div", null,
-              h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-                h("h3", { style: { fontSize: 22, margin: 0 } }, acc.username),
-                renderTierBadge(userTier, isOwner)
-              ),
-              acc.email ? h("p", { style: { color: "var(--muted)", fontSize: 13, margin: "4px 0 0" } }, acc.email) : null
-            ),
-            h("button", { className: "btn danger sm", onClick: onLogout }, "Log Out")
-          ),
-          h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginTop: 14 } },
-            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
-              h("span", { className: "auth-label" }, "Account Tier"),
-              h("div", { style: { fontSize: 15, fontWeight: 700, color: "#fff" } },
-                isOwner ? "Owner (All Access)" :
-                userTier === "max" ? "🔥 MAX (ESPN + Screen Broadcast + All)" :
-                userTier === "premium" ? "💎 Premium (All Access)" :
-                userTier === "pro" ? "⚡ Pro (Chat + Games + Media)" :
-                "Free (Games + Movies + Music)"
-              )
-            ),
-            h("div", { className: "setting", style: { margin: 0, padding: 14 } },
-              h("span", { className: "auth-label" }, "Remaining Time"),
-              h("div", { style: { fontSize: 16, fontWeight: 600, color: "#fff" } }, formatRemainingTime(acc, now))
-            )
-          ),
-          isOwner ? h("div", { style: { marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 } },
-            h("span", { style: { fontSize: 13, color: "var(--muted)" } }, "You have Owner privileges."),
-            h("button", { className: "btn sm", onClick: onOpenCreator }, "Open Account Creator Hub")
-          ) : null
-        ) : null
-      )
-    );
-  }
-
-  // ============================================================================
-  // ACCOUNT CREATOR HUB (With Free / Pro / Premium / MAX Tier Selectors!)
-  // ============================================================================
-  function AccountCreatorView({ accountsMap, sessionsMap, onRefresh, toast }) {
-    const [createModal, setCreateModal] = useState(false);
-    const [dbModal, setDbModal] = useState(false);
-    const [newUsername, setNewUsername] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [newEmail, setNewEmail] = useState("");
-    const [newTier, setNewTier] = useState("free");
-    const [newHours, setNewHours] = useState(12);
-    const [newInfinite, setNewInfinite] = useState(false);
-    const [revealedPw, setRevealedPw] = useState({});
-    const [now, setNow] = useState(Date.now());
-    const [dbUrlInput, setDbUrlInput] = useState(getDbUrl());
-    const [codeInfo, setCodeInfo] = useState(null);
-    const [pwEdits, setPwEdits] = useState({});
-
-    useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
-    useEffect(() => {
-      const poll = setInterval(() => { onRefresh(); }, 6000);
-      return () => clearInterval(poll);
-    }, [onRefresh]);
-
-    const toggleReveal = (uname) => setRevealedPw((p) => ({ ...p, [uname]: !p[uname] }));
-
-    const handleCreateAccount = async (e) => {
-      e.preventDefault();
-      const u = newUsername.trim();
-      const p = newPassword.trim();
-      if (!u || !p) { toast("Please enter both a Username and Password"); return; }
-      const hrs = Math.max(1, Math.min(24, Number(newHours) || 1));
-      const isOwn = isOwnerIdentity(u, { email: newEmail.trim() });
-      const acc = {
-        username: u,
-        email: newEmail.trim() || "",
-        password: p,
-        tier: isOwn ? "max" : newTier,
-        licenseKey: genLicenseKey(),
-        twoFA: genTwoFACode(),
-        infinite: !!newInfinite,
-        durationHours: hrs,
-        expiresAt: newInfinite ? null : Date.now() + hrs * 3600 * 1000,
-        role: isOwn ? "owner" : "user",
-        createdAt: Date.now()
-      };
-      await dbSaveAccount(acc);
-      await onRefresh();
-      setCodeInfo({ username: u, code: acc.twoFA });
-      setNewUsername(""); setNewPassword(""); setNewEmail(""); setNewTier("free"); setNewHours(12); setNewInfinite(false); setCreateModal(false);
-      toast(`Account "${u}" created with ${acc.tier.toUpperCase()} Tier!`);
-    };
-
-    const handleAdjustDuration = async (acc, hoursVal, infVal) => {
-      const hrs = Math.max(1, Math.min(24, Number(hoursVal) || 1));
-      const updated = { ...acc, durationHours: hrs, infinite: !!infVal, expiresAt: infVal ? null : Date.now() + hrs * 3600 * 1000 };
-      await dbSaveAccount(updated);
-      await onRefresh();
-    };
-
-    const handleChangeTier = async (acc, nextTier) => {
-      if (!acc) return;
-      const updated = { ...acc, tier: nextTier };
-      await dbSaveAccount(updated);
-      await onRefresh();
-      toast(`Updated "${acc.username}" to ${nextTier.toUpperCase()} Tier!`);
-    };
-
-    const handleRevokeAccount = async (username) => { await dbDeleteAccount(username); await onRefresh(); toast(`Revoked "${username}"`); };
-    const kickSession = async (username) => {
-      const sess = sessionsMap[username.toLowerCase()];
-      if (sess) await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
-    };
-    const handleChangePassword = async (acc) => {
-      const k = acc.username.toLowerCase();
-      const p = (pwEdits[k] || "").trim();
-      if (p.length < 6) { toast("Password must be 6+ chars"); return; }
-      await dbSaveAccount({ ...acc, password: p });
-      await kickSession(acc.username);
-      setPwEdits((x) => ({ ...x, [k]: "" }));
-      await onRefresh();
-      toast(`Password changed for "${acc.username}" and session kicked`);
-    };
-    const handleRegenCode = async (acc) => {
-      const c = genTwoFACode();
-      await dbSaveAccount({ ...acc, twoFA: c });
-      await kickSession(acc.username);
-      setCodeInfo({ username: acc.username, code: c });
-      await onRefresh();
-    };
-    const handleKickUser = async (sess) => {
-      await dbUpsertSession({ ...sess, kicked: true, kickedAt: Date.now() });
-      await onRefresh();
-      toast(`Kicked "${sess.username}"`);
-    };
-
-    const accountsList = Object.values(accountsMap || {}).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-    const activeSessions = Object.values(sessionsMap || {}).filter((s) => s && !s.kicked && accountsMap[s.username?.toLowerCase()] && now - (s.lastPing || 0) < 45000);
-
-    return h("section", { className: "view", id: "creator" },
-      h("div", { className: "page", style: { maxWidth: 1180 } },
-        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 24 } },
-          h("div", null,
-            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-              h("h2", { style: { margin: 0 } }, "Account Creator Hub"),
-              h("span", { className: "badge-pill owner" }, "OWNER ONLY")
-            ),
-            h("p", { className: "sub", style: { margin: "6px 0 0" } }, "Create accounts, assign Tiers (Free / Pro / Premium / MAX), and manage live users.")
-          ),
-          h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
-            h("button", { className: "btn ghost", onClick: () => setDbModal(true) }, getDbUrl() ? "\u2601\uFE0F Cloud DB Connected" : "\u2699\uFE0F Cloud DB Setup"),
-            h("button", { className: "btn", onClick: () => setCreateModal(true) }, "+ Create a New Account")
-          )
-        ),
-
-        // LIVE ACTIVE USERS PANEL (Includes Instant Live Tier Selector!)
-        h("div", { className: "setting", style: { padding: "20px 22px", marginBottom: 28 } },
-          h("div", { className: "row", style: { marginBottom: 14, flexWrap: "wrap" } },
-            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-              h("span", { className: "status-dot" }),
-              h("h3", { style: { margin: 0, fontSize: 18 } }, `Active Accounts on Site (${activeSessions.length} Live)`),
-              h("span", { className: "badge-pill live" }, "Live Heartbeat Active")
-            ),
-            h("button", { className: "pill", onClick: () => { onRefresh(); toast("Refreshed live users"); } }, "Refresh Now")
-          ),
-          activeSessions.length === 0
-            ? h("div", { style: { padding: "22px 0", textAlign: "center", color: "var(--muted)", fontSize: 13.5 } }, "No active users online right now.")
-            : h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 14 } },
-                activeSessions.map((sess) => {
-                  const acc = accountsMap[sess.username.toLowerCase()];
-                  const isOwn = acc?.role === "owner";
-                  const curTier = acc?.tier || "free";
-                  return h("div", { key: sess.username, className: "pop-panel", style: { background: "#0e0e12" } },
-                    h("div", { className: "row", style: { marginBottom: 10 } },
-                      h("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
-                        h("span", { className: "status-dot" }),
-                        h("strong", { style: { fontSize: 16 } }, sess.username),
-                        renderTierBadge(curTier, isOwn)
-                      ),
-                      h("span", { style: { fontSize: 12, color: "var(--muted)" } }, `Tab: ${sess.currentView || "home"}`)
-                    ),
-                    !isOwn ? h("div", { className: "row", style: { marginBottom: 10, background: "#08080b", padding: "6px 10px", borderRadius: 8, border: "1px solid var(--border)" } },
-                      h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Live Tier:"),
-                      h("select", {
-                        className: "tier-select",
-                        value: curTier,
-                        onChange: (e) => handleChangeTier(acc, e.target.value)
-                      },
-                        h("option", { value: "free" }, "Free (Games/Movies/Music)"),
-                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat)"),
-                        h("option", { value: "premium" }, "💎 Premium (+ YT/Browser)"),
-                        h("option", { value: "max" }, "🔥 MAX (+ ESPN & Screen Popup)")
-                      )
-                    ) : null,
-                    h("div", { style: { fontSize: 12.5, color: "var(--muted)", marginBottom: 14 } }, "Remaining: ", h("strong", { style: { color: "#e4e4e4" } }, formatRemainingTime(acc, now))),
-                    h("div", { style: { display: "flex", gap: 8 } },
-                      h("button", { className: "btn warn sm", style: { flex: 1 }, onClick: () => handleKickUser(sess) }, "Kick Out"),
-                      h("button", { className: "btn danger sm", style: { flex: 1 }, onClick: () => handleRevokeAccount(sess.username) }, "Revoke")
-                    )
-                  );
-                })
-              )
-        ),
-
-        // LICENSED ACCOUNTS CARDS (Includes Tier Selector!)
-        h("h3", { style: { fontSize: 20, fontWeight: 600, marginBottom: 14 } }, `Licensed Accounts (${accountsList.length})`),
-        h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 } },
-          accountsList.map((acc) => {
-            const key = acc.username.toLowerCase();
-            const isShown = !!revealedPw[key];
-            const remText = formatRemainingTime(acc, now);
-            const isOnline = activeSessions.some((s) => s.username.toLowerCase() === key);
-            const sliderVal = acc.durationHours || 12;
-            const isOwn = acc.role === "owner";
-            const curTier = acc.tier || "free";
-
-            return h("div", { key: acc.username, className: "pop-panel" },
-              h("div", { className: "row", style: { marginBottom: 14 } },
-                h("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } },
-                  h("span", { className: "status-dot" + (isOnline ? "" : " off") }),
-                  h("span", { style: { fontSize: 17, fontWeight: 600 } }, acc.username),
-                  renderTierBadge(curTier, isOwn),
-                  isOnline ? h("span", { className: "badge-pill live" }, "ONLINE") : null
-                ),
-                h("button", { className: "btn danger sm", onClick: () => handleRevokeAccount(acc.username) }, "Revoke")
-              ),
-              h("div", { style: { display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, background: "#070709", padding: "12px 14px", borderRadius: 12, border: "1px solid var(--border)" } },
-                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Password"),
-                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
-                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: isShown ? "normal" : "0.18em" } }, isShown ? acc.password : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"),
-                    h("button", { className: "eye-btn", onClick: () => toggleReveal(key) }, isShown ? h(EyeOffIcon) : h(EyeIcon))
-                  )
-                ),
-                h("div", { className: "row" },
-                  h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Access Tier"),
-                  isOwn
-                    ? h("span", { style: { fontSize: 12.5, fontWeight: 700, color: "#fff" } }, "👑 Owner (All Access)")
-                    : h("select", {
-                        className: "tier-select",
-                        value: curTier,
-                        onChange: (e) => handleChangeTier(acc, e.target.value)
-                      },
-                        h("option", { value: "free" }, "Free (Games/Movies/Music)"),
-                        h("option", { value: "pro" }, "⚡ Pro (+ Live Chat)"),
-                        h("option", { value: "premium" }, "💎 Premium (+ YT/Browser)"),
-                        h("option", { value: "max" }, "🔥 MAX (+ ESPN & Screen Popup)")
-                      )
-                ),
-                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "License"), h("span", { style: { fontSize: 12, fontFamily: "monospace", color: "#bcbcc4" } }, acc.licenseKey)),
-                h("div", { className: "row" },
-                  h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "2FA Code"),
-                  h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
-                    h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: revealedPw["2fa_" + key] ? "normal" : "0.18em" } },
-                      acc.twoFA ? (revealedPw["2fa_" + key] ? acc.twoFA : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022") : "NONE"),
-                    acc.twoFA ? h("button", { className: "eye-btn", onClick: () => toggleReveal("2fa_" + key) }, revealedPw["2fa_" + key] ? h(EyeOffIcon) : h(EyeIcon)) : null,
-                    h("button", { className: "btn warn sm", onClick: () => handleRegenCode(acc) }, acc.twoFA ? "New" : "Enable")
-                  )
-                ),
-                h("div", { className: "row", style: { gap: 8 } },
-                  h("input", { className: "field", style: { height: 34, fontSize: 13 }, placeholder: "New password (6+)...", value: pwEdits[key] || "", onChange: (e) => setPwEdits((x) => ({ ...x, [key]: e.target.value })) }),
-                  h("button", { className: "btn sm", onClick: () => handleChangePassword(acc) }, "Set")
-                ),
-                h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "Remaining"), h("span", { style: { fontSize: 13, fontWeight: 600, color: "#86efac" } }, remText))
-              ),
-              h("div", { style: { borderTop: "1px solid var(--border)", paddingTop: 12 } },
-                h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Duration (1-24h)"), h("span", { style: { fontSize: 12.5, fontWeight: 600 } }, acc.infinite ? "Infinite \u221E" : `${sliderVal}h`)),
-                h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: !!acc.infinite, value: sliderVal, onChange: (e) => handleAdjustDuration(acc, Number(e.target.value), false) }),
-                h("div", { className: "row", style: { marginTop: 10 } },
-                  h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, cursor: "pointer" } },
-                    h("input", { type: "checkbox", checked: !!acc.infinite, onChange: (e) => handleAdjustDuration(acc, sliderVal, e.target.checked), style: { width: 16, height: 16, accentColor: "#e4e4e4" } }),
-                    "Infinite License"
-                  )
-                )
-              )
-            );
-          })
-        )
-      ),
-
-      // CREATE ACCOUNT MODAL WITH 4 TIERS (Free, Pro, Premium, MAX)
-      createModal ? h(Modal, { onClose: () => setCreateModal(false) },
-        h("h3", null, "Create Licensed Account"),
-        h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
-          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Username"), h("input", { className: "field", placeholder: "Username...", value: newUsername, onChange: (e) => setNewUsername(e.target.value) })),
-          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Password"), h("input", { className: "field", type: "text", placeholder: "Password...", value: newPassword, onChange: (e) => setNewPassword(e.target.value) })),
-          h("div", { style: { marginBottom: 14 } },
-            h("label", { className: "auth-label" }, "Select Account Tier"),
-            h("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8 } },
-              [
-                { id: "free", name: "Free", sub: "Games, Movies, Music" },
-                { id: "pro", name: "⚡ Pro", sub: "+ Live Chat" },
-                { id: "premium", name: "💎 Premium", sub: "+ YT & Browser" },
-                { id: "max", name: "🔥 MAX", sub: "+ ESPN & Screen Popup" }
-              ].map((t) =>
-                h("div", {
-                  key: t.id,
-                  onClick: () => setNewTier(t.id),
-                  style: {
-                    padding: "10px 8px",
-                    borderRadius: 10,
-                    border: newTier === t.id ? "2px solid #ef4444" : "1px solid var(--border)",
-                    background: newTier === t.id ? "rgba(239,68,68,0.16)" : "#0e0e11",
-                    cursor: "pointer",
-                    textAlign: "center"
-                  }
-                },
-                  h("div", { style: { fontWeight: 700, fontSize: 13.5 } }, t.name),
-                  h("div", { style: { fontSize: 10.5, color: "var(--muted)", marginTop: 2 } }, t.sub)
-                )
-              )
-            )
-          ),
-          h("div", { className: "setting", style: { padding: 14, marginBottom: 18 } },
-            h("div", { className: "row", style: { marginBottom: 8 } }, h("span", { style: { fontSize: 13, fontWeight: 600 } }, "License Time"), h("span", { style: { fontSize: 13, fontWeight: 600 } }, newInfinite ? "Infinite" : `${newHours}h`)),
-            h("input", { type: "range", min: 1, max: 24, step: 1, className: "slider", disabled: newInfinite, value: newHours, onChange: (e) => setNewHours(Number(e.target.value)) }),
-            h("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, cursor: "pointer", marginTop: 10 } },
-              h("input", { type: "checkbox", checked: newInfinite, onChange: (e) => setNewInfinite(e.target.checked), style: { width: 16, height: 16 } }),
-              "Infinite (Never expires)"
-            )
-          ),
-          h("div", { className: "actions" }, h("button", { type: "submit", className: "btn" }, "Create Account"), h("button", { type: "button", className: "btn ghost", onClick: () => setCreateModal(false) }, "Cancel"))
-        )
-      ) : null,
-      dbModal ? h(Modal, { onClose: () => setDbModal(false) },
-        h("h3", null, "Real-Time Cloud Database"),
-        h("p", null, "Paste your free Firebase Realtime Database URL below."),
-        h("input", { className: "field", placeholder: "https://your-app-default-rtdb.firebaseio.com", value: dbUrlInput, onChange: (e) => setDbUrlInput(e.target.value), style: { marginBottom: 16 } }),
-        h("div", { className: "actions" },
-          h("button", { className: "btn", onClick: async () => { setCustomDbUrl(dbUrlInput); await onRefresh(); setDbModal(false); toast("Connected!"); } }, "Save"),
-          h("button", { className: "btn ghost", onClick: () => setDbModal(false) }, "Close")
-        )
-      ) : null,
-      codeInfo ? h(Modal, { onClose: () => setCodeInfo(null) },
-        h("h3", null, "\uD83D\uDD10 2FA Code for " + codeInfo.username),
-        h("p", null, "Give this to the user privately. They need it at every login."),
-        h("div", { className: "mono-box", style: { fontSize: 26, letterSpacing: "0.2em", marginBottom: 16 } }, codeInfo.code),
-        h("div", { className: "actions" },
-          h("button", { className: "btn", onClick: () => { try { navigator.clipboard.writeText(codeInfo.code); toast("Code copied"); } catch {} } }, "Copy"),
-          h("button", { className: "btn ghost", onClick: () => setCodeInfo(null) }, "Done")
-        )
-      ) : null
-    );
-  }
-
-  function Toggle({ checked, onChange }) {
-    return h("label", { className: "toggle" }, h("input", { type: "checkbox", checked, onChange: (e) => onChange(e.target.checked) }), h("span"));
   }
 
   function SettingsView({ settings, onSave, onCloakSite }) {
@@ -3241,16 +2929,3 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     </script>
   </body>
 </html>
-
-this is my code, why do people keep being able to go into woner account and hack people even if i made 2fa codes and different passwords and when i revoke accoutns they dont actually get deleteed, if just says their deleted but when the person signs into the revoked accounts it comes back. also change the owner and admin accounts to send me an email at kevinhuygialam@gmail.com kevinlamfamily@hotmail.com
-</USER_REQUEST>
-<ADDITIONAL_METADATA>
-The current local time is: 2026-11-12T17:49:56+11:00.
-
-The user has uploaded 1 image(s):
-- C:/Users/kevin/.gemini/antigravity/brain/c19d385a-7242-4bd7-b9ff-77283330111c/.user_uploaded/media_1794466096885_ec4e6ee1.jpg
-You can embed this image in an artifact if you need the USER to review it.
-</ADDITIONAL_METADATA>
-<USER_SETTINGS_CHANGE>
-The user changed setting `Model Selection` from None to Gemini 3.8 Flash (Medium). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
-</USER_SETTINGS_CHANGE>
