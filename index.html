@@ -445,6 +445,21 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     }
     return map;
   }
+  const LS_REVOKED_BLACKLIST = "ug_revoked_blacklist_v1";
+  function getRevokedBlacklist() {
+    try { return JSON.parse(localStorage.getItem(LS_REVOKED_BLACKLIST) || "{}"); } catch { return {}; }
+  }
+
+  async function fetchWithTimeout(url, options = {}, timeoutMs = 4500) {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(url, { ...options, signal: controller.signal });
+    } finally {
+      clearTimeout(id);
+    }
+  }
+
   async function dbFetchAll() {
     const base = getDbUrl();
     const localAcc = ensureDefaultOwner(getLocalStore(LS_ACCOUNTS));
@@ -453,9 +468,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     if (!base) return { accounts: localAcc, sessions: localSess, broadcast: localBc };
     try {
       const [accRes, sessRes, bcRes] = await Promise.all([
-        fetch(`${base}/ug_accounts.json`, { cache: "no-store" }),
-        fetch(`${base}/ug_sessions.json`, { cache: "no-store" }),
-        fetch(`${base}/ug_broadcast.json`, { cache: "no-store" })
+        fetchWithTimeout(`${base}/ug_accounts.json`, { cache: "no-store" }),
+        fetchWithTimeout(`${base}/ug_sessions.json`, { cache: "no-store" }),
+        fetchWithTimeout(`${base}/ug_broadcast.json`, { cache: "no-store" })
       ]);
       const remoteAcc = (accRes.ok ? await accRes.json() : null) || {};
       const remoteSess = (sessRes.ok ? await sessRes.json() : null) || {};
@@ -528,7 +543,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const base = getDbUrl();
     if (base) {
       try {
-        await fetch(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, {
+        await fetchWithTimeout(`${base}/ug_sessions/${encodeURIComponent(key)}.json`, {
           method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(sess)
         });
       } catch {}
@@ -1847,18 +1862,52 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     { id: "34Na4j8AVgA", title: "The Weeknd - Starboy ft. Daft Punk (Official Music Video)", author: "The Weeknd", views: "2.4B views", thumb: "https://i.ytimg.com/vi/34Na4j8AVgA/hqdefault.jpg", tags: "r&b the weeknd starboy" }
   ];
 
+  function extractYouTubeSearchFromHtml(html) {
+    const results = [];
+    const seen = new Set();
+    try {
+      const m = /var ytInitialData\s*=\s*(\{.+?\});<\/script>/.exec(html);
+      if (m && m[1]) {
+        const data = JSON.parse(m[1]);
+        const walk = (node) => {
+          if (!node || typeof node !== "object") return;
+          if (node.videoRenderer && node.videoRenderer.videoId) {
+            const vr = node.videoRenderer;
+            const id = vr.videoId;
+            if (id && id.length === 11 && !seen.has(id)) {
+              seen.add(id);
+              const title = vr.title?.runs?.map((r) => r.text).join("") || vr.title?.simpleText || "YouTube Video";
+              const author = vr.ownerText?.runs?.[0]?.text || vr.longBylineText?.runs?.[0]?.text || "YouTube";
+              const views = vr.shortViewCountText?.simpleText || vr.viewCountText?.simpleText || "HD Video";
+              results.push({ id, title, author, views, thumb: `https://i.ytimg.com/vi/${id}/hqdefault.jpg` });
+            }
+            return;
+          }
+          if (Array.isArray(node)) {
+            for (const item of node) walk(item);
+          } else {
+            for (const k of Object.keys(node)) walk(node[k]);
+          }
+        };
+        walk(data);
+      }
+    } catch {}
+    return results;
+  }
+
   function YouTubeView() {
     const [searchQ, setSearchQ] = useState("");
     const [videos, setVideos] = useState([]);
     const [activeVideo, setActiveVideo] = useState(null);
     const [directStreamUrl, setDirectStreamUrl] = useState("");
     const [loading, setLoading] = useState(false);
+    const searchSeqRef = useRef(0);
 
     const selectVideo = useCallback(async (vid) => {
       setActiveVideo(vid);
       setDirectStreamUrl("");
       try {
-        const res = await fetch(`https://pipedapi.kavin.rocks/streams/${vid.id}`);
+        const res = await fetchWithTimeout(`https://pipedapi.kavin.rocks/streams/${vid.id}`, {}, 3000);
         if (res.ok) {
           const data = await res.json();
           const stream = (data.videoStreams || []).find((s) => !s.videoOnly && s.format === "MPEG_4");
@@ -1870,9 +1919,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const searchYouTube = useCallback(async (queryText) => {
       const q = (queryText || "").trim();
       if (!q) return;
+      const seq = ++searchSeqRef.current;
       setLoading(true);
 
-      const ytMatch = q.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+      const ytMatch = q.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([A-Za-z0-9_-]{11})/);
       if (ytMatch) {
         const vidId = ytMatch[1];
         const directItem = { id: vidId, title: "Direct YouTube Video (" + vidId + ")", author: "YouTube Stream", views: "Direct Link", thumb: "https://i.ytimg.com/vi/" + vidId + "/hqdefault.jpg" };
@@ -1882,61 +1932,68 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         return;
       }
 
-      // 1. Instant match from rich curated library
-      const qLower = q.toLowerCase();
-      const localMatches = FALLBACK_YT_VIDEOS.filter((v) =>
-        v.title.toLowerCase().includes(qLower) ||
-        v.author.toLowerCase().includes(qLower) ||
-        (v.tags && v.tags.toLowerCase().includes(qLower))
-      );
+      const fetchJsonApi = async (url) => {
+        const res = await fetchWithTimeout(url, {}, 4000);
+        if (!res.ok) throw new Error("bad status");
+        const data = await res.json();
+        const items = Array.isArray(data) ? data : (data.items || []);
+        const mapped = items.map((item) => {
+          const id = item.videoId || (item.url ? (item.url.split("v=")[1] || item.url.split("/").pop()) : "");
+          return {
+            id,
+            title: item.title || "Video",
+            author: item.uploaderName || item.author || "Creator",
+            views: item.views ? Number(item.views).toLocaleString() + " views" : "HD Video",
+            thumb: item.thumbnail || (item.videoThumbnails && item.videoThumbnails[0] && item.videoThumbnails[0].url) || ("https://i.ytimg.com/vi/" + id + "/hqdefault.jpg")
+          };
+        }).filter((v) => v.id && v.id.length === 11);
+        if (mapped.length === 0) throw new Error("empty");
+        return mapped;
+      };
 
-      // 2. Fetch from fast Invidious / Piped instances
-      const apis = [
-        "https://inv.nadeko.net/api/v1/search?q=" + encodeURIComponent(q) + "&type=video",
-        "https://invidious.nerdvpn.de/api/v1/search?q=" + encodeURIComponent(q) + "&type=video",
-        "https://pipedapi.kavin.rocks/search?q=" + encodeURIComponent(q) + "&filter=videos"
-      ];
+      const fetchYouTubeProxy = async () => {
+        const ytUrl = "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+        const res = await fetchWithTimeout("https://api.allorigins.win/get?url=" + encodeURIComponent(ytUrl), {}, 5000);
+        if (!res.ok) throw new Error("proxy fail");
+        const j = await res.json();
+        const parsed = extractYouTubeSearchFromHtml(j.contents || "");
+        if (parsed.length === 0) throw new Error("no results");
+        return parsed;
+      };
 
       let found = [];
-      for (const apiUrl of apis) {
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 2800);
-          const res = await fetch(apiUrl, { signal: controller.signal });
-          clearTimeout(timeoutId);
-          if (!res.ok) continue;
-          const data = await res.json();
-          const items = Array.isArray(data) ? data : (data.items || []);
-          if (items.length > 0) {
-            found = items.map((item) => {
-              const id = item.videoId || (item.url ? (item.url.split("v=")[1] || item.url.split("/").pop()) : "");
-              return {
-                id,
-                title: item.title || "Video",
-                author: item.uploaderName || item.author || "Creator",
-                views: item.views ? Number(item.views).toLocaleString() + " views" : "HD Video",
-                thumb: item.thumbnail || (item.videoThumbnails && item.videoThumbnails[0] && item.videoThumbnails[0].url) || ("https://i.ytimg.com/vi/" + id + "/hqdefault.jpg")
-              };
-            }).filter((v) => v.id && v.id.length === 11);
-            if (found.length > 0) break;
-          }
-        } catch {}
+      try {
+        found = await Promise.any([
+          fetchJsonApi("https://pipedapi.kavin.rocks/search?q=" + encodeURIComponent(q) + "&filter=videos"),
+          fetchJsonApi("https://api.piped.private.coffee/search?q=" + encodeURIComponent(q) + "&filter=videos"),
+          fetchJsonApi("https://inv.nadeko.net/api/v1/search?q=" + encodeURIComponent(q) + "&type=video"),
+          fetchJsonApi("https://invidious.nerdvpn.de/api/v1/search?q=" + encodeURIComponent(q) + "&type=video"),
+          fetchJsonApi("https://inv.tux.pizza/api/v1/search?q=" + encodeURIComponent(q) + "&type=video"),
+          fetchYouTubeProxy()
+        ]);
+      } catch {
+        found = [];
       }
 
-      const combined = [...localMatches];
-      found.forEach((f) => {
-        if (!combined.some((c) => c.id === f.id)) combined.push(f);
-      });
-      FALLBACK_YT_VIDEOS.forEach((f) => {
-        if (!combined.some((c) => c.id === f.id)) combined.push(f);
-      });
+      if (seq !== searchSeqRef.current) return;
 
-      setVideos(combined.slice(0, 36));
+      // Only use FALLBACK_YT_VIDEOS if all live APIs fail, filtered by words in the query
+      if (found.length === 0) {
+        const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+        const localMatches = FALLBACK_YT_VIDEOS.filter((v) => {
+          const hay = (v.title + " " + v.author + " " + (v.tags || "")).toLowerCase();
+          return words.some((w) => hay.includes(w));
+        });
+        found = localMatches.length > 0 ? localMatches : FALLBACK_YT_VIDEOS;
+      }
+
+      setVideos(found.slice(0, 36));
       setLoading(false);
     }, [selectVideo]);
 
     useEffect(() => {
-      searchYouTube("minecraft roblox gaming");
+      const initialQ = YT_PRESETS[Math.floor(Math.random() * YT_PRESETS.length)].q;
+      searchYouTube(initialQ);
     }, [searchYouTube]);
 
     const embedOrigin = location.origin && location.origin.startsWith("http") ? `&origin=${encodeURIComponent(location.origin)}` : "";
@@ -2956,71 +3013,74 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       const pwClean = password.trim();
       if (!idClean || !pwClean) { setErr("Please enter Username and Password."); return; }
       setLoading(true);
-      const { accounts, sessions } = await dbFetchAll();
-      const lower = idClean.toLowerCase();
+      try {
+        const { accounts, sessions } = await dbFetchAll();
+        const lower = idClean.toLowerCase();
 
-      // Permanent revocation blacklist check
-      const blacklist = getRevokedBlacklist();
-      if (blacklist[lower]) {
-        setLoading(false);
-        setErr("⛔ This account has been permanently revoked by the owner.");
-        return;
-      }
-
-      let matched = accounts[lower] || Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === lower);
-
-      // Auto-provision initial owner only if zero owners exist
-      if (!matched && isOwnerIdentity(lower, null)) {
-        const anyOwnerExists = Object.values(accounts).some((a) => a.role === "owner");
-        if (!anyOwnerExists) {
-          matched = {
-            username: idClean.includes("@") ? (AUTH_CONFIG.ownerUsernames[0] || "kevin") : idClean,
-            email: idClean.includes("@") ? idClean : (AUTH_CONFIG.ownerEmails[0] || "kevinhuygialam@gmail.com"),
-            password: pwClean,
-            tier: "max",
-            licenseKey: "UG-OWNR-ROOT-0001",
-            twoFA: "",
-            infinite: true,
-            expiresAt: null,
-            role: "owner",
-            createdAt: Date.now()
-          };
-          await dbSaveAccount(matched);
+        // Permanent revocation blacklist check
+        const blacklist = getRevokedBlacklist();
+        if (blacklist[lower]) {
+          setErr("⛔ This account has been permanently revoked by the owner.");
+          return;
         }
-      }
 
-      if (!matched || matched.password !== pwClean || (matched.twoFA && matched.twoFA !== code.trim())) {
-        setLoading(false); setErr("Invalid username, password or 2FA code."); return;
-      }
-      const isOwn = isOwnerIdentity(matched.username, matched);
-      if (!isOwn && !matched.infinite && matched.expiresAt && Date.now() >= matched.expiresAt) {
-        setLoading(false); setErr("License has expired."); return;
-      }
+        let matched = accounts[lower] || Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === lower);
 
-      // STRICT 1-PERSON-PER-ACCOUNT CONCURRENCY CHECK
-      const curSess = sessions && sessions[matched.username.toLowerCase()];
-      if (curSess && !curSess.kicked && Date.now() - (curSess.lastPing || 0) < 35000 && curSess.sessionId && curSess.sessionId !== TAB_SESSION_ID) {
+        // Auto-provision initial owner only if zero owners exist
+        if (!matched && isOwnerIdentity(lower, null)) {
+          const anyOwnerExists = Object.values(accounts).some((a) => a.role === "owner");
+          if (!anyOwnerExists) {
+            matched = {
+              username: idClean.includes("@") ? (AUTH_CONFIG.ownerUsernames[0] || "kevin") : idClean,
+              email: idClean.includes("@") ? idClean : (AUTH_CONFIG.ownerEmails[0] || "kevinhuygialam@gmail.com"),
+              password: pwClean,
+              tier: "max",
+              licenseKey: "UG-OWNR-ROOT-0001",
+              twoFA: "",
+              infinite: true,
+              expiresAt: null,
+              role: "owner",
+              createdAt: Date.now()
+            };
+            await dbSaveAccount(matched);
+          }
+        }
+
+        if (!matched || matched.password !== pwClean || (matched.twoFA && matched.twoFA !== code.trim())) {
+          setErr("Invalid username, password or 2FA code."); return;
+        }
+        const isOwn = isOwnerIdentity(matched.username, matched);
+        if (!isOwn && !matched.infinite && matched.expiresAt && Date.now() >= matched.expiresAt) {
+          setErr("License has expired."); return;
+        }
+
+        // STRICT 1-PERSON-PER-ACCOUNT CONCURRENCY CHECK
+        const curSess = sessions && sessions[matched.username.toLowerCase()];
+        if (curSess && !curSess.kicked && Date.now() - (curSess.lastPing || 0) < 35000 && curSess.sessionId && curSess.sessionId !== TAB_SESSION_ID) {
+          setErr("⚠️ This account is currently in use on another computer/tab! Only 1 person is allowed at a time.");
+          return;
+        }
+
+        const sess = {
+          username: matched.username,
+          email: matched.email || "",
+          role: isOwn ? "owner" : "user",
+          tier: isOwn ? "owner" : (matched.tier || "free"),
+          sessionId: TAB_SESSION_ID,
+          loginAt: Date.now(),
+          lastPing: Date.now(),
+          currentView: "home",
+          kicked: false
+        };
+        await dbUpsertSession(sess);
+        saveCurrentSession(sess);
+        if (isOwn) dispatchSecurityAlertEmail(matched.username, "OWNER");
+        onLoginSuccess(sess);
+      } catch {
+        setErr("Login failed. Please check your connection and try again.");
+      } finally {
         setLoading(false);
-        setErr("⚠️ This account is currently in use on another computer/tab! Only 1 person is allowed at a time.");
-        return;
       }
-
-      const sess = {
-        username: matched.username,
-        email: matched.email || "",
-        role: isOwn ? "owner" : "user",
-        tier: isOwn ? "owner" : (matched.tier || "free"),
-        sessionId: TAB_SESSION_ID,
-        loginAt: Date.now(),
-        lastPing: Date.now(),
-        currentView: "home",
-        kicked: false
-      };
-      await dbUpsertSession(sess);
-      saveCurrentSession(sess);
-      if (isOwn) dispatchSecurityAlertEmail(matched.username, "OWNER");
-      setLoading(false);
-      onLoginSuccess(sess);
     };
 
     return h("div", { className: "auth-overlay" },
@@ -3271,16 +3331,3 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     </script>
   </body>
 </html>
-
-this is my code, why do people keep being able to go into woner account and hack people even if i made 2fa codes and different passwords and when i revoke accoutns they dont actually get deleteed, if just says their deleted but when the person signs into the revoked accounts it comes back. also change the owner and admin accounts to send me an email at kevinhuygialam@gmail.com kevinlamfamily@hotmail.com
-</USER_REQUEST>
-<ADDITIONAL_METADATA>
-The current local time is: 2026-11-12T17:49:56+11:00.
-
-The user has uploaded 1 image(s):
-- C:/Users/kevin/.gemini/antigravity/brain/c19d385a-7242-4bd7-b9ff-77283330111c/.user_uploaded/media_1794466096885_ec4e6ee1.jpg
-You can embed this image in an artifact if you need the USER to review it.
-</ADDITIONAL_METADATA>
-<USER_SETTINGS_CHANGE>
-The user changed setting `Model Selection` from None to Gemini 3.8 Flash (Medium). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
-</USER_SETTINGS_CHANGE>
