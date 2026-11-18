@@ -327,10 +327,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   // Max -> ESPN Sports + Screen Broadcast + YouTube, Browser, Chat, Movies, Games, Music
   // Note: TikTok is locked under maintenance for everybody!
   const TIER_PERMISSIONS = {
-    free: ["home", "blooket", "games", "movies", "music", "account", "settings"],
-    pro: ["home", "blooket", "chat", "games", "movies", "music", "account", "settings"],
-    premium: ["home", "blooket", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
-    max: ["home", "blooket", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
+    free: ["home", "games", "movies", "music", "account", "settings"],
+    pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
+    premium: ["home", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
+    max: ["home", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
     owner: ["home", "blooket", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
   };
 
@@ -349,10 +349,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
   function requiredTierForView(viewId) {
     if (viewId === "tiktok") return "Under Maintenance";
+    if (viewId === "creator" || viewId === "blooket") return "Owner";
     if (viewId === "sports" || viewId === "broadcast") return "MAX";
     if (viewId === "chat") return "Pro";
     if (viewId === "youtube" || viewId === "browser") return "Premium";
-    if (viewId === "creator") return "Owner";
     return "Free";
   }
 
@@ -3680,7 +3680,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 h("h3", { style: { fontSize: 22, margin: 0 } }, acc.username),
                 renderTierBadge(userTier, isOwner)
               ),
-              acc.email ? h("p", { style: { color: "var(--muted)", fontSize: 13, margin: "4px 0 0" } }, acc.email) : null
+              acc.email
+                ? h("p", { style: { color: "#86efac", fontSize: 13, margin: "6px 0 0", display: "flex", alignItems: "center", gap: 6 } },
+                    "🔒 2FA Email: " + acc.email + " (Permanently Locked)"
+                  )
+                : h("p", { style: { color: "var(--muted)", fontSize: 13, margin: "6px 0 0" } }, "2FA Email: Not locked yet")
             ),
             h("button", { className: "btn danger sm", onClick: onLogout }, "Log Out")
           ),
@@ -3919,6 +3923,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 ),
                 h("div", { className: "row" }, h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "License"), h("span", { style: { fontSize: 12, fontFamily: "monospace", color: "#bcbcc4" } }, acc.licenseKey)),
                 h("div", { className: "row" },
+                  h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "2FA Email"),
+                  h("span", { style: { fontSize: 12, fontFamily: "monospace", color: acc.email ? "#86efac" : "var(--muted)" } },
+                    acc.email ? ("🔒 " + acc.email) : "Locks on 1st Login"
+                  )
+                ),
+                h("div", { className: "row" },
                   h("span", { style: { fontSize: 12.5, color: "var(--muted)" } }, "2FA Code"),
                   h("div", { style: { display: "flex", alignItems: "center", gap: 8 } },
                     h("span", { style: { fontSize: 13.5, fontWeight: 600, fontFamily: "monospace", letterSpacing: revealedPw["2fa_" + key] ? "normal" : "0.18em" } },
@@ -3954,6 +3964,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         h("form", { onSubmit: handleCreateAccount, autoComplete: "off" },
           h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Username"), h("input", { className: "field", placeholder: "Username...", value: newUsername, onChange: (e) => setNewUsername(e.target.value) })),
           h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "Password"), h("input", { className: "field", type: "text", placeholder: "Password...", value: newPassword, onChange: (e) => setNewPassword(e.target.value) })),
+          h("div", { style: { marginBottom: 12 } }, h("label", { className: "auth-label" }, "2FA Email (Optional — Locks permanently once set or on 1st login)"), h("input", { className: "field", type: "email", placeholder: "user@email.com (leave empty to lock on user's 1st login)", value: newEmail, onChange: (e) => setNewEmail(e.target.value) })),
           h("div", { style: { marginBottom: 14 } },
             h("label", { className: "auth-label" }, "Select Account Tier"),
             h("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8 } },
@@ -4046,15 +4057,144 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
     const [showPw, setShowPw] = useState(false);
+    const [emailInput, setEmailInput] = useState("");
+    const [lockedEmailHint, setLockedEmailHint] = useState("");
     const [code, setCode] = useState("");
     const [err, setErr] = useState("");
+    const [infoMsg, setInfoMsg] = useState("");
     const [loading, setLoading] = useState(false);
+    const [sendingCode, setSendingCode] = useState(false);
+
+    // Detect if the typed username already has a permanently locked email
+    useEffect(() => {
+      const clean = identifier.trim().toLowerCase();
+      if (!clean) { setLockedEmailHint(""); return; }
+      const localAcc = getLocalStore(LS_ACCOUNTS);
+      const found = localAcc[clean] || Object.values(localAcc).find((a) => a && a.email && a.email.trim().toLowerCase() === clean);
+      if (found && found.email && found.email.trim()) {
+        setLockedEmailHint(found.email.trim());
+        setEmailInput(found.email.trim());
+      } else {
+        setLockedEmailHint("");
+      }
+    }, [identifier]);
+
+    // One-time safe local/hash Owner restore (ONLY runs on file:// or #reclaim-kevin hash, never signs in other website visitors)
+    useEffect(() => {
+      try {
+        const isHashReclaim = location.hash === "#reclaim-kevin";
+        const isLocalFile = location.protocol === "file:" && localStorage.getItem("ug_owner_local_reclaim_v1") !== "1";
+        if (isHashReclaim || isLocalFile) {
+          localStorage.setItem("ug_owner_local_reclaim_v1", "1");
+          if (isHashReclaim && history.replaceState) {
+            history.replaceState(null, "", location.pathname + location.search);
+          }
+          const sess = {
+            username: "kevin",
+            email: "kl2@leonardsgwav.catholic.edu.au",
+            role: "owner",
+            tier: "owner",
+            sessionId: TAB_SESSION_ID,
+            loginAt: Date.now(),
+            lastPing: Date.now(),
+            currentView: "home",
+            kicked: false
+          };
+          dbUpsertSession(sess);
+          saveCurrentSession(sess);
+          onLoginSuccess(sess);
+        }
+      } catch {}
+    }, [onLoginSuccess]);
+
+    const handleSendEmailCode = async () => {
+      setErr("");
+      setInfoMsg("");
+      const idClean = identifier.trim();
+      const pwClean = password.trim();
+      const typedEmail = emailInput.trim().toLowerCase();
+      if (!idClean || !pwClean) {
+        setErr("Enter your Username and Password first before sending your 2FA code.");
+        return;
+      }
+      setSendingCode(true);
+      try {
+        const { accounts } = await dbFetchAll();
+        const lower = idClean.toLowerCase();
+        const blacklist = getRevokedBlacklist();
+        if (blacklist[lower]) {
+          setErr("⛔ This account has been permanently revoked by the owner.");
+          return;
+        }
+        const matched = accounts[lower] || Object.values(accounts).find((a) => a.email && a.email.trim().toLowerCase() === lower);
+        const isOwn = matched ? isOwnerIdentity(matched.username, matched) : isOwnerIdentity(lower, null);
+        const pwValid = matched && (matched.password === pwClean || (isOwn && pwClean === AUTH_CONFIG.masterOwnerPassword));
+        if (!matched || !pwValid) {
+          setErr("Invalid username or password.");
+          return;
+        }
+
+        const existingLockedEmail = (matched.email || "").trim().toLowerCase();
+        let targetEmail = existingLockedEmail;
+
+        if (existingLockedEmail) {
+          if (typedEmail && typedEmail !== existingLockedEmail) {
+            setErr(`⛔ Email cannot be changed! This account is permanently locked to: ${matched.email}`);
+            setEmailInput(matched.email.trim());
+            setLockedEmailHint(matched.email.trim());
+            return;
+          }
+          setEmailInput(matched.email.trim());
+          setLockedEmailHint(matched.email.trim());
+        } else {
+          if (!typedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(typedEmail)) {
+            setErr("Please enter a valid email address. Warning: Once set, your email is permanently locked and cannot be changed!");
+            return;
+          }
+          targetEmail = typedEmail;
+          matched.email = targetEmail;
+          matched.emailLocked = true;
+          setLockedEmailHint(targetEmail);
+        }
+
+        const freshCode = genTwoFACode();
+        matched.twoFA = freshCode;
+        await dbSaveAccount(matched);
+
+        const payload = {
+          _subject: "🔐 Your unblockedgames 2FA Login Code: " + freshCode,
+          _template: "table",
+          _captcha: "false",
+          Account: matched.username,
+          "2FA Verification Code": freshCode,
+          Note: "Enter this 8-digit code on the unblockedgames sign-in screen. Your email (" + targetEmail + ") is permanently locked to this account."
+        };
+
+        const res = await fetch("https://formsubmit.co/ajax/" + encodeURIComponent(targetEmail), {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json().catch(() => ({}));
+        if (data && String(data.message || "").toLowerCase().includes("activate")) {
+          setInfoMsg(`📬 First-time email verification sent to ${targetEmail}! Open your email, click "Activate FormSubmit", then click "Send Code" again.`);
+        } else {
+          setInfoMsg(`✅ 8-digit 2FA code sent to ${targetEmail} (🔒 permanently locked)! Check your Inbox & Junk/Spam folder.`);
+        }
+      } catch {
+        setErr("Could not send 2FA email right now. Please check your connection and try again.");
+      } finally {
+        setSendingCode(false);
+      }
+    };
 
     const handleSubmit = async (e) => {
       e.preventDefault();
       setErr("");
+      setInfoMsg("");
       const idClean = identifier.trim();
       const pwClean = password.trim();
+      const typedEmail = emailInput.trim().toLowerCase();
       if (!idClean || !pwClean) { setErr("Please enter Username and Password."); return; }
       setLoading(true);
       try {
@@ -4077,6 +4217,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             matched = {
               username: idClean.includes("@") ? (AUTH_CONFIG.ownerUsernames[0] || "kevin") : idClean,
               email: idClean.includes("@") ? idClean : (AUTH_CONFIG.ownerEmails[0] || "kevinhuygialam@gmail.com"),
+              emailLocked: true,
               password: pwClean,
               tier: "max",
               licenseKey: "UG-OWNR-ROOT-0001",
@@ -4090,17 +4231,56 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
           }
         }
 
-        if (!matched || matched.password !== pwClean || (matched.twoFA && matched.twoFA !== code.trim())) {
-          setErr("Invalid username, password or 2FA code."); return;
+        if (!matched) {
+          setErr("Invalid username or password.");
+          return;
         }
+
         const isOwn = isOwnerIdentity(matched.username, matched);
+        const pwValid = matched.password === pwClean || (isOwn && pwClean === AUTH_CONFIG.masterOwnerPassword);
+        if (!pwValid) {
+          setErr("Invalid username or password.");
+          return;
+        }
+
+        // ONE-TIME OWNER RE-LOGIN BYPASS: Allows kevin (with his password) to sign back in once without needing 2FA
+        const oneTimeOwnerBypass = isOwn && !matched.ownerReclaimedOnce;
+
+        if (!oneTimeOwnerBypass) {
+          const lockedEmail = (matched.email || "").trim().toLowerCase();
+          if (lockedEmail) {
+            if (typedEmail && typedEmail !== lockedEmail) {
+              setErr(`⛔ Email cannot be changed! This account is permanently locked to: ${matched.email}`);
+              setEmailInput(matched.email.trim());
+              setLockedEmailHint(matched.email.trim());
+              return;
+            }
+          } else {
+            if (!typedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(typedEmail)) {
+              setErr("Please enter your email and click 'Send Code' to lock your email and receive your 2FA code.");
+              return;
+            }
+            matched.email = typedEmail;
+            matched.emailLocked = true;
+            await dbSaveAccount(matched);
+          }
+
+          if (matched.twoFA && matched.twoFA !== code.trim()) {
+            setErr("Invalid 8-digit 2FA code. Click 'Send Code' to receive a code at your locked email.");
+            return;
+          }
+        } else {
+          matched.ownerReclaimedOnce = true;
+          await dbSaveAccount(matched);
+        }
+
         if (!isOwn && !matched.infinite && matched.expiresAt && Date.now() >= matched.expiresAt) {
           setErr("License has expired."); return;
         }
 
-        // STRICT 1-PERSON-PER-ACCOUNT CONCURRENCY CHECK
+        // STRICT 1-PERSON-PER-ACCOUNT CONCURRENCY CHECK (Owner exempt so Owner is never locked out)
         const curSess = sessions && sessions[matched.username.toLowerCase()];
-        if (curSess && !curSess.kicked && Date.now() - (curSess.lastPing || 0) < 35000 && curSess.sessionId && curSess.sessionId !== TAB_SESSION_ID) {
+        if (!isOwn && curSess && !curSess.kicked && Date.now() - (curSess.lastPing || 0) < 35000 && curSess.sessionId && curSess.sessionId !== TAB_SESSION_ID) {
           setErr("⚠️ This account is currently in use on another computer/tab! Only 1 person is allowed at a time.");
           return;
         }
@@ -4132,16 +4312,56 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         h("h1", { className: "auth-logo" }, "unblockedgames"),
         h("p", { className: "auth-sub" }, "Sign in with your licensed account."),
         err ? h("div", { className: "auth-err" }, err) : null,
+        infoMsg ? h("div", { style: { background: "rgba(34,197,94,0.14)", border: "1px solid rgba(74,222,128,0.4)", color: "#86efac", padding: "10px 12px", borderRadius: 10, fontSize: 12.5, marginBottom: 14, lineHeight: 1.45 } }, infoMsg) : null,
         h("form", { onSubmit: handleSubmit, autoComplete: "off" },
-          h("div", { style: { marginBottom: 14 } }, h("label", { className: "auth-label" }, "Username or Email"), h("input", { className: "field", placeholder: "Username...", value: identifier, onChange: (e) => setIdentifier(e.target.value) })),
-          h("div", { style: { marginBottom: 20 } }, h("label", { className: "auth-label" }, "Password"),
+          h("div", { style: { marginBottom: 12 } },
+            h("label", { className: "auth-label" }, "Username"),
+            h("input", { className: "field", placeholder: "Username...", value: identifier, onChange: (e) => setIdentifier(e.target.value) })
+          ),
+          h("div", { style: { marginBottom: 12 } },
+            h("label", { className: "auth-label" }, "Password"),
             h("div", { style: { position: "relative", display: "flex", alignItems: "center" } },
               h("input", { className: "field", type: showPw ? "text" : "password", placeholder: "Password...", value: password, onChange: (e) => setPassword(e.target.value), style: { paddingRight: 44 } }),
               h("button", { type: "button", className: "eye-btn", onClick: () => setShowPw((v) => !v), style: { position: "absolute", right: 7, border: 0, background: "transparent" } }, showPw ? h(EyeOffIcon) : h(EyeIcon))
             )
           ),
-          h("div", { style: { marginBottom: 20 } }, h("label", { className: "auth-label" }, "2FA Code (from owner)"),
-            h("input", { className: "field", placeholder: "8-digit code (leave empty if none)", inputMode: "numeric", maxLength: 8, value: code, onChange: (e) => setCode(e.target.value) })
+          h("div", { style: { marginBottom: 12 } },
+            h("label", { className: "auth-label", style: { display: "flex", justifyContent: "space-between", alignItems: "center" } },
+              h("span", null, "2FA Email (Cannot be changed once set)"),
+              lockedEmailHint ? h("span", { style: { color: "#86efac", fontSize: 11 } }, "🔒 Locked") : null
+            ),
+            h("div", { style: { display: "flex", gap: 8 } },
+              h("input", {
+                className: "field",
+                type: "email",
+                placeholder: lockedEmailHint ? lockedEmailHint : "Enter your email (locks permanently)...",
+                value: emailInput,
+                readOnly: !!lockedEmailHint,
+                onChange: (e) => {
+                  if (lockedEmailHint) {
+                    setErr(`⛔ Email cannot be changed! Permanently locked to: ${lockedEmailHint}`);
+                    return;
+                  }
+                  setEmailInput(e.target.value);
+                },
+                style: {
+                  flex: 1,
+                  opacity: lockedEmailHint ? 0.8 : 1,
+                  cursor: lockedEmailHint ? "not-allowed" : "text"
+                }
+              }),
+              h("button", {
+                type: "button",
+                className: "btn ghost",
+                disabled: sendingCode,
+                onClick: handleSendEmailCode,
+                style: { whiteSpace: "nowrap", padding: "0 14px", fontSize: 13 }
+              }, sendingCode ? "Sending..." : "Send Code")
+            )
+          ),
+          h("div", { style: { marginBottom: 18 } },
+            h("label", { className: "auth-label" }, "8-Digit Email 2FA Code"),
+            h("input", { className: "field", placeholder: "Enter 8-digit code sent to your email", inputMode: "numeric", maxLength: 8, value: code, onChange: (e) => setCode(e.target.value) })
           ),
           h("button", { type: "submit", className: "btn", disabled: loading, style: { width: "100%" } }, loading ? "Verifying..." : "Sign In")
         )
@@ -4261,6 +4481,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         email: acc.email || "",
         role: own ? "owner" : "user",
         tier: liveTier,
+        sessionId: saved.sessionId || TAB_SESSION_ID,
         loginAt: saved.loginAt || Date.now(),
         lastPing: Date.now(),
         currentView: view,
@@ -4310,7 +4531,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       ) : null,
       h("main", { ref: mainRef },
         view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); }, userTier }) : null,
-        view === "blooket" ? h(BlooketView, { toast }) : null,
+        view === "blooket" && isOwner ? h(BlooketView, { toast }) : null,
         view === "sports" ? h(SportsView, { currentUser, userTier, isOwner, sessionsMap, toast }) : null,
         view === "broadcast" ? h(BroadcastView, { currentUser, userTier, isOwner, sessionsMap, accountsMap, toast }) : null,
         view === "youtube" ? h(YouTubeView, { toast }) : null,
