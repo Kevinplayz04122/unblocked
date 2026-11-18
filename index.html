@@ -1043,7 +1043,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         }
     }
 
-    const STORAGE_KEY = '__sl_blooket_answers_v25';
+    const STORAGE_KEY = '__sl_blooket_answers_v28';
     const defaultMemory = {
         "id:zdwmrg51qkgjud4zuro1": ["good"],
         "id:nqrnxoe07ky7yoswgcbe": ["service"],
@@ -1057,16 +1057,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         "id:qdmz0rwidxbkhveag78g": ["good"]
     };
 
+    // Clean v28 memory (does NOT import corrupted num: or stale-hook entries from v25-v27)
     let answerMemory = Object.assign({}, defaultMemory);
     try {
-        for (const k of ['__sl_blooket_answers_v15', '__sl_blooket_answers_v16', '__sl_blooket_answers_v17', '__sl_blooket_answers_v18', '__sl_blooket_answers_v19', '__sl_blooket_answers_v20', '__sl_blooket_answers_v21', '__sl_blooket_answers_v22', '__sl_blooket_answers_v23', '__sl_blooket_answers_v24', STORAGE_KEY]) {
-            const s = JSON.parse(localStorage.getItem(k) || '{}');
-            for (const [mk, mv] of Object.entries(s)) {
+        const s = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        for (const [mk, mv] of Object.entries(s)) {
+            if (!mk.startsWith('num:')) {
                 answerMemory[mk] = mv;
-                if (mk.startsWith('img:')) {
-                    const id = extractImgId(mk.slice(4));
-                    if (id) answerMemory['id:' + id] = mv;
-                }
             }
         }
         localStorage.setItem(STORAGE_KEY, JSON.stringify(answerMemory));
@@ -1077,10 +1074,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         const qText = (q.text || q.question || '').trim();
         const imgId = extractImgId(q.image || q.img);
 
+        if (qText && imgId) answerMemory['full:' + qText + '|' + imgId] = correctAnswers;
         if (imgId) answerMemory['id:' + imgId] = correctAnswers;
         if (typeof q.image === 'string' && q.image) answerMemory['img:' + q.image] = correctAnswers;
-        if (q.number !== undefined && qText) answerMemory['num:' + q.number + ':' + qText] = correctAnswers;
-        if (qText && !imgId) answerMemory['txt:' + qText] = correctAnswers;
+        // Save text key unless it is the known image-only duplicate prompt
+        if (qText && qText.toLowerCase() !== 'is this a good or a service?') {
+            answerMemory['txt:' + qText] = correctAnswers;
+        } else if (qText && !imgId) {
+            answerMemory['txt:' + qText] = correctAnswers;
+        }
 
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(answerMemory));
@@ -1093,15 +1095,17 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         const qText = (q.text || q.question || '').trim();
         const imgId = extractImgId(q.image || q.img);
 
+        if (qText && imgId && answerMemory['full:' + qText + '|' + imgId]) return answerMemory['full:' + qText + '|' + imgId];
         if (imgId && answerMemory['id:' + imgId]) return answerMemory['id:' + imgId];
         if (typeof q.image === 'string' && answerMemory['img:' + q.image]) return answerMemory['img:' + q.image];
-        if (q.number !== undefined && qText && answerMemory['num:' + q.number + ':' + qText]) return answerMemory['num:' + q.number + ':' + qText];
-        if (qText && !imgId && answerMemory['txt:' + qText]) return answerMemory['txt:' + qText];
+        if (qText && answerMemory['txt:' + qText]) return answerMemory['txt:' + qText];
         return null;
     }
 
+    let bridgeWindow = null;
     let syncedSetTitle = '';
     let activeQuestionRef = null;
+    let lastColyseusPrize = null;
 
     function harvestQuestionArray(arr, titleHint) {
         if (!Array.isArray(arr) || arr.length === 0) return 0;
@@ -1110,7 +1114,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             const q = arr[i];
             if (q && typeof q === 'object' && Array.isArray(q.correctAnswers) && q.correctAnswers.length > 0) {
                 saveAnswerToMemory({
-                    number: q.number !== undefined ? q.number : (i + 1),
                     text: q.question || q.text || '',
                     image: q.image || q.img || ''
                 }, q.correctAnswers);
@@ -1182,7 +1185,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     });
 
     const header = document.createElement('div');
-    header.innerText = 'BLOOKET v27 (CRYPTO + GOLD)';
+    header.innerText = 'BLOOKET PANEL v28';
     Object.assign(header.style, {
         fontWeight: 'bold',
         fontSize: '14px',
@@ -1253,20 +1256,29 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     createToggle('Instant Skip / Continue', 'autoContinue');
     createToggle('Auto Hack / Anti-Hack', 'autoHack');
 
-    const bridgeBtn = document.createElement('div');
-    bridgeBtn.innerText = '⚡ Auto-Detect Game Set: ON';
+    const BRIDGE_ONELINER = "(()=>{let b=document.getElementById('sl-b');if(!b){b=document.createElement('div');b.id='sl-b';Object.assign(b.style,{position:'fixed',top:0,left:0,right:0,background:'#0a0a10',color:'#00ff88',borderBottom:'2px solid #00ff88',padding:'10px',fontFamily:'monospace',fontSize:'13px',fontWeight:'bold',zIndex:2147483647});document.body.appendChild(b);}const send=(qs,t)=>{if(!Array.isArray(qs))return;const v=qs.filter(q=>q&&Array.isArray(q.correctAnswers)&&q.correctAnswers.length);if(!v.length||!window.opener)return;window.opener.postMessage({type:'SL_QUIZ_DATA',questions:v,title:t||document.title},'*');b.style.background='#004422';b.innerText='✅ SYNCED '+v.length+' ANSWERS TO GAME TAB!';};setInterval(()=>{const seen=new Set();const walk=(o,d=0)=>{if(!o||typeof o!=='object'||d>5||seen.has(o)||o instanceof Node||'$$typeof' in o)return;seen.add(o);if(Array.isArray(o)&&o.length&&o[0]?.correctAnswers){send(o,'Quiz Set');return;}if(Array.isArray(o.questions)&&o.questions[0]?.correctAnswers){send(o.questions,o.title);return;}if(!Array.isArray(o)){for(const k of Object.keys(o)){if(k==='children'||k.startsWith('__react')||k==='return')continue;try{walk(o[k],d+1);}catch(e){}}}};document.querySelectorAll('body *').forEach(el=>{const k=Object.keys(el).find(x=>x.startsWith('__reactFiber$'));let f=k?el[k]:null,g=0;while(f&&g++<30){if(f.memoizedProps)walk(f.memoizedProps,0);let h=f.memoizedState,hg=0;while(h&&hg++<30){walk(h.queue?.lastRenderedState??h.memoizedState,0);h=h.next;}f=f.return;}});},350);b.innerText='⚡ BRIDGE ACTIVE: Search & click any Quiz Set below to sync 100% of answers!';})();";
+
+    const bridgeBtn = document.createElement('button');
+    bridgeBtn.innerText = '⚡ Open Bridge & Copy Code';
     Object.assign(bridgeBtn.style, {
         width: '100%',
         marginTop: '4px',
-        padding: '6px 8px',
-        backgroundColor: '#0f291e',
-        color: '#00ff88',
-        border: '1px solid #00ff88',
+        padding: '7px 8px',
+        backgroundColor: '#1a2639',
+        color: '#66ccff',
+        border: '1px solid #66ccff',
         borderRadius: '5px',
         fontFamily: 'Consolas, monospace',
-        fontSize: '11px',
+        fontSize: '11.5px',
         fontWeight: 'bold',
-        textAlign: 'center'
+        cursor: 'pointer'
+    });
+    bridgeBtn.addEventListener('click', () => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(BRIDGE_ONELINER);
+        }
+        bridgeWindow = window.open('https://dashboard.blooket.com/discover', 'sl_bridge', 'width=520,height=480');
+        bridgeBtn.innerText = '✅ Paste in Popup & Click Set!';
     });
     gui.appendChild(bridgeBtn);
 
@@ -1536,8 +1548,31 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                         } catch (e) {}
                     });
                 }
+                // Hook all prize / chest events in Gold Quest & Crypto Hack
+                for (const evName of Object.keys(events)) {
+                    if (/prize|chest|choice|reward|output/i.test(evName) && Array.isArray(events[evName])) {
+                        events[evName].push((payload) => {
+                            try {
+                                if (payload && typeof payload === 'object') {
+                                    lastColyseusPrize = payload.prize || payload.choice || payload.chest || payload;
+                                }
+                            } catch (e) {}
+                        });
+                    }
+                }
             }
         } catch (e) {}
+    }
+
+    let wasShowingFeedbackLastTick = false;
+
+    function isPrizeLikeObj(o) {
+        if (!o || typeof o !== 'object' || Array.isArray(o) || o instanceof Node || '$$typeof' in o) return false;
+        if ('answers' in o || 'qType' in o || 'question' in o || 'roomId' in o) return false;
+        if ('blook' in o && ('text' in o || 'type' in o || 'rate' in o || 'val' in o)) return true;
+        if (typeof o.type === 'string' && ['gold', 'multiply', 'mult', 'divide', 'nothing', 'take', 'steal', 'swap', 'cred', 'hack', 'double', 'triple', 'lose', 'prize'].includes(o.type.toLowerCase())) return true;
+        if (typeof o.text === 'string' && /gold|credit|crypto|triple|double|nothing|lose|swap|take|hack/i.test(o.text) && Object.keys(o).length <= 6) return true;
+        return false;
     }
 
     function scanGame() {
@@ -1584,7 +1619,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                                         rawAnswer: mp.answer
                                     });
                                 }
-                                if (mp.isShowingFeedback) isShowingFeedback = true;
+                                if (mp.isShowingFeedback === true) isShowingFeedback = true;
                                 if (mp.answerSent) answerSentVal = mp.answerSent;
                             }
 
@@ -1615,12 +1650,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                             if (typeof mp.onDone === 'function' && !onDoneFn) {
                                 onDoneFn = mp.onDone;
                             }
-                            if ('incorrectTimer' in mp || ('isCorrect' in mp && !('bgColor' in mp))) {
+                            // Only set isShowingFeedback from the dedicated feedback overlay component ('incorrectTimer' in mp)
+                            if ('incorrectTimer' in mp) {
                                 isShowingFeedback = true;
                             }
 
-                            if (mp.prize && typeof mp.prize === 'object' && ('text' in mp.prize || 'type' in mp.prize)) {
-                                outputPrize = mp.prize;
+                            for (const pk of ['prize', 'chest', 'choice', 'reward', 'output']) {
+                                if (mp[pk] && isPrizeLikeObj(mp[pk])) {
+                                    outputPrize = mp[pk];
+                                }
                             }
                             if (typeof mp.onPrizeClaimed === 'function' && !onPrizeClaimedFn) {
                                 onPrizeClaimedFn = mp.onPrizeClaimed;
@@ -1648,7 +1686,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                                     controllerPhase = val;
                                 } else if (Array.isArray(val) && val.length > 0 && val[0] && Array.isArray(val[0].correctAnswers)) {
                                     harvestQuestionArray(val, 'Auto-Detected Set');
-                                } else if (Array.isArray(val) && val.length === 3 && val[0] && typeof val[0] === 'object' && ('type' in val[0] || 'text' in val[0] || 'val' in val[0]) && !('answers' in val[0]) && !('question' in val[0])) {
+                                } else if (Array.isArray(val) && val.length === 3 && val[0] && isPrizeLikeObj(val[0])) {
                                     if (!choiceArray) choiceArray = val;
                                 } else if (val && typeof val === 'object') {
                                     if (Array.isArray(val.questions)) {
@@ -1657,11 +1695,12 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                                     if (Array.isArray(val.choices) && val.choices.length === 3 && val.choices[0] && !('answers' in val.choices[0])) {
                                         if (!choiceArray) choiceArray = val.choices;
                                     }
+                                    // IMPORTANT: Do NOT set isShowingFeedback = true here! In Colyseus (Gold Quest & Crypto Hack),
+                                    // this hook stays populated from the previous question while the next question is active!
                                     if (Array.isArray(val.correctAnswers) && val.correctAnswers.length > 0 && ('isCorrect' in val || 'incorrectTime' in val)) {
                                         answerResultObj = val;
-                                        isShowingFeedback = true;
                                     }
-                                    if (!controllerPrize && 'type' in val && 'text' in val && ('rate' in val || 'blook' in val || 'val' in val)) {
+                                    if (!controllerPrize && isPrizeLikeObj(val)) {
                                         controllerPrize = val;
                                     }
                                     if (typeof val.correctPassword === 'string') {
@@ -1693,6 +1732,9 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                                 if (Array.isArray(sn.state.choices) && sn.state.choices.length === 3) {
                                     choiceArray = sn.state.choices;
                                 }
+                                if (sn.state.prize && isPrizeLikeObj(sn.state.prize)) {
+                                    outputPrize = sn.state.prize;
+                                }
                                 if (typeof sn.state.correctPassword === 'string') {
                                     classicCorrectPassword = sn.state.correctPassword;
                                 }
@@ -1714,7 +1756,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 const txt = (el.innerText || '').trim().toLowerCase();
                 return answerTexts.has(txt);
             });
-            // Keep outermost button container for each answer
             domCandidates.sort((a, b) => (b.offsetWidth * b.offsetHeight) - (a.offsetWidth * a.offsetHeight));
             for (const el of domCandidates) {
                 const key = (el.innerText || '').trim().toLowerCase();
@@ -1733,14 +1774,16 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         }
 
         if (question) activeQuestionRef = question;
-        if (answerResultObj && activeQuestionRef) {
+        // ONLY save answerResultObj on the rising edge when feedback actually starts for the current question!
+        if (isShowingFeedback && !wasShowingFeedbackLastTick && answerResultObj && activeQuestionRef) {
             saveAnswerToMemory(activeQuestionRef, answerResultObj.correctAnswers);
         }
+        wasShowingFeedbackLastTick = isShowingFeedback;
 
         return {
             question,
             answerButtonMap,
-            prize: outputPrize || controllerPrize,
+            prize: outputPrize || controllerPrize || lastColyseusPrize,
             choiceArray,
             onAnswerFn,
             sendAnswerFn,
@@ -1773,6 +1816,13 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         if (typeof c === 'string' || typeof c === 'number') return String(c);
         if (c.text && c.blook) return c.text + ' (' + c.blook + ')';
         if (c.text) return String(c.text);
+        const t = String(c.type || '').toLowerCase();
+        if (t === 'multiply' || t === 'mult') return (Number(c.val) >= 3 ? 'Triple Gold/Crypto (x3)' : 'Double Gold/Crypto (x2)');
+        if (t === 'divide') return 'Lose ' + (Number(c.val) === 2 ? '50%' : '25%') + '!';
+        if (t === 'take' || t === 'steal') return 'Take ' + (Number(c.val) <= 1 ? Math.round(Number(c.val) * 100) + '%' : c.val) + '!';
+        if (t === 'swap') return 'SWAP!';
+        if (t === 'nothing') return 'Nothing!';
+        if (t === 'gold' || t === 'crypto' || t === 'cred') return '+' + (c.val ?? '') + ' ' + t.toUpperCase();
         if (c.type && c.val !== undefined) return c.type + ': ' + c.val;
         return JSON.stringify(c);
     }
@@ -1795,14 +1845,6 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
     // Detects BOTH Crypto Hack [ ? ] Boxes AND Gold Rush / Gold Quest 3 Treasure Chests
     function findChoiceBoxes(choiceArray, prize, controllerPhase, pageText) {
-        // 1. Crypto Hack [ ? ] boxes
-        const qBoxes = Array.from(document.querySelectorAll('div')).filter(el => {
-            if (gui.contains(el)) return false;
-            const r = el.getBoundingClientRect();
-            const txt = (el.innerText || '').trim();
-            return (txt === '?' || txt.startsWith('?')) && r.width >= 50 && r.width <= 340 && r.height >= 50 && r.height <= 340;
-        });
-
         const dedup = (arr) => {
             const out = [];
             arr.sort((a, b) => (b.offsetWidth * b.offsetHeight) - (a.offsetWidth * a.offsetHeight));
@@ -1814,54 +1856,51 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             return out.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
         };
 
+        // 1. Crypto Hack [ ? ] boxes
+        const qBoxes = Array.from(document.querySelectorAll('div')).filter(el => {
+            if (gui.contains(el)) return false;
+            const r = el.getBoundingClientRect();
+            const txt = (el.innerText || '').trim();
+            return (txt === '?' || txt.startsWith('?')) && r.width >= 50 && r.width <= 340 && r.height >= 50 && r.height <= 340;
+        });
         const cryptoOut = dedup(qBoxes);
         if (cryptoOut.length >= 3) return cryptoOut;
 
-        // 2. Gold Rush / Gold Quest 3 Treasure Chests
+        // 2. Gold Rush / Gold Quest 3 Treasure Chests (Never allow a row wrapper with >1 img or >33% screen width!)
+        const maxSingleWidth = window.innerWidth * 0.33;
         const chestClassEls = Array.from(document.querySelectorAll('[class*="chest" i], [class*="choiceContainer" i], [class*="choiceBox" i]')).filter(el => {
             if (gui.contains(el)) return false;
+            if (el.querySelectorAll('img').length > 1) return false;
             const r = el.getBoundingClientRect();
-            return r.width >= 55 && r.width <= 380 && r.height >= 55 && r.height <= 380 && r.top > 60;
+            return r.width >= 45 && r.width <= maxSingleWidth && r.height >= 45 && r.height <= 380 && r.top > 60;
         });
         const chestByClass = dedup(chestClassEls);
         if (chestByClass.length === 3) return chestByClass;
 
-        // 3. Geometric 3-Chest Row Detector (3 same-sized clickable/image containers on the same horizontal row)
-        const onChestScreen = Boolean(
-            (choiceArray && choiceArray.length === 3) ||
-            prize ||
-            ['prize', 'choice', 'chest', 'choose'].includes((controllerPhase || '').toLowerCase()) ||
-            /choose a chest|choose one|choose an output/i.test(pageText)
-        );
-        if (onChestScreen) {
-            const candidates = Array.from(document.querySelectorAll('div[role="button"], button, div, img')).filter(el => {
-                if (gui.contains(el)) return false;
-                const r = el.getBoundingClientRect();
-                if (r.width < 60 || r.width > 360 || r.height < 60 || r.height > 360 || r.top < 75) return false;
-                const style = getComputedStyle(el);
-                if (style.visibility === 'hidden' || parseFloat(style.opacity) < 0.2) return false;
-                const hasImg = el.tagName === 'IMG' || Boolean(el.querySelector('img'));
-                const f = getDirectFiber(el);
-                const hasClick = Boolean(f && f.memoizedProps && typeof f.memoizedProps.onClick === 'function') || style.cursor === 'pointer';
-                return hasImg && (hasClick || el.parentElement);
-            }).map(el => {
-                if (el.tagName === 'IMG' && el.parentElement && !gui.contains(el.parentElement)) {
-                    const pr = el.parentElement.getBoundingClientRect();
-                    if (pr.width <= 380 && pr.height <= 380) return el.parentElement;
-                }
-                return el;
-            });
+        // 3. Direct 3-Image Horizontal Row Detector for Gold Quest Chests
+        const allImgs = Array.from(document.querySelectorAll('img, svg')).filter(el => {
+            if (gui.contains(el)) return false;
+            const r = el.getBoundingClientRect();
+            if (r.width < 45 || r.width > maxSingleWidth || r.height < 45 || r.height > 360 || r.top < 70) return false;
+            const style = getComputedStyle(el);
+            return style.visibility !== 'hidden' && parseFloat(style.opacity) > 0.2;
+        });
 
-            const uniqueCands = dedup(candidates);
-            for (let i = 0; i < uniqueCands.length; i++) {
-                const r1 = uniqueCands[i].getBoundingClientRect();
-                const rowGroup = uniqueCands.filter(c => {
-                    const rc = c.getBoundingClientRect();
-                    return Math.abs(rc.top - r1.top) < 28 && Math.abs(rc.width - r1.width) < 18 && Math.abs(rc.height - r1.height) < 18;
-                });
-                if (rowGroup.length === 3) {
-                    return rowGroup.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
-                }
+        for (let i = 0; i < allImgs.length; i++) {
+            const r1 = allImgs[i].getBoundingClientRect();
+            const sameRowImgs = allImgs.filter(img => {
+                const rc = img.getBoundingClientRect();
+                return Math.abs(rc.top - r1.top) < 25 && Math.abs(rc.width - r1.width) < 16 && Math.abs(rc.height - r1.height) < 16;
+            });
+            if (sameRowImgs.length === 3) {
+                return sameRowImgs.map(img => {
+                    let box = img;
+                    if (img.parentElement && !gui.contains(img.parentElement) && img.parentElement.querySelectorAll('img, svg').length === 1) {
+                        const pr = img.parentElement.getBoundingClientRect();
+                        if (pr.width <= maxSingleWidth && pr.height <= 380) box = img.parentElement;
+                    }
+                    return box;
+                }).sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
             }
         }
 
@@ -2023,8 +2062,62 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             }
         }
 
+        // Deep Fiber inspection on the 3 Chests themselves if choiceArray/prize wasn't on the root controller
+        let resolvedChoices = choiceArray;
+        let resolvedPrize = prize;
+        if (outerBoxes.length > 0 && !resolvedChoices && !resolvedPrize) {
+            const perBoxPrizes = [];
+            for (const box of outerBoxes) {
+                let f = getDirectFiber(box);
+                let steps = 0;
+                let boxPrize = null;
+                while (f && steps++ < 14) {
+                    const mp = f.memoizedProps;
+                    if (mp && typeof mp === 'object') {
+                        if (Array.isArray(mp.choices) && mp.choices.length === 3) resolvedChoices = mp.choices;
+                        for (const k of Object.keys(mp)) {
+                            if (k === 'children' || k === 'style' || k === 'className') continue;
+                            const v = mp[k];
+                            if (Array.isArray(v) && v.length === 3 && isPrizeLikeObj(v[0])) resolvedChoices = v;
+                            else if (!boxPrize && isPrizeLikeObj(v)) boxPrize = v;
+                        }
+                    }
+                    let hk = f.memoizedState;
+                    let hg = 0;
+                    while (hk && hg++ < 30) {
+                        const raw = hk.queue?.lastRenderedState ?? hk.memoizedState;
+                        const val = (raw && typeof raw === 'object' && 'current' in raw && Object.keys(raw).length === 1) ? raw.current : raw;
+                        if (Array.isArray(val) && val.length === 3 && isPrizeLikeObj(val[0])) resolvedChoices = val;
+                        else if (!boxPrize && isPrizeLikeObj(val)) boxPrize = val;
+                        hk = hk.next;
+                    }
+                    f = f.return;
+                }
+                if (boxPrize) perBoxPrizes.push(boxPrize);
+            }
+            if (!resolvedChoices && perBoxPrizes.length === 3) {
+                const allSame = JSON.stringify(perBoxPrizes[0]) === JSON.stringify(perBoxPrizes[1]) && JSON.stringify(perBoxPrizes[1]) === JSON.stringify(perBoxPrizes[2]);
+                if (allSame) resolvedPrize = perBoxPrizes[0];
+                else resolvedChoices = perBoxPrizes;
+            } else if (!resolvedPrize && perBoxPrizes.length > 0) {
+                resolvedPrize = perBoxPrizes[0];
+            }
+        }
+
+        if (resolvedChoices && resolvedChoices.length === 3) {
+            let bestScore = -Infinity;
+            resolvedChoices.forEach((c, idx) => {
+                const sc = scoreChoice(c);
+                if (sc > bestScore) {
+                    bestScore = sc;
+                    bestChestIdx = idx;
+                }
+            });
+        }
+
         if (state.autoContinue && now - lastSkipTime > 120) {
-            if (onQuestionScreen && (isShowingFeedback || answerSentVal !== '' || pageText.includes('INCORRECT') || pageText.includes('CORRECT'))) {
+            // Works even when Gold Quest unmounts the 4 answer buttons during the full-screen CORRECT/INCORRECT feedback!
+            if (isShowingFeedback || answerSentVal !== '' || /\b(INCORRECT|CORRECT)\b/.test(pageText)) {
                 lastSkipTime = now;
                 if (typeof sendAnswerNextFn === 'function') {
                     try { sendAnswerNextFn(); } catch (e) {}
@@ -2049,13 +2142,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
             // Auto-click the BEST Chest in Gold Rush or the Output Box in Crypto Hack!
             if (state.autoAnswer && outerBoxes.length === 3) {
-                if (choiceArray && choiceArray.length === 3 && outerBoxes[bestChestIdx]) {
-                    lastSkipTime = now;
-                    triggerRealClick(outerBoxes[bestChestIdx]);
-                } else if (!choiceArray && prize) {
-                    lastSkipTime = now;
-                    triggerRealClick(outerBoxes[0]);
-                }
+                lastSkipTime = now;
+                const targetBox = (resolvedChoices && resolvedChoices.length === 3 && outerBoxes[bestChestIdx])
+                    ? outerBoxes[bestChestIdx]
+                    : outerBoxes[0];
+                if (targetBox) triggerRealClick(targetBox);
             }
         }
 
@@ -2136,7 +2227,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                         statusLines.push('⚡ Auto-Probing & Learning Q#' + (question.number ?? '?') + ' (0ms Skip)...');
                     }
                 } else {
-                    statusLines.push('🧠 Q#' + (question.number ?? '?') + ' (Auto-Learning...)');
+                    statusLines.push('🧠 Q#' + (question.number ?? '?') + ' (Click once or use Bridge)');
                 }
             }
         } else if (!onOutputBoxScreen) {
@@ -2152,14 +2243,14 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         }
 
         if (state.revealChoices && outerBoxes.length > 0) {
-            if (choiceArray && choiceArray.length === 3) {
-                const labels = choiceArray.map((c, i) => {
+            if (resolvedChoices && resolvedChoices.length === 3) {
+                const labels = resolvedChoices.map((c, i) => {
                     const tag = i === bestChestIdx ? ' ⭐ BEST' : (scoreChoice(c) < 0 ? ' ❌ BAD' : '');
                     return '[Chest ' + (i + 1) + '] ' + formatPrize(c) + tag;
                 });
                 statusLines.push('🏆 Gold/Crypto Chests:\\n' + labels.join('\\n'));
                 outerBoxes.slice(0, 3).forEach((box, idx) => {
-                    const c = choiceArray[idx];
+                    const c = resolvedChoices[idx];
                     const isBest = idx === bestChestIdx;
                     const isBad = scoreChoice(c) < 0;
                     attachBadge(box, formatPrize(c) + (isBest ? ' ⭐' : ''));
@@ -2178,8 +2269,8 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                         }
                     }
                 });
-            } else if (prize) {
-                const prizeText = formatPrize(prize);
+            } else if (resolvedPrize) {
+                const prizeText = formatPrize(resolvedPrize);
                 statusLines.push('🎁 Output / Chest:\\n' + prizeText);
                 outerBoxes.forEach(box => {
                     attachBadge(box, prizeText);
