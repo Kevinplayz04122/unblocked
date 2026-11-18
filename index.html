@@ -1100,23 +1100,65 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         return null;
     }
 
-    let bridgeWindow = null;
     let syncedSetTitle = '';
     let activeQuestionRef = null;
+
+    function harvestQuestionArray(arr, titleHint) {
+        if (!Array.isArray(arr) || arr.length === 0) return 0;
+        let added = 0;
+        for (let i = 0; i < arr.length; i++) {
+            const q = arr[i];
+            if (q && typeof q === 'object' && Array.isArray(q.correctAnswers) && q.correctAnswers.length > 0) {
+                saveAnswerToMemory({
+                    number: q.number !== undefined ? q.number : (i + 1),
+                    text: q.question || q.text || '',
+                    image: q.image || q.img || ''
+                }, q.correctAnswers);
+                added++;
+            }
+        }
+        if (added > 0) {
+            syncedSetTitle = (titleHint || 'Game Set') + ' (' + added + ' Qs)';
+        }
+        return added;
+    }
+
+    // Passive JSON.parse & Response.prototype.json hook to auto-capture any question set loaded by Blooket
+    if (!window.__slJsonHooked) {
+        window.__slJsonHooked = true;
+        try {
+            const origParse = JSON.parse;
+            JSON.parse = function(...args) {
+                const res = origParse.apply(this, args);
+                try {
+                    if (res && typeof res === 'object') {
+                        if (Array.isArray(res.questions)) harvestQuestionArray(res.questions, res.title);
+                        else if (Array.isArray(res) && res[0] && Array.isArray(res[0].correctAnswers)) harvestQuestionArray(res, 'Auto-Detected Set');
+                    }
+                } catch (e) {}
+                return res;
+            };
+        } catch (e) {}
+        try {
+            const origJson = Response.prototype.json;
+            Response.prototype.json = function(...args) {
+                return origJson.apply(this, args).then((data) => {
+                    try {
+                        if (data && typeof data === 'object') {
+                            if (Array.isArray(data.questions)) harvestQuestionArray(data.questions, data.title);
+                            else if (Array.isArray(data) && data[0] && Array.isArray(data[0].correctAnswers)) harvestQuestionArray(data, 'Auto-Detected Set');
+                        }
+                    } catch (e) {}
+                    return data;
+                });
+            };
+        } catch (e) {}
+    }
 
     window.addEventListener('message', (e) => {
         if (!e.data) return;
         if (e.data.type === 'SL_QUIZ_DATA' && Array.isArray(e.data.questions)) {
-            syncedSetTitle = (e.data.title || 'Set') + ' (' + e.data.questions.length + ' Qs)';
-            e.data.questions.forEach((q, idx) => {
-                if (Array.isArray(q.correctAnswers) && q.correctAnswers.length > 0) {
-                    saveAnswerToMemory({
-                        number: q.number !== undefined ? q.number : (idx + 1),
-                        text: q.question || q.text || '',
-                        image: q.image || q.img || ''
-                    }, q.correctAnswers);
-                }
-            });
+            harvestQuestionArray(e.data.questions, e.data.title || 'Set');
         }
     });
 
@@ -1140,7 +1182,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     });
 
     const header = document.createElement('div');
-    header.innerText = 'BLOOKET PANEL v25';
+    header.innerText = 'BLOOKET v27 (CRYPTO + GOLD)';
     Object.assign(header.style, {
         fontWeight: 'bold',
         fontSize: '14px',
@@ -1211,29 +1253,20 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     createToggle('Instant Skip / Continue', 'autoContinue');
     createToggle('Auto Hack / Anti-Hack', 'autoHack');
 
-    const BRIDGE_ONELINER = "(()=>{let b=document.getElementById('sl-b');if(!b){b=document.createElement('div');b.id='sl-b';Object.assign(b.style,{position:'fixed',top:0,left:0,right:0,background:'#0a0a10',color:'#00ff88',borderBottom:'2px solid #00ff88',padding:'10px',fontFamily:'monospace',fontSize:'13px',fontWeight:'bold',zIndex:2147483647});document.body.appendChild(b);}const send=(qs,t)=>{if(!Array.isArray(qs))return;const v=qs.filter(q=>q&&Array.isArray(q.correctAnswers)&&q.correctAnswers.length);if(!v.length||!window.opener)return;window.opener.postMessage({type:'SL_QUIZ_DATA',questions:v,title:t||document.title},'*');b.style.background='#004422';b.innerText='✅ SYNCED '+v.length+' ANSWERS TO GAME TAB!';};setInterval(()=>{const seen=new Set();const walk=(o,d=0)=>{if(!o||typeof o!=='object'||d>5||seen.has(o)||o instanceof Node||'$$typeof' in o)return;seen.add(o);if(Array.isArray(o)&&o.length&&o[0]?.correctAnswers){send(o,'Quiz Set');return;}if(Array.isArray(o.questions)&&o.questions[0]?.correctAnswers){send(o.questions,o.title);return;}if(!Array.isArray(o)){for(const k of Object.keys(o)){if(k==='children'||k.startsWith('__react')||k==='return')continue;try{walk(o[k],d+1);}catch(e){}}}};document.querySelectorAll('body *').forEach(el=>{const k=Object.keys(el).find(x=>x.startsWith('__reactFiber$'));let f=k?el[k]:null,g=0;while(f&&g++<30){if(f.memoizedProps)walk(f.memoizedProps,0);let h=f.memoizedState,hg=0;while(h&&hg++<30){walk(h.queue?.lastRenderedState??h.memoizedState,0);h=h.next;}f=f.return;}});},350);b.innerText='⚡ BRIDGE ACTIVE: Search & click any Quiz Set below to sync 100% of answers!';})();";
-
-    const bridgeBtn = document.createElement('button');
-    bridgeBtn.innerText = '⚡ Open Bridge & Copy Code';
+    const bridgeBtn = document.createElement('div');
+    bridgeBtn.innerText = '⚡ Auto-Detect Game Set: ON';
     Object.assign(bridgeBtn.style, {
         width: '100%',
         marginTop: '4px',
-        padding: '7px 8px',
-        backgroundColor: '#1a2639',
-        color: '#66ccff',
-        border: '1px solid #66ccff',
+        padding: '6px 8px',
+        backgroundColor: '#0f291e',
+        color: '#00ff88',
+        border: '1px solid #00ff88',
         borderRadius: '5px',
         fontFamily: 'Consolas, monospace',
-        fontSize: '11.5px',
+        fontSize: '11px',
         fontWeight: 'bold',
-        cursor: 'pointer'
-    });
-    bridgeBtn.addEventListener('click', () => {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(BRIDGE_ONELINER);
-        }
-        bridgeWindow = window.open('https://dashboard.blooket.com/discover', 'sl_bridge', 'width=520,height=480');
-        bridgeBtn.innerText = '✅ Paste in Popup & Click Set!';
+        textAlign: 'center'
     });
     gui.appendChild(bridgeBtn);
 
@@ -1541,7 +1574,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                     if (node.tag !== 5) {
                         const mp = node.memoizedProps;
                         if (mp && typeof mp === 'object') {
-                            if (typeof mp.answer === 'string' && typeof mp.onClick === 'function' && ('bgColor' in mp || 'isCorrect' in mp)) {
+                            if (typeof mp.answer === 'string' && typeof mp.onClick === 'function') {
                                 const key = mp.answer.trim().toLowerCase();
                                 const domBtn = getFirstHostDomNode(node);
                                 if (domBtn && !answerButtonMap.has(key)) {
@@ -1557,6 +1590,14 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
                             if (mp.question && typeof mp.question === 'object' && Array.isArray(mp.question.answers)) {
                                 if (!question) question = mp.question;
+                                if (Array.isArray(mp.question.correctAnswers) && mp.question.correctAnswers.length > 0) {
+                                    saveAnswerToMemory(mp.question, mp.question.correctAnswers);
+                                }
+                            }
+                            if (Array.isArray(mp.questions)) harvestQuestionArray(mp.questions, mp.title);
+                            if (mp.client && Array.isArray(mp.client.questions)) harvestQuestionArray(mp.client.questions, mp.client.title);
+                            if (Array.isArray(mp.choices) && mp.choices.length === 3 && mp.choices[0] && !('answers' in mp.choices[0])) {
+                                choiceArray = mp.choices;
                             }
                             if (typeof mp.onAnswer === 'function' && !onAnswerFn) {
                                 onAnswerFn = mp.onAnswer;
@@ -1603,14 +1644,24 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                             const raw = hk.queue?.lastRenderedState ?? hk.memoizedState;
                             if (raw !== null && raw !== undefined) {
                                 const val = (typeof raw === 'object' && 'current' in raw && Object.keys(raw).length === 1) ? raw.current : raw;
-                                if (typeof val === 'string' && !controllerPhase && ['question', 'prize', 'hack', 'password', 'choose', 'defense', 'hacked'].includes(val.toLowerCase())) {
+                                if (typeof val === 'string' && !controllerPhase && ['question', 'prize', 'hack', 'password', 'choose', 'defense', 'hacked', 'chest', 'choice', 'steal', 'swap'].includes(val.toLowerCase())) {
                                     controllerPhase = val;
+                                } else if (Array.isArray(val) && val.length > 0 && val[0] && Array.isArray(val[0].correctAnswers)) {
+                                    harvestQuestionArray(val, 'Auto-Detected Set');
+                                } else if (Array.isArray(val) && val.length === 3 && val[0] && typeof val[0] === 'object' && ('type' in val[0] || 'text' in val[0] || 'val' in val[0]) && !('answers' in val[0]) && !('question' in val[0])) {
+                                    if (!choiceArray) choiceArray = val;
                                 } else if (val && typeof val === 'object') {
+                                    if (Array.isArray(val.questions)) {
+                                        harvestQuestionArray(val.questions, val.title);
+                                    }
+                                    if (Array.isArray(val.choices) && val.choices.length === 3 && val.choices[0] && !('answers' in val.choices[0])) {
+                                        if (!choiceArray) choiceArray = val.choices;
+                                    }
                                     if (Array.isArray(val.correctAnswers) && val.correctAnswers.length > 0 && ('isCorrect' in val || 'incorrectTime' in val)) {
                                         answerResultObj = val;
                                         isShowingFeedback = true;
                                     }
-                                    if (!controllerPrize && 'type' in val && 'text' in val && ('rate' in val || 'blook' in val)) {
+                                    if (!controllerPrize && 'type' in val && 'text' in val && ('rate' in val || 'blook' in val || 'val' in val)) {
                                         controllerPrize = val;
                                     }
                                     if (typeof val.correctPassword === 'string') {
@@ -1625,18 +1676,59 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                         }
 
                         const sn = node.stateNode;
-                        if (sn && sn.state && typeof sn.state === 'object') {
-                            if (sn.state.question) question = sn.state.question;
-                            if (Array.isArray(sn.state.choices) && sn.state.choices.length === 3) {
-                                choiceArray = sn.state.choices;
+                        if (sn && typeof sn === 'object') {
+                            if (sn.props && typeof sn.props === 'object') {
+                                if (Array.isArray(sn.props.questions)) harvestQuestionArray(sn.props.questions, sn.props.title);
+                                if (sn.props.client && Array.isArray(sn.props.client.questions)) harvestQuestionArray(sn.props.client.questions, sn.props.client.title);
                             }
-                            if (typeof sn.state.correctPassword === 'string') {
-                                classicCorrectPassword = sn.state.correctPassword;
+                            if (sn.state && typeof sn.state === 'object') {
+                                if (Array.isArray(sn.state.questions)) harvestQuestionArray(sn.state.questions, sn.state.title);
+                                if (sn.state.stage && !controllerPhase) controllerPhase = String(sn.state.stage);
+                                if (sn.state.question) {
+                                    question = sn.state.question;
+                                    if (Array.isArray(sn.state.question.correctAnswers) && sn.state.question.correctAnswers.length > 0) {
+                                        saveAnswerToMemory(sn.state.question, sn.state.question.correctAnswers);
+                                    }
+                                }
+                                if (Array.isArray(sn.state.choices) && sn.state.choices.length === 3) {
+                                    choiceArray = sn.state.choices;
+                                }
+                                if (typeof sn.state.correctPassword === 'string') {
+                                    classicCorrectPassword = sn.state.correctPassword;
+                                }
                             }
                         }
                     }
                 }
                 f = f.return;
+            }
+        }
+
+        // Gold Quest / Classic fallback: if question is active but answer buttons didn't use Wae props, match DOM answer buttons by text
+        if (question && Array.isArray(question.answers) && answerButtonMap.size === 0) {
+            const answerTexts = new Map(question.answers.map(a => [String(a).trim().toLowerCase(), a]));
+            const domCandidates = Array.from(document.querySelectorAll('[id^="answer"], [class*="answerContainer" i], [class*="answerButton" i], div[role="button"], button, div')).filter(el => {
+                if (gui.contains(el)) return false;
+                const r = el.getBoundingClientRect();
+                if (r.width < 90 || r.height < 35 || r.top < window.innerHeight * 0.28) return false;
+                const txt = (el.innerText || '').trim().toLowerCase();
+                return answerTexts.has(txt);
+            });
+            // Keep outermost button container for each answer
+            domCandidates.sort((a, b) => (b.offsetWidth * b.offsetHeight) - (a.offsetWidth * a.offsetHeight));
+            for (const el of domCandidates) {
+                const key = (el.innerText || '').trim().toLowerCase();
+                if (answerTexts.has(key) && !answerButtonMap.has(key)) {
+                    const f = getDirectFiber(el);
+                    const clickFn = (f && f.memoizedProps && typeof f.memoizedProps.onClick === 'function')
+                        ? f.memoizedProps.onClick
+                        : () => triggerRealClick(el);
+                    answerButtonMap.set(key, {
+                        dom: el,
+                        onClick: clickFn,
+                        rawAnswer: answerTexts.get(key)
+                    });
+                }
             }
         }
 
@@ -1683,6 +1775,97 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         if (c.text) return String(c.text);
         if (c.type && c.val !== undefined) return c.type + ': ' + c.val;
         return JSON.stringify(c);
+    }
+
+    // Smart scorer for Gold Rush / Gold Quest Chests & Crypto Hack Boxes
+    function scoreChoice(c) {
+        if (!c) return -500;
+        const txt = String(c.text || c.type || c || '').toLowerCase();
+        const type = String(c.type || '').toLowerCase();
+        const val = Number(c.val) || 0;
+        if (type === 'divide' || txt.includes('lose') || txt.includes('-')) return -1000;
+        if (type === 'nothing' || txt.includes('nothing')) return 0;
+        if (txt.includes('triple') || ((type === 'multiply' || type === 'mult') && val >= 3)) return 1000;
+        if (type === 'swap' || txt.includes('swap')) return 850;
+        if (type === 'take' || type === 'steal' || type === 'hack' || txt.includes('take') || txt.includes('hack')) return 750 + val;
+        if (txt.includes('double') || ((type === 'multiply' || type === 'mult') && val === 2)) return 600;
+        if (type === 'gold' || type === 'crypto' || type === 'cred' || txt.includes('+')) return 100 + (val || 50);
+        return 50 + val;
+    }
+
+    // Detects BOTH Crypto Hack [ ? ] Boxes AND Gold Rush / Gold Quest 3 Treasure Chests
+    function findChoiceBoxes(choiceArray, prize, controllerPhase, pageText) {
+        // 1. Crypto Hack [ ? ] boxes
+        const qBoxes = Array.from(document.querySelectorAll('div')).filter(el => {
+            if (gui.contains(el)) return false;
+            const r = el.getBoundingClientRect();
+            const txt = (el.innerText || '').trim();
+            return (txt === '?' || txt.startsWith('?')) && r.width >= 50 && r.width <= 340 && r.height >= 50 && r.height <= 340;
+        });
+
+        const dedup = (arr) => {
+            const out = [];
+            arr.sort((a, b) => (b.offsetWidth * b.offsetHeight) - (a.offsetWidth * a.offsetHeight));
+            for (const box of arr) {
+                if (!out.some(existing => existing.contains(box) || box.contains(existing))) {
+                    out.push(box);
+                }
+            }
+            return out.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+        };
+
+        const cryptoOut = dedup(qBoxes);
+        if (cryptoOut.length >= 3) return cryptoOut;
+
+        // 2. Gold Rush / Gold Quest 3 Treasure Chests
+        const chestClassEls = Array.from(document.querySelectorAll('[class*="chest" i], [class*="choiceContainer" i], [class*="choiceBox" i]')).filter(el => {
+            if (gui.contains(el)) return false;
+            const r = el.getBoundingClientRect();
+            return r.width >= 55 && r.width <= 380 && r.height >= 55 && r.height <= 380 && r.top > 60;
+        });
+        const chestByClass = dedup(chestClassEls);
+        if (chestByClass.length === 3) return chestByClass;
+
+        // 3. Geometric 3-Chest Row Detector (3 same-sized clickable/image containers on the same horizontal row)
+        const onChestScreen = Boolean(
+            (choiceArray && choiceArray.length === 3) ||
+            prize ||
+            ['prize', 'choice', 'chest', 'choose'].includes((controllerPhase || '').toLowerCase()) ||
+            /choose a chest|choose one|choose an output/i.test(pageText)
+        );
+        if (onChestScreen) {
+            const candidates = Array.from(document.querySelectorAll('div[role="button"], button, div, img')).filter(el => {
+                if (gui.contains(el)) return false;
+                const r = el.getBoundingClientRect();
+                if (r.width < 60 || r.width > 360 || r.height < 60 || r.height > 360 || r.top < 75) return false;
+                const style = getComputedStyle(el);
+                if (style.visibility === 'hidden' || parseFloat(style.opacity) < 0.2) return false;
+                const hasImg = el.tagName === 'IMG' || Boolean(el.querySelector('img'));
+                const f = getDirectFiber(el);
+                const hasClick = Boolean(f && f.memoizedProps && typeof f.memoizedProps.onClick === 'function') || style.cursor === 'pointer';
+                return hasImg && (hasClick || el.parentElement);
+            }).map(el => {
+                if (el.tagName === 'IMG' && el.parentElement && !gui.contains(el.parentElement)) {
+                    const pr = el.parentElement.getBoundingClientRect();
+                    if (pr.width <= 380 && pr.height <= 380) return el.parentElement;
+                }
+                return el;
+            });
+
+            const uniqueCands = dedup(candidates);
+            for (let i = 0; i < uniqueCands.length; i++) {
+                const r1 = uniqueCands[i].getBoundingClientRect();
+                const rowGroup = uniqueCands.filter(c => {
+                    const rc = c.getBoundingClientRect();
+                    return Math.abs(rc.top - r1.top) < 28 && Math.abs(rc.width - r1.width) < 18 && Math.abs(rc.height - r1.height) < 18;
+                });
+                if (rowGroup.length === 3) {
+                    return rowGroup.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+                }
+            }
+        }
+
+        return cryptoOut;
     }
 
     function attachBadge(box, labelText) {
@@ -1758,26 +1941,26 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             bridgeBtn.style.color = '#00ff88';
         }
 
-        const questionMarkBoxes = Array.from(document.querySelectorAll('div')).filter(el => {
-            if (gui.contains(el)) return false;
-            const r = el.getBoundingClientRect();
-            const txt = (el.innerText || '').trim();
-            return (txt === '?' || txt.startsWith('?')) && r.width >= 50 && r.width <= 320 && r.height >= 50 && r.height <= 320;
-        });
-
-        const outerBoxes = [];
-        questionMarkBoxes.sort((a, b) => (b.offsetWidth * b.offsetHeight) - (a.offsetWidth * a.offsetHeight));
-        for (const box of questionMarkBoxes) {
-            if (!outerBoxes.some(existing => existing.contains(box) || box.contains(existing))) {
-                outerBoxes.push(box);
-            }
-        }
-        outerBoxes.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+        const pageText = document.body.innerText || '';
+        const outerBoxes = findChoiceBoxes(choiceArray, prize, controllerPhase, pageText);
 
         const onQuestionScreen = Boolean(question && answerButtonMap.size > 0);
         const onOutputBoxScreen = Boolean(outerBoxes.length > 0);
-        const pageText = document.body.innerText || '';
 
+        // Compute best chest index when 3 chests/choices are available (Gold Rush & Crypto Hack)
+        let bestChestIdx = 0;
+        if (choiceArray && choiceArray.length === 3) {
+            let bestScore = -Infinity;
+            choiceArray.forEach((c, idx) => {
+                const sc = scoreChoice(c);
+                if (sc > bestScore) {
+                    bestScore = sc;
+                    bestChestIdx = idx;
+                }
+            });
+        }
+
+        // AUTO HACK (Crypto Hack) + AUTO STEAL / SWAP RICHEST PLAYER (Gold Rush / Gold Quest)
         if (state.autoHack && !onQuestionScreen && !onOutputBoxScreen && !pageText.includes('Click Anywhere to Go Next')) {
             if (now - lastHackClickTime > 95) {
                 const optionButtons = Array.from(document.querySelectorAll('button, [role="button"], div')).filter(el => {
@@ -1791,7 +1974,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
                     const f = getDirectFiber(el);
                     const hasClick = Boolean(f && f.memoizedProps && typeof f.memoizedProps.onClick === 'function');
-                    return (hasClick || el.tagName === 'BUTTON' || style.cursor === 'pointer') && el.children.length <= 5;
+                    return (hasClick || el.tagName === 'BUTTON' || style.cursor === 'pointer') && el.children.length <= 6;
                 });
 
                 const cleanButtons = [];
@@ -1810,6 +1993,21 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                     if (knownPwd) {
                         chosenBtn = cleanButtons.find(b => (b.innerText || '').trim() === knownPwd);
                     }
+                    // Gold Rush / Gold Quest: if selecting a player to Take / Swap Gold from, pick the player with the highest Gold number!
+                    if (!chosenBtn && /take|swap|choose a player|steal/i.test(pageText)) {
+                        let maxGold = -1;
+                        for (const b of cleanButtons) {
+                            const txt = (b.innerText || '').replace(/,/g, '');
+                            const numMatches = txt.match(/\d+/g);
+                            if (numMatches) {
+                                const val = Math.max(...numMatches.map(Number));
+                                if (val > maxGold) {
+                                    maxGold = val;
+                                    chosenBtn = b;
+                                }
+                            }
+                        }
+                    }
                     if (!chosenBtn) {
                         const unclicked = cleanButtons.filter(b => !clickedHackButtons.has(b));
                         chosenBtn = unclicked.length > 0 ? unclicked[0] : cleanButtons[0];
@@ -1819,7 +2017,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                         clickedHackButtons.add(chosenBtn);
                         lastGuessedPasswordText = (chosenBtn.innerText || '').trim();
                         triggerRealClick(chosenBtn);
-                        statusLines.push('💻 Auto-Hack Clicking:\\n"' + lastGuessedPasswordText.slice(0, 30) + '"');
+                        statusLines.push('💻 Auto-Target Clicking:\\n"' + lastGuessedPasswordText.replace(/\s+/g, ' ').slice(0, 32) + '"');
                     }
                 }
             }
@@ -1834,9 +2032,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 if (typeof onDoneFn === 'function') {
                     try { onDoneFn(); } catch (e) {}
                 }
+                const midEl = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
+                if (midEl && !gui.contains(midEl)) triggerRealClick(midEl);
             }
 
-            if (pageText.includes('Click Anywhere to Go Next')) {
+            if (pageText.includes('Click Anywhere to Go Next') || /click anywhere/i.test(pageText)) {
                 lastSkipTime = now;
                 if (typeof onPrizeClaimedFn === 'function') {
                     try { onPrizeClaimedFn(); } catch (e) {}
@@ -1847,9 +2047,15 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                 }
             }
 
-            if (state.autoAnswer && outerBoxes.length === 3 && !choiceArray && prize) {
-                lastSkipTime = now;
-                triggerRealClick(outerBoxes[0]);
+            // Auto-click the BEST Chest in Gold Rush or the Output Box in Crypto Hack!
+            if (state.autoAnswer && outerBoxes.length === 3) {
+                if (choiceArray && choiceArray.length === 3 && outerBoxes[bestChestIdx]) {
+                    lastSkipTime = now;
+                    triggerRealClick(outerBoxes[bestChestIdx]);
+                } else if (!choiceArray && prize) {
+                    lastSkipTime = now;
+                    triggerRealClick(outerBoxes[0]);
+                }
             }
         }
 
@@ -1857,7 +2063,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
             const knownCorrect = lookupAnswerFromMemory(question);
             if (knownCorrect && knownCorrect.length > 0) {
                 const lowerCorrect = knownCorrect.map(x => String(x).trim().toLowerCase());
-                statusLines.push('✔ Correct (Q#' + question.number + '): ' + knownCorrect.join(' | '));
+                statusLines.push('✔ Correct (Q#' + (question.number ?? '?') + '): ' + knownCorrect.join(' | '));
 
                 answerButtonMap.forEach((btnObj, ansText) => {
                     const btnEl = btnObj.dom;
@@ -1878,9 +2084,10 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                         }
                     }
 
+                    const qIdKey = question.number ?? (question.text || question.question || '');
                     if (state.autoAnswer && isRight && !isShowingFeedback && answerSentVal === '' &&
-                        (lastAnsweredQuestionNumber !== question.number || now - lastAnsweredTime > 450)) {
-                        lastAnsweredQuestionNumber = question.number;
+                        (lastAnsweredQuestionNumber !== qIdKey || now - lastAnsweredTime > 450)) {
+                        lastAnsweredQuestionNumber = qIdKey;
                         lastAnsweredTime = now;
 
                         if (typeof onAnswerFn === 'function') {
@@ -1905,9 +2112,34 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
                     }
                 });
                 modifiedEls.clear();
-                statusLines.push('🧠 Q#' + question.number + ' (New)\\nClick once to learn!');
+
+                // ZERO-POPUP AUTO-DETECT PROBE: When Auto Answer is ON and a Colyseus question is new,
+                // automatically probe the first option in 0ms, capture the server's answerResult.correctAnswers,
+                // save to memory, and skip the feedback delay in 0ms via sendAnswerNextFn()!
+                const qIdKey = question.number ?? (question.text || question.question || '');
+                if (state.autoAnswer && !isShowingFeedback && answerSentVal === '' &&
+                    (lastAnsweredQuestionNumber !== qIdKey || now - lastAnsweredTime > 450)) {
+                    const firstEntry = answerButtonMap.values().next().value;
+                    if (firstEntry) {
+                        lastAnsweredQuestionNumber = qIdKey;
+                        lastAnsweredTime = now;
+                        if (typeof onAnswerFn === 'function') {
+                            try { onAnswerFn(firstEntry.rawAnswer); } catch (e) {}
+                        }
+                        if (typeof sendAnswerFn === 'function') {
+                            try { sendAnswerFn(firstEntry.rawAnswer); } catch (e) {}
+                        }
+                        try {
+                            firstEntry.onClick({ preventDefault() {}, stopPropagation() {} });
+                        } catch (e) {}
+                        triggerRealClick(firstEntry.dom);
+                        statusLines.push('⚡ Auto-Probing & Learning Q#' + (question.number ?? '?') + ' (0ms Skip)...');
+                    }
+                } else {
+                    statusLines.push('🧠 Q#' + (question.number ?? '?') + ' (Auto-Learning...)');
+                }
             }
-        } else {
+        } else if (!onOutputBoxScreen) {
             modifiedEls.forEach(el => {
                 if (el && el.style) {
                     el.style.outline = '';
@@ -1921,14 +2153,34 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
 
         if (state.revealChoices && outerBoxes.length > 0) {
             if (choiceArray && choiceArray.length === 3) {
-                const labels = choiceArray.map((c, i) => '[Box ' + (i + 1) + '] ' + formatPrize(c));
-                statusLines.push('🃏 Cards:\\n' + labels.join('\\n'));
+                const labels = choiceArray.map((c, i) => {
+                    const tag = i === bestChestIdx ? ' ⭐ BEST' : (scoreChoice(c) < 0 ? ' ❌ BAD' : '');
+                    return '[Chest ' + (i + 1) + '] ' + formatPrize(c) + tag;
+                });
+                statusLines.push('🏆 Gold/Crypto Chests:\\n' + labels.join('\\n'));
                 outerBoxes.slice(0, 3).forEach((box, idx) => {
-                    attachBadge(box, formatPrize(choiceArray[idx]));
+                    const c = choiceArray[idx];
+                    const isBest = idx === bestChestIdx;
+                    const isBad = scoreChoice(c) < 0;
+                    attachBadge(box, formatPrize(c) + (isBest ? ' ⭐' : ''));
+                    if (state.highlightAnswers) {
+                        modifiedEls.add(box);
+                        if (isBest) {
+                            box.style.outline = '5px solid #00ff88';
+                            box.style.boxShadow = '0 0 30px #00ff88';
+                            box.style.opacity = '1';
+                        } else if (isBad) {
+                            box.style.outline = '2px solid #ff2244';
+                            box.style.opacity = '0.35';
+                        } else {
+                            box.style.outline = '';
+                            box.style.opacity = '0.85';
+                        }
+                    }
                 });
             } else if (prize) {
                 const prizeText = formatPrize(prize);
-                statusLines.push('🎁 Output Card:\\n' + prizeText);
+                statusLines.push('🎁 Output / Chest:\\n' + prizeText);
                 outerBoxes.forEach(box => {
                     attachBadge(box, prizeText);
                 });
@@ -1940,7 +2192,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         const totalSaved = Object.keys(answerMemory).filter(k => k.startsWith('id:') || k.startsWith('txt:')).length;
         readout.innerText = statusLines.length > 0
             ? statusLines.join('\\n\\n')
-            : 'Phase: ' + (controllerPhase || 'active') + ' | Saved Qs: ' + totalSaved;
+            : 'Phase: ' + (controllerPhase || 'active') + ' | Auto-Learned Qs: ' + totalSaved;
     }
 
     window.__slInterval = setInterval(update, 50);
@@ -1972,19 +2224,19 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 18 } },
           h("div", null,
             h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
-              h("h2", { style: { margin: 0, color: "#00ff88" } }, "⚡ Blooket GUI Cheat Hub (v25)"),
-              h("span", { className: "badge-pill live" }, "COLYSEUS + REACT FIBER")
+              h("h2", { style: { margin: 0, color: "#00ff88" } }, "⚡ Blooket GUI Cheat Hub (v27 Crypto Hack + Gold Rush)"),
+              h("span", { className: "badge-pill owner" }, "OWNER ONLY • CRYPTO + GOLD RUSH")
             ),
             h("p", { className: "sub", style: { margin: "6px 0 0" } },
-              "Highlight Correct Answer • Choice / Card Show • Auto Answer • Instant 0ms Skip • Auto Hack & Anti-Hack Minigame Solver"
+              "Works in BOTH Crypto Hack & Gold Quest / Gold Rush • 3-Chest X-Ray + Best-Chest Auto-Picker • Richest-Player Auto-Steal • 100% Auto-Detect"
             )
           ),
           h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
             h("button", {
               className: "btn",
               style: { background: "#00ff88", color: "#000" },
-              onClick: () => copyText(BLOOKET_V25_SCRIPT, "✅ Copied Blooket v25 GUI Script!")
-            }, "📋 Copy Full v25 GUI Script"),
+              onClick: () => copyText(BLOOKET_V25_SCRIPT, "✅ Copied Blooket v26 Auto-Detect GUI Script!")
+            }, "📋 Copy Full v26 Auto-Detect Script"),
             h("button", {
               className: "btn ghost",
               onClick: () => copyText(bookmarkletCode, "✅ Copied Bookmarklet URL!")
@@ -1993,35 +2245,35 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
               className: "btn ghost",
               style: { borderColor: "#66ccff", color: "#66ccff" },
               onClick: () => {
-                copyText(BLOOKET_BRIDGE_SCRIPT, "✅ Bridge Code Copied!");
+                copyText(BLOOKET_V25_SCRIPT, "✅ Copied v26 Script & Opening Blooket!");
                 window.open("https://play.blooket.com", "_blank");
               }
-            }, "🚀 Launch Blooket")
+            }, "🚀 Copy & Launch Blooket")
           )
         ),
 
         h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: 16, marginBottom: 22 } },
           h("div", { className: "pop-panel", style: { borderColor: "rgba(0,255,136,0.35)" } },
-            h("h3", { style: { color: "#00ff88", marginBottom: 8 } }, "1. Main Game Tab (v25 GUI)"),
+            h("h3", { style: { color: "#00ff88", marginBottom: 8 } }, "⚡ Single-Paste Auto-Detect (No Popup Required)"),
             h("p", { style: { color: "var(--muted)", fontSize: 13, lineHeight: 1.5, marginBottom: 14 } },
-              "Join your Blooket match, press F12 (Console), paste the v25 GUI Script, and press Enter. Includes draggable toggles for Highlight Correct, Choice/Card Show, Auto Answer, Instant Skip, and Anti-Hack."
+              "Just paste the v26 script once into your Blooket game tab (or click the Bookmarklet). It automatically extracts the full question bank from React Fiber / JSON payloads AND auto-probes + 0ms-skips any unseen Colyseus question hands-free!"
             ),
             h("button", {
               className: "btn sm",
               style: { background: "#00ff88", color: "#000", width: "100%" },
-              onClick: () => copyText(BLOOKET_V25_SCRIPT, "✅ Copied v25 GUI Script!")
-            }, "📋 Copy Main GUI Script")
+              onClick: () => copyText(BLOOKET_V25_SCRIPT, "✅ Copied v26 Auto-Detect GUI Script!")
+            }, "📋 Copy v26 Auto-Detect Script")
           ),
           h("div", { className: "pop-panel", style: { borderColor: "rgba(102,204,255,0.35)" } },
-            h("h3", { style: { color: "#66ccff", marginBottom: 8 } }, "2. 200+ Question Set Bridge"),
+            h("h3", { style: { color: "#66ccff", marginBottom: 8 } }, "Optional: Manual Discover Bridge"),
             h("p", { style: { color: "var(--muted)", fontSize: 13, lineHeight: 1.5, marginBottom: 14 } },
-              "Click '⚡ Open Bridge & Copy Code' inside the floating Blooket GUI, press F12 in the Discover popup, paste the Bridge code, and click any Quiz Set card to sync 100% of answers!"
+              "Only needed if you want to pre-sync a set from dashboard.blooket.com/discover before the match starts. Otherwise v26 handles everything automatically inside your game tab."
             ),
             h("button", {
               className: "btn ghost sm",
               style: { borderColor: "#66ccff", color: "#66ccff", width: "100%" },
-              onClick: () => copyText(BLOOKET_BRIDGE_SCRIPT, "✅ Copied Bridge One-Liner!")
-            }, "📋 Copy Bridge Popup Script")
+              onClick: () => copyText(BLOOKET_BRIDGE_SCRIPT, "✅ Copied Optional Bridge One-Liner!")
+            }, "📋 Copy Optional Bridge Script")
           )
         ),
 
