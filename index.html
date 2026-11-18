@@ -327,11 +327,11 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   // Max -> ESPN Sports + Screen Broadcast + YouTube, Browser, Chat, Movies, Games, Music
   // Note: TikTok is locked under maintenance for everybody!
   const TIER_PERMISSIONS = {
-    free: ["home", "games", "movies", "music", "account", "settings"],
-    pro: ["home", "chat", "games", "movies", "music", "account", "settings"],
-    premium: ["home", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
-    max: ["home", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
-    owner: ["home", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
+    free: ["home", "blooket", "games", "movies", "music", "account", "settings"],
+    pro: ["home", "blooket", "chat", "games", "movies", "music", "account", "settings"],
+    premium: ["home", "blooket", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
+    max: ["home", "blooket", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings"],
+    owner: ["home", "blooket", "sports", "broadcast", "youtube", "browser", "chat", "games", "movies", "music", "account", "settings", "creator"]
   };
 
   function getUserTier(acc, isOwner) {
@@ -845,6 +845,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
   const ChevronIcon = (p) => h(Svg, p, h("path", { d: "m9 18 6-6-6-6" }));
   const SearchIcon = (p) => h(Svg, p, h("circle", { cx: "11", cy: "11", r: "8" }), h("path", { d: "m21 21-4.3-4.3" }));
   const RefreshIcon = (p) => h(Svg, { ...p, sw: 2.2 }, h("path", { d: "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5" }));
+  const BlooketIcon = (p) => h(Svg, p, h("path", { d: "M13 2L3 14h9l-1 8 10-12h-9l1-8z" }));
 
   function Modal({ children, onClose }) {
     return h("div", { id: "modalBg", onClick: (e) => e.target === e.currentTarget && onClose() }, h("div", { className: "modal" }, children));
@@ -915,6 +916,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
     return h("nav", { id: "sidebar", className: open ? "open" : "" },
       h("div", { className: "side-group", style: { paddingTop: 2 } },
         btn("home", "Home", h(HomeIcon)),
+        btn("blooket", "Blooket Cheat", h(BlooketIcon), "Blooket GUI Cheat Hub"),
         btn("sports", "ESPN Sports", h(SportsIcon)),
         btn("broadcast", "Screen Broadcast", h(BroadcastIcon), "screen broadcast to selected person"),
         btn("youtube", "YouTube", h(YouTubeIcon)),
@@ -996,6 +998,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         )
       ),
       h("div", { className: "quick" },
+        quickBtn("blooket", "Blooket Cheat", h(BlooketIcon), { borderColor: "rgba(0,255,136,0.6)", color: "#00ff88" }, "Blooket GUI Cheat Hub"),
         quickBtn("sports", "ESPN", h(SportsIcon), { borderColor: "rgba(239,68,68,0.6)", color: "#ef4444" }),
         quickBtn("broadcast", "Broadcast", h(BroadcastIcon), { borderColor: "rgba(249,115,22,0.6)", color: "#f97316" }, "screen broadcast to selected person"),
         quickBtn("youtube", "YouTube", h(YouTubeIcon), { borderColor: "rgba(239,68,68,0.45)", color: "#ff4444" }),
@@ -1007,6 +1010,1047 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
         quickBtn("chat", "Chat", h(ChatIcon))
       ),
       h("div", { className: "ad" }, "100% FREE \u2022 100% UNDETECTED", h("span", { style: { width: 13, height: 13, display: "inline-flex" } }, h(RefreshIcon)))
+    );
+  }
+
+  // ============================================================================
+  // BLOOKET GUI CHEAT HUB VIEW (Sidebar Tab + One-Click Script Copier & Bridge)
+  // ============================================================================
+  const BLOOKET_V25_SCRIPT = `(function() {
+    const oldGui = document.getElementById('sl-blooket-gui');
+    if (oldGui) oldGui.remove();
+    document.querySelectorAll('.sl-choice-badge').forEach(e => e.remove());
+    if (window.__slInterval) clearInterval(window.__slInterval);
+
+    const state = {
+        highlightAnswers: true,
+        revealChoices: true,
+        autoAnswer: true,
+        autoContinue: true,
+        autoHack: true
+    };
+
+    function extractImgId(imgField) {
+        if (!imgField) return '';
+        const rawUrl = typeof imgField === 'string' ? imgField : (imgField.url || imgField.src || '');
+        if (!rawUrl || typeof rawUrl !== 'string') return '';
+        try {
+            const clean = decodeURIComponent(rawUrl).split('?')[0];
+            const filename = clean.split('/').pop() || '';
+            return filename.split('.')[0] || filename;
+        } catch (e) {
+            return rawUrl;
+        }
+    }
+
+    const STORAGE_KEY = '__sl_blooket_answers_v25';
+    const defaultMemory = {
+        "id:zdwmrg51qkgjud4zuro1": ["good"],
+        "id:nqrnxoe07ky7yoswgcbe": ["service"],
+        "id:fttkgmy71lcgvm3wcce8": ["service"],
+        "id:x0uimg1xtzgridukt2pf": ["good"],
+        "id:vxcc2ibhhtipuchsxigt": ["good"],
+        "id:rfzqzv4dhv2fssufsgz8": ["service"],
+        "id:yng8u7vj8bvnahygbrbe": ["service"],
+        "id:j9yg4yuqzgipgt59ro1o": ["good"],
+        "id:nbeh3vva4goqtetvapru": ["good"],
+        "id:qdmz0rwidxbkhveag78g": ["good"]
+    };
+
+    let answerMemory = Object.assign({}, defaultMemory);
+    try {
+        for (const k of ['__sl_blooket_answers_v15', '__sl_blooket_answers_v16', '__sl_blooket_answers_v17', '__sl_blooket_answers_v18', '__sl_blooket_answers_v19', '__sl_blooket_answers_v20', '__sl_blooket_answers_v21', '__sl_blooket_answers_v22', '__sl_blooket_answers_v23', '__sl_blooket_answers_v24', STORAGE_KEY]) {
+            const s = JSON.parse(localStorage.getItem(k) || '{}');
+            for (const [mk, mv] of Object.entries(s)) {
+                answerMemory[mk] = mv;
+                if (mk.startsWith('img:')) {
+                    const id = extractImgId(mk.slice(4));
+                    if (id) answerMemory['id:' + id] = mv;
+                }
+            }
+        }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(answerMemory));
+    } catch (e) {}
+
+    function saveAnswerToMemory(q, correctAnswers) {
+        if (!q || !Array.isArray(correctAnswers) || correctAnswers.length === 0) return;
+        const qText = (q.text || q.question || '').trim();
+        const imgId = extractImgId(q.image || q.img);
+
+        if (imgId) answerMemory['id:' + imgId] = correctAnswers;
+        if (typeof q.image === 'string' && q.image) answerMemory['img:' + q.image] = correctAnswers;
+        if (q.number !== undefined && qText) answerMemory['num:' + q.number + ':' + qText] = correctAnswers;
+        if (qText && !imgId) answerMemory['txt:' + qText] = correctAnswers;
+
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(answerMemory));
+        } catch (e) {}
+    }
+
+    function lookupAnswerFromMemory(q) {
+        if (!q) return null;
+        if (Array.isArray(q.correctAnswers) && q.correctAnswers.length > 0) return q.correctAnswers;
+        const qText = (q.text || q.question || '').trim();
+        const imgId = extractImgId(q.image || q.img);
+
+        if (imgId && answerMemory['id:' + imgId]) return answerMemory['id:' + imgId];
+        if (typeof q.image === 'string' && answerMemory['img:' + q.image]) return answerMemory['img:' + q.image];
+        if (q.number !== undefined && qText && answerMemory['num:' + q.number + ':' + qText]) return answerMemory['num:' + q.number + ':' + qText];
+        if (qText && !imgId && answerMemory['txt:' + qText]) return answerMemory['txt:' + qText];
+        return null;
+    }
+
+    let bridgeWindow = null;
+    let syncedSetTitle = '';
+    let activeQuestionRef = null;
+
+    window.addEventListener('message', (e) => {
+        if (!e.data) return;
+        if (e.data.type === 'SL_QUIZ_DATA' && Array.isArray(e.data.questions)) {
+            syncedSetTitle = (e.data.title || 'Set') + ' (' + e.data.questions.length + ' Qs)';
+            e.data.questions.forEach((q, idx) => {
+                if (Array.isArray(q.correctAnswers) && q.correctAnswers.length > 0) {
+                    saveAnswerToMemory({
+                        number: q.number !== undefined ? q.number : (idx + 1),
+                        text: q.question || q.text || '',
+                        image: q.image || q.img || ''
+                    }, q.correctAnswers);
+                }
+            });
+        }
+    });
+
+    const gui = document.createElement('div');
+    gui.id = 'sl-blooket-gui';
+    Object.assign(gui.style, {
+        position: 'fixed',
+        top: '20px',
+        right: '20px',
+        width: '295px',
+        backgroundColor: '#0d0d12',
+        border: '1px solid #00ff88',
+        borderRadius: '8px',
+        padding: '12px',
+        color: '#e2e2e8',
+        fontFamily: 'Consolas, monospace, sans-serif',
+        fontSize: '12px',
+        zIndex: '2147483647',
+        boxShadow: '0 8px 28px rgba(0,0,0,0.9)',
+        userSelect: 'none'
+    });
+
+    const header = document.createElement('div');
+    header.innerText = 'BLOOKET PANEL v25';
+    Object.assign(header.style, {
+        fontWeight: 'bold',
+        fontSize: '14px',
+        marginBottom: '10px',
+        paddingBottom: '6px',
+        borderBottom: '1px solid #282832',
+        cursor: 'move',
+        color: '#00ff88',
+        letterSpacing: '1px'
+    });
+    gui.appendChild(header);
+
+    function createToggle(label, key) {
+        const row = document.createElement('div');
+        Object.assign(row.style, {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '6px',
+            cursor: 'pointer',
+            padding: '3px 0'
+        });
+
+        const text = document.createElement('span');
+        text.innerText = label;
+
+        const indicator = document.createElement('div');
+        Object.assign(indicator.style, {
+            width: '34px',
+            height: '18px',
+            backgroundColor: state[key] ? '#005533' : '#2c2c38',
+            borderRadius: '9px',
+            position: 'relative',
+            transition: 'background-color 0.15s'
+        });
+
+        const knob = document.createElement('div');
+        Object.assign(knob.style, {
+            width: '14px',
+            height: '14px',
+            backgroundColor: state[key] ? '#00ff88' : '#888',
+            borderRadius: '50%',
+            position: 'absolute',
+            top: '2px',
+            left: '2px',
+            transform: state[key] ? 'translateX(16px)' : 'translateX(0px)',
+            transition: 'transform 0.15s, background-color 0.15s'
+        });
+
+        indicator.appendChild(knob);
+        row.appendChild(text);
+        row.appendChild(indicator);
+
+        row.addEventListener('click', () => {
+            state[key] = !state[key];
+            indicator.style.backgroundColor = state[key] ? '#005533' : '#2c2c38';
+            knob.style.backgroundColor = state[key] ? '#00ff88' : '#888';
+            knob.style.transform = state[key] ? 'translateX(16px)' : 'translateX(0px)';
+            if (!state[key]) resetVisuals();
+        });
+
+        gui.appendChild(row);
+    }
+
+    createToggle('Highlight Correct', 'highlightAnswers');
+    createToggle('Choice / Card Show', 'revealChoices');
+    createToggle('Auto Answer', 'autoAnswer');
+    createToggle('Instant Skip / Continue', 'autoContinue');
+    createToggle('Auto Hack / Anti-Hack', 'autoHack');
+
+    const BRIDGE_ONELINER = "(()=>{let b=document.getElementById('sl-b');if(!b){b=document.createElement('div');b.id='sl-b';Object.assign(b.style,{position:'fixed',top:0,left:0,right:0,background:'#0a0a10',color:'#00ff88',borderBottom:'2px solid #00ff88',padding:'10px',fontFamily:'monospace',fontSize:'13px',fontWeight:'bold',zIndex:2147483647});document.body.appendChild(b);}const send=(qs,t)=>{if(!Array.isArray(qs))return;const v=qs.filter(q=>q&&Array.isArray(q.correctAnswers)&&q.correctAnswers.length);if(!v.length||!window.opener)return;window.opener.postMessage({type:'SL_QUIZ_DATA',questions:v,title:t||document.title},'*');b.style.background='#004422';b.innerText='✅ SYNCED '+v.length+' ANSWERS TO GAME TAB!';};setInterval(()=>{const seen=new Set();const walk=(o,d=0)=>{if(!o||typeof o!=='object'||d>5||seen.has(o)||o instanceof Node||'$$typeof' in o)return;seen.add(o);if(Array.isArray(o)&&o.length&&o[0]?.correctAnswers){send(o,'Quiz Set');return;}if(Array.isArray(o.questions)&&o.questions[0]?.correctAnswers){send(o.questions,o.title);return;}if(!Array.isArray(o)){for(const k of Object.keys(o)){if(k==='children'||k.startsWith('__react')||k==='return')continue;try{walk(o[k],d+1);}catch(e){}}}};document.querySelectorAll('body *').forEach(el=>{const k=Object.keys(el).find(x=>x.startsWith('__reactFiber$'));let f=k?el[k]:null,g=0;while(f&&g++<30){if(f.memoizedProps)walk(f.memoizedProps,0);let h=f.memoizedState,hg=0;while(h&&hg++<30){walk(h.queue?.lastRenderedState??h.memoizedState,0);h=h.next;}f=f.return;}});},350);b.innerText='⚡ BRIDGE ACTIVE: Search & click any Quiz Set below to sync 100% of answers!';})();";
+
+    const bridgeBtn = document.createElement('button');
+    bridgeBtn.innerText = '⚡ Open Bridge & Copy Code';
+    Object.assign(bridgeBtn.style, {
+        width: '100%',
+        marginTop: '4px',
+        padding: '7px 8px',
+        backgroundColor: '#1a2639',
+        color: '#66ccff',
+        border: '1px solid #66ccff',
+        borderRadius: '5px',
+        fontFamily: 'Consolas, monospace',
+        fontSize: '11.5px',
+        fontWeight: 'bold',
+        cursor: 'pointer'
+    });
+    bridgeBtn.addEventListener('click', () => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(BRIDGE_ONELINER);
+        }
+        bridgeWindow = window.open('https://dashboard.blooket.com/discover', 'sl_bridge', 'width=520,height=480');
+        bridgeBtn.innerText = '✅ Paste in Popup & Click Set!';
+    });
+    gui.appendChild(bridgeBtn);
+
+    const readout = document.createElement('div');
+    Object.assign(readout.style, {
+        marginTop: '8px',
+        paddingTop: '8px',
+        borderTop: '1px solid #282832',
+        fontSize: '11.5px',
+        color: '#00ff88',
+        lineHeight: '1.45',
+        whiteSpace: 'pre-wrap',
+        wordBreak: 'break-word'
+    });
+    readout.innerText = 'Ready...';
+    gui.appendChild(readout);
+
+    document.body.appendChild(gui);
+
+    let isDragging = false, offsetX = 0, offsetY = 0;
+    header.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - gui.getBoundingClientRect().left;
+        offsetY = e.clientY - gui.getBoundingClientRect().top;
+    });
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        gui.style.left = (e.clientX - offsetX) + 'px';
+        gui.style.top = (e.clientY - offsetY) + 'px';
+        gui.style.right = 'auto';
+    });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    function getDirectFiber(el) {
+        if (!el) return null;
+        const keys = Object.keys(el);
+        for (let i = 0; i < keys.length; i++) {
+            if (keys[i].startsWith('__reactFiber$') || keys[i].startsWith('__reactInternalInstance$')) {
+                return el[keys[i]];
+            }
+        }
+        return null;
+    }
+
+    function getFirstHostDomNode(fiber) {
+        let curr = fiber.child;
+        let guard = 0;
+        while (curr && guard++ < 20) {
+            if (curr.tag === 5 && curr.stateNode instanceof HTMLElement) {
+                return curr.stateNode;
+            }
+            curr = curr.child;
+        }
+        return null;
+    }
+
+    function triggerRealClick(el) {
+        if (!el) return;
+        const f = getDirectFiber(el);
+        if (f && f.memoizedProps && typeof f.memoizedProps.onClick === 'function') {
+            try {
+                f.memoizedProps.onClick({ preventDefault() {}, stopPropagation() {}, target: el, currentTarget: el });
+            } catch (e) {}
+        }
+        const opts = { bubbles: true, cancelable: true, view: window };
+        el.dispatchEvent(new PointerEvent('pointerdown', opts));
+        el.dispatchEvent(new MouseEvent('mousedown', opts));
+        el.dispatchEvent(new PointerEvent('pointerup', opts));
+        el.dispatchEvent(new MouseEvent('mouseup', opts));
+        el.click();
+    }
+
+    let lastMinigameActionTime = 0;
+
+    function solveIncomingHackModal() {
+        const allEls = Array.from(document.querySelectorAll('div, span'));
+        const hackedHeaderEl = allEls.find(el => {
+            if (gui.contains(el)) return false;
+            const t = (el.innerText || '').trim();
+            return t.startsWith('HACKED:') && el.children.length === 0;
+        });
+
+        if (!hackedHeaderEl) return null;
+
+        let modalEl = hackedHeaderEl.parentElement;
+        while (modalEl && modalEl !== document.body) {
+            const r = modalEl.getBoundingClientRect();
+            if (r.height >= 140 && r.width >= 200) {
+                break;
+            }
+            modalEl = modalEl.parentElement;
+        }
+        if (!modalEl || modalEl === document.body) {
+            modalEl = hackedHeaderEl.parentElement?.parentElement || document.body;
+        }
+
+        const modalText = (modalEl.innerText || '').trim();
+        const modalPropSummary = [];
+
+        const innerNodes = Array.from(modalEl.querySelectorAll('*')).reverse();
+        const visitedModalFibers = new Set();
+
+        for (const innerEl of innerNodes) {
+            let f = getDirectFiber(innerEl);
+            let steps = 0;
+            while (f && steps++ < 8) {
+                if (!visitedModalFibers.has(f)) {
+                    visitedModalFibers.add(f);
+                    if (f.tag !== 5 && f.memoizedProps && typeof f.memoizedProps === 'object') {
+                        const mp = f.memoizedProps;
+                        const compName = typeof f.type === 'function' ? (f.type.displayName || f.type.name || 'MComp') : 'MComp';
+                        const keys = Object.keys(mp).filter(k => k !== 'children');
+
+                        if (['Zae', 'Fpe', 'Wve', 'hl', 'by', 'e0', 'Wae'].includes(compName)) break;
+                        if ('question' in mp || 'ColyseusContext' in mp || 'roomId' in mp) break;
+
+                        if (keys.length > 0 && modalPropSummary.length < 4) {
+                            modalPropSummary.push(compName + '{' + keys.join(',') + '}');
+                        }
+
+                        for (const k of keys) {
+                            if (typeof mp[k] === 'function' && (
+                                k.toLowerCase().includes('complete') ||
+                                k.toLowerCase().includes('solve') ||
+                                k.toLowerCase().includes('finish') ||
+                                k.toLowerCase().includes('done') ||
+                                k.toLowerCase().includes('success') ||
+                                k.toLowerCase().includes('win') ||
+                                (keys.filter(x => typeof mp[x] === 'function').length === 1 && k !== 'onClick')
+                            )) {
+                                try { mp[k](); } catch (e) {}
+                            }
+                        }
+                    }
+                }
+                f = f.return;
+            }
+        }
+
+        const now = Date.now();
+        if (now - lastMinigameActionTime < 45) {
+            return '🛡️ Solving Hack Modal...\\n' + modalPropSummary.join(' | ');
+        }
+        lastMinigameActionTime = now;
+
+        if (modalText.includes('1 to 10') || modalText.includes('Click the numbers')) {
+            const numBoxes = [];
+            const allModalDivs = Array.from(modalEl.querySelectorAll('div, button, span'));
+
+            for (const el of allModalDivs) {
+                const txt = (el.innerText || '').trim();
+                if (/^(10|[1-9])$/.test(txt)) {
+                    const num = parseInt(txt, 10);
+                    let target = el;
+                    if (el.parentElement && modalEl.contains(el.parentElement) && (el.parentElement.innerText || '').trim() === txt) {
+                        target = el.parentElement;
+                    }
+                    const r = target.getBoundingClientRect();
+                    const style = getComputedStyle(target);
+                    if (r.width > 20 && r.height > 20 && style.visibility !== 'hidden' && parseFloat(style.opacity) > 0.3) {
+                        numBoxes.push({ num, el: target });
+                    }
+                }
+            }
+
+            if (numBoxes.length > 0) {
+                numBoxes.sort((a, b) => a.num - b.num);
+                const seenNums = new Set();
+                let delay = 0;
+                for (const item of numBoxes) {
+                    if (seenNums.has(item.num)) continue;
+                    seenNums.add(item.num);
+                    setTimeout(() => triggerRealClick(item.el), delay);
+                    delay += 18;
+                }
+                return '🛡️ Solved 1-to-10 Numbers!\\n' + modalPropSummary.join(' | ');
+            }
+        }
+
+        if (modalText.includes('Reorder the right colors')) {
+            const modalRect = modalEl.getBoundingClientRect();
+            const midX = modalRect.left + modalRect.width / 2;
+
+            const candidateBoxes = Array.from(modalEl.querySelectorAll('div, button')).filter(el => {
+                const r = el.getBoundingClientRect();
+                if (r.width < 32 || r.width > 110 || r.height < 32 || r.height > 110) return false;
+                if (Math.abs(r.width - r.height) > 16) return false;
+                const bg = getComputedStyle(el).backgroundColor;
+                return bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent' && bg !== 'rgb(0, 0, 0)';
+            });
+
+            const squares = [];
+            candidateBoxes.sort((a, b) => (b.offsetWidth * b.offsetHeight) - (a.offsetWidth * a.offsetHeight));
+            for (const sq of candidateBoxes) {
+                if (!squares.some(existing => existing.contains(sq) || sq.contains(existing))) {
+                    squares.push(sq);
+                }
+            }
+
+            const leftCol = squares.filter(sq => sq.getBoundingClientRect().left < midX)
+                .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+            const rightCol = squares.filter(sq => sq.getBoundingClientRect().left >= midX)
+                .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+
+            if (leftCol.length > 0 && leftCol.length === rightCol.length) {
+                const getSig = (el) => getComputedStyle(el).backgroundColor;
+                for (let i = 0; i < leftCol.length; i++) {
+                    const targetSig = getSig(leftCol[i]);
+                    const currSig = getSig(rightCol[i]);
+                    if (currSig !== targetSig) {
+                        for (let j = i + 1; j < rightCol.length; j++) {
+                            if (getSig(rightCol[j]) === targetSig) {
+                                triggerRealClick(rightCol[i]);
+                                setTimeout(() => triggerRealClick(rightCol[j]), 20);
+                                return '🛡️ Swapping Colors (' + (i + 1) + ' <-> ' + (j + 1) + ')...\\n' + modalPropSummary.join(' | ');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        const clickableInModal = Array.from(modalEl.querySelectorAll('button, div')).filter(el => {
+            if (el === modalEl || el === hackedHeaderEl) return false;
+            const fNode = getDirectFiber(el);
+            return fNode && fNode.memoizedProps && typeof fNode.memoizedProps.onClick === 'function';
+        });
+
+        if (clickableInModal.length > 0) {
+            clickableInModal.forEach((btn, idx) => {
+                setTimeout(() => triggerRealClick(btn), idx * 15);
+            });
+        }
+
+        return '🛡️ Solving Hack Modal...\\n' + modalPropSummary.join(' | ');
+    }
+
+    const opponentPasswords = {};
+    let lastGuessedPasswordText = '';
+    let currentHackTargetName = '';
+
+    function hookColyseusRoom(room) {
+        if (!room || room.__slHooked) return;
+        room.__slHooked = true;
+        try {
+            const events = room.onMessageHandlers?.events;
+            if (events) {
+                if (Array.isArray(events.answerResult)) {
+                    events.answerResult.push((payload) => {
+                        try {
+                            if (payload && Array.isArray(payload.correctAnswers) && activeQuestionRef) {
+                                saveAnswerToMemory(activeQuestionRef, payload.correctAnswers);
+                            }
+                        } catch (e) {}
+                    });
+                }
+                if (Array.isArray(events.passwordGuessResult)) {
+                    events.passwordGuessResult.push((payload) => {
+                        try {
+                            if (payload && currentHackTargetName) {
+                                if (payload.correctPassword) {
+                                    opponentPasswords[currentHackTargetName] = payload.correctPassword;
+                                } else if (payload.isCorrect && lastGuessedPasswordText) {
+                                    opponentPasswords[currentHackTargetName] = lastGuessedPasswordText;
+                                }
+                            }
+                        } catch (e) {}
+                    });
+                }
+            }
+        } catch (e) {}
+    }
+
+    function scanGame() {
+        let question = null;
+        let answerResultObj = null;
+        let outputPrize = null;
+        let controllerPrize = null;
+        let choiceArray = null;
+        let onAnswerFn = null;
+        let sendAnswerFn = null;
+        let sendAnswerNextFn = null;
+        let onPrizeClaimedFn = null;
+        let onDoneFn = null;
+        let answerSentVal = '';
+        let isShowingFeedback = false;
+        let controllerPhase = '';
+        let classicCorrectPassword = null;
+
+        const answerButtonMap = new Map();
+        const seenFibers = new Set();
+        const allEls = Array.from(document.querySelectorAll('body *')).reverse();
+
+        for (let i = 0; i < allEls.length; i++) {
+            const el = allEls[i];
+            if (gui.contains(el)) continue;
+
+            let f = getDirectFiber(el);
+            let guard = 0;
+            while (f && guard++ < 50) {
+                const node = f;
+                if (!seenFibers.has(node)) {
+                    seenFibers.add(node);
+
+                    if (node.tag !== 5) {
+                        const mp = node.memoizedProps;
+                        if (mp && typeof mp === 'object') {
+                            if (typeof mp.answer === 'string' && typeof mp.onClick === 'function' && ('bgColor' in mp || 'isCorrect' in mp)) {
+                                const key = mp.answer.trim().toLowerCase();
+                                const domBtn = getFirstHostDomNode(node);
+                                if (domBtn && !answerButtonMap.has(key)) {
+                                    answerButtonMap.set(key, {
+                                        dom: domBtn,
+                                        onClick: mp.onClick,
+                                        rawAnswer: mp.answer
+                                    });
+                                }
+                                if (mp.isShowingFeedback) isShowingFeedback = true;
+                                if (mp.answerSent) answerSentVal = mp.answerSent;
+                            }
+
+                            if (mp.question && typeof mp.question === 'object' && Array.isArray(mp.question.answers)) {
+                                if (!question) question = mp.question;
+                            }
+                            if (typeof mp.onAnswer === 'function' && !onAnswerFn) {
+                                onAnswerFn = mp.onAnswer;
+                            }
+                            if (mp.answerSent) {
+                                answerSentVal = mp.answerSent;
+                            }
+
+                            if (typeof mp.sendAnswer === 'function' && !sendAnswerFn) {
+                                sendAnswerFn = mp.sendAnswer;
+                            }
+                            if (typeof mp.sendAnswerNext === 'function' && !sendAnswerNextFn) {
+                                sendAnswerNextFn = mp.sendAnswerNext;
+                            }
+                            if (typeof mp.onDone === 'function' && !onDoneFn) {
+                                onDoneFn = mp.onDone;
+                            }
+                            if ('incorrectTimer' in mp || ('isCorrect' in mp && !('bgColor' in mp))) {
+                                isShowingFeedback = true;
+                            }
+
+                            if (mp.prize && typeof mp.prize === 'object' && ('text' in mp.prize || 'type' in mp.prize)) {
+                                outputPrize = mp.prize;
+                            }
+                            if (typeof mp.onPrizeClaimed === 'function' && !onPrizeClaimedFn) {
+                                onPrizeClaimedFn = mp.onPrizeClaimed;
+                            }
+
+                            if (typeof mp.correctPassword === 'string') {
+                                classicCorrectPassword = mp.correctPassword;
+                            }
+                            if (typeof mp.targetName === 'string' || typeof mp.playerName === 'string') {
+                                currentHackTargetName = mp.targetName || mp.playerName;
+                            }
+
+                            if (mp.value && mp.value.room) {
+                                hookColyseusRoom(mp.value.room);
+                            }
+                        }
+
+                        let hk = node.memoizedState;
+                        let hIdx = 0;
+                        while (hk && hIdx++ < 45) {
+                            const raw = hk.queue?.lastRenderedState ?? hk.memoizedState;
+                            if (raw !== null && raw !== undefined) {
+                                const val = (typeof raw === 'object' && 'current' in raw && Object.keys(raw).length === 1) ? raw.current : raw;
+                                if (typeof val === 'string' && !controllerPhase && ['question', 'prize', 'hack', 'password', 'choose', 'defense', 'hacked'].includes(val.toLowerCase())) {
+                                    controllerPhase = val;
+                                } else if (val && typeof val === 'object') {
+                                    if (Array.isArray(val.correctAnswers) && val.correctAnswers.length > 0 && ('isCorrect' in val || 'incorrectTime' in val)) {
+                                        answerResultObj = val;
+                                        isShowingFeedback = true;
+                                    }
+                                    if (!controllerPrize && 'type' in val && 'text' in val && ('rate' in val || 'blook' in val)) {
+                                        controllerPrize = val;
+                                    }
+                                    if (typeof val.correctPassword === 'string') {
+                                        classicCorrectPassword = val.correctPassword;
+                                    }
+                                    if (val.roomId && val.serializer) {
+                                        hookColyseusRoom(val);
+                                    }
+                                }
+                            }
+                            hk = hk.next;
+                        }
+
+                        const sn = node.stateNode;
+                        if (sn && sn.state && typeof sn.state === 'object') {
+                            if (sn.state.question) question = sn.state.question;
+                            if (Array.isArray(sn.state.choices) && sn.state.choices.length === 3) {
+                                choiceArray = sn.state.choices;
+                            }
+                            if (typeof sn.state.correctPassword === 'string') {
+                                classicCorrectPassword = sn.state.correctPassword;
+                            }
+                        }
+                    }
+                }
+                f = f.return;
+            }
+        }
+
+        if (question) activeQuestionRef = question;
+        if (answerResultObj && activeQuestionRef) {
+            saveAnswerToMemory(activeQuestionRef, answerResultObj.correctAnswers);
+        }
+
+        return {
+            question,
+            answerButtonMap,
+            prize: outputPrize || controllerPrize,
+            choiceArray,
+            onAnswerFn,
+            sendAnswerFn,
+            sendAnswerNextFn,
+            onPrizeClaimedFn,
+            onDoneFn,
+            answerSentVal,
+            isShowingFeedback,
+            controllerPhase,
+            classicCorrectPassword
+        };
+    }
+
+    const modifiedEls = new Set();
+    function resetVisuals() {
+        modifiedEls.forEach(el => {
+            if (el && el.style) {
+                el.style.outline = '';
+                el.style.boxShadow = '';
+                el.style.opacity = '';
+                el.style.filter = '';
+            }
+        });
+        modifiedEls.clear();
+        document.querySelectorAll('.sl-choice-badge').forEach(el => el.remove());
+    }
+
+    function formatPrize(c) {
+        if (!c) return '?';
+        if (typeof c === 'string' || typeof c === 'number') return String(c);
+        if (c.text && c.blook) return c.text + ' (' + c.blook + ')';
+        if (c.text) return String(c.text);
+        if (c.type && c.val !== undefined) return c.type + ': ' + c.val;
+        return JSON.stringify(c);
+    }
+
+    function attachBadge(box, labelText) {
+        let badge = box.querySelector('.sl-choice-badge');
+        if (!badge) {
+            badge = document.createElement('div');
+            badge.className = 'sl-choice-badge';
+            Object.assign(badge.style, {
+                position: 'absolute',
+                bottom: '-36px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                backgroundColor: '#0a0a0f',
+                color: '#00ff88',
+                padding: '4px 10px',
+                borderRadius: '4px',
+                fontSize: '13px',
+                fontWeight: 'bold',
+                border: '2px solid #00ff88',
+                pointerEvents: 'none',
+                whiteSpace: 'nowrap',
+                zIndex: '2147483646',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.9)'
+            });
+            if (getComputedStyle(box).position === 'static') {
+                box.style.position = 'relative';
+            }
+            box.style.overflow = 'visible';
+            box.appendChild(badge);
+        }
+        if (badge.innerText !== labelText) {
+            badge.innerText = labelText;
+        }
+    }
+
+    let lastAnsweredQuestionNumber = -1;
+    let lastAnsweredTime = 0;
+    let lastSkipTime = 0;
+    let lastHackClickTime = 0;
+    const clickedHackButtons = new WeakSet();
+
+    function update() {
+        if (state.autoHack) {
+            const hackStatus = solveIncomingHackModal();
+            if (hackStatus) {
+                readout.innerText = hackStatus;
+                return;
+            }
+        }
+
+        const {
+            question,
+            answerButtonMap,
+            prize,
+            choiceArray,
+            onAnswerFn,
+            sendAnswerFn,
+            sendAnswerNextFn,
+            onPrizeClaimedFn,
+            onDoneFn,
+            answerSentVal,
+            isShowingFeedback,
+            controllerPhase,
+            classicCorrectPassword
+        } = scanGame();
+
+        const statusLines = [];
+        const now = Date.now();
+
+        if (syncedSetTitle) {
+            bridgeBtn.innerText = '✅ Synced: ' + syncedSetTitle;
+            bridgeBtn.style.borderColor = '#00ff88';
+            bridgeBtn.style.color = '#00ff88';
+        }
+
+        const questionMarkBoxes = Array.from(document.querySelectorAll('div')).filter(el => {
+            if (gui.contains(el)) return false;
+            const r = el.getBoundingClientRect();
+            const txt = (el.innerText || '').trim();
+            return (txt === '?' || txt.startsWith('?')) && r.width >= 50 && r.width <= 320 && r.height >= 50 && r.height <= 320;
+        });
+
+        const outerBoxes = [];
+        questionMarkBoxes.sort((a, b) => (b.offsetWidth * b.offsetHeight) - (a.offsetWidth * a.offsetHeight));
+        for (const box of questionMarkBoxes) {
+            if (!outerBoxes.some(existing => existing.contains(box) || box.contains(existing))) {
+                outerBoxes.push(box);
+            }
+        }
+        outerBoxes.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+
+        const onQuestionScreen = Boolean(question && answerButtonMap.size > 0);
+        const onOutputBoxScreen = Boolean(outerBoxes.length > 0);
+        const pageText = document.body.innerText || '';
+
+        if (state.autoHack && !onQuestionScreen && !onOutputBoxScreen && !pageText.includes('Click Anywhere to Go Next')) {
+            if (now - lastHackClickTime > 95) {
+                const optionButtons = Array.from(document.querySelectorAll('button, [role="button"], div')).filter(el => {
+                    if (gui.contains(el)) return false;
+                    const r = el.getBoundingClientRect();
+                    if (r.top < 75 || r.width < 80 || r.height < 32) return false;
+                    if (r.width > window.innerWidth * 0.85 || r.height > window.innerHeight * 0.5) return false;
+
+                    const style = getComputedStyle(el);
+                    if (style.pointerEvents === 'none' || style.visibility === 'hidden' || parseFloat(style.opacity) < 0.25) return false;
+
+                    const f = getDirectFiber(el);
+                    const hasClick = Boolean(f && f.memoizedProps && typeof f.memoizedProps.onClick === 'function');
+                    return (hasClick || el.tagName === 'BUTTON' || style.cursor === 'pointer') && el.children.length <= 5;
+                });
+
+                const cleanButtons = [];
+                optionButtons.sort((a, b) => (b.offsetWidth * b.offsetHeight) - (a.offsetWidth * a.offsetHeight));
+                for (const b of optionButtons) {
+                    if (!cleanButtons.some(existing => existing.contains(b) || b.contains(existing))) {
+                        cleanButtons.push(b);
+                    }
+                }
+
+                if (cleanButtons.length > 0) {
+                    lastHackClickTime = now;
+                    const knownPwd = classicCorrectPassword || (currentHackTargetName && opponentPasswords[currentHackTargetName]);
+                    let chosenBtn = null;
+
+                    if (knownPwd) {
+                        chosenBtn = cleanButtons.find(b => (b.innerText || '').trim() === knownPwd);
+                    }
+                    if (!chosenBtn) {
+                        const unclicked = cleanButtons.filter(b => !clickedHackButtons.has(b));
+                        chosenBtn = unclicked.length > 0 ? unclicked[0] : cleanButtons[0];
+                    }
+
+                    if (chosenBtn) {
+                        clickedHackButtons.add(chosenBtn);
+                        lastGuessedPasswordText = (chosenBtn.innerText || '').trim();
+                        triggerRealClick(chosenBtn);
+                        statusLines.push('💻 Auto-Hack Clicking:\\n"' + lastGuessedPasswordText.slice(0, 30) + '"');
+                    }
+                }
+            }
+        }
+
+        if (state.autoContinue && now - lastSkipTime > 120) {
+            if (onQuestionScreen && (isShowingFeedback || answerSentVal !== '' || pageText.includes('INCORRECT') || pageText.includes('CORRECT'))) {
+                lastSkipTime = now;
+                if (typeof sendAnswerNextFn === 'function') {
+                    try { sendAnswerNextFn(); } catch (e) {}
+                }
+                if (typeof onDoneFn === 'function') {
+                    try { onDoneFn(); } catch (e) {}
+                }
+            }
+
+            if (pageText.includes('Click Anywhere to Go Next')) {
+                lastSkipTime = now;
+                if (typeof onPrizeClaimedFn === 'function') {
+                    try { onPrizeClaimedFn(); } catch (e) {}
+                }
+                const target = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
+                if (target && !gui.contains(target)) {
+                    triggerRealClick(target);
+                }
+            }
+
+            if (state.autoAnswer && outerBoxes.length === 3 && !choiceArray && prize) {
+                lastSkipTime = now;
+                triggerRealClick(outerBoxes[0]);
+            }
+        }
+
+        if (onQuestionScreen) {
+            const knownCorrect = lookupAnswerFromMemory(question);
+            if (knownCorrect && knownCorrect.length > 0) {
+                const lowerCorrect = knownCorrect.map(x => String(x).trim().toLowerCase());
+                statusLines.push('✔ Correct (Q#' + question.number + '): ' + knownCorrect.join(' | '));
+
+                answerButtonMap.forEach((btnObj, ansText) => {
+                    const btnEl = btnObj.dom;
+                    const isRight = lowerCorrect.includes(ansText);
+
+                    if (state.highlightAnswers) {
+                        modifiedEls.add(btnEl);
+                        if (isRight) {
+                            btnEl.style.outline = '6px solid #00ff88';
+                            btnEl.style.boxShadow = '0 0 35px #00ff88, inset 0 0 25px rgba(0,255,136,0.6)';
+                            btnEl.style.opacity = '1';
+                            btnEl.style.filter = 'brightness(1.25)';
+                        } else {
+                            btnEl.style.outline = '2px solid #ff2244';
+                            btnEl.style.boxShadow = 'none';
+                            btnEl.style.opacity = '0.18';
+                            btnEl.style.filter = 'grayscale(0.8)';
+                        }
+                    }
+
+                    if (state.autoAnswer && isRight && !isShowingFeedback && answerSentVal === '' &&
+                        (lastAnsweredQuestionNumber !== question.number || now - lastAnsweredTime > 450)) {
+                        lastAnsweredQuestionNumber = question.number;
+                        lastAnsweredTime = now;
+
+                        if (typeof onAnswerFn === 'function') {
+                            try { onAnswerFn(btnObj.rawAnswer); } catch (e) {}
+                        }
+                        if (typeof sendAnswerFn === 'function') {
+                            try { sendAnswerFn(btnObj.rawAnswer); } catch (e) {}
+                        }
+                        try {
+                            btnObj.onClick({ preventDefault() {}, stopPropagation() {} });
+                        } catch (e) {}
+                        triggerRealClick(btnEl);
+                    }
+                });
+            } else {
+                modifiedEls.forEach(el => {
+                    if (el && el.style) {
+                        el.style.outline = '';
+                        el.style.boxShadow = '';
+                        el.style.opacity = '';
+                        el.style.filter = '';
+                    }
+                });
+                modifiedEls.clear();
+                statusLines.push('🧠 Q#' + question.number + ' (New)\\nClick once to learn!');
+            }
+        } else {
+            modifiedEls.forEach(el => {
+                if (el && el.style) {
+                    el.style.outline = '';
+                    el.style.boxShadow = '';
+                    el.style.opacity = '';
+                    el.style.filter = '';
+                }
+            });
+            modifiedEls.clear();
+        }
+
+        if (state.revealChoices && outerBoxes.length > 0) {
+            if (choiceArray && choiceArray.length === 3) {
+                const labels = choiceArray.map((c, i) => '[Box ' + (i + 1) + '] ' + formatPrize(c));
+                statusLines.push('🃏 Cards:\\n' + labels.join('\\n'));
+                outerBoxes.slice(0, 3).forEach((box, idx) => {
+                    attachBadge(box, formatPrize(choiceArray[idx]));
+                });
+            } else if (prize) {
+                const prizeText = formatPrize(prize);
+                statusLines.push('🎁 Output Card:\\n' + prizeText);
+                outerBoxes.forEach(box => {
+                    attachBadge(box, prizeText);
+                });
+            }
+        } else {
+            document.querySelectorAll('.sl-choice-badge').forEach(el => el.remove());
+        }
+
+        const totalSaved = Object.keys(answerMemory).filter(k => k.startsWith('id:') || k.startsWith('txt:')).length;
+        readout.innerText = statusLines.length > 0
+            ? statusLines.join('\\n\\n')
+            : 'Phase: ' + (controllerPhase || 'active') + ' | Saved Qs: ' + totalSaved;
+    }
+
+    window.__slInterval = setInterval(update, 50);
+    update();
+})();`;
+
+  const BLOOKET_BRIDGE_SCRIPT = `(()=>{let b=document.getElementById('sl-b');if(!b){b=document.createElement('div');b.id='sl-b';Object.assign(b.style,{position:'fixed',top:0,left:0,right:0,background:'#0a0a10',color:'#00ff88',borderBottom:'2px solid #00ff88',padding:'10px',fontFamily:'monospace',fontSize:'13px',fontWeight:'bold',zIndex:2147483647});document.body.appendChild(b);}const send=(qs,t)=>{if(!Array.isArray(qs))return;const v=qs.filter(q=>q&&Array.isArray(q.correctAnswers)&&q.correctAnswers.length);if(!v.length||!window.opener)return;window.opener.postMessage({type:'SL_QUIZ_DATA',questions:v,title:t||document.title},'*');b.style.background='#004422';b.innerText='✅ SYNCED '+v.length+' ANSWERS TO GAME TAB!';};setInterval(()=>{const seen=new Set();const walk=(o,d=0)=>{if(!o||typeof o!=='object'||d>5||seen.has(o)||o instanceof Node||'$$typeof' in o)return;seen.add(o);if(Array.isArray(o)&&o.length&&o[0]?.correctAnswers){send(o,'Quiz Set');return;}if(Array.isArray(o.questions)&&o.questions[0]?.correctAnswers){send(o.questions,o.title);return;}if(!Array.isArray(o)){for(const k of Object.keys(o)){if(k==='children'||k.startsWith('__react')||k==='return')continue;try{walk(o[k],d+1);}catch(e){}}}};document.querySelectorAll('body *').forEach(el=>{const k=Object.keys(el).find(x=>x.startsWith('__reactFiber$'));let f=k?el[k]:null,g=0;while(f&&g++<30){if(f.memoizedProps)walk(f.memoizedProps,0);let h=f.memoizedState,hg=0;while(h&&hg++<30){walk(h.queue?.lastRenderedState??h.memoizedState,0);h=h.next;}f=f.return;}});},350);b.innerText='⚡ BRIDGE ACTIVE: Search & click any Quiz Set below to sync 100% of answers!';})();`;
+
+  function BlooketView({ toast }) {
+    const copyText = (txt, msg) => {
+      try {
+        navigator.clipboard.writeText(txt);
+        toast(msg);
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = txt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        toast(msg);
+      }
+    };
+
+    const bookmarkletCode = "javascript:" + encodeURIComponent(BLOOKET_V25_SCRIPT);
+
+    return h("section", { className: "view", id: "blooket" },
+      h("div", { className: "page", style: { maxWidth: 1020 } },
+        h("div", { className: "row", style: { flexWrap: "wrap", marginBottom: 18 } },
+          h("div", null,
+            h("div", { style: { display: "flex", alignItems: "center", gap: 10 } },
+              h("h2", { style: { margin: 0, color: "#00ff88" } }, "⚡ Blooket GUI Cheat Hub (v25)"),
+              h("span", { className: "badge-pill live" }, "COLYSEUS + REACT FIBER")
+            ),
+            h("p", { className: "sub", style: { margin: "6px 0 0" } },
+              "Highlight Correct Answer • Choice / Card Show • Auto Answer • Instant 0ms Skip • Auto Hack & Anti-Hack Minigame Solver"
+            )
+          ),
+          h("div", { style: { display: "flex", gap: 10, flexWrap: "wrap" } },
+            h("button", {
+              className: "btn",
+              style: { background: "#00ff88", color: "#000" },
+              onClick: () => copyText(BLOOKET_V25_SCRIPT, "✅ Copied Blooket v25 GUI Script!")
+            }, "📋 Copy Full v25 GUI Script"),
+            h("button", {
+              className: "btn ghost",
+              onClick: () => copyText(bookmarkletCode, "✅ Copied Bookmarklet URL!")
+            }, "🔖 Copy as Bookmarklet"),
+            h("button", {
+              className: "btn ghost",
+              style: { borderColor: "#66ccff", color: "#66ccff" },
+              onClick: () => {
+                copyText(BLOOKET_BRIDGE_SCRIPT, "✅ Bridge Code Copied!");
+                window.open("https://play.blooket.com", "_blank");
+              }
+            }, "🚀 Launch Blooket")
+          )
+        ),
+
+        h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: 16, marginBottom: 22 } },
+          h("div", { className: "pop-panel", style: { borderColor: "rgba(0,255,136,0.35)" } },
+            h("h3", { style: { color: "#00ff88", marginBottom: 8 } }, "1. Main Game Tab (v25 GUI)"),
+            h("p", { style: { color: "var(--muted)", fontSize: 13, lineHeight: 1.5, marginBottom: 14 } },
+              "Join your Blooket match, press F12 (Console), paste the v25 GUI Script, and press Enter. Includes draggable toggles for Highlight Correct, Choice/Card Show, Auto Answer, Instant Skip, and Anti-Hack."
+            ),
+            h("button", {
+              className: "btn sm",
+              style: { background: "#00ff88", color: "#000", width: "100%" },
+              onClick: () => copyText(BLOOKET_V25_SCRIPT, "✅ Copied v25 GUI Script!")
+            }, "📋 Copy Main GUI Script")
+          ),
+          h("div", { className: "pop-panel", style: { borderColor: "rgba(102,204,255,0.35)" } },
+            h("h3", { style: { color: "#66ccff", marginBottom: 8 } }, "2. 200+ Question Set Bridge"),
+            h("p", { style: { color: "var(--muted)", fontSize: 13, lineHeight: 1.5, marginBottom: 14 } },
+              "Click '⚡ Open Bridge & Copy Code' inside the floating Blooket GUI, press F12 in the Discover popup, paste the Bridge code, and click any Quiz Set card to sync 100% of answers!"
+            ),
+            h("button", {
+              className: "btn ghost sm",
+              style: { borderColor: "#66ccff", color: "#66ccff", width: "100%" },
+              onClick: () => copyText(BLOOKET_BRIDGE_SCRIPT, "✅ Copied Bridge One-Liner!")
+            }, "📋 Copy Bridge Popup Script")
+          )
+        ),
+
+        h("div", { className: "setting" },
+          h("div", { className: "row", style: { marginBottom: 10 } },
+            h("h3", { style: { margin: 0 } }, "Full Blooket GUI v25 Source Code"),
+            h("span", { style: { fontSize: 12, color: "var(--muted)" } }, "Select & copy or use the button above")
+          ),
+          h("textarea", {
+            readOnly: true,
+            value: BLOOKET_V25_SCRIPT,
+            onClick: (e) => e.target.select(),
+            style: {
+              width: "100%",
+              height: "340px",
+              background: "#070709",
+              color: "#00ff88",
+              border: "1px solid var(--border)",
+              borderRadius: "10px",
+              padding: "14px",
+              fontFamily: "Consolas, monospace",
+              fontSize: "12px",
+              lineHeight: "1.45",
+              outline: "none",
+              resize: "vertical"
+            }
+          })
+        )
+      )
     );
   }
 
@@ -3266,6 +4310,7 @@ main { position: fixed; left: 64px; right: 0; top: 0; bottom: 0; z-index: 10; ov
       ) : null,
       h("main", { ref: mainRef },
         view === "home" ? h(Home, { onNavigate: navigate, onSearch: (q) => { setQuery(q); navigate("games"); }, userTier }) : null,
+        view === "blooket" ? h(BlooketView, { toast }) : null,
         view === "sports" ? h(SportsView, { currentUser, userTier, isOwner, sessionsMap, toast }) : null,
         view === "broadcast" ? h(BroadcastView, { currentUser, userTier, isOwner, sessionsMap, accountsMap, toast }) : null,
         view === "youtube" ? h(YouTubeView, { toast }) : null,
