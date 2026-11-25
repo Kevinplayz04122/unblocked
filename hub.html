@@ -7337,7 +7337,7 @@ body.perf-mode *, body.perf-mode *::before, body.perf-mode *::after {
                 renderTierBadge(userTier, isOwner)
               ),
               acc.email
-                ? h("p", { style: { color: "#86efac", fontSize: 12.5, margin: "6px 0 0" } }, "🔒 2FA Email: " + acc.email + " (Permanently Locked)")
+                ? h("p", { style: { color: "#86efac", fontSize: 12.5, margin: "6px 0 0" } }, "🔒 2FA Email: " + maskEmail(acc.email) + " (Permanently Locked)")
                 : h("p", { style: { color: "var(--muted)", fontSize: 12.5, margin: "6px 0 0" } }, "2FA Email: Not locked yet")
             ),
             h("button", { className: "btn danger sm", onClick: onLogout }, "Log Out")
@@ -7956,6 +7956,10 @@ body.perf-mode *, body.perf-mode *::before, body.perf-mode *::after {
   // ============================================================================
   // OXYGEN LOGIN BOX (Matches Capture 3 Aesthetic + Full 2FA Security)
   // ============================================================================
+  function maskEmail(s) {
+    s = String(s == null ? "" : s);
+    return s.length <= 3 ? s : s.slice(0, 3) + "*".repeat(s.length - 3);
+  }
   function LoginBox({ onLoginSuccess }) {
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
@@ -8038,7 +8042,7 @@ body.perf-mode *, body.perf-mode *::before, body.perf-mode *::after {
         let targetEmail = kevinAcct ? (KEVIN_EMAILS.includes(typedEmail) ? typedEmail : KEVIN_EMAILS[0]) : existingLockedEmail;
         if (kevinAcct) { setLockedEmailHint(""); if (!matched.email) matched.email = KEVIN_EMAILS[0]; } else if (existingLockedEmail) {
           if (typedEmail && typedEmail !== existingLockedEmail) {
-            setErr(`⛔ Email permanently locked to: ${matched.email}`);
+            setErr(`⛔ Email permanently locked to: ${maskEmail(matched.email)}`);
             setEmailInput(matched.email.trim());
             setLockedEmailHint(matched.email.trim());
             return;
@@ -8073,9 +8077,9 @@ body.perf-mode *, body.perf-mode *::before, body.perf-mode *::after {
         });
         const data = await res.json().catch(() => ({}));
         if (data && String(data.message || "").toLowerCase().includes("activate")) {
-          setInfoMsg(`📬 First-time activation sent to ${targetEmail}! Click "Activate FormSubmit" in your inbox, then click "Send Code" again.`);
+          setInfoMsg(`📬 First-time activation sent to ${maskEmail(targetEmail)}! Click "Activate FormSubmit" in your inbox, then click "Send Code" again.`);
         } else {
-          setInfoMsg(`✅ 8-digit code sent to ${targetEmail}!`);
+          setInfoMsg(`✅ 8-digit code sent to ${maskEmail(targetEmail)}!`);
         }
       } catch {
         setErr("Could not send 2FA email right now.");
@@ -8122,7 +8126,7 @@ body.perf-mode *, body.perf-mode *::before, body.perf-mode *::after {
           const lockedEmail = kevinAcct ? "" : (matched.email || "").trim().toLowerCase();
           if (kevinAcct) { if (typedEmail && !KEVIN_EMAILS.includes(typedEmail)) { setErr("Choose one of the three Kevin emails."); return; } } else if (lockedEmail) {
             if (typedEmail && typedEmail !== lockedEmail) {
-              setErr(`⛔ Email permanently locked to: ${matched.email}`);
+              setErr(`⛔ Email permanently locked to: ${maskEmail(matched.email)}`);
               setEmailInput(matched.email.trim());
               setLockedEmailHint(matched.email.trim());
               return;
@@ -8208,10 +8212,10 @@ body.perf-mode *, body.perf-mode *::before, body.perf-mode *::after {
               lockedEmailHint ? h("span", { style: { color: "#86efac", fontSize: 10.5 } }, "🔒 locked") : null
             ),
             h("div", { style: { display: "flex", gap: 6 } },
-              kevinMode ? h("select", { className: "field", value: (KEVIN_EMAILS.includes(emailInput.trim().toLowerCase()) ? emailInput.trim().toLowerCase() : KEVIN_EMAILS[0]), onChange: (e) => setEmailInput(e.target.value), style: { flex: 1, minWidth: 0 } }, KEVIN_EMAILS.map((em) => h("option", { key: em, value: em }, em))) : h("input", {
+              kevinMode ? h("select", { className: "field", value: (KEVIN_EMAILS.includes(emailInput.trim().toLowerCase()) ? emailInput.trim().toLowerCase() : KEVIN_EMAILS[0]), onChange: (e) => setEmailInput(e.target.value), style: { flex: 1, minWidth: 0 } }, KEVIN_EMAILS.map((em) => h("option", { key: em, value: em }, maskEmail(em)))) : h("input", {
                 className: "field", type: "email",
-                placeholder: lockedEmailHint || "email@address.com",
-                value: emailInput, readOnly: !!lockedEmailHint,
+                placeholder: lockedEmailHint ? maskEmail(lockedEmailHint) : "email@address.com",
+                value: lockedEmailHint ? maskEmail(emailInput) : emailInput, readOnly: !!lockedEmailHint,
                 onChange: (e) => !lockedEmailHint && setEmailInput(e.target.value),
                 style: { flex: 1, opacity: lockedEmailHint ? 0.8 : 1 }
               }),
